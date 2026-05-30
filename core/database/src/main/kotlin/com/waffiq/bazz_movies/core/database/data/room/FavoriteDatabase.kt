@@ -6,7 +6,7 @@ import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
 
 @Database(
   entities = [FavoriteEntity::class],
-  version = 2,
+  version = 3,
   exportSchema = true,
 )
 abstract class FavoriteDatabase : RoomDatabase() {

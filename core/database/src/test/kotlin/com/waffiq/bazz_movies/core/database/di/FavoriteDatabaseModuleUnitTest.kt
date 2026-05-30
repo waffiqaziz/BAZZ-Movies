@@ -11,6 +11,7 @@ import com.waffiq.bazz_movies.core.database.data.room.FavoriteDatabase
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
+import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -116,30 +117,30 @@ class FavoriteDatabaseModuleUnitTest {
       // create original v1 schema
       execSQL(
         """
-                CREATE TABLE IF NOT EXISTS favorite (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                    mediaId INTEGER NOT NULL,
-                    mediaType TEXT,
-                    genre TEXT,
-                    backDrop TEXT,
-                    poster TEXT,
-                    overview TEXT,
-                    title TEXT,
-                    releaseDate TEXT,
-                    popularity REAL,
-                    rating REAL,
-                    is_favorited INTEGER,
-                    is_watchlist INTEGER
-                )
+          CREATE TABLE IF NOT EXISTS favorite (
+            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            mediaId INTEGER NOT NULL,
+            mediaType TEXT,
+            genre TEXT,
+            backDrop TEXT,
+            poster TEXT,
+            overview TEXT,
+            title TEXT,
+            releaseDate TEXT,
+            popularity REAL,
+            rating REAL,
+            is_favorited INTEGER,
+            is_watchlist INTEGER
+          )
         """.trimIndent(),
       )
 
       // insert test data with NULL values
       execSQL(
         """
-                INSERT INTO favorite (mediaId, mediaType, genre, is_favorited, is_watchlist)
-                VALUES (101, NULL, NULL, 1, 0)
-                """,
+          INSERT INTO favorite (mediaId, mediaType, genre, is_favorited, is_watchlist)
+          VALUES (101, NULL, NULL, 1, 0)
+        """,
       )
 
       close()
@@ -164,6 +165,101 @@ class FavoriteDatabaseModuleUnitTest {
     assertEquals("", cursor.getString(genreIdx))
 
     cursor.close()
+    db.close()
+  }
+
+  @Test
+  fun getMigrationTwoToThree_whenApplied_correctlyAddsUniqueIndex() {
+    val helper = MigrationTestHelper(
+      InstrumentationRegistry.getInstrumentation(),
+      FavoriteDatabase::class.java,
+      emptyList(),
+      FrameworkSQLiteOpenHelperFactory(),
+    )
+
+    // create v2 database and insert test data
+    helper.createDatabase(dbPath, 2).apply {
+      execSQL(
+        """
+          CREATE TABLE IF NOT EXISTS favorite (
+            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            mediaId INTEGER NOT NULL,
+            mediaType TEXT NOT NULL,
+            genre TEXT NOT NULL,
+            backDrop TEXT NOT NULL,
+            poster TEXT NOT NULL,
+            overview TEXT NOT NULL,
+            title TEXT NOT NULL,
+            releaseDate TEXT NOT NULL,
+            popularity REAL NOT NULL,
+            rating REAL NOT NULL,
+            is_favorited INTEGER NOT NULL,
+            is_watchlist INTEGER NOT NULL
+          )
+        """.trimIndent(),
+      )
+
+      // insert test data
+      execSQL(
+        """
+          INSERT INTO favorite (mediaId, mediaType, genre, backDrop, poster, overview, title, 
+          releaseDate, popularity, rating, is_favorited, is_watchlist)
+          VALUES (101, 'movie', 'Action', '', '', '', 'Movie A', '2024-01-01', 7.5, 8.0, 1, 0)
+        """.trimIndent(),
+      )
+      execSQL(
+        """
+          INSERT INTO favorite (mediaId, mediaType, genre, backDrop, poster, overview, title, 
+          releaseDate, popularity, rating, is_favorited, is_watchlist)
+          VALUES (102, 'tv', 'Drama', '', '', '', 'TV Show A', '2024-02-01', 6.5, 7.0, 0, 1)
+        """.trimIndent(),
+      )
+
+      close()
+    }
+
+    // get the migration
+    val migration = FavoriteDatabaseModule().getMigrationTwoToThree()
+
+    // run migration and validate schema against v3
+    val db = helper.runMigrationsAndValidate(dbPath, 3, true, migration)
+
+    // verify the unique index exists
+    val cursor = db.query(
+      "SELECT name, `unique` FROM pragma_index_list('favorite') " +
+        "WHERE name = 'index_favorite_mediaId_mediaType'"
+    )
+    assertTrue("Unique index should exist", cursor.moveToFirst())
+    assertEquals(
+      "index_favorite_mediaId_mediaType",
+      cursor.getString(cursor.getColumnIndex("name"))
+    )
+    assertEquals(1, cursor.getInt(cursor.getColumnIndex("unique")))
+    cursor.close()
+
+    // verify existing data is intact after migration
+    val dataCursor = db.query("SELECT * FROM favorite ORDER BY mediaId ASC")
+    assertEquals(2, dataCursor.count)
+    dataCursor.moveToFirst()
+    assertEquals(101, dataCursor.getInt(dataCursor.getColumnIndex("mediaId")))
+    dataCursor.moveToNext()
+    assertEquals(102, dataCursor.getInt(dataCursor.getColumnIndex("mediaId")))
+    dataCursor.close()
+
+    // verify the unique constraint is enforced — inserting a duplicate should fail
+    try {
+      db.execSQL(
+        """
+          INSERT INTO favorite (mediaId, mediaType, genre, backDrop, poster, overview, title, 
+          releaseDate, popularity, rating, is_favorited, is_watchlist)
+          VALUES (101, 'movie', 'Action', '', '', '', 'Duplicate', '2024-01-01', 7.5, 8.0, 1, 0)
+        """.trimIndent(),
+      )
+      fail("Expected unique constraint violation but no exception was thrown")
+    } catch (_: android.database.sqlite.SQLiteConstraintException) {
+      // expected, unique constraint correctly enforced
+    }
+
     db.close()
   }
 }
