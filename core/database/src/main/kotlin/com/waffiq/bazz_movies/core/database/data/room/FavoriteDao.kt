@@ -1,10 +1,12 @@
 package com.waffiq.bazz_movies.core.database.data.room
 
+import android.database.sqlite.SQLiteException
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
 import com.waffiq.bazz_movies.core.database.utils.Constants.FAVORITE_TABLE_NAME
 import kotlinx.coroutines.flow.Flow
@@ -52,6 +54,40 @@ interface FavoriteDao {
 
   @Query(
     """
+        SELECT * FROM $FAVORITE_TABLE_NAME
+        WHERE mediaId = :mediaId
+        AND mediaType = :mediaType
+        LIMIT 1
+    """,
+  )
+  suspend fun getByMedia(mediaId: Int, mediaType: String): FavoriteEntity?
+
+  @Transaction
+  suspend fun insertOrUpdate(entity: FavoriteEntity) {
+    val inserted = insert(entity)
+
+    if (inserted == -1L) {
+      val existing = getByMedia(
+        mediaId = entity.mediaId,
+        mediaType = entity.mediaType,
+      )
+
+      // This code is defensive code when theres race condition or db corrupt
+      // Basically insert() returning -1L guarantees a conflict exists in DB,
+      // so getByMedia() will always return non-null here.
+      if (existing != null) {
+        val updated = update(entity.copy(id = existing.id))
+
+        // Also update() on a confirmed existing entity will always affect 1 row.
+        if (updated == 0) {
+          throw SQLiteException("Failed to update entity")
+        }
+      }
+    }
+  }
+
+  @Query(
+    """
         SELECT EXISTS(
         SELECT *
         FROM $FAVORITE_TABLE_NAME
@@ -72,20 +108,8 @@ interface FavoriteDao {
   @Insert(onConflict = OnConflictStrategy.IGNORE)
   suspend fun insert(favoriteEntity: FavoriteEntity): Long
 
-  @Query(
-    """
-        UPDATE $FAVORITE_TABLE_NAME
-        SET is_favorited = :isFavorite, is_watchlist = :isWatchlist
-        WHERE mediaType = :mediaType
-        AND mediaId = :id
-    """,
-  )
-  suspend fun update(
-    isFavorite: Boolean,
-    isWatchlist: Boolean,
-    id: Int,
-    mediaType: String,
-  ): Int
+  @Update
+  suspend fun update(entity: FavoriteEntity): Int
 
   companion object {
     private const val MAX_ROWS = 500

@@ -8,6 +8,7 @@ import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import com.waffiq.bazz_movies.core.database.data.room.FavoriteDatabase
+import com.waffiq.bazz_movies.core.database.utils.Constants.FAVORITE_TABLE_NAME
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
@@ -22,6 +23,7 @@ class FavoriteDatabaseModuleUnitTest {
 
   private lateinit var context: Context
   private lateinit var dbPath: String
+  private lateinit var helper: MigrationTestHelper
   private val testDatabaseName = "favorite.db"
 
   @Before
@@ -30,6 +32,13 @@ class FavoriteDatabaseModuleUnitTest {
 
     // get the path where the database should be stored
     dbPath = context.getDatabasePath(testDatabaseName).path
+
+    helper = MigrationTestHelper(
+      InstrumentationRegistry.getInstrumentation(),
+      FavoriteDatabase::class.java,
+      emptyList(), // no auto-migrations
+      FrameworkSQLiteOpenHelperFactory(),
+    )
   }
 
   /**
@@ -103,37 +112,31 @@ class FavoriteDatabaseModuleUnitTest {
     context.deleteDatabase(testDatabaseName)
   }
 
+  private val sqlCreateTableVersionOne =
+    """
+      CREATE TABLE IF NOT EXISTS favorite (
+        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        mediaId INTEGER NOT NULL,
+        mediaType TEXT,
+        genre TEXT,
+        backDrop TEXT,
+        poster TEXT,
+        overview TEXT,
+        title TEXT,
+        releaseDate TEXT,
+        popularity REAL,
+        rating REAL,
+        is_favorited INTEGER,
+        is_watchlist INTEGER
+      )
+    """.trimIndent()
+
   @Test
   fun getMigrationOneToTwo_whenApplied_correctlyMigratesSchemaAndData() {
-    val helper = MigrationTestHelper(
-      InstrumentationRegistry.getInstrumentation(),
-      FavoriteDatabase::class.java,
-      emptyList(), // no auto-migrations
-      FrameworkSQLiteOpenHelperFactory(),
-    )
-
     // create v1 database and insert test data
     helper.createDatabase(dbPath, 1).apply {
       // create original v1 schema
-      execSQL(
-        """
-          CREATE TABLE IF NOT EXISTS favorite (
-            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            mediaId INTEGER NOT NULL,
-            mediaType TEXT,
-            genre TEXT,
-            backDrop TEXT,
-            poster TEXT,
-            overview TEXT,
-            title TEXT,
-            releaseDate TEXT,
-            popularity REAL,
-            rating REAL,
-            is_favorited INTEGER,
-            is_watchlist INTEGER
-          )
-        """.trimIndent(),
-      )
+      execSQL(sqlCreateTableVersionOne)
 
       // insert test data with NULL values
       execSQL(
@@ -168,52 +171,47 @@ class FavoriteDatabaseModuleUnitTest {
     db.close()
   }
 
-  @Test
-  fun getMigrationTwoToThree_whenApplied_correctlyAddsUniqueIndex() {
-    val helper = MigrationTestHelper(
-      InstrumentationRegistry.getInstrumentation(),
-      FavoriteDatabase::class.java,
-      emptyList(),
-      FrameworkSQLiteOpenHelperFactory(),
-    )
-
-    // create v2 database and insert test data
-    helper.createDatabase(dbPath, 2).apply {
-      execSQL(
-        """
-          CREATE TABLE IF NOT EXISTS favorite (
-            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            mediaId INTEGER NOT NULL,
-            mediaType TEXT NOT NULL,
-            genre TEXT NOT NULL,
-            backDrop TEXT NOT NULL,
-            poster TEXT NOT NULL,
-            overview TEXT NOT NULL,
-            title TEXT NOT NULL,
-            releaseDate TEXT NOT NULL,
-            popularity REAL NOT NULL,
-            rating REAL NOT NULL,
-            is_favorited INTEGER NOT NULL,
-            is_watchlist INTEGER NOT NULL
-          )
-        """.trimIndent(),
+  private val sqlCreateTableVersionTwo =
+    """
+      CREATE TABLE IF NOT EXISTS favorite (
+        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        mediaId INTEGER NOT NULL,
+        mediaType TEXT NOT NULL,
+        genre TEXT NOT NULL,
+        backDrop TEXT NOT NULL,
+        poster TEXT NOT NULL,
+        overview TEXT NOT NULL,
+        title TEXT NOT NULL,
+        releaseDate TEXT NOT NULL,
+        popularity REAL NOT NULL,
+        rating REAL NOT NULL,
+        is_favorited INTEGER NOT NULL,
+        is_watchlist INTEGER NOT NULL
       )
+    """.trimIndent()
+
+  private val sqlInsertTvData =
+    """
+      INSERT INTO favorite (mediaId, mediaType, genre, backDrop, poster, overview, title, 
+      releaseDate, popularity, rating, is_favorited, is_watchlist)
+      VALUES (101, 'movie', 'Action', '', '', '', 'Movie A', '2024-01-01', 7.5, 8.0, 1, 0)
+    """.trimIndent()
+
+  private val sqlInsertMovieData =
+    """
+      INSERT INTO favorite (mediaId, mediaType, genre, backDrop, poster, overview, title, 
+      releaseDate, popularity, rating, is_favorited, is_watchlist)
+      VALUES (102, 'tv', 'Drama', '', '', '', 'TV Show A', '2024-02-01', 6.5, 7.0, 0, 1)
+    """.trimIndent()
+
+  @Test
+  fun getMigrationTwoToThree_whenApplied_correctlyAddsUniqueIndexAndLastUpdatedColumn() {
+    helper.createDatabase(dbPath, 2).apply {
+      execSQL(sqlCreateTableVersionTwo)
 
       // insert test data
-      execSQL(
-        """
-          INSERT INTO favorite (mediaId, mediaType, genre, backDrop, poster, overview, title, 
-          releaseDate, popularity, rating, is_favorited, is_watchlist)
-          VALUES (101, 'movie', 'Action', '', '', '', 'Movie A', '2024-01-01', 7.5, 8.0, 1, 0)
-        """.trimIndent(),
-      )
-      execSQL(
-        """
-          INSERT INTO favorite (mediaId, mediaType, genre, backDrop, poster, overview, title, 
-          releaseDate, popularity, rating, is_favorited, is_watchlist)
-          VALUES (102, 'tv', 'Drama', '', '', '', 'TV Show A', '2024-02-01', 6.5, 7.0, 0, 1)
-        """.trimIndent(),
-      )
+      execSQL(sqlInsertTvData)
+      execSQL(sqlInsertMovieData)
 
       close()
     }
@@ -224,21 +222,29 @@ class FavoriteDatabaseModuleUnitTest {
     // run migration and validate schema against v3
     val db = helper.runMigrationsAndValidate(dbPath, 3, true, migration)
 
-    // verify the unique index exists
-    val cursor = db.query(
+    // verify unique index exists
+    val indexCursor = db.query(
       "SELECT name, `unique` FROM pragma_index_list('favorite') " +
-        "WHERE name = 'index_favorite_mediaId_mediaType'"
+        "WHERE name = 'index_favorite_mediaId_mediaType'",
     )
-    assertTrue("Unique index should exist", cursor.moveToFirst())
+    assertTrue("Unique index should exist", indexCursor.moveToFirst())
     assertEquals(
       "index_favorite_mediaId_mediaType",
-      cursor.getString(cursor.getColumnIndex("name"))
+      indexCursor.getString(indexCursor.getColumnIndex("name")),
     )
-    assertEquals(1, cursor.getInt(cursor.getColumnIndex("unique")))
+    assertEquals(1, indexCursor.getInt(indexCursor.getColumnIndex("unique")))
+    indexCursor.close()
+
+    // verify last_updated column exists with non-zero value
+    val cursor = db.query("SELECT last_updated FROM $FAVORITE_TABLE_NAME")
+    assertTrue("Table should have rows", cursor.moveToFirst())
+    val lastUpdatedIdx = cursor.getColumnIndex("last_updated")
+    assertTrue("last_updated column should exist", lastUpdatedIdx >= 0)
+    assertTrue("last_updated should have a non-zero value", cursor.getLong(lastUpdatedIdx) > 0)
     cursor.close()
 
-    // verify existing data is intact after migration
-    val dataCursor = db.query("SELECT * FROM favorite ORDER BY mediaId ASC")
+    // verify existing data is intact
+    val dataCursor = db.query("SELECT * FROM $FAVORITE_TABLE_NAME ORDER BY mediaId ASC")
     assertEquals(2, dataCursor.count)
     dataCursor.moveToFirst()
     assertEquals(101, dataCursor.getInt(dataCursor.getColumnIndex("mediaId")))
@@ -246,18 +252,19 @@ class FavoriteDatabaseModuleUnitTest {
     assertEquals(102, dataCursor.getInt(dataCursor.getColumnIndex("mediaId")))
     dataCursor.close()
 
-    // verify the unique constraint is enforced — inserting a duplicate should fail
+    // verify unique constraint is enforced
     try {
       db.execSQL(
         """
           INSERT INTO favorite (mediaId, mediaType, genre, backDrop, poster, overview, title, 
-          releaseDate, popularity, rating, is_favorited, is_watchlist)
-          VALUES (101, 'movie', 'Action', '', '', '', 'Duplicate', '2024-01-01', 7.5, 8.0, 1, 0)
+          releaseDate, popularity, rating, is_favorited, is_watchlist, last_updated)
+          VALUES (101, 'movie', 'Action', '', '', '', 'Duplicate', '2024-01-01', 7.5, 8.0, 1, 0, 
+          ${System.currentTimeMillis()})
         """.trimIndent(),
       )
       fail("Expected unique constraint violation but no exception was thrown")
     } catch (_: android.database.sqlite.SQLiteConstraintException) {
-      // expected, unique constraint correctly enforced
+      // expected
     }
 
     db.close()

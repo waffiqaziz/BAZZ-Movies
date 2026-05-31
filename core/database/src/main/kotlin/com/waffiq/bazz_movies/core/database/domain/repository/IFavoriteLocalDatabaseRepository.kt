@@ -14,6 +14,6 @@ interface IFavoriteLocalDatabaseRepository {
   suspend fun deleteAll(): DbResult<Int>
   suspend fun isFavoriteDB(id: Int, mediaType: String): DbResult<Boolean>
   suspend fun isWatchlistDB(id: Int, mediaType: String): DbResult<Boolean>
-  suspend fun updateFavoriteItemDB(isDelete: Boolean, fav: Favorite): DbResult<Int>
-  suspend fun updateWatchlistItemDB(isDelete: Boolean, fav: Favorite): DbResult<Int>
+  suspend fun updateFavoriteItemDB(isDelete: Boolean, fav: Favorite): DbResult<Unit>
+  suspend fun updateWatchlistItemDB(isDelete: Boolean, fav: Favorite): DbResult<Unit>
 }

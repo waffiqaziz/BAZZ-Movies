@@ -20,5 +20,6 @@ object DummyData {
     rating = 9.0f,
     isFavorite = true,
     isWatchlist = false,
+    lastUpdated = 333,
   )
 }

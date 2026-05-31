@@ -18,12 +18,7 @@ interface FavoriteLocalDataSourceInterface {
   suspend fun deleteAll(): DbResult<Int>
   suspend fun isFavorite(id: Int, mediaType: String): DbResult<Boolean>
   suspend fun isWatchlist(id: Int, mediaType: String): DbResult<Boolean>
-  suspend fun update(
-    isFavorite: Boolean,
-    isWatchlist: Boolean,
-    id: Int,
-    mediaType: String,
-  ): DbResult<Int>
+  suspend fun update(favoriteEntity: FavoriteEntity): DbResult<Unit>
 
   @Suppress("TooGenericExceptionCaught")
   suspend fun <T> executeDbOperation(operation: suspend () -> T): DbResult<T> =

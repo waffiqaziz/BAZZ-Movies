@@ -13,6 +13,7 @@ data class FavoriteBackupEntry(
   val rating: Float,
   val isFavorite: Boolean,
   val isWatchlist: Boolean,
+  val lastUpdated: Long,
 ) {
   fun isValid(): Boolean =
     mediaId > 0 &&

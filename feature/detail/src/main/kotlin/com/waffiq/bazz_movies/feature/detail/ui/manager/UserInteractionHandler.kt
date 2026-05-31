@@ -47,7 +47,7 @@ class UserInteractionHandler(
   private val binding: ActivityMediaDetailBinding,
   private val activity: AppCompatActivity,
   private val detailViewModel: MediaDetailViewModel,
-  private val dataExtra: MediaItem,
+  private var dataExtra: MediaItem,
   private val uiManager: DetailUIManager,
   private val dataManager: DetailDataManager,
 ) {
@@ -65,6 +65,10 @@ class UserInteractionHandler(
     initializeTags()
     setupUser()
     setupClickListeners()
+  }
+
+  fun updateData(data: MediaItem) {
+    dataExtra = data
   }
 
   /**

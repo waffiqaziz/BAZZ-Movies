@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "53b90838695ba1f3b7661e1d3ee914a7",
+    "identityHash": "75420347b15f432df269a699d2a71e27",
     "entities": [
       {
         "tableName": "favorite",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `mediaId` INTEGER NOT NULL, `mediaType` TEXT NOT NULL, `genre` TEXT NOT NULL, `backDrop` TEXT NOT NULL, `poster` TEXT NOT NULL, `overview` TEXT NOT NULL, `title` TEXT NOT NULL, `releaseDate` TEXT NOT NULL, `popularity` REAL NOT NULL, `rating` REAL NOT NULL, `is_favorited` INTEGER NOT NULL, `is_watchlist` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `mediaId` INTEGER NOT NULL, `mediaType` TEXT NOT NULL, `genre` TEXT NOT NULL, `backDrop` TEXT NOT NULL, `poster` TEXT NOT NULL, `overview` TEXT NOT NULL, `title` TEXT NOT NULL, `releaseDate` TEXT NOT NULL, `popularity` REAL NOT NULL, `rating` REAL NOT NULL, `is_favorited` INTEGER NOT NULL, `is_watchlist` INTEGER NOT NULL, `last_updated` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -85,6 +85,12 @@
             "columnName": "is_watchlist",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "lastUpdated",
+            "columnName": "last_updated",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -109,7 +115,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '53b90838695ba1f3b7661e1d3ee914a7')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '75420347b15f432df269a699d2a71e27')"
     ]
   }
 }

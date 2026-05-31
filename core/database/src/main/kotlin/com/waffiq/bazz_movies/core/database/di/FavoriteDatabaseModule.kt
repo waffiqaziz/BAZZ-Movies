@@ -15,6 +15,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+@Suppress("MagicNumber")
 @Module
 @InstallIn(SingletonComponent::class)
 class FavoriteDatabaseModule {
@@ -28,7 +29,7 @@ class FavoriteDatabaseModule {
       "$FAVORITE_TABLE_NAME.db",
     ).addMigrations(
       getMigrationOneToTwo(),
-      getMigrationTwoToThree()
+      getMigrationTwoToThree(),
     )
       .build()
 
@@ -95,9 +96,15 @@ class FavoriteDatabaseModule {
         // Add unique index on mediaId + mediaType
         db.execSQL(
           """
-          CREATE UNIQUE INDEX IF NOT EXISTS index_${FAVORITE_TABLE_NAME}_mediaId_mediaType
-          ON $FAVORITE_TABLE_NAME (mediaId, mediaType)
-        """.trimIndent()
+            CREATE UNIQUE INDEX IF NOT EXISTS index_${FAVORITE_TABLE_NAME}_mediaId_mediaType
+            ON $FAVORITE_TABLE_NAME (mediaId, mediaType)
+          """.trimIndent(),
+        )
+
+        // Add last_updated column
+        db.execSQL(
+          "ALTER TABLE $FAVORITE_TABLE_NAME ADD COLUMN `last_updated` " +
+            "INTEGER NOT NULL DEFAULT ${System.currentTimeMillis()}",
         )
       }
     }

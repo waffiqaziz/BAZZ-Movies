@@ -27,34 +27,37 @@ class MoreUserViewModelTest : BaseViewModelTest() {
   }
 
   @Test
-  fun deleteSession_whenSuccessful_returnsSuccess() = runTest {
-    viewModel.state.test {
-      assertDeleteSession(
-        outcome = Outcome.Success(PostResult(success = true)),
-        expectedState = UIState.Success(Unit),
-      )
+  fun deleteSession_whenSuccessful_returnsSuccess() =
+    runTest {
+      viewModel.state.test {
+        assertDeleteSession(
+          outcome = Outcome.Success(PostResult(success = true)),
+          expectedState = UIState.Success(Unit),
+        )
+      }
     }
-  }
 
   @Test
-  fun deleteSession_whenUnsuccessful_returnsError() = runTest {
-    viewModel.state.test {
-      assertDeleteSession(
-        outcome = Outcome.Error(errorMessage),
-        expectedState = UIState.Error(errorMessage),
-      )
+  fun deleteSession_whenUnsuccessful_returnsError() =
+    runTest {
+      viewModel.state.test {
+        assertDeleteSession(
+          outcome = Outcome.Error(errorMessage),
+          expectedState = UIState.Error(errorMessage),
+        )
+      }
     }
-  }
 
   @Test
-  fun deleteSession_whenLoading_returnsLoading() = runTest {
-    viewModel.state.test {
-      assertDeleteSession(
-        outcome = Outcome.Loading,
-        expectedState = UIState.Loading,
-      )
+  fun deleteSession_whenLoading_returnsLoading() =
+    runTest {
+      viewModel.state.test {
+        assertDeleteSession(
+          outcome = Outcome.Loading,
+          expectedState = UIState.Loading,
+        )
+      }
     }
-  }
 
   @Test
   fun removeState_whenCalled_updatesSignOutStateToLoading() =

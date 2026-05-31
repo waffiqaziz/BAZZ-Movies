@@ -24,7 +24,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
   fun updateToFavoriteDB_whenSuccessful_emitsSuccess() =
     runTest {
       coEvery { mockLocalDatabaseUseCase.updateFavoriteItemDB(false, any<Favorite>()) } returns
-        successDbResult(1)
+        successDbResult(Unit)
 
       testViewModelState(
         runBlock = {
@@ -112,7 +112,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
   fun updateToRemoveFromFavoriteDB_whenSuccessful_emitsSuccess() =
     runTest {
       coEvery { mockLocalDatabaseUseCase.updateFavoriteItemDB(true, any<Favorite>()) } returns
-        successDbResult(1)
+        successDbResult(Unit)
 
       testViewModelState(
         runBlock = {
@@ -202,7 +202,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
   fun updateToWatchlistDB_whenSuccessful_emitsSuccess() =
     runTest {
       coEvery { mockLocalDatabaseUseCase.updateWatchlistItemDB(false, any<Favorite>()) } returns
-        successDbResult(1)
+        successDbResult(Unit)
 
       testViewModelState(
         runBlock = {
@@ -293,7 +293,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
   fun updateToRemoveFromWatchlistDB_whenSuccessful_emitsSuccess() =
     runTest {
       coEvery { mockLocalDatabaseUseCase.updateWatchlistItemDB(true, any<Favorite>()) } returns
-        successDbResult(1)
+        successDbResult(Unit)
 
       testViewModelState(
         runBlock = {
@@ -492,7 +492,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
     runTest {
       // setup ui state
       coEvery { mockLocalDatabaseUseCase.updateFavoriteItemDB(false, any<Favorite>()) } returns
-        successDbResult(1)
+        successDbResult(Unit)
       viewModel.handleBtnFavorite(favorite = false, watchlist = true, data = dataMediaItem)
       advanceUntilIdle()
 

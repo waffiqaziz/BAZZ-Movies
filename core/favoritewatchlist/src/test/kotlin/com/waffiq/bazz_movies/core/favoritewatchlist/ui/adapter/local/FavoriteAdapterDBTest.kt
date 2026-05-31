@@ -63,7 +63,6 @@ class FavoriteAdapterDBTest : BaseAdapterDBTest() {
 
     // valid data
     adapter.submitList(listOf(favorite))
-    ShadowLooper.runUiThreadTasksIncludingDelayedTasks()
 
     adapter.onBindViewHolder(viewHolder, 0)
     assertEquals(INA_MOVIE_TITLE, binding.tvTitle.text.toString())
@@ -71,9 +70,7 @@ class FavoriteAdapterDBTest : BaseAdapterDBTest() {
     assertEquals("Apr 04, 1979", binding.tvYearReleased.text.toString())
 
     // released date empty
-    adapter.submitList(listOf(favorite.copy(releaseDate = "")))
-    ShadowLooper.runUiThreadTasksIncludingDelayedTasks()
-    adapter.onBindViewHolder(viewHolder, 0)
+    viewHolder.bind(favorite.copy(releaseDate = ""))
     assertEquals("N/A", binding.tvYearReleased.text.toString())
   }
 

@@ -23,4 +23,12 @@ data class MediaDetail(
   // tv
   val totalEpisodes: Int? = null,
   val totalSeasons: Int? = null,
+
+  // updated data
+  val title: String = "",
+  val releaseDate: String = "", // in format yyyy-mm-dd
+  val popularity: Float = 0f,
+  val backdrop: String = "",
+  val poster: String = "",
+  val overview: String = "",
 )

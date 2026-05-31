@@ -25,6 +25,7 @@ class FavoriteBackupEntryTest {
       rating = 8.5f,
       isFavorite = true,
       isWatchlist = false,
+      lastUpdated = 567,
     )
 
   @Test

@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.core.database.data.room
 
 import android.content.Context
+import android.database.sqlite.SQLiteException
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
@@ -10,13 +11,17 @@ import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteMovieEnt
 import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteTvEntity
 import com.waffiq.bazz_movies.core.database.testdummy.DummyData.watchlistMovieEntity
 import com.waffiq.bazz_movies.core.database.testdummy.DummyData.watchlistTvEntity
+import io.mockk.coEvery
+import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -142,6 +147,61 @@ class FavoriteDaoTest {
     }
 
   @Test
+  fun insertOrUpdate_whenInsertSucceeds_insertsWithoutUpdating() =
+    runTest {
+      favoriteDao.insertOrUpdate(favoriteTvEntity)
+
+      val favorites = favoriteDao.getAllFavorites()
+      assertEquals(1, favorites.size)
+      assertEquals(favoriteTvEntity.copy(id = 1), favorites[0])
+    }
+
+  @Test
+  fun insertOrUpdate_whenInsertSuccessThenExistingFound_updatesCorrectly() =
+    runTest {
+      // only insert
+      favoriteDao.insertOrUpdate(favoriteTvEntity)
+
+      // perform updated
+      val updated = favoriteTvEntity.copy(title = "Updated Title")
+      favoriteDao.insertOrUpdate(updated)
+
+      val favorites = favoriteDao.getAllFavorites()
+      assertEquals(1, favorites.size)
+      assertEquals(updated.copy(id = 1), favorites[0]) // should same id which mean same item
+    }
+
+  // race condition,item deleted between insert conflict and getByMedia
+  @Test
+  fun insertOrUpdate_whenRaceCondition_existingDeletedAfterConflict_doesNothing() =
+    runTest {
+      val mockDao = mockk<FavoriteDao>()
+
+      coEvery { mockDao.insert(any()) } returns -1L // conflict detected
+      coEvery { mockDao.getByMedia(any(), any()) } returns null // but now it's gone
+      coEvery { mockDao.insertOrUpdate(any()) } coAnswers { callOriginal() }
+
+      // should silently do nothing, not throw
+      mockDao.insertOrUpdate(favoriteTvEntity)
+    }
+
+  // DB corrupti, item exists but update affects 0 rows
+  @Test
+  fun insertOrUpdate_whenDbCorruption_updateAffectsNoRows_throwsSQLiteException() =
+    runTest {
+      val mockDao = mockk<FavoriteDao>()
+
+      coEvery { mockDao.insert(any()) } returns -1L // conflict detected
+      coEvery { mockDao.getByMedia(any(), any()) } returns favoriteTvEntity.copy(id = 99)
+      coEvery { mockDao.update(any()) } returns 0 // but update silently failed
+      coEvery { mockDao.insertOrUpdate(any()) } coAnswers { callOriginal() }
+
+      assertThrows(SQLiteException::class.java) {
+        runBlocking { mockDao.insertOrUpdate(favoriteTvEntity) }
+      }
+    }
+
+  @Test
   fun isFavorite_whenSuccessful_returnsTrueForFavorite() =
     runTest {
       favoriteDao.insert(favoriteTvEntity)
@@ -194,13 +254,10 @@ class FavoriteDaoTest {
   @Test
   fun update_whenSuccessful_changesValues() =
     runTest {
-      favoriteDao.insert(favoriteTvEntity)
+      val result = favoriteDao.insert(favoriteTvEntity)
 
       val updateCount = favoriteDao.update(
-        isFavorite = true,
-        isWatchlist = true,
-        id = 103,
-        mediaType = TV_MEDIA_TYPE,
+        favoriteTvEntity.copy(id = result.toInt(), isFavorite = true, isWatchlist = true),
       )
 
       assertEquals(1, updateCount)
@@ -213,13 +270,12 @@ class FavoriteDaoTest {
   @Test
   fun update_differentValue_changesValues() =
     runTest {
-      favoriteDao.insert(favoriteTvEntity.copy(isFavorite = false, isWatchlist = true))
+      val result = favoriteDao.insert(
+        favoriteTvEntity.copy(isFavorite = false, isWatchlist = true),
+      )
 
       val updateCount = favoriteDao.update(
-        isFavorite = false,
-        isWatchlist = false,
-        id = 103,
-        mediaType = TV_MEDIA_TYPE,
+        favoriteTvEntity.copy(id = result.toInt(), isFavorite = false, isWatchlist = false),
       )
 
       assertEquals(1, updateCount)

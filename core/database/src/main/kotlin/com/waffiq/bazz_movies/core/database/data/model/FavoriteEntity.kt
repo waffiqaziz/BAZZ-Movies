@@ -14,9 +14,9 @@ import com.waffiq.bazz_movies.core.database.utils.Constants.FAVORITE_TABLE_NAME
   indices = [
     Index(
       value = ["mediaId", "mediaType"],
-      unique = true
-    )
-  ]
+      unique = true,
+    ),
+  ],
 )
 data class FavoriteEntity(
 
@@ -59,4 +59,7 @@ data class FavoriteEntity(
 
   @ColumnInfo(name = "is_watchlist")
   val isWatchlist: Boolean,
+
+  @ColumnInfo(name = "last_updated")
+  val lastUpdated: Long,
 )

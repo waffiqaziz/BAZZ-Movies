@@ -22,6 +22,7 @@ object DummyData {
     rating = 4.8f,
     isFavorite = true,
     isWatchlist = false,
+    lastUpdated = 1234555,
   )
   val watchlistTvEntity = favoriteTvEntity.copy(isWatchlist = true)
 
@@ -38,6 +39,7 @@ object DummyData {
     rating = 4.5f,
     isFavorite = true,
     isWatchlist = false,
+    lastUpdated = 5432,
   )
   val watchlistMovieEntity = favoriteMovieEntity.copy(isWatchlist = true)
 
@@ -55,6 +57,7 @@ object DummyData {
     rating = 0f,
     isFavorite = true,
     isWatchlist = false,
+    lastUpdated = 453,
   )
   val watchlistMovie = favoriteMovie.copy(isWatchlist = true)
 

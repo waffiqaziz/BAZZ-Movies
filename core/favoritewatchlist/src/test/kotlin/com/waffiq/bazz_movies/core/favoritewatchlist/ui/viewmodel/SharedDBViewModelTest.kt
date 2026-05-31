@@ -91,14 +91,14 @@ class SharedDBViewModelTest {
     runTest {
       testDatabaseOperationWithUndo(
         mockSetup = {
-          coEvery {
-            localDatabaseUseCase.deleteFromDB(baseFavorite)
-          } returns DbResult.Success(1)
+          coEvery { localDatabaseUseCase.deleteFromDB(baseFavorite) } returns
+            DbResult.Success(1)
         },
         operation = { viewModel.delFromFavoriteDB(baseFavorite) },
         verification = {
           coVerify { localDatabaseUseCase.deleteFromDB(baseFavorite) }
         },
+        dbResult = DbResult.Success(1),
       )
     }
 
@@ -107,9 +107,8 @@ class SharedDBViewModelTest {
     runTest {
       testDatabaseOperationWithUndo(
         mockSetup = {
-          coEvery {
-            localDatabaseUseCase.updateFavoriteItemDB(false, baseFavorite)
-          } returns DbResult.Success(1)
+          coEvery { localDatabaseUseCase.updateFavoriteItemDB(false, baseFavorite) } returns
+            DbResult.Success(Unit)
         },
         operation = { viewModel.updateToFavoriteDB(baseFavorite) },
         verification = {
@@ -123,9 +122,8 @@ class SharedDBViewModelTest {
     runTest {
       testDatabaseOperationWithUndo(
         mockSetup = {
-          coEvery {
-            localDatabaseUseCase.updateWatchlistItemDB(false, baseFavorite)
-          } returns DbResult.Success(1)
+          coEvery { localDatabaseUseCase.updateWatchlistItemDB(false, baseFavorite) } returns
+            DbResult.Success(Unit)
         },
         operation = { viewModel.updateToWatchlistDB(baseFavorite) },
         verification = {
@@ -139,9 +137,8 @@ class SharedDBViewModelTest {
     runTest {
       testDatabaseOperationWithUndo(
         mockSetup = {
-          coEvery {
-            localDatabaseUseCase.updateWatchlistItemDB(true, baseFavorite)
-          } returns DbResult.Success(1)
+          coEvery { localDatabaseUseCase.updateWatchlistItemDB(true, baseFavorite) } returns
+            DbResult.Success(Unit)
         },
         operation = { viewModel.updateToRemoveFromWatchlistDB(baseFavorite) },
         verification = {
@@ -155,9 +152,8 @@ class SharedDBViewModelTest {
     runTest {
       testDatabaseOperationWithUndo(
         mockSetup = {
-          coEvery {
-            localDatabaseUseCase.updateFavoriteItemDB(true, baseFavorite)
-          } returns DbResult.Success(1)
+          coEvery { localDatabaseUseCase.updateFavoriteItemDB(true, baseFavorite) } returns
+            DbResult.Success(Unit)
         },
         operation = { viewModel.updateToRemoveFromFavoriteDB(baseFavorite) },
         verification = {
@@ -179,10 +175,8 @@ class SharedDBViewModelTest {
       collectors.assertAllDataTransformed(testData)
     }
 
-  private fun TestScope.collectDbResults(
-    operation: suspend () -> Unit,
-  ): List<Event<DbResult<Int>>> {
-    val results = mutableListOf<Event<DbResult<Int>>>()
+  private fun TestScope.collectDbResults(operation: suspend () -> Unit): List<Event<DbResult<*>>> {
+    val results = mutableListOf<Event<DbResult<*>>>()
     viewModel.dbResult.observeForever { results.add(it) }
     runBlocking { operation() }
     advanceUntilIdle()
@@ -193,11 +187,11 @@ class SharedDBViewModelTest {
     mockSetup: () -> Unit,
     operation: suspend () -> Unit,
     verification: () -> Unit,
+    dbResult: DbResult.Success<*> = DbResult.Success(Unit),
   ) = runTest {
-    val dbResult = DbResult.Success(1)
     mockSetup()
 
-    val dbResults = mutableListOf<Event<DbResult<Int>>>()
+    val dbResults = mutableListOf<Event<DbResult<*>>>()
     val undoResults = mutableListOf<Event<Favorite>>()
 
     viewModel.dbResult.observeForever { dbResults.add(it) }

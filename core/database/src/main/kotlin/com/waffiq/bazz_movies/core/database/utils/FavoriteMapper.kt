@@ -26,6 +26,7 @@ object FavoriteMapper {
       overview = overview ?: NOT_AVAILABLE,
       isFavorite = isFavorite,
       isWatchlist = isWatchlist,
+      lastUpdated = System.currentTimeMillis(), // use latest date every time
     )
 
   fun favTrueWatchlistTrue(data: MediaItem): Favorite =
@@ -52,6 +53,7 @@ object FavoriteMapper {
       rating,
       isFavorite,
       isWatchlist,
+      lastUpdated,
     )
 
   fun Favorite.toFavoriteEntity() =
@@ -69,6 +71,7 @@ object FavoriteMapper {
       rating,
       isFavorite,
       isWatchlist,
+      lastUpdated,
     )
 
   fun FavoriteEntity.toBackupEntry() =
@@ -85,6 +88,7 @@ object FavoriteMapper {
       rating,
       isFavorite,
       isWatchlist,
+      lastUpdated,
     )
 
   fun FavoriteBackupEntry.toEntity() =
@@ -102,5 +106,6 @@ object FavoriteMapper {
       rating,
       isFavorite,
       isWatchlist,
+      lastUpdated,
     )
 }

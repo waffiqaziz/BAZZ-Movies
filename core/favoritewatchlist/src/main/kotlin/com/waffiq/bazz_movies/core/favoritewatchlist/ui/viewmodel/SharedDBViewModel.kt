@@ -19,8 +19,8 @@ class SharedDBViewModel @Inject constructor(
   private val localDatabaseUseCase: FavoriteLocalDatabaseUseCase,
 ) : ViewModel() {
 
-  private val _dbResult = MutableLiveData<Event<DbResult<Int>>>()
-  val dbResult: LiveData<Event<DbResult<Int>>> get() = _dbResult
+  private val _dbResult = MutableLiveData<Event<DbResult<*>>>()
+  val dbResult: LiveData<Event<DbResult<*>>> get() = _dbResult
 
   private val _undoDB = MutableLiveData<Event<Favorite>>()
   val undoDB: LiveData<Event<Favorite>> = _undoDB

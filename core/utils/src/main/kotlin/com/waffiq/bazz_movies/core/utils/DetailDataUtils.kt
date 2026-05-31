@@ -47,6 +47,9 @@ object DetailDataUtils {
   fun titleHandler(item: Titleable): String =
     item.name ?: item.title ?: item.originalTitle ?: item.originalName ?: "Item"
 
+  fun titleHandler(title: String?, originalTitle: String?): String =
+    title ?: originalTitle ?: "Item"
+
   /**
    * Returns name from [Titleable] person item based the following properties in order:
    * - `name`

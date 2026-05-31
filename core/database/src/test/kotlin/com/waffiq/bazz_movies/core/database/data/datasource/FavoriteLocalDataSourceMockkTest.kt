@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.core.database.data.datasource
 
 import android.database.sqlite.SQLiteException
-import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
 import com.waffiq.bazz_movies.core.database.data.room.FavoriteDao
+import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteMovieEntity
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import io.mockk.coEvery
@@ -33,24 +33,9 @@ class FavoriteLocalDataSourceMockkTest {
   @Test
   fun insert_withValidValue_returnSuccess() =
     runTest {
-      val favorite = FavoriteEntity(
-        mediaId = 101,
-        mediaType = "movie",
-        genre = "Action",
-        backDrop = "",
-        poster = "",
-        overview = "",
-        title = "Movie1",
-        releaseDate = "",
-        popularity = 0.0,
-        rating = 0f,
-        isFavorite = true,
-        isWatchlist = false,
-      )
+      coEvery { favoriteDao.insert(favoriteMovieEntity) } returns 1L
 
-      coEvery { favoriteDao.insert(favorite) } returns 1L
-
-      val result = localDataSource.insert(favorite)
+      val result = localDataSource.insert(favoriteMovieEntity)
 
       assertTrue(result is DbResult.Success)
       assertEquals(1, (result as DbResult.Success).data)
@@ -92,24 +77,12 @@ class FavoriteLocalDataSourceMockkTest {
   @Test
   fun update_whenSuccessful_returnSuccess() =
     runTest {
-      coEvery {
-        favoriteDao.update(
-          isFavorite = true,
-          isWatchlist = false,
-          id = 101,
-          mediaType = "movie",
-        )
-      } returns 1
+      coEvery { favoriteDao.update(favoriteMovieEntity) } returns 1
 
-      val result = localDataSource.update(
-        isFavorite = true,
-        isWatchlist = false,
-        id = 101,
-        mediaType = "movie",
-      )
+      val result = localDataSource.update(favoriteMovieEntity)
 
       assertTrue(result is DbResult.Success)
-      assertEquals(1, (result as DbResult.Success).data)
+      assertEquals(Unit, (result as DbResult.Success).data)
     }
 
   private fun <T> runDbErrorTest(
@@ -128,13 +101,9 @@ class FavoriteLocalDataSourceMockkTest {
   fun update_sQLiteExceptionNoMessage_throwsSQLiteException() =
     runDbErrorTest(
       "Database error",
-      {
-        coEvery {
-          favoriteDao.update(any(), any(), any(), any())
-        } throws SQLiteException("SQLite exception")
-      },
+      { coEvery { favoriteDao.insertOrUpdate(any()) } throws SQLiteException("SQLite exception") },
     ) {
-      localDataSource.update(isFavorite = true, isWatchlist = false, id = 101, mediaType = "movie")
+      localDataSource.update(favoriteMovieEntity)
     }
 
   @Test
@@ -143,22 +112,6 @@ class FavoriteLocalDataSourceMockkTest {
       "Unknown error",
       { coEvery { favoriteDao.insert(any()) } throws Exception("Unknown error") },
     ) {
-      localDataSource.insert(createFavoriteEntity())
+      localDataSource.insert(favoriteMovieEntity)
     }
-
-  private fun createFavoriteEntity() =
-    FavoriteEntity(
-      mediaId = 101,
-      mediaType = "movie",
-      genre = "Action",
-      backDrop = "",
-      poster = "",
-      overview = "",
-      title = "Movie1",
-      releaseDate = "",
-      popularity = 0.0,
-      rating = 0f,
-      isFavorite = true,
-      isWatchlist = false,
-    )
 }
