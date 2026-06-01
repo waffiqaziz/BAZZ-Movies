@@ -102,6 +102,9 @@ class DetailDataUtilsTest {
         ),
       )
     assertEquals("Test Name", result)
+
+    val result2 = titleHandler(title = "Movie Title", originalTitle = "Original")
+    assertEquals("Movie Title", result2)
   }
 
   @Test
@@ -130,6 +133,9 @@ class DetailDataUtilsTest {
         ),
       )
     assertEquals("Test Original Title", result)
+
+    val result2 = titleHandler(title = null, originalTitle = "Ori Title")
+    assertEquals("Ori Title", result2)
   }
 
   @Test
@@ -153,7 +159,12 @@ class DetailDataUtilsTest {
         MediaItem(name = null, title = null, originalTitle = null, originalName = null),
       )
     assertEquals("Item", result)
+
+    val result2 = titleHandler(title = null, originalTitle = null)
+    assertEquals("Item", result2)
   }
+
+
 
   @Test
   fun validName_withMediaItem_returnsCorrectly() {

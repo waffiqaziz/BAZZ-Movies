@@ -47,6 +47,13 @@ object DetailDataUtils {
   fun titleHandler(item: Titleable): String =
     item.name ?: item.title ?: item.originalTitle ?: item.originalName ?: "Item"
 
+  /**
+   * Returns title from movie or tv following properties in order:
+   * - `title`
+   * - `originalTitle`
+   *
+   * @return The title of the person, or "Item" if no title is found.
+   */
   fun titleHandler(title: String?, originalTitle: String?): String =
     title ?: originalTitle ?: "Item"
 
@@ -55,7 +62,7 @@ object DetailDataUtils {
    * - `name`
    * - `originalName`
    *
-   * @return The name of the person, or "Item" if no title is found.
+   * @return The name of the person, or "Item" if no valid name is found.
    */
   val Titleable.validName: String get() = name ?: originalName ?: "Item"
 
@@ -64,7 +71,7 @@ object DetailDataUtils {
    * - `name`
    * - `originalName`
    *
-   * @return The name of the person, or "Item" if no title is found.
+   * @return The name of the person, or "Item" if no valid name is found.
    */
   val Nameable.validName: String get() = name ?: originalName ?: "Item"
 
