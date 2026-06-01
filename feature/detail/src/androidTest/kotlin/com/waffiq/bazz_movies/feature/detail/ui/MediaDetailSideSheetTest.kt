@@ -76,9 +76,10 @@ class MediaDetailSideSheetTest : MediaDetailActivityTestSetup by MediaDetailActi
   fun sideSheet_whenPressBackButton_closeTheDialog() {
     context.launchMediaDetailActivity {
       btn_sidebar.performClick()
+      shortDelay()
 
       // check some ui is shown correctly
-      "name".isDisplayed()
+      "music".isDisplayed()
       "animation".isDisplayed()
       "action".doesNotExist()
 
