@@ -190,14 +190,14 @@ class FavoriteDatabaseModuleUnitTest {
       )
     """.trimIndent()
 
-  private val sqlInsertTvData =
+  private val sqlInsertMovieData =
     """
       INSERT INTO favorite (mediaId, mediaType, genre, backDrop, poster, overview, title, 
       releaseDate, popularity, rating, is_favorited, is_watchlist)
       VALUES (101, 'movie', 'Action', '', '', '', 'Movie A', '2024-01-01', 7.5, 8.0, 1, 0)
     """.trimIndent()
 
-  private val sqlInsertMovieData =
+  private val sqlInsertTvData =
     """
       INSERT INTO favorite (mediaId, mediaType, genre, backDrop, poster, overview, title, 
       releaseDate, popularity, rating, is_favorited, is_watchlist)
@@ -210,16 +210,13 @@ class FavoriteDatabaseModuleUnitTest {
       execSQL(sqlCreateTableVersionTwo)
 
       // insert test data
-      execSQL(sqlInsertTvData)
       execSQL(sqlInsertMovieData)
+      execSQL(sqlInsertTvData)
 
       close()
     }
 
-    // get the migration
     val migration = FavoriteDatabaseModule().getMigrationTwoToThree()
-
-    // run migration and validate schema against v3
     val db = helper.runMigrationsAndValidate(dbPath, 3, true, migration)
 
     // verify unique index exists
@@ -252,7 +249,7 @@ class FavoriteDatabaseModuleUnitTest {
     assertEquals(102, dataCursor.getInt(dataCursor.getColumnIndex("mediaId")))
     dataCursor.close()
 
-    // verify unique constraint is enforced
+    // verify unique constraint is enforced after migration
     try {
       db.execSQL(
         """
@@ -266,6 +263,51 @@ class FavoriteDatabaseModuleUnitTest {
     } catch (_: android.database.sqlite.SQLiteConstraintException) {
       // expected
     }
+
+    db.close()
+  }
+
+  private val sqlInsertDuplicateMovieDataWithHigherId =
+    """
+        INSERT INTO $FAVORITE_TABLE_NAME 
+        (mediaId, mediaType, genre, backDrop, poster, overview, title, releaseDate, popularity, rating, is_favorited, is_watchlist)
+        VALUES (101, 'movie', 'Action', '', '', '', 'Duplicate Movie', '2024-01-01', 7.5, 8.0, 1, 0)
+    """.trimIndent()
+
+  @Test
+  fun getMigrationTwoToThree_whenDuplicatesExist_keepsHighestIdAndMigratesSuccessfully() {
+    helper.createDatabase(dbPath, 2).apply {
+      execSQL(sqlCreateTableVersionTwo)
+
+      // insert duplicate (mediaId=101, mediaType='movie') rows, which only allowed in v2
+      execSQL(sqlInsertMovieData)                      // id=1, mediaId=101, mediaType='movie'
+      execSQL(sqlInsertDuplicateMovieDataWithHigherId) // id=2, mediaId=101, mediaType='movie'
+
+      close()
+    }
+
+    val migration = FavoriteDatabaseModule().getMigrationTwoToThree()
+
+    // migration should NOT throw despite duplicates existing
+    val db = helper.runMigrationsAndValidate(dbPath, 3, true, migration)
+
+    // only 1 row should remain after dedup
+    val cursor = db.query("SELECT id, mediaId, mediaType FROM $FAVORITE_TABLE_NAME")
+    cursor.moveToFirst()
+
+    val keptId = cursor.getInt(cursor.getColumnIndex("id"))
+    assertTrue("Row with highest id should be kept", keptId > 0)
+
+    // the row with the highest id should be kept
+    cursor.moveToFirst()
+    assertEquals(
+      "Row with highest id should be kept",
+      2,
+      cursor.getInt(cursor.getColumnIndex("id"))
+    )
+    assertEquals(101, cursor.getInt(cursor.getColumnIndex("mediaId")))
+    assertEquals("movie", cursor.getString(cursor.getColumnIndex("mediaType")))
+    cursor.close()
 
     db.close()
   }

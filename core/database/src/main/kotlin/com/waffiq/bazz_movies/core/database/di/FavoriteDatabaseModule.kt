@@ -93,6 +93,18 @@ class FavoriteDatabaseModule {
   fun getMigrationTwoToThree(): Migration =
     object : Migration(2, 3) {
       override fun migrate(db: SupportSQLiteDatabase) {
+        // Remove duplicates and keep the row with the highest id
+        db.execSQL(
+          """
+            DELETE FROM $FAVORITE_TABLE_NAME
+            WHERE id NOT IN (
+              SELECT MAX(id)
+              FROM $FAVORITE_TABLE_NAME
+              GROUP BY mediaId, mediaType
+            )
+          """.trimIndent()
+        )
+
         // Add unique index on mediaId + mediaType
         db.execSQL(
           """
