@@ -36,9 +36,9 @@ class FavoriteLocalDatabaseInteractor @Inject constructor(
   override suspend fun isWatchlistDB(id: Int, mediaType: String): DbResult<Boolean> =
     favoriteLocalDatabaseRepository.isWatchlistDB(id, mediaType)
 
-  override suspend fun updateFavoriteItemDB(isDelete: Boolean, fav: Favorite): DbResult<Int> =
+  override suspend fun updateFavoriteItemDB(isDelete: Boolean, fav: Favorite): DbResult<Unit> =
     favoriteLocalDatabaseRepository.updateFavoriteItemDB(isDelete, fav)
 
-  override suspend fun updateWatchlistItemDB(isDelete: Boolean, fav: Favorite): DbResult<Int> =
+  override suspend fun updateWatchlistItemDB(isDelete: Boolean, fav: Favorite): DbResult<Unit> =
     favoriteLocalDatabaseRepository.updateWatchlistItemDB(isDelete, fav)
 }

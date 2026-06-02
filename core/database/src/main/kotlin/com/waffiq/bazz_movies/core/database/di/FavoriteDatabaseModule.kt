@@ -15,6 +15,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+@Suppress("MagicNumber")
 @Module
 @InstallIn(SingletonComponent::class)
 class FavoriteDatabaseModule {
@@ -26,7 +27,10 @@ class FavoriteDatabaseModule {
       context,
       FavoriteDatabase::class.java,
       "$FAVORITE_TABLE_NAME.db",
-    ).addMigrations(getMigrationOneToTwo())
+    ).addMigrations(
+      getMigrationOneToTwo(),
+      getMigrationTwoToThree(),
+    )
       .build()
 
   // Define the migration from version 1 to version 2
@@ -82,6 +86,38 @@ class FavoriteDatabaseModule {
 
         // Step 4: Rename the new table to the original table name
         db.execSQL("ALTER TABLE favorite_new RENAME TO $FAVORITE_TABLE_NAME")
+      }
+    }
+
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun getMigrationTwoToThree(): Migration =
+    object : Migration(2, 3) {
+      override fun migrate(db: SupportSQLiteDatabase) {
+        // Remove duplicates and keep the row with the highest id
+        db.execSQL(
+          """
+            DELETE FROM $FAVORITE_TABLE_NAME
+            WHERE id NOT IN (
+              SELECT MAX(id)
+              FROM $FAVORITE_TABLE_NAME
+              GROUP BY mediaId, mediaType
+            )
+          """.trimIndent()
+        )
+
+        // Add unique index on mediaId + mediaType
+        db.execSQL(
+          """
+            CREATE UNIQUE INDEX IF NOT EXISTS index_${FAVORITE_TABLE_NAME}_mediaId_mediaType
+            ON $FAVORITE_TABLE_NAME (mediaId, mediaType)
+          """.trimIndent(),
+        )
+
+        // Add last_updated column
+        db.execSQL(
+          "ALTER TABLE $FAVORITE_TABLE_NAME ADD COLUMN `last_updated` " +
+            "INTEGER NOT NULL DEFAULT ${System.currentTimeMillis()}",
+        )
       }
     }
 

@@ -144,28 +144,26 @@ class FavoriteLocalDatabaseInteractorTest {
   @Test
   fun updateFavoriteItemDB_whenSuccessful_returnsSuccess() =
     runTest {
-      coEvery {
-        mockRepository.updateFavoriteItemDB(true, favoriteMovie)
-      } returns DbResult.Success(1)
+      coEvery { mockRepository.updateFavoriteItemDB(true, favoriteMovie) } returns
+        DbResult.Success(Unit)
 
       val result = localDatabaseInteractor.updateFavoriteItemDB(true, favoriteMovie)
 
       assertTrue(result is DbResult.Success)
-      assertEquals(1, (result as DbResult.Success).data)
+      assertEquals(Unit, (result as DbResult.Success).data)
       coVerify { mockRepository.updateFavoriteItemDB(true, favoriteMovie) }
     }
 
   @Test
   fun updateWatchlistItemDB_whenSuccessful_returnsSuccess() =
     runTest {
-      coEvery {
-        mockRepository.updateWatchlistItemDB(false, favoriteMovie)
-      } returns DbResult.Success(1)
+      coEvery { mockRepository.updateWatchlistItemDB(false, favoriteMovie) } returns
+        DbResult.Success(Unit)
 
       val result = localDatabaseInteractor.updateWatchlistItemDB(false, favoriteMovie)
 
       assertTrue(result is DbResult.Success)
-      assertEquals(1, (result as DbResult.Success).data)
+      assertEquals(Unit, (result as DbResult.Success).data)
       coVerify { mockRepository.updateWatchlistItemDB(false, favoriteMovie) }
     }
 }

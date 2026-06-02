@@ -33,6 +33,7 @@ object DataDump {
     overview = "A ticking-time-bomb insomniac and a slippery soap salesman channel primal",
     popularity = 9.0,
     rating = 8.3f,
+    lastUpdated = 3232,
   )
   val favoriteMovie2 = favoriteMovie.copy(id = 551, title = "Fight Club 2")
 
@@ -50,6 +51,7 @@ object DataDump {
     overview = "Overview of the TV show",
     popularity = 0.0,
     rating = 6.0f,
+    lastUpdated = 43435,
   )
 
   val testMediaItem = MediaItem(

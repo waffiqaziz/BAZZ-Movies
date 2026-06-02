@@ -42,11 +42,6 @@ class FavoriteLocalDataSource @Inject constructor(
   override suspend fun isWatchlist(id: Int, mediaType: String): DbResult<Boolean> =
     executeDbOperation { favoriteDao.isWatchlist(id, mediaType) }
 
-  override suspend fun update(
-    isFavorite: Boolean,
-    isWatchlist: Boolean,
-    id: Int,
-    mediaType: String,
-  ): DbResult<Int> =
-    executeDbOperation { favoriteDao.update(isFavorite, isWatchlist, id, mediaType) }
+  override suspend fun update(favoriteEntity: FavoriteEntity): DbResult<Unit> =
+    executeDbOperation { favoriteDao.insertOrUpdate(favoriteEntity) }
 }

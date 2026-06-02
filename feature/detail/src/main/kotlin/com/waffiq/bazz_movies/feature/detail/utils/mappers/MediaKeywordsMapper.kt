@@ -3,7 +3,9 @@ package com.waffiq.bazz_movies.feature.detail.utils.mappers
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.MediaKeywordsResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.MovieKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.TvKeywordsResponse
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.toUsd
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.validName
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinString
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
 import com.waffiq.bazz_movies.core.utils.LanguageHelper.getLanguageName
@@ -58,6 +60,14 @@ object MediaKeywordsMapper {
       keywords = mediaKeywords?.keywords,
       totalEpisodes = numberOfEpisodes,
       totalSeasons = numberOfSeasons,
+
+      // updated data
+      title = titleHandler(name, originalName),
+      popularity = popularity?.toFloat() ?: 0f,
+      backdrop = backdropPath.toString(),
+      poster = posterPath.toString(),
+      overview = overview.toString(),
+      releaseDate = firstAirDate.orEmpty(),
     )
 
   fun MovieDetail.toMediaDetail(
@@ -78,6 +88,14 @@ object MediaKeywordsMapper {
       revenue = toUsd(revenue),
       language = getLanguageName(originalLanguage),
       keywords = mediaKeywords?.keywords,
+
+      // updated data
+      title = titleHandler(title, originalTitle),
+      popularity = popularity?.toFloat() ?: 0f,
+      backdrop = backdropPath.toString(),
+      poster = posterPath.toString(),
+      overview = overview.toString(),
+      releaseDate = releaseDate.orEmpty(),
     )
 
   fun MediaKeywordsItem.toValidKeywordOrNull(): ValidKeywordItem? {

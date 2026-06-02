@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.core.database.data.manager
 
 import android.content.Context
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.waffiq.bazz_movies.core.database.data.model.DatabaseBackup
 import com.waffiq.bazz_movies.core.database.data.model.FavoriteBackupEntry
@@ -10,7 +11,7 @@ import java.io.File
 
 abstract class BaseDatabaseBackupManagerTest {
 
-  protected val gson = GsonBuilder().setPrettyPrinting().create()
+  protected val gson: Gson = GsonBuilder().setPrettyPrinting().create()
 
   protected fun Context.writeBackupFile(
     version: Int = 1,
@@ -52,5 +53,6 @@ abstract class BaseDatabaseBackupManagerTest {
     rating = 22f,
     isFavorite = true,
     isWatchlist = true,
+    lastUpdated = 2312,
   )
 }

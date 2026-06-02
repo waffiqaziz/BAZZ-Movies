@@ -64,6 +64,16 @@ class NetworkModule {
       .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
       .readTimeout(TIME_OUT, TimeUnit.SECONDS)
       .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
+//      .certificatePinner(
+//        CertificatePinner.Builder()
+//          // Leaf - expires Dec 2026
+//          .add("api.themoviedb.org", "sha256/QfyoR20v8hyYX7L+ikLzM/euPGSDl67gFFcor/sROMs=")
+//          // Intermediate - Amazon RSA 2048 M04
+//          .add("api.themoviedb.org", "sha256/G9LNNAql897egYsabashkzUCTEJkWBzgoEtk8X/678c=")
+//          // Root - Amazon Root CA 1
+//          .add("api.themoviedb.org", "sha256/++MBgDH5WGvL9Bcn5Be30cRcL0f5O+NyoXuWtQdX1aI=")
+//          .build(),
+//      )
       .addInterceptor(loggingInterceptor)
       .build()
 

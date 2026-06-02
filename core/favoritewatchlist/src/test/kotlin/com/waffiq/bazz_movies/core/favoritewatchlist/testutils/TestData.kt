@@ -26,6 +26,7 @@ class TestData {
     rating = 4.3f,
     isFavorite = true,
     isWatchlist = false,
+    lastUpdated = 987,
   )
 
   val favoriteTvList = listOf(

@@ -50,39 +50,9 @@ class FavoriteLocalDatabaseRepositoryImpl @Inject constructor(
   override suspend fun isWatchlistDB(id: Int, mediaType: String): DbResult<Boolean> =
     localDataSource.isWatchlist(id, mediaType)
 
-  override suspend fun updateFavoriteItemDB(isDelete: Boolean, fav: Favorite): DbResult<Int> =
-    if (isDelete) {
-      // update set is_favorite = false (item on favorite to delete)
-      localDataSource.update(
-        isFavorite = false,
-        isWatchlist = fav.isWatchlist,
-        id = fav.mediaId,
-        mediaType = fav.mediaType,
-      )
-    } else {
-      // update set is_favorite = true (add favorite item already on watchlist)
-      localDataSource.update(
-        isFavorite = true,
-        isWatchlist = fav.isWatchlist,
-        id = fav.mediaId,
-        mediaType = fav.mediaType,
-      )
-    }
+  override suspend fun updateFavoriteItemDB(isDelete: Boolean, fav: Favorite): DbResult<Unit> =
+    localDataSource.update(fav.toFavoriteEntity().copy(isFavorite = !isDelete))
 
-  override suspend fun updateWatchlistItemDB(isDelete: Boolean, fav: Favorite): DbResult<Int> =
-    if (isDelete) { // update set is_watchlist = false (item on watchlist to delete)
-      localDataSource.update(
-        isFavorite = fav.isFavorite,
-        isWatchlist = false,
-        id = fav.mediaId,
-        mediaType = fav.mediaType,
-      )
-    } else { // update set is_watchlist = true (add watchlist item already on favorite)
-      localDataSource.update(
-        isFavorite = fav.isFavorite,
-        isWatchlist = true,
-        id = fav.mediaId,
-        mediaType = fav.mediaType,
-      )
-    }
+  override suspend fun updateWatchlistItemDB(isDelete: Boolean, fav: Favorite): DbResult<Unit> =
+    localDataSource.update(fav.toFavoriteEntity().copy(isWatchlist = !isDelete))
 }

@@ -181,6 +181,30 @@ class MediaDetailKeywordsMapperTest {
     assertNull(result.status)
   }
 
+  // popularity
+  @Test
+  fun tvDetail_popularityIsValid_returnsValueCorrectly() {
+    assertEquals(9.0f, validTvDetail.popularity)
+  }
+
+  @Test
+  fun tvDetail_popularityIsNull_returnsEmpty() {
+    val result = fullTvDetail.copy(popularity = null).stubToMediaDetail()
+    assertEquals(0f, result.popularity)
+  }
+
+  // release date
+  @Test
+  fun tvDetail_releaseDateIsValid_returnsValueCorrectly() {
+    assertEquals("2020-01-01", validTvDetail.releaseDate)
+  }
+
+  @Test
+  fun tvDetail_releaseDateIsNull_returnsEmpty() {
+    val result = fullTvDetail.copy(firstAirDate = null).stubToMediaDetail()
+    assertEquals("", result.releaseDate)
+  }
+
   // endregion
 
   // region MovieDetail.toMediaDetail
@@ -376,6 +400,30 @@ class MediaDetailKeywordsMapperTest {
   fun movieDetail_episodeAndSeasons_returnsNull() {
     assertEquals(null, validMovieDetail.totalSeasons)
     assertEquals(null, validMovieDetail.totalEpisodes)
+  }
+
+  // popularity
+  @Test
+  fun movieDetail_popularityIsValid_returnsValueCorrectly() {
+    assertEquals(4444.0f, validMovieDetail.popularity)
+  }
+
+  @Test
+  fun movieDetail_popularityIsNull_returnsEmpty() {
+    val result = fullMovieDetail.copy(popularity = null).stubToMediaDetail()
+    assertEquals(0f, result.popularity)
+  }
+
+  // release date
+  @Test
+  fun movieDetail_releaseDateIsValid_returnsValueCorrectly() {
+    assertEquals("2025-07-01", validMovieDetail.releaseDate)
+  }
+
+  @Test
+  fun movieDetail_releaseDateIsNull_returnsEmpty() {
+    val result = fullMovieDetail.copy(releaseDate = null).stubToMediaDetail()
+    assertEquals("", result.releaseDate)
   }
 
   // endregion

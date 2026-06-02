@@ -376,10 +376,12 @@ object DummyData {
     listGenres = genresItems,
     voteAverage = 8.0,
     status = "Released",
+    releaseDate = "2025-07-01",
     runtime = 120,
     imdbId = "tt9999999",
     budget = 1000000,
     revenue = 5000000L,
+    popularity = 4444.0
   )
   // endregion MOVIE
 
@@ -435,6 +437,7 @@ object DummyData {
     lastAirDate = "2023-06-01",
     numberOfSeasons = 4,
     numberOfEpisodes = 96,
+    popularity = 9.0,
   )
   // endregion TV
 

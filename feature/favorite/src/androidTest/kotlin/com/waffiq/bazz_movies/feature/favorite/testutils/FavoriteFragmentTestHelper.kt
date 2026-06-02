@@ -22,7 +22,7 @@ interface FavoriteFragmentTestHelper {
   var mockFavoriteMoviesFromDB: MutableLiveData<List<Favorite>>
   var mockFavoriteTvFromDB: MutableLiveData<List<Favorite>>
   var mockUndoDB: MutableLiveData<Event<Favorite>>
-  var mockDbResult: MutableLiveData<Event<DbResult<Int>>>
+  var mockDbResult: MutableLiveData<Event<DbResult<*>>>
   var mockSnackBarAlready: MutableLiveData<Event<String>>
   var mockSnackBarChannel: Channel<SnackBarUserLoginData>
   var mockSnackBarAdded: Flow<SnackBarUserLoginData>

@@ -449,7 +449,7 @@ class MediaDetailViewModel @Inject constructor(
   /**
    * Helper to database action
    */
-  private fun executeDbAction(action: suspend () -> DbResult<Int>, onSuccess: () -> Unit) {
+  private fun executeDbAction(action: suspend () -> DbResult<*>, onSuccess: () -> Unit) {
     viewModelScope.launch {
       when (val result = action()) {
         is DbResult.Error -> _errorEvent.emit(result.errorMessage)

@@ -124,6 +124,7 @@ class FavoriteMapperTest {
       rating = 90.0f,
       isFavorite = false,
       isWatchlist = true,
+      lastUpdated = 987,
     )
     val favoriteEntity = favorite.toFavoriteEntity()
     assertEquals(favoriteEntity.id, 1)
@@ -157,6 +158,7 @@ class FavoriteMapperTest {
       rating = 50.0f,
       isFavorite = true,
       isWatchlist = false,
+      lastUpdated = 1433,
     )
     val favorite = favoriteEntity.toFavorite()
     assertEquals(favorite.id, 2)
@@ -172,5 +174,6 @@ class FavoriteMapperTest {
     assertEquals(favorite.rating, 50.0f)
     assertEquals(favorite.isFavorite, true)
     assertEquals(favorite.isWatchlist, false)
+    assertEquals(favorite.lastUpdated, 1433)
   }
 }

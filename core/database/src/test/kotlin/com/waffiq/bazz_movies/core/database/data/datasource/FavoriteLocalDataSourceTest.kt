@@ -117,8 +117,8 @@ class FavoriteLocalDataSourceTest {
   fun deleteAll_whenSuccessful_databaseShouldBeEmpty() =
     runTest(testDispatcher) {
       val fakeMovies = listOf(
-        favoriteMovieEntity.copy(id = 1),
-        favoriteMovieEntity.copy(id = 2),
+        favoriteMovieEntity.copy(mediaId = 1),
+        favoriteMovieEntity.copy(mediaId = 2),
       )
       fakeMovies.forEach { favoriteDao.insert(it) }
 
@@ -167,12 +167,9 @@ class FavoriteLocalDataSourceTest {
       favoriteDao.insert(favoriteMovieEntity.copy(isFavorite = false, isWatchlist = false))
 
       val result = localDataSource.update(
-        isFavorite = true,
-        isWatchlist = true,
-        id = favoriteMovieEntity.mediaId,
-        mediaType = favoriteMovieEntity.mediaType,
+        favoriteMovieEntity.copy(isFavorite = true, isWatchlist = true),
       )
-      assert(result is DbResult.Success && result.data == 1)
+      assert(result is DbResult.Success && result.data == Unit)
 
       val updatedMovie = favoriteDao.getFavoriteMovies().first().first()
       assertTrue(updatedMovie.isFavorite)
@@ -180,13 +177,27 @@ class FavoriteLocalDataSourceTest {
     }
 
   @Test
-  fun insertMultipleFavorite_whenSuccessful_returnCorrectSize() =
+  fun insertMultipleFavorite_whenSameItem_returnCorrectSize() =
     runTest(testDispatcher) {
+      // insert with same media id and same media type
       favoriteDao.insert(favoriteMovieEntity.copy(id = 3, isFavorite = true))
       favoriteDao.insert(favoriteMovieEntity.copy(id = 4, isFavorite = true))
 
       favoriteDao.getFavoriteMovies().test {
-        assertEquals(awaitItem().size, 2)
+        assertEquals(1, awaitItem().size)
+        cancelAndIgnoreRemainingEvents()
+      }
+    }
+
+  @Test
+  fun insertMultipleFavorite_whenSuccessfulw_returnCorrectSize() =
+    runTest(testDispatcher) {
+      // insert with same media id and same media type
+      favoriteDao.insert(favoriteMovieEntity.copy(id = 3, isFavorite = true))
+      favoriteDao.insert(favoriteMovieEntity.copy(id = 4, mediaId = 231, isFavorite = true))
+
+      favoriteDao.getFavoriteMovies().test {
+        assertEquals(2, awaitItem().size)
         cancelAndIgnoreRemainingEvents()
       }
     }

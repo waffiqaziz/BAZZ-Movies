@@ -143,8 +143,21 @@ class MediaDetailActivity : AppCompatActivity() {
     uiManager.showLoadingDim(state.isLoading)
 
     state.detail?.let { detail ->
-      uiManager.updateDetailUI(detail, dataExtra.mediaType == MOVIE_MEDIA_TYPE)
-      dataExtra = dataExtra.copy(listGenreIds = detail.genreId)
+      dataExtra = dataExtra.copy(
+        listGenreIds = detail.genreId,
+        name = detail.title,
+        popularity = detail.popularity.toDouble(),
+        posterPath = detail.poster,
+        backdropPath = detail.backdrop,
+        overview = detail.overview,
+        releaseDate = detail.releaseDate,
+      )
+
+      // update with latest data
+      userInteractionHandler.updateData(dataExtra)
+      uiManager.showGeneralInfo(dataExtra)
+
+      uiManager.updateDetailUI(detail, isMovie = dataExtra.mediaType == MOVIE_MEDIA_TYPE)
     }
     watchProvidersManager.handleWatchProvidersState(state.watchProviders)
     state.credits?.let { uiManager.updateCreditsUI(it) }

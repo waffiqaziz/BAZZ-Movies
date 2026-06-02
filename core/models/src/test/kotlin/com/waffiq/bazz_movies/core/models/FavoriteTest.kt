@@ -25,6 +25,7 @@ class FavoriteTest {
     rating = 4.5f,
     isFavorite = true,
     isWatchlist = false,
+    lastUpdated = 4343,
   )
 
   @Test
@@ -40,6 +41,7 @@ class FavoriteTest {
     assertEquals("2023-01-01", favoriteValid.releaseDate)
     assertEquals(9.0, favoriteValid.popularity, 0.0)
     assertEquals(4.5f, favoriteValid.rating)
+    assertEquals(4343, favoriteValid.lastUpdated)
     assertTrue(favoriteValid.isFavorite)
     assertFalse(favoriteValid.isWatchlist)
   }

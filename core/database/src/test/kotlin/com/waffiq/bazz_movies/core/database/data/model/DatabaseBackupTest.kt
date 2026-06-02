@@ -18,6 +18,7 @@ class DatabaseBackupTest {
     rating = 9.0f,
     isFavorite = false,
     isWatchlist = false,
+    lastUpdated = 0,
   )
 
   @Test

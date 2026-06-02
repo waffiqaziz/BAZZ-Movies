@@ -60,7 +60,7 @@ class DefaultFavoriteFragmentTestHelper : FavoriteFragmentTestHelper {
   override var mockFavoriteMoviesFromDB = MutableLiveData<List<Favorite>>()
   override var mockFavoriteTvFromDB = MutableLiveData<List<Favorite>>()
   override var mockUndoDB = MutableLiveData<Event<Favorite>>()
-  override var mockDbResult = MutableLiveData<Event<DbResult<Int>>>()
+  override var mockDbResult = MutableLiveData<Event<DbResult<*>>>()
   override var mockSnackBarAlready = MutableLiveData<Event<String>>()
   override var mockSnackBarChannel: Channel<SnackBarUserLoginData> = Channel()
   override var mockSnackBarAdded: Flow<SnackBarUserLoginData> =

@@ -35,6 +35,7 @@ class DiffCallbackDBTest {
       rating = 10.0f,
       isFavorite = false,
       isWatchlist = false,
+      lastUpdated = 435,
     ) // different content
 
     TestCase.assertFalse(diffCallback.areContentsTheSame(oldItem, newItem))
