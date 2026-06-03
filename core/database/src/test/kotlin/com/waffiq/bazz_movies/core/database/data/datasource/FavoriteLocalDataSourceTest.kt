@@ -130,35 +130,12 @@ class FavoriteLocalDataSourceTest {
     }
 
   @Test
-  fun isFavorite_whenSuccessful_returnTrue() =
+  fun getByMedia_whenSuccessful_returnTrue() =
     runTest(testDispatcher) {
       favoriteDao.insert(favoriteMovieEntity.copy(isFavorite = true))
 
-      val result = localDataSource.isFavorite(favoriteMovieEntity.mediaId, MOVIE_MEDIA_TYPE)
-      assert(result is DbResult.Success && result.data)
-    }
-
-  @Test
-  fun isFavorite_whenDataIsNotExistOnFavorite_returnFalse() =
-    runTest(testDispatcher) {
-      val result = localDataSource.isFavorite(999, MOVIE_MEDIA_TYPE) // non-existent ID
-      assert(result is DbResult.Success && !result.data)
-    }
-
-  @Test
-  fun isWatchlist_whenDataIsExistOnWatchlist_returnTrue() =
-    runTest(testDispatcher) {
-      favoriteDao.insert(watchlistMovieEntity)
-
-      val result = localDataSource.isWatchlist(watchlistMovieEntity.mediaId, MOVIE_MEDIA_TYPE)
-      assert(result is DbResult.Success && result.data)
-    }
-
-  @Test
-  fun isWatchlist_whenDataIsNotExistOnWatchlist_returnFalse() =
-    runTest(testDispatcher) {
-      val result = localDataSource.isWatchlist(999, MOVIE_MEDIA_TYPE) // non-existent ID
-      assert(result is DbResult.Success && !result.data)
+      val result = localDataSource.getByMedia(favoriteMovieEntity.mediaId, MOVIE_MEDIA_TYPE)
+      assertEquals(true, result?.isFavorite)
     }
 
   @Test

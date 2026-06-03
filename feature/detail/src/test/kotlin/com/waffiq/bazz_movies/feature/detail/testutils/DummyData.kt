@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.testutils
 
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.models.Favorite
 import com.waffiq.bazz_movies.core.models.GenresItem
 import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.core.models.MediaItem
@@ -326,7 +327,7 @@ object DummyData {
     runtime = 120,
     imdbId = IMDB_ID,
     voteAverage = 7.5,
-    listGenres = listOf(GenresItem(id = 1, name = "Action")),
+    listGenres = listOf(GenresItem(id = 28, name = "Action")),
     releaseDates = ReleaseDates(
       listReleaseDatesItem = listOf(
         ReleaseDatesItem(
@@ -381,7 +382,7 @@ object DummyData {
     imdbId = "tt9999999",
     budget = 1000000,
     revenue = 5000000L,
-    popularity = 4444.0
+    popularity = 4444.0,
   )
   // endregion MOVIE
 
@@ -564,5 +565,22 @@ object DummyData {
     id = 123456,
     adult = false,
     order = 12,
+  )
+
+  val favoriteMovie = Favorite(
+    id = 4545,
+    mediaId = 654324,
+    mediaType = MOVIE_MEDIA_TYPE,
+    genre = "Adventure",
+    backDrop = "",
+    poster = "",
+    overview = "",
+    title = "Movie Adventure",
+    releaseDate = "",
+    popularity = 890342.0,
+    rating = 7f,
+    isFavorite = false,
+    isWatchlist = false,
+    lastUpdated = System.currentTimeMillis(),
   )
 }

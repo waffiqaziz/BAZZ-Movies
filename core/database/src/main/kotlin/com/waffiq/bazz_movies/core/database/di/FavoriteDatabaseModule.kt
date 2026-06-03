@@ -102,7 +102,7 @@ class FavoriteDatabaseModule {
               FROM $FAVORITE_TABLE_NAME
               GROUP BY mediaId, mediaType
             )
-          """.trimIndent()
+          """.trimIndent(),
         )
 
         // Add unique index on mediaId + mediaType

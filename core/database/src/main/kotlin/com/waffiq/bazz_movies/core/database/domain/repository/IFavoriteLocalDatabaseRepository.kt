@@ -10,10 +10,8 @@ interface IFavoriteLocalDatabaseRepository {
   val watchlistTvFromDB: Flow<List<Favorite>>
   val favoriteTvFromDB: Flow<List<Favorite>>
   suspend fun insertToDB(fav: Favorite): DbResult<Int>
-  suspend fun deleteFromDB(fav: Favorite): DbResult<Int>
+  suspend fun deleteFromDB(mediaId: Int, mediaType: String): DbResult<Int>
   suspend fun deleteAll(): DbResult<Int>
-  suspend fun isFavoriteDB(id: Int, mediaType: String): DbResult<Boolean>
-  suspend fun isWatchlistDB(id: Int, mediaType: String): DbResult<Boolean>
-  suspend fun updateFavoriteItemDB(isDelete: Boolean, fav: Favorite): DbResult<Unit>
-  suspend fun updateWatchlistItemDB(isDelete: Boolean, fav: Favorite): DbResult<Unit>
+  suspend fun update(fav: Favorite): DbResult<Unit>
+  suspend fun getByMedia(mediaId: Int, mediaType: String): Favorite?
 }

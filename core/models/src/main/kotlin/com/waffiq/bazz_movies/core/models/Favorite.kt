@@ -22,4 +22,13 @@ data class Favorite(
   val isFavorite: Boolean,
   val isWatchlist: Boolean,
   val lastUpdated: Long,
-) : Parcelable
+) : Parcelable {
+
+  @Suppress("MagicNumber")
+  fun isStale(): Boolean {
+    val ninetyDaysMillis =
+      80L * 24 * 60 * 60 * 1000
+
+    return System.currentTimeMillis() - lastUpdated > ninetyDaysMillis
+  }
+}

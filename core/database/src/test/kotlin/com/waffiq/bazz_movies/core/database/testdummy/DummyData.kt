@@ -4,7 +4,7 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
 import com.waffiq.bazz_movies.core.database.data.model.SearchHistoryEntity
-import com.waffiq.bazz_movies.core.models.Favorite
+import com.waffiq.bazz_movies.core.database.utils.FavoriteMapper.toFavorite
 import com.waffiq.bazz_movies.core.models.SearchHistory
 import kotlinx.coroutines.flow.flowOf
 
@@ -43,22 +43,7 @@ object DummyData {
   )
   val watchlistMovieEntity = favoriteMovieEntity.copy(isWatchlist = true)
 
-  val favoriteMovie = Favorite(
-    id = 234,
-    mediaId = 101,
-    mediaType = MOVIE_MEDIA_TYPE,
-    genre = "Action",
-    backDrop = "",
-    poster = "",
-    overview = "",
-    title = "Movie1",
-    releaseDate = "",
-    popularity = 0.0,
-    rating = 0f,
-    isFavorite = true,
-    isWatchlist = false,
-    lastUpdated = 453,
-  )
+  val favoriteMovie = favoriteMovieEntity.toFavorite()
   val watchlistMovie = favoriteMovie.copy(isWatchlist = true)
 
   val favoriteTv = favoriteMovie.copy(mediaType = TV_MEDIA_TYPE)

@@ -42,18 +42,6 @@ interface FavoriteDao {
 
   @Query(
     """
-        SELECT EXISTS(
-        SELECT *
-        FROM $FAVORITE_TABLE_NAME
-        WHERE mediaId = :id
-        AND is_favorited = 1
-        AND mediaType = :mediaType)
-    """,
-  )
-  suspend fun isFavorite(id: Int, mediaType: String): Boolean
-
-  @Query(
-    """
         SELECT * FROM $FAVORITE_TABLE_NAME
         WHERE mediaId = :mediaId
         AND mediaType = :mediaType
@@ -85,18 +73,6 @@ interface FavoriteDao {
       }
     }
   }
-
-  @Query(
-    """
-        SELECT EXISTS(
-        SELECT *
-        FROM $FAVORITE_TABLE_NAME
-        WHERE mediaId = :id
-        AND is_watchlist = 1
-        AND mediaType = :mediaType)
-    """,
-  )
-  suspend fun isWatchlist(id: Int, mediaType: String): Boolean
 
   @Query("DELETE FROM $FAVORITE_TABLE_NAME WHERE mediaId = :mediaId and mediaType = :mediaType")
   suspend fun deleteItem(mediaId: Int, mediaType: String): Int // delete from table

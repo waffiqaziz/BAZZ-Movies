@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteException
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteMovieEntity
 import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteTvEntity
@@ -202,21 +201,12 @@ class FavoriteDaoTest {
     }
 
   @Test
-  fun isFavorite_whenSuccessful_returnsTrueForFavorite() =
+  fun getByMedia_whenSuccessful_returnsFavorite() =
     runTest {
       favoriteDao.insert(favoriteTvEntity)
 
-      val isFavorite = favoriteDao.isFavorite(103, TV_MEDIA_TYPE)
-      assertTrue(isFavorite)
-    }
-
-  @Test
-  fun isWatchlist_whenSuccessful_returnsTrueForWatchlist() =
-    runTest {
-      favoriteDao.insert(watchlistMovieEntity)
-
-      val isWatchlist = favoriteDao.isWatchlist(101, MOVIE_MEDIA_TYPE)
-      assertTrue(isWatchlist)
+      val result = favoriteDao.getByMedia(103, TV_MEDIA_TYPE)
+      assertTrue(result?.isFavorite == true)
     }
 
   @Test
@@ -261,10 +251,9 @@ class FavoriteDaoTest {
       )
 
       assertEquals(1, updateCount)
-      val isFavorite = favoriteDao.isFavorite(103, TV_MEDIA_TYPE)
-      val isWatchlist = favoriteDao.isWatchlist(103, TV_MEDIA_TYPE)
-      assertTrue(isFavorite)
-      assertTrue(isWatchlist)
+      val media = favoriteDao.getByMedia(103, TV_MEDIA_TYPE)
+      assertTrue(media?.isFavorite == true)
+      assertTrue(media?.isWatchlist == true)
     }
 
   @Test
@@ -279,10 +268,9 @@ class FavoriteDaoTest {
       )
 
       assertEquals(1, updateCount)
-      val isFavorite = favoriteDao.isFavorite(favoriteTvEntity.mediaId, TV_MEDIA_TYPE)
-      val isWatchlist = favoriteDao.isWatchlist(favoriteTvEntity.mediaId, TV_MEDIA_TYPE)
-      assertFalse(isFavorite)
-      assertFalse(isWatchlist)
+      val media = favoriteDao.getByMedia(favoriteTvEntity.mediaId, TV_MEDIA_TYPE)
+      assertFalse(media?.isFavorite == true)
+      assertFalse(media?.isWatchlist == true)
     }
 
   @Test

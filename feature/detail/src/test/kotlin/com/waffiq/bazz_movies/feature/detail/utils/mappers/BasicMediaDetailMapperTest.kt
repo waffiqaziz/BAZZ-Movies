@@ -4,19 +4,22 @@ import com.waffiq.bazz_movies.core.models.GenresItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.favoriteMovie
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.fullMovieDetail
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.fullTvDetail
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.mediaKeywords
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.mediaKeywordsItems
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.movieMediaDetail
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.releaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.tvExternalIds
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaKeywordsMapper.toMediaDetail
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.BasicMediaDetailMapper.refreshWith
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.BasicMediaDetailMapper.toMediaDetail
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Test
 
-class MediaDetailKeywordsMapperTest {
+class BasicMediaDetailMapperTest {
 
   private val validTvDetail = fullTvDetail.stubToMediaDetail()
   private val validMovieDetail = fullMovieDetail.stubToMediaDetail()
@@ -427,6 +430,28 @@ class MediaDetailKeywordsMapperTest {
   }
 
   // endregion
+
+  @Test
+  fun refreshWith_withValidGenreId_returnsCorrectGenreName() {
+    val result = favoriteMovie.refreshWith(movieMediaDetail)
+    println(movieMediaDetail.genreId)
+    assertEquals("Action", result.genre)
+  }
+
+  @Test
+  fun refreshWith_genreIdNotValid_returnsEmpty() {
+    val result = favoriteMovie.refreshWith(movieMediaDetail.copy(genreId = emptyList()))
+    assertEquals("", result.genre)
+
+    val result2 = favoriteMovie.refreshWith(movieMediaDetail.copy(genreId = null))
+    assertEquals("", result2.genre)
+  }
+
+  @Test
+  fun refreshWith_tmdbScoreNull_returnsZero() {
+    val result = favoriteMovie.refreshWith(movieMediaDetail.copy(tmdbScore = null))
+    assertEquals(0.0f, result.rating)
+  }
 
   private fun TvDetail.stubToMediaDetail() = toMediaDetail("US", mediaKeywords, tvExternalIds)
   private fun MovieDetail.stubToMediaDetail() = toMediaDetail(releaseDateRegion, mediaKeywords)

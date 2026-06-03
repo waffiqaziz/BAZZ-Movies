@@ -14,7 +14,6 @@ import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNotNull
 import junit.framework.TestCase.assertSame
-import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -37,7 +36,7 @@ class WatchlistPagingAdapterTest : BaseAdapterPagingTest() {
     binding = ItemPagingWatchlistBinding.inflate(inflater, null, false)
   }
 
-  private suspend fun TestScope.setupBoundViewHolder() {
+  private suspend fun setupBoundViewHolder() {
     adapter.submitData(pagingData)
     adapter.onBindViewHolder(viewHolder, 0)
   }

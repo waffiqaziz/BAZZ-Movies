@@ -11,9 +11,7 @@ import com.waffiq.bazz_movies.core.data.domain.usecase.listmovie.GetListMoviesUs
 import com.waffiq.bazz_movies.core.data.domain.usecase.listtv.GetListTvUseCase
 import com.waffiq.bazz_movies.core.database.domain.usecase.FavoriteLocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DbResult
-import com.waffiq.bazz_movies.core.database.utils.FavoriteMapper.favFalseWatchlistTrue
-import com.waffiq.bazz_movies.core.database.utils.FavoriteMapper.favTrueWatchlistFalse
-import com.waffiq.bazz_movies.core.database.utils.FavoriteMapper.favTrueWatchlistTrue
+import com.waffiq.bazz_movies.core.database.utils.FavoriteMapper.toFavorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.rating_added_successfully
 import com.waffiq.bazz_movies.core.models.Favorite
 import com.waffiq.bazz_movies.core.models.FavoriteParams
@@ -26,9 +24,11 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostRateUseCase
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.RefreshMediaMetadataUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail.GetOMDbDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.BasicMediaDetailMapper.refreshWith
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -53,6 +53,7 @@ class MediaDetailViewModel @Inject constructor(
   private val getOMDbDetailUseCase: GetOMDbDetailUseCase,
   private val mediaStateUseCase: MediaStateUseCase,
   private val getMediaDetailUseCase: GetMediaDetailUseCase,
+  private val refreshMediaMetadataUseCase: RefreshMediaMetadataUseCase,
 ) : ViewModel() {
 
   private val _uiState = MutableStateFlow(MediaDetailUiState())
@@ -66,6 +67,15 @@ class MediaDetailViewModel @Inject constructor(
 
   private val _recommendations = MutableStateFlow<PagingData<MediaItem>>(PagingData.empty())
   val recommendations: StateFlow<PagingData<MediaItem>> = _recommendations.asStateFlow()
+
+  private val currentState
+    get() = _uiState.value
+
+  private val isFavorite
+    get() = currentState.isFavorite
+
+  private val isWatchlist
+    get() = currentState.isWatchlist
 
   // endregion OBSERVABLES
 
@@ -231,60 +241,52 @@ class MediaDetailViewModel @Inject constructor(
   }
 
   // region DB FUNCTION
-  fun handleBtnFavorite(
-    favorite: Boolean,
-    watchlist: Boolean,
-    data: MediaItem,
-  ) {
+  fun handleBtnFavorite(data: MediaItem) {
     when {
-      // If in the watchlist but not a favorite, update to set as favorite.
-      !favorite && watchlist -> updateToFavoriteDB(favTrueWatchlistTrue(data))
+      !isFavorite && !isWatchlist -> {
+        insertToDB(data.toFavorite(isWatchlist = false, isFavorite = true))
+      }
 
-      // If neither a favorite nor in the watchlist, insert the item and set favorite to true.
-      !favorite -> insertToDB(favTrueWatchlistFalse(data))
+      // item is favorited but not in watchlist, then delete
+      isFavorite && !isWatchlist -> {
+        deleteFromDB(data.id, data.mediaType, deleteFavorite = true)
+      }
 
-      // If in favorite and watchlist, update to remove from favorite.
-      watchlist -> updateToRemoveFromFavoriteDB(favFalseWatchlistTrue(data))
-
-      // If item is a favorite and not in watchlist, remove it from the database.
-      else -> delFromFavoriteDB(favTrueWatchlistFalse(data))
-    }
-  }
-
-  fun handleBtnWatchlist(
-    favorite: Boolean,
-    watchlist: Boolean,
-    data: MediaItem,
-  ) {
-    when {
-      // If marked as a favorite but not in the watchlist, update to set as watchlist.
-      favorite && !watchlist -> updateToWatchlistDB(favTrueWatchlistTrue(data))
-
-      // If it's neither a favorite nor in the watchlist, insert the item and set watchlist to true.
-      !watchlist -> insertToDB(favFalseWatchlistTrue(data))
-
-      // If in favorite and watchlist, update to remove from watchlist.
-      favorite -> updateToRemoveFromWatchlistDB(favTrueWatchlistFalse(data))
-
-      // If is a watchlist and not in favorite,  remove it from the database.
-      else -> delFromFavoriteDB(favFalseWatchlistTrue(data))
-    }
-  }
-
-  fun isFavoriteDB(id: Int, mediaType: String) {
-    viewModelScope.launch {
-      when (val result = localDatabaseUseCase.isFavoriteDB(id, mediaType)) {
-        is DbResult.Success -> if (result.data) updateState { copy(isFavorite = true) }
-        is DbResult.Error -> _errorEvent.emit(result.errorMessage)
+      else -> {
+        updateDB(data.toFavorite(isFavorite = !isFavorite, isWatchlist = isWatchlist))
       }
     }
   }
 
-  fun isWatchlistDB(id: Int, mediaType: String) {
+  fun handleBtnWatchlist(data: MediaItem) {
+    when {
+      !isFavorite && !isWatchlist -> {
+        insertToDB(data.toFavorite(isWatchlist = true, isFavorite = false))
+      }
+
+      // item watchlisted but not in favorite, then delete
+      isWatchlist && !isFavorite -> {
+        deleteFromDB(data.id, data.mediaType, deleteFavorite = false)
+      }
+
+      else -> {
+        updateDB(data.toFavorite(isFavorite = isFavorite, isWatchlist = !isWatchlist))
+      }
+    }
+  }
+
+  fun getByMedia(mediaId: Int, mediaType: String) {
     viewModelScope.launch {
-      when (val result = localDatabaseUseCase.isWatchlistDB(id, mediaType)) {
-        is DbResult.Success -> if (result.data) updateState { copy(isWatchlist = true) }
-        is DbResult.Error -> _errorEvent.emit(result.errorMessage)
+      val favorite = localDatabaseUseCase.getByMedia(mediaId, mediaType)
+      if (favorite != null) {
+        updateState { copy(isWatchlist = favorite.isWatchlist, isFavorite = favorite.isFavorite) }
+
+        _uiState.value.detail.let { detail ->
+          if (favorite.isStale() && detail != null) {
+            println("ENTERED REFRESH3")
+            localDatabaseUseCase.update(favorite.refreshWith(detail))
+          }
+        }
       }
     }
   }
@@ -308,59 +310,45 @@ class MediaDetailViewModel @Inject constructor(
     )
   }
 
-  private fun updateToFavoriteDB(fav: Favorite) {
+  private fun updateDB(fav: Favorite) {
+    // determine if its favorite or watchlist changes
+    // its checks before and after, if different its favorite, otherwise its watchlist
+    val stateChanges = isFavorite == !fav.isFavorite
+
+    // update delete action if between isFavorite and isWatchlist is different
+    val isDelete = fav.isFavorite != fav.isWatchlist
     executeDbAction(
-      action = { localDatabaseUseCase.updateFavoriteItemDB(false, fav) },
+      action = { localDatabaseUseCase.update(fav) },
       onSuccess = {
-        updateState { copy(isFavorite = true) }
-        emitPostState(isDelete = false, isFavorite = true)
+        updateState { copy(isWatchlist = fav.isWatchlist, isFavorite = fav.isFavorite) }
+        emitPostState(isDelete = isDelete, isFavorite = stateChanges)
       },
     )
   }
 
-  private fun updateToRemoveFromFavoriteDB(fav: Favorite) {
+  private fun deleteFromDB(
+    mediaId: Int,
+    mediaType: String,
+    deleteFavorite: Boolean,
+  ) {
     executeDbAction(
-      action = { localDatabaseUseCase.updateFavoriteItemDB(true, fav) },
-      onSuccess = {
-        updateState { copy(isFavorite = false) }
-        emitPostState(isDelete = true, isFavorite = true)
-      },
-    )
-  }
-
-  private fun updateToWatchlistDB(fav: Favorite) {
-    executeDbAction(
-      action = { localDatabaseUseCase.updateWatchlistItemDB(false, fav) },
-      onSuccess = {
-        updateState { copy(isWatchlist = true) }
-        emitPostState(isDelete = false, isFavorite = false)
-      },
-    )
-  }
-
-  private fun updateToRemoveFromWatchlistDB(fav: Favorite) {
-    executeDbAction(
-      action = { localDatabaseUseCase.updateWatchlistItemDB(true, fav) },
-      onSuccess = {
-        updateState { copy(isWatchlist = false) }
-        emitPostState(isDelete = true, isFavorite = false)
-      },
-    )
-  }
-
-  private fun delFromFavoriteDB(fav: Favorite) {
-    executeDbAction(
-      action = { localDatabaseUseCase.deleteFromDB(fav) },
+      action = { localDatabaseUseCase.deleteFromDB(mediaId, mediaType) },
       onSuccess = {
         updateState { copy(isFavorite = false, isWatchlist = false) }
-        emitPostState(isDelete = true, isFavorite = fav.isFavorite)
+        emitPostState(isDelete = true, isFavorite = deleteFavorite)
       },
     )
   }
   // endregion DB FUNCTION
 
   // region POST FAVORITE, WATCHLIST, RATE
-  fun postFavorite(data: FavoriteParams) {
+  fun postFavorite(mediaId: Int, mediaType: String) {
+    val data = FavoriteParams(
+      mediaType,
+      mediaId,
+      !isFavorite,
+    )
+
     postItem(
       data = data,
       isFavorite = true,
@@ -377,7 +365,13 @@ class MediaDetailViewModel @Inject constructor(
     )
   }
 
-  fun postWatchlist(data: WatchlistParams) {
+  fun postWatchlist(mediaId: Int, mediaType: String) {
+    val data = WatchlistParams(
+      mediaType,
+      mediaId,
+      !isWatchlist,
+    )
+
     postItem(
       data = data,
       isFavorite = false,
@@ -425,6 +419,12 @@ class MediaDetailViewModel @Inject constructor(
     )
   }
   // endregion POST FAVORITE, WATCHLIST, RATE
+
+  fun refreshMedia(mediaId: Int, mediaType: String) {
+    viewModelScope.launch {
+      refreshMediaMetadataUseCase.refreshMedia(mediaId, mediaType)
+    }
+  }
 
   /**
    * Helper to emit [UpdateMediaStateResult]

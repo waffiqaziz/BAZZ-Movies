@@ -137,6 +137,8 @@ class MediaDetailActivity : AppCompatActivity() {
     collectPagingData(detailViewModel.recommendations) {
       uiManager.updateRecommendations(it, lifecycle)
     }
+
+    detailViewModel.refreshMedia(dataExtra.id, dataExtra.mediaType)
   }
 
   private fun renderState(state: MediaDetailUiState) {

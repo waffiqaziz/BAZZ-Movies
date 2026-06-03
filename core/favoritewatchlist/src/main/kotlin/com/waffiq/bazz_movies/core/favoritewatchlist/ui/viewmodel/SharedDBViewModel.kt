@@ -41,37 +41,16 @@ class SharedDBViewModel @Inject constructor(
     }
   }
 
-  fun delFromFavoriteDB(fav: Favorite) {
+  fun deleteFromDB(fav: Favorite) {
     viewModelScope.launch {
-      _dbResult.postValue(Event(localDatabaseUseCase.deleteFromDB(fav)))
+      _dbResult.postValue(Event(localDatabaseUseCase.deleteFromDB(fav.mediaId, fav.mediaType)))
     }
     _undoDB.value = Event(fav)
   }
 
-  fun updateToFavoriteDB(fav: Favorite) {
+  fun updateDB(fav: Favorite) {
     viewModelScope.launch {
-      _dbResult.postValue(Event(localDatabaseUseCase.updateFavoriteItemDB(false, fav)))
-    }
-    _undoDB.value = Event(fav)
-  }
-
-  fun updateToWatchlistDB(fav: Favorite) {
-    viewModelScope.launch {
-      _dbResult.postValue(Event(localDatabaseUseCase.updateWatchlistItemDB(false, fav)))
-    }
-    _undoDB.value = Event(fav)
-  }
-
-  fun updateToRemoveFromWatchlistDB(fav: Favorite) {
-    viewModelScope.launch {
-      _dbResult.postValue(Event(localDatabaseUseCase.updateWatchlistItemDB(true, fav)))
-    }
-    _undoDB.value = Event(fav)
-  }
-
-  fun updateToRemoveFromFavoriteDB(fav: Favorite) {
-    viewModelScope.launch {
-      _dbResult.postValue(Event(localDatabaseUseCase.updateFavoriteItemDB(true, fav)))
+      _dbResult.postValue(Event(localDatabaseUseCase.update(fav)))
     }
     _undoDB.value = Event(fav)
   }

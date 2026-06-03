@@ -97,9 +97,9 @@ class GuestUserDelegate(
 
   private fun deleteFavorite(favorite: Favorite) {
     if (favorite.isWatchlist) {
-      sharedDBViewModel.updateToRemoveFromFavoriteDB(favorite)
+      sharedDBViewModel.updateDB(favorite.copy(isFavorite = false))
     } else {
-      sharedDBViewModel.delFromFavoriteDB(favorite)
+      sharedDBViewModel.deleteFromDB(favorite)
     }
   }
 
@@ -107,7 +107,7 @@ class GuestUserDelegate(
     if (favorite.isWatchlist) {
       showAlreadySnackbar(Event(favorite.title))
     } else {
-      sharedDBViewModel.updateToWatchlistDB(favorite)
+      sharedDBViewModel.updateDB(favorite.copy(isWatchlist = true))
       showUndoSnackbar(favorite.title, position)
     }
   }
@@ -140,14 +140,16 @@ class GuestUserDelegate(
       if (isWantToDelete) {
         restoreFavorite(favorite, position)
       } else {
-        sharedDBViewModel.updateToRemoveFromWatchlistDB(favorite)
+        // undo add to watchlist
+        sharedDBViewModel.updateDB(favorite.copy(isWatchlist = false))
       }
     }
   }
 
   private fun restoreFavorite(favorite: Favorite, position: Int) {
+    // undo delete from favorite
     if (favorite.isWatchlist) {
-      sharedDBViewModel.updateToFavoriteDB(favorite)
+      sharedDBViewModel.updateDB(favorite.copy(isFavorite = true))
     } else {
       sharedDBViewModel.insertToDB(favorite.copy(isFavorite = true))
     }

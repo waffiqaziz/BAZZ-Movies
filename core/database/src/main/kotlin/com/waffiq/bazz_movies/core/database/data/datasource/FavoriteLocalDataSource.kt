@@ -36,12 +36,9 @@ class FavoriteLocalDataSource @Inject constructor(
 
   override suspend fun deleteAll(): DbResult<Int> = executeDbOperation { favoriteDao.deleteAll() }
 
-  override suspend fun isFavorite(id: Int, mediaType: String): DbResult<Boolean> =
-    executeDbOperation { favoriteDao.isFavorite(id, mediaType) }
-
-  override suspend fun isWatchlist(id: Int, mediaType: String): DbResult<Boolean> =
-    executeDbOperation { favoriteDao.isWatchlist(id, mediaType) }
-
   override suspend fun update(favoriteEntity: FavoriteEntity): DbResult<Unit> =
     executeDbOperation { favoriteDao.insertOrUpdate(favoriteEntity) }
+
+  override suspend fun getByMedia(mediaId: Int, mediaType: String): FavoriteEntity? =
+    favoriteDao.getByMedia(mediaId, mediaType)
 }
