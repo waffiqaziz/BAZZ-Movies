@@ -20,11 +20,12 @@ class BasicMovieDetailMapperTest {
   fun movieDetail_validValue_returnsCorrectValue() {
     assertEquals(1, validMovieDetail.id)
     assertEquals(mediaKeywordsItems, validMovieDetail.keywords)
-    assertNotNull(validMovieDetail.duration) // e.g. "2h 0m" depending on convertRuntime
+    assertNotNull(validMovieDetail.duration)
     assertEquals("$1,000,000.00", validMovieDetail.budget)
     assertEquals("$5,000,000.00", validMovieDetail.revenue)
     assertEquals("8.0", validMovieDetail.tmdbScore)
     assertEquals("Action, Comedy", validMovieDetail.genre)
+    assertEquals("English", validMovieDetail.language)
     assertEquals(listOf(1, 2), validMovieDetail.genreId)
     assertEquals("tt9999999", validMovieDetail.imdbId)
     assertEquals("Released", validMovieDetail.status)
@@ -78,32 +79,19 @@ class BasicMovieDetailMapperTest {
   }
 
   @Test
-  fun movieDetail_runtimeZero_returnsNullDuration() {
-    val result = fullMovieDetail.copy(runtime = 0).stubToMediaDetail()
+  fun movieDetail_withZeroForNumericValue_returnsCorrectly() {
+    val result = fullMovieDetail.copy(
+      runtime = 0,
+      budget = 0,
+      revenue = 0L,
+      voteAverage = 0.0,
+      listGenres = emptyList()
+    ).stubToMediaDetail()
+
     assertNull(result.duration)
-  }
-
-  @Test
-  fun movieDetail_budgetZero_returnsDash() {
-    val result = fullMovieDetail.copy(budget = 0).stubToMediaDetail()
     assertEquals("-", result.budget)
-  }
-
-  @Test
-  fun movieDetail_revenueZero_returnsDash() {
-    val result = fullMovieDetail.copy(revenue = 0L).stubToMediaDetail()
     assertEquals("-", result.revenue)
-  }
-
-  @Test
-  fun movieDetail_voteAverageZero_returnsNullTmdbScore() {
-    val result = fullMovieDetail.copy(voteAverage = 0.0).stubToMediaDetail()
     assertNull(result.tmdbScore)
-  }
-
-  @Test
-  fun movieDetail_genresEmpty_returnsNullGenre() {
-    val result = fullMovieDetail.copy(listGenres = emptyList()).stubToMediaDetail()
     assertNull(result.genre)
     assertEquals(emptyList<Int>(), result.genreId)
   }
@@ -114,12 +102,6 @@ class BasicMovieDetailMapperTest {
     val result = fullMovieDetail.copy(listGenres = genresWithNull).stubToMediaDetail()
     assertEquals("Comedy", result.genre)
     assertEquals(listOf(2, 0), result.genreId) // null item id elvis to 0
-  }
-
-  @Test
-  fun movieDetail_languageKnownCode_returnsLanguageName() {
-    val result = fullMovieDetail.copy(originalLanguage = "cs").stubToMediaDetail()
-    assertEquals("Czech", result.language)
   }
 
   @Test

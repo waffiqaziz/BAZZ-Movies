@@ -23,6 +23,7 @@ class BasicTvDetailMapperTest {
     assertEquals(mediaKeywordsItems, validTvDetail.keywords)
     assertEquals("7.5", validTvDetail.tmdbScore)
     assertEquals("Action, Comedy", validTvDetail.genre)
+    assertEquals("English", validTvDetail.language)
     assertEquals(listOf(1, 2), validTvDetail.genreId)
 
     // budget and revenue always return null for tv media type
@@ -46,6 +47,7 @@ class BasicTvDetailMapperTest {
       numberOfSeasons = null,
       numberOfEpisodes = null,
       firstAirDate = null,
+      popularity = null
     ).stubToMediaDetail()
 
     assertEquals(0, result.id)
@@ -58,6 +60,7 @@ class BasicTvDetailMapperTest {
     assertNull(result.totalEpisodes)
     assertEquals("", result.releaseDate)
     assertEquals(9.0f, validTvDetail.popularity)
+    assertEquals(0f, result.popularity)
   }
 
   @Test
@@ -106,24 +109,12 @@ class BasicTvDetailMapperTest {
     val result = fullTvDetail.copy(listGenres = genresWithNull).stubToMediaDetail()
 
     assertEquals("Action", result.genre)
-    assertEquals(listOf(1, 0), result.genreId) // null item id elvis to 0
-  }
-
-  @Test
-  fun tvDetail_languageKnownCode_returnsLanguageName() {
-    val result = fullTvDetail.copy(originalLanguage = "de").stubToMediaDetail()
-    assertEquals("German", result.language)
+    assertEquals(listOf(1, 0), result.genreId)
   }
 
   @Test
   fun tvDetail_languageUnknownCode_returnsEmpty() {
     val result = fullTvDetail.copy(originalLanguage = "xx").stubToMediaDetail()
     assertEquals("No Language", result.language)
-  }
-
-  @Test
-  fun tvDetail_popularityIsNull_returnsEmpty() {
-    val result = fullTvDetail.copy(popularity = null).stubToMediaDetail()
-    assertEquals(0f, result.popularity)
   }
 }

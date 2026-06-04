@@ -283,7 +283,6 @@ class MediaDetailViewModel @Inject constructor(
 
         _uiState.value.detail.let { detail ->
           if (favorite.isStale() && detail != null) {
-            println("ENTERED REFRESH3")
             localDatabaseUseCase.update(favorite.refreshWith(detail))
           }
         }
