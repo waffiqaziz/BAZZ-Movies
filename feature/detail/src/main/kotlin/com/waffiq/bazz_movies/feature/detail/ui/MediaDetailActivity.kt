@@ -117,6 +117,7 @@ class MediaDetailActivity : AppCompatActivity() {
     prefViewModel.getUserToken().observe(this) { token ->
       val isLogin = token != NAN && token.isNotEmpty()
       userInteractionHandler.setUserState(isLogin)
+      if (!isLogin) detailViewModel.refreshMedia(dataExtra.id, dataExtra.mediaType)
     }
   }
 

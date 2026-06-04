@@ -280,7 +280,7 @@ class FavoriteDatabaseModuleUnitTest {
       execSQL(sqlCreateTableVersionTwo)
 
       // insert duplicate (mediaId=101, mediaType='movie') rows, which only allowed in v2
-      execSQL(sqlInsertMovieData)                      // id=1, mediaId=101, mediaType='movie'
+      execSQL(sqlInsertMovieData) // id=1, mediaId=101, mediaType='movie'
       execSQL(sqlInsertDuplicateMovieDataWithHigherId) // id=2, mediaId=101, mediaType='movie'
 
       close()
@@ -303,7 +303,7 @@ class FavoriteDatabaseModuleUnitTest {
     assertEquals(
       "Row with highest id should be kept",
       2,
-      cursor.getInt(cursor.getColumnIndex("id"))
+      cursor.getInt(cursor.getColumnIndex("id")),
     )
     assertEquals(101, cursor.getInt(cursor.getColumnIndex("mediaId")))
     assertEquals("movie", cursor.getString(cursor.getColumnIndex("mediaType")))

@@ -10,6 +10,7 @@ import com.waffiq.bazz_movies.core.data.domain.usecase.listmovie.GetListMoviesUs
 import com.waffiq.bazz_movies.core.data.domain.usecase.listtv.GetListTvUseCase
 import com.waffiq.bazz_movies.core.database.domain.usecase.FavoriteLocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DbResult
+import com.waffiq.bazz_movies.core.models.Favorite
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.models.MediaState
 import com.waffiq.bazz_movies.core.models.Outcome
@@ -21,11 +22,13 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostRateUseCase
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.RefreshMediaMetadataUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail.GetOMDbDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.ERROR_MESSAGE
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.IMDB_ID
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.MOVIE_ID
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.TV_ID
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.favoriteMovie
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.movieMediaDetail
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.oMDbDetails
 import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
@@ -36,10 +39,10 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -59,6 +62,7 @@ abstract class BaseMediaDetailViewModelTest {
   protected val mockMediaStateUseCase: MediaStateUseCase = mockk()
   protected val mockGetMediaDetailUseCase: GetMediaDetailUseCase = mockk()
   protected val mockUserPrefUseCase: UserPrefUseCase = mockk()
+  protected val mockRefreshMediaMetadataUseCase: RefreshMediaMetadataUseCase = mockk()
 
   protected val imdbId = IMDB_ID
   protected val movieId = MOVIE_ID
@@ -119,6 +123,7 @@ abstract class BaseMediaDetailViewModelTest {
       mockGetOMDbDetailUseCase,
       mockMediaStateUseCase,
       mockGetMediaDetailUseCase,
+      mockRefreshMediaMetadataUseCase,
     )
   }
 
@@ -153,7 +158,7 @@ abstract class BaseMediaDetailViewModelTest {
     job.cancel()
   }
 
-  @Suppress("LongParameterList")
+  @Suppress("LongParameterList", "MaxLineLength")
   protected fun <T> testViewModelState(
     runBlock: () -> Unit,
     stateSelector: (MediaDetailUiState) -> T,
@@ -167,9 +172,10 @@ abstract class BaseMediaDetailViewModelTest {
     val collectedErrors = mutableListOf<String>()
 
     val stateJob = launch {
-      viewModel.uiState
-        .map { stateSelector(it) }
-        .filterNotNull() // remove null value from nullable value inside MediaDetailUiState
+      viewModel.uiState.mapNotNull {
+        // remove null value from nullable value inside MediaDetailUiState
+        stateSelector(it)
+      }
         .distinctUntilChanged()
         .collect { collectedStates.add(it) }
     }
@@ -220,5 +226,16 @@ abstract class BaseMediaDetailViewModelTest {
   fun setupGetOMDbDetailsMockReturnValue() {
     coEvery { mockGetOMDbDetailUseCase.getOMDbDetails(any()) } returns
       successFlow(mockOmdb)
+  }
+
+  protected fun stubState(isFavorite: Boolean, isWatchlist: Boolean) {
+    coEvery { mockLocalDatabaseUseCase.getByMedia(any(), any()) } returns
+      favoriteMovie.copy(isFavorite = isFavorite, isWatchlist = isWatchlist)
+
+    viewModel.getByMedia(1, "1")
+  }
+
+  protected fun stubUpdateSuccess() {
+    coEvery { mockLocalDatabaseUseCase.update(any<Favorite>()) } returns successDbResult(Unit)
   }
 }

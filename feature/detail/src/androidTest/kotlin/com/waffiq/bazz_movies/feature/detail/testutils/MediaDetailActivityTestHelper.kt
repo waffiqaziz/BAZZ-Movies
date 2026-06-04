@@ -102,12 +102,11 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
     every { mockMediaDetailViewModel.getTvState(any()) } just Runs
     every { mockMediaDetailViewModel.getTvWatchProviders(any()) } just Runs
     every { mockMediaDetailViewModel.getOMDbDetails(any()) } just Runs
-    every { mockMediaDetailViewModel.handleBtnFavorite(any(), any(), any()) } just Runs
-    every { mockMediaDetailViewModel.handleBtnWatchlist(any(), any(), any()) } just Runs
-    every { mockMediaDetailViewModel.isFavoriteDB(any(), any()) } just Runs
-    every { mockMediaDetailViewModel.isWatchlistDB(any(), any()) } just Runs
-    every { mockMediaDetailViewModel.postFavorite(any()) } just Runs
-    every { mockMediaDetailViewModel.postWatchlist(any()) } just Runs
+    every { mockMediaDetailViewModel.handleBtnFavorite(any()) } just Runs
+    every { mockMediaDetailViewModel.handleBtnWatchlist(any()) } just Runs
+    every { mockMediaDetailViewModel.getByMedia(any(), any()) } just Runs
+    every { mockMediaDetailViewModel.postFavorite(any(), any()) } just Runs
+    every { mockMediaDetailViewModel.postWatchlist(any(), any()) } just Runs
     every { mockMediaDetailViewModel.postMovieRate(any(), any()) } just Runs
     every { mockMediaDetailViewModel.postTvRate(any(), any()) } just Runs
   }

@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.core.database.data.datasource
 
 import android.database.sqlite.SQLiteException
+import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
 import com.waffiq.bazz_movies.core.database.data.room.FavoriteDao
 import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteMovieEntity
 import com.waffiq.bazz_movies.core.database.utils.DbResult
@@ -64,14 +65,13 @@ class FavoriteLocalDataSourceMockkTest {
     }
 
   @Test
-  fun isFavorite_whenFavoriteExists_returnsTrue() =
+  fun getByMedia_whenFavoriteExists_returnsTrue() =
     runTest {
-      coEvery { favoriteDao.isFavorite(101, "movie") } returns true
+      coEvery { favoriteDao.getByMedia(101, "movie") } returns favoriteMovieEntity
 
-      val result = localDataSource.isFavorite(101, "movie")
+      val result = localDataSource.getByMedia(101, "movie")
 
-      assertTrue(result is DbResult.Success)
-      assertEquals(true, (result as DbResult.Success).data)
+      assertTrue(result is FavoriteEntity)
     }
 
   @Test

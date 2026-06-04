@@ -1,15 +1,11 @@
 package com.waffiq.bazz_movies.core.database.utils
 
 import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
-import com.waffiq.bazz_movies.core.database.utils.FavoriteMapper.favFalseWatchlistTrue
-import com.waffiq.bazz_movies.core.database.utils.FavoriteMapper.favTrueWatchlistFalse
-import com.waffiq.bazz_movies.core.database.utils.FavoriteMapper.favTrueWatchlistTrue
 import com.waffiq.bazz_movies.core.database.utils.FavoriteMapper.toFavorite
 import com.waffiq.bazz_movies.core.database.utils.FavoriteMapper.toFavoriteEntity
 import com.waffiq.bazz_movies.core.models.Favorite
 import com.waffiq.bazz_movies.core.models.MediaItem
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class FavoriteMapperTest {
@@ -85,27 +81,6 @@ class FavoriteMapperTest {
     val mediaItem = MediaItem()
     val favorite5 = mediaItem.toFavorite(isFavorite = false, isWatchlist = false)
     assertEquals(favorite5.title, "N/A")
-  }
-
-  @Test
-  fun favTrueWatchlistTrue_withValidValue_returnCorrectData() {
-    val result = favTrueWatchlistTrue(mediaItem1)
-    assertTrue(result.isFavorite)
-    assertTrue(result.isWatchlist)
-  }
-
-  @Test
-  fun favTrueWatchlistFalse_withValidValue_returnCorrectData() {
-    val result = favTrueWatchlistFalse(mediaItem1)
-    assertTrue(result.isFavorite)
-    assertTrue(!result.isWatchlist)
-  }
-
-  @Test
-  fun favFalseWatchlistTrue_withValidValue_returnCorrectData() {
-    val result = favFalseWatchlistTrue(mediaItem1)
-    assertTrue(!result.isFavorite)
-    assertTrue(result.isWatchlist)
   }
 
   @Test

@@ -39,20 +39,14 @@ class FavoriteLocalDatabaseRepositoryImpl @Inject constructor(
   override suspend fun insertToDB(fav: Favorite): DbResult<Int> =
     localDataSource.insert(fav.toFavoriteEntity())
 
-  override suspend fun deleteFromDB(fav: Favorite): DbResult<Int> =
-    localDataSource.deleteItemFromDB(fav.mediaId, fav.mediaType)
+  override suspend fun deleteFromDB(mediaId: Int, mediaType: String): DbResult<Int> =
+    localDataSource.deleteItemFromDB(mediaId, mediaType)
 
   override suspend fun deleteAll(): DbResult<Int> = localDataSource.deleteAll()
 
-  override suspend fun isFavoriteDB(id: Int, mediaType: String): DbResult<Boolean> =
-    localDataSource.isFavorite(id, mediaType)
+  override suspend fun update(fav: Favorite): DbResult<Unit> =
+    localDataSource.update(fav.toFavoriteEntity())
 
-  override suspend fun isWatchlistDB(id: Int, mediaType: String): DbResult<Boolean> =
-    localDataSource.isWatchlist(id, mediaType)
-
-  override suspend fun updateFavoriteItemDB(isDelete: Boolean, fav: Favorite): DbResult<Unit> =
-    localDataSource.update(fav.toFavoriteEntity().copy(isFavorite = !isDelete))
-
-  override suspend fun updateWatchlistItemDB(isDelete: Boolean, fav: Favorite): DbResult<Unit> =
-    localDataSource.update(fav.toFavoriteEntity().copy(isWatchlist = !isDelete))
+  override suspend fun getByMedia(mediaId: Int, mediaType: String): Favorite? =
+    localDataSource.getByMedia(mediaId, mediaType)?.toFavorite()
 }

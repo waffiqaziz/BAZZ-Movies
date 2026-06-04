@@ -14,11 +14,9 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.item_added_to_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.item_removed_from_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.item_removed_from_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
-import com.waffiq.bazz_movies.core.models.FavoriteParams
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.models.MediaState
 import com.waffiq.bazz_movies.core.models.Rated
-import com.waffiq.bazz_movies.core.models.WatchlistParams
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding
 import com.waffiq.bazz_movies.feature.detail.ui.dialog.RateDialog
@@ -51,8 +49,6 @@ class UserInteractionHandler(
   private val uiManager: DetailUIManager,
   private val dataManager: DetailDataManager,
 ) {
-  private var favorite = false
-  private var watchlist = false
   private var userState: UserAuthState = UserAuthState.NotInitialized
 
   /* Initializes the UserInteractionHandler with necessary setup.
@@ -106,8 +102,7 @@ class UserInteractionHandler(
 
       is UserAuthState.Guest -> {
         binding.yourScoreViewGroup.isVisible = false
-        detailViewModel.isFavoriteDB(dataExtra.id, dataExtra.mediaType)
-        detailViewModel.isWatchlistDB(dataExtra.id, dataExtra.mediaType)
+        detailViewModel.getByMedia(dataExtra.id, dataExtra.mediaType)
       }
 
       is UserAuthState.NotInitialized -> {
@@ -118,9 +113,6 @@ class UserInteractionHandler(
   }
 
   fun renderState(state: MediaDetailUiState) {
-    favorite = state.isFavorite
-    watchlist = state.isWatchlist
-
     changeBtnAction(
       button = binding.btnFavorite,
       isActivated = state.isFavorite,
@@ -178,15 +170,10 @@ class UserInteractionHandler(
   /** Handles favorite button click based on login state. */
   private fun handleFavoriteClick() {
     uiManager.dismissSnackbar()
-
     when (userState) {
-      is UserAuthState.Guest -> {
-        detailViewModel.handleBtnFavorite(favorite, watchlist, dataExtra)
-      }
+      is UserAuthState.Guest -> detailViewModel.handleBtnFavorite(dataExtra)
 
-      is UserAuthState.LoggedIn -> {
-        postDataToTMDB(isModeFavorite = true, state = favorite)
-      }
+      is UserAuthState.LoggedIn -> postDataToTMDB(isModeFavorite = true)
 
       else -> {
         // Not initialized, do nothing
@@ -199,13 +186,9 @@ class UserInteractionHandler(
     uiManager.dismissSnackbar()
 
     when (userState) {
-      is UserAuthState.Guest -> {
-        detailViewModel.handleBtnWatchlist(favorite, watchlist, dataExtra)
-      }
+      is UserAuthState.Guest -> detailViewModel.handleBtnWatchlist(dataExtra)
 
-      is UserAuthState.LoggedIn -> {
-        postDataToTMDB(isModeFavorite = false, state = watchlist)
-      }
+      is UserAuthState.LoggedIn -> postDataToTMDB(isModeFavorite = false)
 
       else -> {
         // Not initialized, do nothing
@@ -216,19 +199,12 @@ class UserInteractionHandler(
   /** Refreshes data and user states when swipe refresh is triggered. */
   private fun handleSwipeRefresh() {
     // refresh user login media state
-    if (userState is UserAuthState.LoggedIn) {
-      getMediaState()
-    }
+    if (userState is UserAuthState.LoggedIn) getMediaState()
 
     // refresh detail data based on media type
     when (dataExtra.mediaType) {
-      MOVIE_MEDIA_TYPE -> {
-        dataManager.loadAllData()
-      }
-
-      TV_MEDIA_TYPE -> {
-        dataManager.loadAllData()
-      }
+      MOVIE_MEDIA_TYPE -> dataManager.loadAllData()
+      TV_MEDIA_TYPE -> dataManager.loadAllData()
     }
     binding.swipeRefresh.isRefreshing = false
   }
@@ -248,26 +224,13 @@ class UserInteractionHandler(
    * Sends a request to TMDB to update favorite or watchlist status.
    *
    * @param isModeFavorite Determines if action is for favorite or watchlist.
-   * @param state Current state of the button. The state is used to determinate the operation,
    * if its **true** perform delete, if its **false** perform add
    */
-  private fun postDataToTMDB(isModeFavorite: Boolean, state: Boolean) {
+  private fun postDataToTMDB(isModeFavorite: Boolean) {
     if (isModeFavorite) {
-      favorite = !state
-      val fav = FavoriteParams(
-        dataExtra.mediaType,
-        dataExtra.id,
-        !state,
-      )
-      detailViewModel.postFavorite(fav)
+      detailViewModel.postFavorite(dataExtra.id, dataExtra.mediaType)
     } else {
-      watchlist = !state
-      val wtc = WatchlistParams(
-        dataExtra.mediaType,
-        dataExtra.id,
-        !state,
-      )
-      detailViewModel.postWatchlist(wtc)
+      detailViewModel.postWatchlist(dataExtra.id, dataExtra.mediaType)
     }
   }
 

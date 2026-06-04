@@ -87,77 +87,28 @@ class SharedDBViewModelTest {
     }
 
   @Test
-  fun delFromFavoriteDB_whenSuccessful_emitsSuccessAndSetsUndo() =
+  fun deleteFromDB_whenSuccessful_emitsSuccessAndSetsUndo() =
     runTest {
       testDatabaseOperationWithUndo(
         mockSetup = {
-          coEvery { localDatabaseUseCase.deleteFromDB(baseFavorite) } returns
-            DbResult.Success(1)
+          coEvery { localDatabaseUseCase.deleteFromDB(any(), any()) } returns DbResult.Success(1)
         },
-        operation = { viewModel.delFromFavoriteDB(baseFavorite) },
-        verification = {
-          coVerify { localDatabaseUseCase.deleteFromDB(baseFavorite) }
-        },
+        operation = { viewModel.deleteFromDB(baseFavorite) },
+        verification = { coVerify { localDatabaseUseCase.deleteFromDB(any(), any()) } },
         dbResult = DbResult.Success(1),
       )
     }
 
   @Test
-  fun updateToFavoriteDB_whenSuccessful_emitsSuccessAndSetsUndo() =
+  fun update_whenSuccessful_emitsSuccessAndSetsUndo() =
     runTest {
       testDatabaseOperationWithUndo(
         mockSetup = {
-          coEvery { localDatabaseUseCase.updateFavoriteItemDB(false, baseFavorite) } returns
-            DbResult.Success(Unit)
+          coEvery { localDatabaseUseCase.update(any()) } returns DbResult.Success(Unit)
         },
-        operation = { viewModel.updateToFavoriteDB(baseFavorite) },
+        operation = { viewModel.updateDB(baseFavorite) },
         verification = {
-          coVerify { localDatabaseUseCase.updateFavoriteItemDB(false, baseFavorite) }
-        },
-      )
-    }
-
-  @Test
-  fun updateToWatchlistDB_whenSuccessful_emitsSuccessAndSetsUndo() =
-    runTest {
-      testDatabaseOperationWithUndo(
-        mockSetup = {
-          coEvery { localDatabaseUseCase.updateWatchlistItemDB(false, baseFavorite) } returns
-            DbResult.Success(Unit)
-        },
-        operation = { viewModel.updateToWatchlistDB(baseFavorite) },
-        verification = {
-          coVerify { localDatabaseUseCase.updateWatchlistItemDB(false, baseFavorite) }
-        },
-      )
-    }
-
-  @Test
-  fun updateToRemoveFromWatchlistDB_whenSuccessful_emitsSuccessAndSetsUndo() =
-    runTest {
-      testDatabaseOperationWithUndo(
-        mockSetup = {
-          coEvery { localDatabaseUseCase.updateWatchlistItemDB(true, baseFavorite) } returns
-            DbResult.Success(Unit)
-        },
-        operation = { viewModel.updateToRemoveFromWatchlistDB(baseFavorite) },
-        verification = {
-          coVerify { localDatabaseUseCase.updateWatchlistItemDB(true, baseFavorite) }
-        },
-      )
-    }
-
-  @Test
-  fun updateToRemoveFromFavoriteDB_whenSuccessful_emitsSuccessAndSetsUndo() =
-    runTest {
-      testDatabaseOperationWithUndo(
-        mockSetup = {
-          coEvery { localDatabaseUseCase.updateFavoriteItemDB(true, baseFavorite) } returns
-            DbResult.Success(Unit)
-        },
-        operation = { viewModel.updateToRemoveFromFavoriteDB(baseFavorite) },
-        verification = {
-          coVerify { localDatabaseUseCase.updateFavoriteItemDB(true, baseFavorite) }
+          coVerify { localDatabaseUseCase.update(any()) }
         },
       )
     }

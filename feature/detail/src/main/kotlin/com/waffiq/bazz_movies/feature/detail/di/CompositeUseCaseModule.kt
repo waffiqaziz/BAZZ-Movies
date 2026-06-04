@@ -4,6 +4,8 @@ import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaDe
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostRateInteractor
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostRateUseCase
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.RefreshMediaMetadataInteractor
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.RefreshMediaMetadataUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -20,6 +22,12 @@ interface CompositeUseCaseModule {
   fun bindMediaDetailUseCaseSingleton(
     getMediaDetailInteractor: GetMediaDetailInteractor,
   ): GetMediaDetailUseCase
+
+  @Binds
+  @ViewModelScoped
+  fun bindRefreshMediaMetadataUseCaseSingleton(
+    refreshMediaMetadataInteractor: RefreshMediaMetadataInteractor,
+  ): RefreshMediaMetadataUseCase
 
   @Binds
   @ViewModelScoped

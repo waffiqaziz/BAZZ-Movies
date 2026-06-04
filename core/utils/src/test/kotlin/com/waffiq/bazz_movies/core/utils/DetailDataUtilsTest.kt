@@ -164,8 +164,6 @@ class DetailDataUtilsTest {
     assertEquals("Item", result2)
   }
 
-
-
   @Test
   fun validName_withMediaItem_returnsCorrectly() {
     val result1 = MediaItem(name = "name", originalName = "original name").validName

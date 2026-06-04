@@ -25,20 +25,14 @@ class FavoriteLocalDatabaseInteractor @Inject constructor(
   override suspend fun insertToDB(fav: Favorite): DbResult<Int> =
     favoriteLocalDatabaseRepository.insertToDB(fav)
 
-  override suspend fun deleteFromDB(fav: Favorite): DbResult<Int> =
-    favoriteLocalDatabaseRepository.deleteFromDB(fav)
+  override suspend fun deleteFromDB(mediaId: Int, mediaType: String): DbResult<Int> =
+    favoriteLocalDatabaseRepository.deleteFromDB(mediaId, mediaType)
 
   override suspend fun deleteAll(): DbResult<Int> = favoriteLocalDatabaseRepository.deleteAll()
 
-  override suspend fun isFavoriteDB(id: Int, mediaType: String): DbResult<Boolean> =
-    favoriteLocalDatabaseRepository.isFavoriteDB(id, mediaType)
+  override suspend fun update(fav: Favorite): DbResult<Unit> =
+    favoriteLocalDatabaseRepository.update(fav)
 
-  override suspend fun isWatchlistDB(id: Int, mediaType: String): DbResult<Boolean> =
-    favoriteLocalDatabaseRepository.isWatchlistDB(id, mediaType)
-
-  override suspend fun updateFavoriteItemDB(isDelete: Boolean, fav: Favorite): DbResult<Unit> =
-    favoriteLocalDatabaseRepository.updateFavoriteItemDB(isDelete, fav)
-
-  override suspend fun updateWatchlistItemDB(isDelete: Boolean, fav: Favorite): DbResult<Unit> =
-    favoriteLocalDatabaseRepository.updateWatchlistItemDB(isDelete, fav)
+  override suspend fun getByMedia(mediaId: Int, mediaType: String): Favorite? =
+    favoriteLocalDatabaseRepository.getByMedia(mediaId, mediaType)
 }
