@@ -86,5 +86,6 @@ object BasicMediaDetailMapper {
       releaseDate = data.releaseDate,
       popularity = data.popularity.toDouble(),
       rating = data.tmdbScore?.toFloat() ?: 0f,
+      lastUpdated = System.currentTimeMillis(),
     )
 }

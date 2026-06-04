@@ -47,6 +47,12 @@ class FavoriteTest {
   }
 
   @Test
+  fun isStalled_withCorrectValue_returnsCorrectly() {
+    assertTrue(favoriteValid.isStale())
+    assertFalse(favoriteValid.copy(lastUpdated = System.currentTimeMillis()).isStale())
+  }
+
+  @Test
   fun parcelable_whenAllFieldsAreValid_readsAndWritesCorrectly() {
     // obtain the CREATOR field
     @Suppress("UNCHECKED_CAST")

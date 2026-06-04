@@ -14,7 +14,7 @@ class RefreshMediaMetadataInteractor @Inject constructor(
 
   override suspend fun refreshMedia(mediaId: Int, mediaType: String) {
     val favorite = favoriteLocalDatabaseRepository.getByMedia(mediaId, mediaType)
-    if (favorite != null && !favorite.isStale()) {
+    if (favorite != null && favorite.isStale()) {
       if (mediaType == MOVIE_MEDIA_TYPE) {
         refreshMovie(mediaId, favorite)
       } else {
