@@ -44,9 +44,8 @@ class CreditsBottomSheet : BottomSheetDialogFragment() {
     return binding.root
   }
 
-  override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-    return BottomSheetDialog(requireContext(), CreditsBottomSheetStyle)
-  }
+  override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
+    BottomSheetDialog(requireContext(), CreditsBottomSheetStyle)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
