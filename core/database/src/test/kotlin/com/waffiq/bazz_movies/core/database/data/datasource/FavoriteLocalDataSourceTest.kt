@@ -109,7 +109,7 @@ class FavoriteLocalDataSourceTest {
         localDataSource.deleteItemFromDB(favoriteMovieEntity.mediaId, favoriteMovieEntity.mediaType)
       assert(result is DbResult.Success && result.data == 1)
 
-      val remainingMovies = favoriteDao.getFavoriteMovies().first()
+      val remainingMovies = favoriteDao.getFavorites(MOVIE_MEDIA_TYPE).first()
       assert(remainingMovies.isEmpty())
     }
 
@@ -125,7 +125,7 @@ class FavoriteLocalDataSourceTest {
       val result = localDataSource.deleteAll()
       assert(result is DbResult.Success && result.data == fakeMovies.size)
 
-      val remainingMovies = favoriteDao.getFavoriteMovies().first()
+      val remainingMovies = favoriteDao.getFavorites(MOVIE_MEDIA_TYPE).first()
       assert(remainingMovies.isEmpty())
     }
 
@@ -148,7 +148,7 @@ class FavoriteLocalDataSourceTest {
       )
       assert(result is DbResult.Success && result.data == Unit)
 
-      val updatedMovie = favoriteDao.getFavoriteMovies().first().first()
+      val updatedMovie = favoriteDao.getFavorites(MOVIE_MEDIA_TYPE).first().first()
       assertTrue(updatedMovie.isFavorite)
       assert(updatedMovie.isFavorite && updatedMovie.isWatchlist)
     }
@@ -160,7 +160,7 @@ class FavoriteLocalDataSourceTest {
       favoriteDao.insert(favoriteMovieEntity.copy(id = 3, isFavorite = true))
       favoriteDao.insert(favoriteMovieEntity.copy(id = 4, isFavorite = true))
 
-      favoriteDao.getFavoriteMovies().test {
+      favoriteDao.getFavorites(MOVIE_MEDIA_TYPE).test {
         assertEquals(1, awaitItem().size)
         cancelAndIgnoreRemainingEvents()
       }
@@ -173,7 +173,7 @@ class FavoriteLocalDataSourceTest {
       favoriteDao.insert(favoriteMovieEntity.copy(id = 3, isFavorite = true))
       favoriteDao.insert(favoriteMovieEntity.copy(id = 4, mediaId = 231, isFavorite = true))
 
-      favoriteDao.getFavoriteMovies().test {
+      favoriteDao.getFavorites(MOVIE_MEDIA_TYPE).test {
         assertEquals(2, awaitItem().size)
         cancelAndIgnoreRemainingEvents()
       }

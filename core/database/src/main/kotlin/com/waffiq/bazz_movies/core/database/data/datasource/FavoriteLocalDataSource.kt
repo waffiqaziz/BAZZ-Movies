@@ -1,5 +1,7 @@
 package com.waffiq.bazz_movies.core.database.data.datasource
 
+import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.coroutines.IoDispatcher
 import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
 import com.waffiq.bazz_movies.core.database.data.room.FavoriteDao
@@ -17,16 +19,16 @@ class FavoriteLocalDataSource @Inject constructor(
 ) : FavoriteLocalDataSourceInterface {
 
   override val getFavoriteMovies: Flow<List<FavoriteEntity>> =
-    favoriteDao.getFavoriteMovies().flowOn(ioDispatcher)
+    favoriteDao.getFavorites(MOVIE_MEDIA_TYPE).flowOn(ioDispatcher)
 
   override val getFavoriteTv: Flow<List<FavoriteEntity>> =
-    favoriteDao.getFavoriteTv().flowOn(ioDispatcher)
+    favoriteDao.getFavorites(TV_MEDIA_TYPE).flowOn(ioDispatcher)
 
   override val getWatchlistMovies: Flow<List<FavoriteEntity>> =
-    favoriteDao.getWatchlistMovies().flowOn(ioDispatcher)
+    favoriteDao.getWatchlist(MOVIE_MEDIA_TYPE).flowOn(ioDispatcher)
 
   override val getWatchlistTv: Flow<List<FavoriteEntity>> =
-    favoriteDao.getWatchlistTv().flowOn(ioDispatcher)
+    favoriteDao.getWatchlist(TV_MEDIA_TYPE).flowOn(ioDispatcher)
 
   override suspend fun insert(favoriteEntityList: FavoriteEntity): DbResult<Int> =
     executeDbOperation { favoriteDao.insert(favoriteEntityList).toInt() }

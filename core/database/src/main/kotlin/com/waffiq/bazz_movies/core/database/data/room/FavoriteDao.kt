@@ -28,25 +28,31 @@ interface FavoriteDao {
     }
   }
 
-  @Query("SELECT * FROM $FAVORITE_TABLE_NAME WHERE is_favorited = 1 and mediaType = 'tv'")
-  fun getFavoriteTv(): Flow<List<FavoriteEntity>>
-
-  @Query("SELECT * FROM $FAVORITE_TABLE_NAME WHERE is_favorited = 1 and mediaType = 'movie'")
-  fun getFavoriteMovies(): Flow<List<FavoriteEntity>>
-
-  @Query("SELECT * FROM $FAVORITE_TABLE_NAME WHERE is_watchlist = 1 and mediaType = 'movie'")
-  fun getWatchlistMovies(): Flow<List<FavoriteEntity>>
-
-  @Query("SELECT * FROM $FAVORITE_TABLE_NAME WHERE is_watchlist = 1 and mediaType = 'tv'")
-  fun getWatchlistTv(): Flow<List<FavoriteEntity>>
+  @Query(
+    """
+    SELECT * FROM $FAVORITE_TABLE_NAME
+    WHERE is_favorited = 1
+    AND mediaType = :mediaType
+  """,
+  )
+  fun getFavorites(mediaType: String): Flow<List<FavoriteEntity>>
 
   @Query(
     """
-        SELECT * FROM $FAVORITE_TABLE_NAME
-        WHERE mediaId = :mediaId
-        AND mediaType = :mediaType
-        LIMIT 1
-    """,
+    SELECT * FROM $FAVORITE_TABLE_NAME
+    WHERE is_watchlist = 1
+    AND mediaType = :mediaType
+  """,
+  )
+  fun getWatchlist(mediaType: String): Flow<List<FavoriteEntity>>
+
+  @Query(
+    """
+    SELECT * FROM $FAVORITE_TABLE_NAME
+    WHERE mediaId = :mediaId
+    AND mediaType = :mediaType
+    LIMIT 1
+  """,
   )
   suspend fun getByMedia(mediaId: Int, mediaType: String): FavoriteEntity?
 
@@ -60,7 +66,7 @@ interface FavoriteDao {
         mediaType = entity.mediaType,
       )
 
-      // This code is defensive code when theres race condition or db corrupt
+      // This code is defensive code when there's race condition or db corrupt
       // Basically insert() returning -1L guarantees a conflict exists in DB,
       // so getByMedia() will always return non-null here.
       if (existing != null) {
@@ -74,7 +80,13 @@ interface FavoriteDao {
     }
   }
 
-  @Query("DELETE FROM $FAVORITE_TABLE_NAME WHERE mediaId = :mediaId and mediaType = :mediaType")
+  @Query(
+    """
+    DELETE FROM $FAVORITE_TABLE_NAME
+    WHERE mediaId = :mediaId
+    AND mediaType = :mediaType
+  """,
+  )
   suspend fun deleteItem(mediaId: Int, mediaType: String): Int // delete from table
 
   @Query("DELETE FROM $FAVORITE_TABLE_NAME")
