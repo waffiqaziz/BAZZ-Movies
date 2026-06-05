@@ -582,4 +582,13 @@
     <item name="layout_collapseParallaxMultiplier">0.7</item>
   </style>
 
+  <style name="CreditsBottomSheetStyle" parent="ThemeOverlay.Material3.BottomSheetDialog">
+    <item name="android:navigationBarColor">@color/gray_850</item>
+    <item name="colorOnSurfaceVariant">@color/gray_700</item>
+    <item name="bottomSheetStyle">@style/MyBottomSheetStyle</item>
+  </style>
+
+  <style name="MyBottomSheetStyle" parent="Widget.Material3.BottomSheet.Modal">
+    <item name="backgroundTint">@color/gray_900</item>
+  </style>
 </resources>
