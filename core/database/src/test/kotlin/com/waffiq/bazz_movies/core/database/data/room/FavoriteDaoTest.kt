@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteException
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
+import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteMovieEntity
 import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteTvEntity
@@ -56,7 +57,7 @@ class FavoriteDaoTest {
     runTest {
       favoriteDao.insert(favoriteTvEntity)
 
-      val favorites = favoriteDao.getFavoriteTv().first()
+      val favorites = favoriteDao.getFavorites(TV_MEDIA_TYPE).first()
       assertEquals(1, favorites.size)
       assertEquals(favoriteTvEntity.mediaId, favorites[0].mediaId)
     }
@@ -66,7 +67,7 @@ class FavoriteDaoTest {
     runTest {
       favoriteDao.insert(favoriteMovieEntity)
 
-      val favorites = favoriteDao.getFavoriteMovies().first()
+      val favorites = favoriteDao.getFavorites(MOVIE_MEDIA_TYPE).first()
       assertEquals(1, favorites.size)
       assertEquals(favoriteMovieEntity.mediaId, favorites[0].mediaId)
     }
@@ -101,7 +102,7 @@ class FavoriteDaoTest {
     runTest(UnconfinedTestDispatcher()) {
       favoriteDao.insert(watchlistMovieEntity)
 
-      favoriteDao.getWatchlistMovies().test {
+      favoriteDao.getWatchlist(MOVIE_MEDIA_TYPE).test {
         val firstEmission = awaitItem()
         assertEquals(1, firstEmission.size)
         assertEquals(watchlistMovieEntity.mediaId, firstEmission[0].mediaId)
@@ -126,7 +127,7 @@ class FavoriteDaoTest {
     runTest(UnconfinedTestDispatcher()) {
       favoriteDao.insert(watchlistTvEntity)
 
-      favoriteDao.getWatchlistTv().test {
+      favoriteDao.getWatchlist(TV_MEDIA_TYPE).test {
         val firstEmission = awaitItem()
         assertEquals(1, firstEmission.size)
         assertEquals(watchlistTvEntity.mediaId, firstEmission[0].mediaId)
@@ -217,7 +218,7 @@ class FavoriteDaoTest {
       val deleteCount = favoriteDao.deleteItem(103, TV_MEDIA_TYPE)
       assertEquals(1, deleteCount)
 
-      val favorites = favoriteDao.getFavoriteTv().first()
+      val favorites = favoriteDao.getFavorites(TV_MEDIA_TYPE).first()
       assertEquals(0, favorites.size)
     }
 
@@ -228,17 +229,17 @@ class FavoriteDaoTest {
       favoriteDao.insert(favoriteMovieEntity)
 
       // check if the item is inserted
-      val favoritesTv = favoriteDao.getFavoriteTv().first()
+      val favoritesTv = favoriteDao.getFavorites(TV_MEDIA_TYPE).first()
       assertEquals(1, favoritesTv.size)
 
-      val favoritesMovie = favoriteDao.getFavoriteMovies().first()
+      val favoritesMovie = favoriteDao.getFavorites(MOVIE_MEDIA_TYPE).first()
       assertEquals(1, favoritesMovie.size)
 
       val deleteCount = favoriteDao.deleteAll()
 
       assertEquals(2, deleteCount)
-      assertEquals(0, favoriteDao.getFavoriteTv().first().size)
-      assertEquals(0, favoriteDao.getFavoriteMovies().first().size)
+      assertEquals(0, favoriteDao.getFavorites(TV_MEDIA_TYPE).first().size)
+      assertEquals(0, favoriteDao.getFavorites(MOVIE_MEDIA_TYPE).first().size)
     }
 
   @Test
@@ -285,7 +286,7 @@ class FavoriteDaoTest {
       assertEquals(1, firstInsert)
       assertEquals(-1, secondInsert) // -1 indicates insert was ignored
 
-      val movies = favoriteDao.getFavoriteMovies().first()
+      val movies = favoriteDao.getFavorites(MOVIE_MEDIA_TYPE).first()
       assertEquals(1, movies.size)
       assertEquals("Original Title", movies[0].title)
       assertEquals(true, movies[0].isFavorite)

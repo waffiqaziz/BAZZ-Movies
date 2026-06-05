@@ -30,7 +30,8 @@ dependencies {
   api(project(":core:models"))
   implementation(project(":core:coroutines"))
   implementation(project(":core:utils"))
-  implementation("com.google.code.gson:gson:2.14.0")
+
+  implementation(libs.gson)
 
   testImplementation(project(":core:test"))
   testImplementation(libs.androidx.core.testing)
