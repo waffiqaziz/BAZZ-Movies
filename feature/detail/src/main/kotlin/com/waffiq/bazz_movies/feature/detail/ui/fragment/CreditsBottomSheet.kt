@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.ui.fragment
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.tabs.TabLayout
 import com.waffiq.bazz_movies.core.designsystem.R.string.cast
 import com.waffiq.bazz_movies.core.designsystem.R.string.crew
+import com.waffiq.bazz_movies.core.designsystem.R.style.CreditsBottomSheetStyle
 import com.waffiq.bazz_movies.feature.detail.databinding.BottomSheetCreditsBinding
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.CastAdapter
@@ -40,6 +42,10 @@ class CreditsBottomSheet : BottomSheetDialogFragment() {
   ): View {
     binding = BottomSheetCreditsBinding.inflate(inflater, null, false)
     return binding.root
+  }
+
+  override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    return BottomSheetDialog(requireContext(), CreditsBottomSheetStyle)
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
