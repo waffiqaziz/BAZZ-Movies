@@ -54,13 +54,13 @@ class WatchlistPagingAdapter(
         navigator.openDetails(itemView.context, mediaItem.copy(mediaType = mediaType))
       }
 
-      bindImagePoster(binding.ivPicture, data)
+      bindImagePoster(binding.content.ivPicture, data)
       itemView.context.bindMetadata(
-        tvTitle = binding.tvTitle,
-        tvYearReleased = binding.tvYearReleased,
-        tvGenre = binding.tvGenre,
-        ratingBar = binding.ratingBar,
-        tvRating = binding.tvRating,
+        tvTitle = binding.content.tvTitle,
+        tvYearReleased = binding.content.tvYearReleased,
+        tvGenre = binding.content.tvGenre,
+        ratingBar = binding.content.ratingBar,
+        tvRating = binding.content.tvRating,
         mediaItem = data,
       )
 
