@@ -85,7 +85,7 @@ class BasicMovieDetailMapperTest {
       budget = 0,
       revenue = 0L,
       voteAverage = 0.0,
-      listGenres = emptyList()
+      listGenres = emptyList(),
     ).stubToMediaDetail()
 
     assertNull(result.duration)

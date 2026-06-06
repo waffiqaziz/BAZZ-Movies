@@ -47,7 +47,7 @@ class BasicTvDetailMapperTest {
       numberOfSeasons = null,
       numberOfEpisodes = null,
       firstAirDate = null,
-      popularity = null
+      popularity = null,
     ).stubToMediaDetail()
 
     assertEquals(0, result.id)

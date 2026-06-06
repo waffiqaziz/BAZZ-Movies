@@ -68,11 +68,11 @@ class WatchlistPagingAdapterTest : BaseAdapterPagingTest() {
       viewHolder = adapter.ViewHolder(binding)
       setupBoundViewHolder()
 
-      assertEquals("Test Movie Name", binding.tvTitle.text.toString())
-      assertEquals("Adventure", binding.tvGenre.text.toString())
-      assertEquals(TEST_DATE_FORMATTED, binding.tvYearReleased.text.toString())
-      assertEquals("10/10", binding.tvRating.text.toString())
-      assertEquals("5.0", binding.ratingBar.rating.toString())
+      assertEquals("Test Movie Name", binding.content.tvTitle.text.toString())
+      assertEquals("Adventure", binding.content.tvGenre.text.toString())
+      assertEquals(TEST_DATE_FORMATTED, binding.content.tvYearReleased.text.toString())
+      assertEquals("10/10", binding.content.tvRating.text.toString())
+      assertEquals("5.0", binding.content.ratingBar.rating.toString())
     }
 
   @Test
