@@ -5,7 +5,7 @@
   android:layout_width="match_parent"
   android:id="@+id/container"
   android:layout_height="wrap_content"
-  android:minHeight="134dp"
+  android:minHeight="170dp"
   android:orientation="horizontal">
 
   <com.google.android.material.imageview.ShapeableImageView
@@ -13,8 +13,6 @@
     android:layout_width="100dp"
     android:layout_height="150dp"
     android:contentDescription="@string/picture"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="@+id/bg_item"
     app:shapeAppearanceOverlay="@style/roundedCornersImageView"
     tools:src="@color/yellow" />
 
