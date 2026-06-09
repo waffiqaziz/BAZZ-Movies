@@ -12,7 +12,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.color.yellow_700
 import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.undo
-import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.FavoritePagingAdapter
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.MediaPagingAdapter
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.handlePagingLoadState
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
@@ -43,7 +43,7 @@ class LoggedUserDelegate(
   private val iSnackbar: ISnackbar,
 ) {
 
-  private lateinit var adapter: FavoritePagingAdapter
+  private lateinit var adapter: MediaPagingAdapter
   private var currentSnackbar: Snackbar? = null
   private var isWantToDelete = false
   private var isUndo = false
@@ -68,15 +68,21 @@ class LoggedUserDelegate(
   }
 
   private fun setupAdapter() {
-    adapter = FavoritePagingAdapter(navigator, mediaType, onDelete = { mediaItem ->
-      isUndo = false
-      isWantToDelete = true
-      postRemoveFavorite(titleHandler(mediaItem), mediaItem.id)
-    }, onAddToWatchlist = { mediaItem ->
-      isUndo = false
-      isWantToDelete = false
-      postToAddWatchlist(titleHandler(mediaItem), mediaItem.id)
-    })
+    adapter = MediaPagingAdapter(
+      navigator = navigator,
+      mediaType = mediaType,
+      config = MediaPagingAdapter.SwipeConfig.forFavorite(),
+      onDelete = { mediaItem ->
+        isUndo = false
+        isWantToDelete = true
+        postRemoveFavorite(titleHandler(mediaItem), mediaItem.id)
+      },
+      { mediaItem ->
+        isUndo = false
+        isWantToDelete = false
+        postToAddWatchlist(titleHandler(mediaItem), mediaItem.id)
+      },
+    )
     binding.rvFavorite.adapter = adapter.withLoadStateFooter(
       footer = LoadingStateAdapter { adapter.retry() },
     )

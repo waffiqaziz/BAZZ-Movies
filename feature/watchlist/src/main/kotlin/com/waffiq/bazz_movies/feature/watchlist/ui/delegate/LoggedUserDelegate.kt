@@ -12,7 +12,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.color.yellow_700
 import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.undo
-import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.WatchlistPagingAdapter
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.MediaPagingAdapter
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.handlePagingLoadState
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
@@ -43,7 +43,7 @@ class LoggedUserDelegate(
   private val iSnackbar: ISnackbar,
 ) {
 
-  private lateinit var adapter: WatchlistPagingAdapter
+  private lateinit var adapter: MediaPagingAdapter
   private var currentSnackbar: Snackbar? = null
   private var isWantToDelete = false
   private var isUndo = false
@@ -68,15 +68,21 @@ class LoggedUserDelegate(
   }
 
   private fun setupAdapter() {
-    adapter = WatchlistPagingAdapter(navigator, mediaType, onDelete = { mediaItem ->
-      isUndo = false
-      isWantToDelete = true
-      postRemoveWatchlist(titleHandler(mediaItem), mediaItem.id)
-    }, onAddToWatchlist = { mediaItem ->
-      isUndo = false
-      isWantToDelete = false
-      postToAddFavorite(titleHandler(mediaItem), mediaItem.id)
-    })
+    adapter = MediaPagingAdapter(
+      navigator = navigator,
+      mediaType = mediaType,
+      config = MediaPagingAdapter.SwipeConfig.forWatchlist(),
+      onDelete = { mediaItem ->
+        isUndo = false
+        isWantToDelete = true
+        postRemoveWatchlist(titleHandler(mediaItem), mediaItem.id)
+      },
+      onActionEnd = { mediaItem ->
+        isUndo = false
+        isWantToDelete = false
+        postToAddFavorite(titleHandler(mediaItem), mediaItem.id)
+      },
+    )
     binding.rvWatchlist.adapter = adapter.withLoadStateFooter(
       footer = LoadingStateAdapter { adapter.retry() },
     )
