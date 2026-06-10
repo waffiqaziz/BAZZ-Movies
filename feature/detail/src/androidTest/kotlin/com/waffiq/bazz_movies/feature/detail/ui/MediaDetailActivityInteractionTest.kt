@@ -28,7 +28,7 @@ import com.waffiq.bazz_movies.feature.detail.R.id.rating_bar_action
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_cast
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_genre
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_recommendation
-import com.waffiq.bazz_movies.feature.detail.R.id.score_scrollview
+import com.waffiq.bazz_movies.feature.detail.R.id.score_section
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_your_score
 import com.waffiq.bazz_movies.feature.detail.R.id.your_score_viewGroup
 import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
@@ -430,7 +430,7 @@ class MediaDetailActivityInteractionTest :
   }
 
   private fun performScoreClick() {
-    score_scrollview.performSwipeLeft()
+    score_section.performSwipeLeft()
     your_score_viewGroup.performClick()
   }
 

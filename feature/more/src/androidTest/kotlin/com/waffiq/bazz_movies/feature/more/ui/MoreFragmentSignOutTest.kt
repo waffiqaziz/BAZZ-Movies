@@ -149,6 +149,7 @@ class MoreFragmentSignOutTest : MoreFragmentTestHelper by DefaultMoreFragmentTes
     runTest {
       performSignOutAction()
       mockUIState.emit(UIState.Success(Unit))
+      advanceUntilIdle()
 
       verify { mockMoreLocalViewModel.deleteAllSearchHistory() }
     }

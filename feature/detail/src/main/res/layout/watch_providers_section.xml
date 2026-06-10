@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/watch_provider_section"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/tv_toggle_watch_providers"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@android:color/transparent"
+    android:fontFamily="@font/nunito_sans_bold"
+    android:foreground="?attr/selectableItemBackground"
+    android:gravity="start|center"
+    android:text="@string/where_to_watch_down"
+    android:textAllCaps="false"
+    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+    android:textColor="@color/gray_100"
+    app:cornerRadius="@dimen/button_radius"
+    app:rippleColor="@color/gray_800" />
+
+  <LinearLayout
+    android:id="@+id/group_watch_providers"
+    style="@style/GroupWatchProviders"
+    tools:visibility="visible">
+
+    <!-- Streaming (Flatrate) -->
+    <LinearLayout
+      android:id="@+id/layout_streaming"
+      style="@style/LayoutWatchProviders"
+      tools:visibility="visible">
+
+      <TextView
+        android:id="@+id/label_streaming"
+        style="@style/LabelWatchProviders"
+        android:text="@string/streaming" />
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_streaming"
+        style="@style/RecyclerViewWatchProviders"
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_watch_provider" />
+    </LinearLayout>
+
+    <!-- Ads -->
+    <LinearLayout
+      android:id="@+id/layout_ads"
+      style="@style/LayoutWatchProviders"
+      tools:visibility="visible">
+
+      <TextView
+        android:id="@+id/label_ads"
+        style="@style/LabelWatchProviders"
+        android:text="@string/ads" />
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_ads"
+        style="@style/RecyclerViewWatchProviders"
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_watch_provider" />
+    </LinearLayout>
+
+    <!-- Buy -->
+    <LinearLayout
+      android:id="@+id/layout_buy"
+      style="@style/LayoutWatchProviders"
+      tools:visibility="visible">
+
+      <TextView
+        android:id="@+id/label_buy"
+        style="@style/LabelWatchProviders"
+        android:text="@string/buy" />
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_buy"
+        style="@style/RecyclerViewWatchProviders"
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_watch_provider" />
+    </LinearLayout>
+
+    <!-- Rent -->
+    <LinearLayout
+      android:id="@+id/layout_rent"
+      style="@style/LayoutWatchProviders"
+      tools:visibility="visible">
+
+      <TextView
+        android:id="@+id/label_rent"
+        style="@style/LabelWatchProviders"
+        android:text="@string/rent" />
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_rent"
+        style="@style/RecyclerViewWatchProviders"
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_watch_provider" />
+    </LinearLayout>
+
+    <!-- Free -->
+    <LinearLayout
+      android:id="@+id/layout_free"
+      style="@style/LayoutWatchProviders"
+      tools:visibility="visible">
+
+      <TextView
+        android:id="@+id/label_free"
+        style="@style/LabelWatchProviders"
+        android:text="@string/free" />
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_free"
+        style="@style/RecyclerViewWatchProviders"
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_watch_provider" />
+    </LinearLayout>
+
+    <!-- JustWatch attribution -->
+    <LinearLayout
+      android:id="@+id/layout_justwatch"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="@dimen/default_margin_parent_20"
+      android:orientation="horizontal">
+
+      <TextView
+        style="@style/TextBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/data_powered_by" />
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_justwatch"
+        style="@style/MyTransparentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="-5dp"
+        android:fontFamily="@font/nunito_sans_bold"
+        android:text="@string/justwatch"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+        android:textColor="@color/gray_100" />
+    </LinearLayout>
+
+    <TextView
+      android:id="@+id/tv_watch_providers_message"
+      style="@style/TextBody"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="@dimen/default_margin_parent_20"
+      android:layout_marginBottom="8dp"
+      android:text=""
+      android:visibility="gone"
+      tools:text="Error no watch provider"
+      tools:visibility="visible" />
+  </LinearLayout>
+</LinearLayout>

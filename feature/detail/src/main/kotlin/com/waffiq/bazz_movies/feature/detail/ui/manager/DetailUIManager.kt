@@ -166,9 +166,11 @@ class DetailUIManager(
   fun setupSideSheet() {
     sideSheetDialog = SideSheetDialog(activity)
     sideSheetBinding = SideSheetContentBinding.inflate(activity.layoutInflater)
-    sideSheetDialog.setContentView(sideSheetBinding.root)
-    sideSheetDialog.setCanceledOnTouchOutside(true)
-    sideSheetDialog.setCancelable(true)
+    sideSheetDialog.apply {
+      setContentView(sideSheetBinding.root)
+      setCanceledOnTouchOutside(true)
+      setCancelable(true)
+    }
 
     // setup for keywords
     adapterKeywords = KeywordsAdapter(navigator)
@@ -252,10 +254,10 @@ class DetailUIManager(
     binding.apply {
       if (details.genreId != null) adapterGenre.setGenre(details.genreId)
       if (details.tmdbScore.isNullOrEmpty()) {
-        tmdbViewGroup.isVisible = false
+        scoreSection.tmdbViewGroup.isVisible = false
       } else {
-        tvScoreTmdb.text = formatRating(details.tmdbScore.toDouble())
-        tmdbViewGroup.isVisible = true
+        scoreSection.tvScoreTmdb.text = formatRating(details.tmdbScore.toDouble())
+        scoreSection.tmdbViewGroup.isVisible = true
       }
 
       // set duration for movie and status for tv-series
@@ -344,7 +346,7 @@ class DetailUIManager(
   fun updateOMDbScores(omdbDetails: OMDbDetails) {
     val rottenTomatoes = omdbDetails.ratings?.firstOrNull { it.source == "Rotten Tomatoes" }?.value
 
-    binding.apply {
+    binding.scoreSection.apply {
       imdbViewGroup.isVisible = getScoreFromOMDB(omdbDetails.imdbRating)
       metascoreViewGroup.isVisible = getScoreFromOMDB(omdbDetails.metascore)
       rottenTomatoesViewGroup.isVisible = !rottenTomatoes.isNullOrEmpty()
