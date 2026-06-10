@@ -95,18 +95,18 @@ class UserInteractionHandler(
   private fun setupUser() {
     when (userState) {
       is UserAuthState.LoggedIn -> {
-        binding.yourScoreViewGroup.isVisible = true
-        binding.yourScoreViewGroup.setOnClickListener { showDialogRate() }
+        binding.scoreSection.yourScoreViewGroup.isVisible = true
+        binding.scoreSection.yourScoreViewGroup.setOnClickListener { showDialogRate() }
         getMediaState()
       }
 
       is UserAuthState.Guest -> {
-        binding.yourScoreViewGroup.isVisible = false
+        binding.scoreSection.yourScoreViewGroup.isVisible = false
         detailViewModel.getByMedia(dataExtra.id, dataExtra.mediaType)
       }
 
       is UserAuthState.NotInitialized -> {
-        binding.yourScoreViewGroup.isVisible = false
+        binding.scoreSection.yourScoreViewGroup.isVisible = false
         // do nothing, wait for user state to be set
       }
     }
@@ -238,7 +238,7 @@ class UserInteractionHandler(
    * Displays the user's current rating in the UI after submit a rating.
    */
   fun showRatingUserLogin(state: MediaState) {
-    binding.tvScoreYourScore.text = when (val rating = state.rated) {
+    binding.scoreSection.tvScoreYourScore.text = when (val rating = state.rated) {
       is Rated.Unrated -> activity.getString(not_available)
       is Rated.Value -> rating.value.toString()
     }
@@ -246,7 +246,7 @@ class UserInteractionHandler(
 
   /** Shows the rating dialog for user to submit a rating. */
   private fun showDialogRate() {
-    val rateNow = binding.tvScoreYourScore.text.toString()
+    val rateNow = binding.scoreSection.tvScoreYourScore.text.toString()
 
     RateDialog(
       context = activity,

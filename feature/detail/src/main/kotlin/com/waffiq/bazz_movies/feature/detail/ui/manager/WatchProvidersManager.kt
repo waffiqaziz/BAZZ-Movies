@@ -16,6 +16,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.where_to_watch_up
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding
+import com.waffiq.bazz_movies.feature.detail.databinding.WatchProvidersSectionBinding
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.WatchProvidersAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 
@@ -43,6 +44,7 @@ class WatchProvidersManager(
   private lateinit var adapterRent: WatchProvidersAdapter
   private lateinit var adapterStreaming: WatchProvidersAdapter
 
+  private var provider: WatchProvidersSectionBinding = binding.watchProviderSection
   private var isExpanded = false
 
   init {
@@ -54,29 +56,22 @@ class WatchProvidersManager(
    * Sets up the RecyclerViews and their adapters for each watch provider category.
    */
   private fun setupWatchProvidersUI() {
-    setupRecyclerViewsWithSnap(
-      listOf(
-        binding.rvAds,
-        binding.rvBuy,
-        binding.rvFree,
-        binding.rvRent,
-        binding.rvStreaming,
-      ),
-    )
-
     val clickListener = { openTMDBWatchPage() }
-
     adapterAds = WatchProvidersAdapter(clickListener)
     adapterBuy = WatchProvidersAdapter(clickListener)
     adapterFree = WatchProvidersAdapter(clickListener)
     adapterRent = WatchProvidersAdapter(clickListener)
     adapterStreaming = WatchProvidersAdapter(clickListener)
 
-    setupRecyclerView(binding.rvAds, adapterAds)
-    setupRecyclerView(binding.rvBuy, adapterBuy)
-    setupRecyclerView(binding.rvFree, adapterFree)
-    setupRecyclerView(binding.rvRent, adapterRent)
-    setupRecyclerView(binding.rvStreaming, adapterStreaming)
+    with(provider) {
+      setupRecyclerViewsWithSnap(listOf(rvAds, rvBuy, rvFree, rvRent, rvStreaming))
+
+      setupRecyclerView(rvAds, adapterAds)
+      setupRecyclerView(rvBuy, adapterBuy)
+      setupRecyclerView(rvFree, adapterFree)
+      setupRecyclerView(rvRent, adapterRent)
+      setupRecyclerView(rvStreaming, adapterStreaming)
+    }
   }
 
   private fun setupRecyclerView(recyclerView: RecyclerView, adapter: WatchProvidersAdapter) {
@@ -90,11 +85,11 @@ class WatchProvidersManager(
    * Sets up click listeners for toggling provider visibility and external links.
    */
   private fun setupClickListeners() {
-    binding.tvToggleWatchProviders.setOnClickListener {
+    provider.tvToggleWatchProviders.setOnClickListener {
       toggleWatchProvidersVisibility()
     }
 
-    binding.btnJustwatch.setOnClickListener {
+    provider.btnJustwatch.setOnClickListener {
       openJustWatch()
     }
   }
@@ -105,10 +100,10 @@ class WatchProvidersManager(
   private fun toggleWatchProvidersVisibility() {
     isExpanded = !isExpanded
 
-    TransitionManager.beginDelayedTransition(binding.watchProviderSection, AutoTransition())
-    binding.groupWatchProviders.visibility = if (isExpanded) View.VISIBLE else View.GONE
+    TransitionManager.beginDelayedTransition(provider.watchProviderSection, AutoTransition())
+    provider.groupWatchProviders.visibility = if (isExpanded) View.VISIBLE else View.GONE
 
-    binding.tvToggleWatchProviders.text = if (isExpanded) {
+    provider.tvToggleWatchProviders.text = if (isExpanded) {
       context.getString(where_to_watch_up)
     } else {
       context.getString(where_to_watch_down)
@@ -172,8 +167,8 @@ class WatchProvidersManager(
    * Hides the error message and shows the JustWatch layout.
    */
   private fun hideError() {
-    binding.tvWatchProvidersMessage.isVisible = false
-    binding.layoutJustwatch.isVisible = true
+    provider.tvWatchProvidersMessage.isVisible = false
+    provider.layoutJustwatch.isVisible = true
   }
 
   /**
@@ -182,18 +177,20 @@ class WatchProvidersManager(
    * @param message The error message to display.
    */
   private fun showError(message: String) {
-    binding.tvWatchProvidersMessage.apply {
-      text = message
-      isVisible = true
-    }
-    binding.layoutJustwatch.isVisible = false
+    provider.apply {
+      tvWatchProvidersMessage.apply {
+        text = message
+        isVisible = true
+      }
+      layoutJustwatch.isVisible = false
 
-    // hide all provider sections
-    binding.layoutAds.isVisible = false
-    binding.layoutBuy.isVisible = false
-    binding.layoutFree.isVisible = false
-    binding.layoutRent.isVisible = false
-    binding.layoutStreaming.isVisible = false
+      // hide all provider sections
+      layoutAds.isVisible = false
+      layoutBuy.isVisible = false
+      layoutFree.isVisible = false
+      layoutRent.isVisible = false
+      layoutStreaming.isVisible = false
+    }
   }
 
   /**
@@ -209,10 +206,12 @@ class WatchProvidersManager(
     adapterStreaming.setProviders(state.flatrate)
 
     // update provider visibility
-    binding.layoutAds.isVisible = state.ads.isNotEmpty()
-    binding.layoutBuy.isVisible = state.buy.isNotEmpty()
-    binding.layoutFree.isVisible = state.free.isNotEmpty()
-    binding.layoutRent.isVisible = state.rent.isNotEmpty()
-    binding.layoutStreaming.isVisible = state.flatrate.isNotEmpty()
+    provider.apply {
+      layoutAds.isVisible = state.ads.isNotEmpty()
+      layoutBuy.isVisible = state.buy.isNotEmpty()
+      layoutFree.isVisible = state.free.isNotEmpty()
+      layoutRent.isVisible = state.rent.isNotEmpty()
+      layoutStreaming.isVisible = state.flatrate.isNotEmpty()
+    }
   }
 }
