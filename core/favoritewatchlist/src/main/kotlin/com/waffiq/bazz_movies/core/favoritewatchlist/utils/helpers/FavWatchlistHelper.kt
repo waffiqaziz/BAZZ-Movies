@@ -20,22 +20,12 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import java.text.DecimalFormat
 
 /**
  * A utility object that provides helper functions for handling UI interactions
  * and managing load states during paging.
  */
 object FavWatchlistHelper {
-
-  /**
-   * Handle rating and shows with format `rate/10`
-   * For example: 10/10 or 8.5/10
-   *
-   * @param voteAverage is user rating
-   */
-  fun ratingHandler(voteAverage: Float?): String =
-    DecimalFormat("#.#").format((voteAverage ?: 0F)).toString() + "/10"
 
   /**
    * Handles the paging load state for a PagingDataAdapter.

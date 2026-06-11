@@ -40,7 +40,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_left_icon
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
-import com.waffiq.bazz_movies.core.utils.GeneralHelper.initLinearLayoutManagerVertical
+import com.waffiq.bazz_movies.core.utils.LayoutHelper.initLinearLayoutManagerVertical
 import com.waffiq.bazz_movies.core.utils.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.utils.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.feature.search.databinding.FragmentSearchBinding

@@ -7,7 +7,7 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.core.models.ProfileImageable
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
-import com.waffiq.bazz_movies.core.utils.GeneralHelper.initLinearLayoutManagerVertical
+import com.waffiq.bazz_movies.core.utils.LayoutHelper.initLinearLayoutManagerVertical
 import com.waffiq.bazz_movies.feature.search.domain.model.KnownForItem
 
 object SearchHelper {

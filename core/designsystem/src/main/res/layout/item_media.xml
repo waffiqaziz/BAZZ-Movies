@@ -1,43 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.listitem.ListItemLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:id="@+id/list_item_layout"
+  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
-  android:layout_height="wrap_content">
+  android:id="@+id/container"
+  android:layout_height="wrap_content"
+  android:orientation="horizontal">
 
-  <!--  Swipe RIGHT (Delete action)-->
-  <com.google.android.material.listitem.ListItemRevealLayout
-    android:id="@+id/reveal_layout_start"
-    style="@style/ListItemRevealLayout.Start">
+  <com.google.android.material.imageview.ShapeableImageView
+    android:id="@+id/iv_picture"
+    android:layout_width="100dp"
+    android:layout_height="150dp"
+    android:contentDescription="@string/picture"
+    app:shapeAppearanceOverlay="@style/roundedCornersImageView"
+    tools:src="@drawable/ic_bazz_placeholder_poster" />
 
-    <com.google.android.material.button.MaterialButton
-      android:id="@+id/btn_action_start"
-      style="@style/ListItemReveal.Button.Start" />
-
-  </com.google.android.material.listitem.ListItemRevealLayout>
-
-  <com.google.android.material.listitem.ListItemCardView
-    android:id="@+id/container_result"
-    style="?attr/listItemCardViewStyle"
+  <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/list_item_card_background"
-    app:shapeAppearance="?attr/listItemShapeAppearanceSingle">
+    android:layout_height="match_parent"
+    android:layout_marginVertical="4dp"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/margin_between_item">
 
-    <include
-      android:id="@+id/content"
-      layout="@layout/content_item_media" />
+    <TextView
+      android:id="@+id/tv_title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ellipsize="end"
+      android:fontFamily="@font/nunito_sans_semi_bold"
+      android:includeFontPadding="false"
+      android:lineSpacingExtra="0dp"
+      android:maxLines="2"
+      android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+      android:textColor="@color/white"
+      tools:text="Bleach: Sennen Kessen-hen - Soukoku-tan" />
 
-  </com.google.android.material.listitem.ListItemCardView>
+    <TextView
+      android:id="@+id/tv_year_released"
+      style="@style/TextBody"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="4dp"
+      android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+      tools:text="Dec 21, 2021" />
 
-  <!--  Swipe LEFT (Favorite/Watchlist action)-->
-  <com.google.android.material.listitem.ListItemRevealLayout
-    android:id="@+id/reveal_layout_end"
-    style="@style/ListItemRevealLayout.End">
+    <TextView
+      android:id="@+id/tv_genre"
+      style="@style/TextBody"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="4dp"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+      tools:text="Action, Superhero, Sci-fi" />
 
-    <com.google.android.material.button.MaterialButton
-      android:id="@+id/btn_action_end"
-      style="@style/ListItemReveal.Button.End" />
 
-  </com.google.android.material.listitem.ListItemRevealLayout>
-</com.google.android.material.listitem.ListItemLayout>
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="4dp"
+      android:orientation="horizontal">
+
+      <TextView
+        android:id="@+id/tv_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:fontFamily="@font/nunito_sans_semi_bold"
+        android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+        android:textColor="@color/yellow"
+        tools:text="5.0/10" />
+
+      <RatingBar
+        android:id="@+id/rating_bar"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="3dp"
+        android:progressBackgroundTint="@color/yellow"
+        android:progressTint="@color/yellow"
+        android:secondaryProgressTint="@color/yellow"
+        android:stepSize="0.1"
+        tools:rating="2.4" />
+
+    </LinearLayout>
+  </LinearLayout>
+</LinearLayout>

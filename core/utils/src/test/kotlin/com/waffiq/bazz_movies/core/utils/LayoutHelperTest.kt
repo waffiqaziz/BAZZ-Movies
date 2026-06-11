@@ -11,12 +11,12 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
-class GeneralHelperTest {
+class LayoutHelperTest {
 
   @Test
   fun initLinearLayoutManagerVertical_shouldInitialize_withValidContext() {
     val context: Context = RuntimeEnvironment.getApplication()
-    val layoutManager = GeneralHelper.initLinearLayoutManagerVertical(context)
+    val layoutManager = LayoutHelper.initLinearLayoutManagerVertical(context)
 
     assertEquals(LinearLayoutManager::class.java, layoutManager::class.java)
     assertEquals(LinearLayoutManager.VERTICAL, layoutManager.orientation)
@@ -27,7 +27,7 @@ class GeneralHelperTest {
   fun initLinearLayoutManagerVertical_shouldThrowFalse_withInvalidContext() {
     // simulate a scenario with a mocked or invalid context
     val invalidContext: Context = RuntimeEnvironment.getApplication().applicationContext
-    val layoutManager = GeneralHelper.initLinearLayoutManagerVertical(invalidContext)
+    val layoutManager = LayoutHelper.initLinearLayoutManagerVertical(invalidContext)
 
     // verify the layout manager is created successfully
     assertNotNull(layoutManager)
@@ -42,7 +42,7 @@ class GeneralHelperTest {
   @Test
   fun initLinearLayoutManagerVertical_shouldHandleUnexpectedProperties() {
     val context: Context = RuntimeEnvironment.getApplication()
-    val layoutManager = GeneralHelper.initLinearLayoutManagerVertical(context)
+    val layoutManager = LayoutHelper.initLinearLayoutManagerVertical(context)
 
     // verify no unintended changes to other properties
     assertFalse(layoutManager.stackFromEnd) // default should be false

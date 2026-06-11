@@ -17,7 +17,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.add_to_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.add_to_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.remove_from_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.remove_from_watchlist
-import com.waffiq.bazz_movies.core.designsystem.databinding.ItemMediaBinding
+import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaBinding
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.SwipeCallbackFactory.createSwipeCallback
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.MediaAdapterPagingHelper.DIFF_CALLBACK
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.MediaAdapterPagingHelper.bindImagePoster
@@ -60,7 +60,7 @@ class MediaPagingAdapter(
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-    val binding = ItemMediaBinding.inflate(
+    val binding = ListItemMediaBinding.inflate(
       LayoutInflater.from(parent.context),
       parent,
       false,
@@ -76,7 +76,7 @@ class MediaPagingAdapter(
     )
   }
 
-  inner class ViewHolder(private val binding: ItemMediaBinding) :
+  inner class ViewHolder(private val binding: ListItemMediaBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     private lateinit var data: MediaItem
