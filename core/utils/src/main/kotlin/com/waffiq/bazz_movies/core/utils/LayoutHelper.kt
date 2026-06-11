@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
  * A utility object that provides general helper functions for commonly used UI components and
  * behaviors.
  */
-object GeneralHelper {
+object LayoutHelper {
 
   /**
    * Initializes and returns a LinearLayoutManager with a vertical orientation.

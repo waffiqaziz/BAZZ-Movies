@@ -11,7 +11,7 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewMo
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.core.utils.GeneralHelper.initLinearLayoutManagerVertical
+import com.waffiq.bazz_movies.core.utils.LayoutHelper.initLinearLayoutManagerVertical
 import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentFavoriteChildBinding
 import com.waffiq.bazz_movies.feature.favorite.ui.delegate.GuestUserDelegate
 import com.waffiq.bazz_movies.feature.favorite.ui.delegate.LoggedUserDelegate

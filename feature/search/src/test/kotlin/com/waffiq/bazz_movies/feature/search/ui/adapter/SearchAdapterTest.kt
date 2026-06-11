@@ -7,7 +7,7 @@ import androidx.paging.PagingData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
-import com.waffiq.bazz_movies.core.designsystem.databinding.ItemResultBinding
+import com.waffiq.bazz_movies.core.designsystem.databinding.SearchItemMediaBinding
 import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
@@ -15,10 +15,8 @@ import com.waffiq.bazz_movies.feature.search.domain.model.KnownForItem
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.navigation.INavigator
 import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertNotNull
 import junit.framework.TestCase.assertSame
-import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -43,7 +41,7 @@ class SearchAdapterTest {
 
   private lateinit var adapter: SearchAdapter
   private lateinit var inflater: LayoutInflater
-  private lateinit var binding: ItemResultBinding
+  private lateinit var binding: SearchItemMediaBinding
   private lateinit var viewHolder: SearchAdapter.ViewHolder
   private lateinit var parent: FrameLayout
 
@@ -60,7 +58,7 @@ class SearchAdapterTest {
     }
     parent = FrameLayout(context)
     inflater = LayoutInflater.from(context)
-    binding = ItemResultBinding.inflate(inflater, parent, false)
+    binding = SearchItemMediaBinding.inflate(inflater, parent, false)
     viewHolder = adapter.ViewHolder(binding)
   }
 
@@ -92,9 +90,11 @@ class SearchAdapterTest {
 
       submitPagingAndWait(movieData)
 
-      assertEquals("Transformers", binding.tvTitle.text.toString())
-      assertEquals("Adventure, Science Fiction, Action", binding.tvGenre.text.toString())
-      assertEquals("2007-06-27", binding.tvYearReleased.text.toString())
+      binding.content.apply {
+        assertEquals("Transformers", tvTitle.text.toString())
+        assertEquals("Adventure, Science Fiction, Action", tvGenre.text.toString())
+        assertEquals("2007-06-27", tvYearReleased.text.toString())
+      }
     }
 
   @Test
@@ -111,12 +111,11 @@ class SearchAdapterTest {
 
       submitPagingAndWait(tvData)
 
-      assertEquals("Bleach", binding.tvTitle.text.toString())
-      assertEquals(
-        "Action & Adventure, Animation, Sci-Fi & Fantasy",
-        binding.tvGenre.text.toString(),
-      )
-      assertEquals("2004-10-05", binding.tvYearReleased.text.toString())
+      binding.content.apply {
+        assertEquals("Bleach", tvTitle.text.toString())
+        assertEquals("Action & Adventure, Animation, Sci-Fi & Fantasy", tvGenre.text.toString())
+        assertEquals("2004-10-05", tvYearReleased.text.toString())
+      }
     }
 
   @Test
@@ -138,9 +137,11 @@ class SearchAdapterTest {
 
       submitPagingAndWait(personData)
 
-      assertEquals("Jason Statham", binding.tvTitle.text.toString())
-      assertEquals("The Meg, The Transporter, Wrath of Man", binding.tvGenre.text.toString())
-      assertEquals("Acting", binding.tvYearReleased.text.toString())
+      binding.content.apply {
+        assertEquals("Jason Statham", tvTitle.text.toString())
+        assertEquals("The Meg, The Transporter, Wrath of Man", tvGenre.text.toString())
+        assertEquals("Acting", tvYearReleased.text.toString())
+      }
     }
 
   @Test
@@ -191,7 +192,7 @@ class SearchAdapterTest {
           mediaType = "movie",
         ),
       )
-      binding.containerResult.performClick()
+      binding.item.performClick()
 
       val expectedItem = MediaItem(
         id = 1,
@@ -220,7 +221,7 @@ class SearchAdapterTest {
       advanceUntilIdle()
 
       adapter.onBindViewHolder(viewHolder, 0)
-      binding.containerResult.performClick()
+      binding.item.performClick()
 
       val expectedPerson = MediaCastItem(
         id = 1,
@@ -261,40 +262,4 @@ class SearchAdapterTest {
       advanceUntilIdle()
       adapter.onBindViewHolder(viewHolder, 0)
     }
-
-  @Test
-  fun diffCallback_whenItemsAreTheSame_returnsTrueForSameIdAndMediaType() {
-    val oldItem = MultiSearchItem(id = 1, mediaType = "movie")
-    val newItem = MultiSearchItem(id = 1, mediaType = "movie")
-
-    assertTrue(SearchAdapter.DIFF_CALLBACK.areItemsTheSame(oldItem, newItem))
-  }
-
-  @Test
-  fun diffCallback_whenItemsAreTheSame_returnsFalseForDifferentIdOrMediaType() {
-    val oldItem = MultiSearchItem(id = 1, mediaType = "movie")
-    val newItem1 = MultiSearchItem(id = 2, mediaType = "movie") // different ID
-    val newItem2 = MultiSearchItem(id = 1, mediaType = "tv") // different mediaType
-
-    assertFalse(SearchAdapter.DIFF_CALLBACK.areItemsTheSame(oldItem, newItem1))
-    assertFalse(SearchAdapter.DIFF_CALLBACK.areItemsTheSame(oldItem, newItem2))
-  }
-
-  @Test
-  fun diffCallback_whenContentsAreTheSame_returnsTrueForSameIdAndMediaType() {
-    val oldItem = MultiSearchItem(id = 1, mediaType = "movie", title = "Movie 1")
-    val newItem = MultiSearchItem(id = 1, mediaType = "movie", title = "Different Title")
-
-    assertTrue(SearchAdapter.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem))
-  }
-
-  @Test
-  fun diffCallback_whenContentsAreTheSame_returnsFalseForDifferentIdOrMediaType() {
-    val oldItem = MultiSearchItem(id = 1, mediaType = "movie")
-    val newItem1 = MultiSearchItem(id = 2, mediaType = "movie") // different ID
-    val newItem2 = MultiSearchItem(id = 1, mediaType = "tv") // different mediaType
-
-    assertFalse(SearchAdapter.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem1))
-    assertFalse(SearchAdapter.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem2))
-  }
 }

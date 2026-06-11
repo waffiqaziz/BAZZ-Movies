@@ -11,7 +11,7 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewMo
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.core.utils.GeneralHelper
+import com.waffiq.bazz_movies.core.utils.LayoutHelper
 import com.waffiq.bazz_movies.feature.watchlist.databinding.FragmentWatchlistChildBinding
 import com.waffiq.bazz_movies.feature.watchlist.ui.delegate.GuestUserDelegate
 import com.waffiq.bazz_movies.feature.watchlist.ui.delegate.LoggedUserDelegate
@@ -57,7 +57,7 @@ abstract class BaseWatchlistFragment<T : Any> : Fragment() {
 
   private fun setupRecyclerView() {
     binding.rvWatchlist.apply {
-      layoutManager = GeneralHelper.initLinearLayoutManagerVertical(requireContext())
+      layoutManager = LayoutHelper.initLinearLayoutManagerVertical(requireContext())
       itemAnimator = DefaultItemAnimator()
     }
   }
