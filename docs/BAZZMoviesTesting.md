@@ -94,6 +94,7 @@ Below you can find a list of BAZZ Movies modules.
 | Module Name                                                  | Coverage                                                                                       |
 |--------------------------------------------------------------|------------------------------------------------------------------------------------------------|
 | [`:app`][app-link]                                           | [![Coverage][app-coverage-badge]][app-coverage-link]                                           |
+| [`:core:adapter`][core-adapter-link]                         | [![Coverage][core-adapter-coverage-badge]][core-adapter-coverage-link]                         |
 | [`:core:common`][core-common-link]                           | [![Coverage][core-common-coverage-badge]][core-common-coverage-link]                           |
 | [`:core:coroutines`][core-coroutines-link]                   | [![Coverage][core-coroutines-coverage-badge]][core-coroutines-coverage-link]                   |
 | [`:core:data`][core-data-link]                               | [![Coverage][core-data-coverage-badge]][core-data-coverage-link]                               |
@@ -273,6 +274,12 @@ plugins {
 [app-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=app
 
 [app-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=app
+
+[core-adapter-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/adapter
+
+[core-adapter-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-adapter
+
+[core-adapter-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-adapter
 
 [core-common-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/common
 

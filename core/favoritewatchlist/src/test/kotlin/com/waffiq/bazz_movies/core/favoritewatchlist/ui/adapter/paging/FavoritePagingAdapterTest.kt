@@ -9,6 +9,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.id.reveal_layout_start
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.BaseAdapterPagingTest
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.TEST_DATE_FORMATTED
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.movieData
+import com.waffiq.bazz_movies.core.uihelper.ui.adapter.SwipeConfig
 import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNotNull
@@ -26,7 +27,7 @@ class FavoritePagingAdapterTest : BaseAdapterPagingTest() {
     adapter = MediaPagingAdapter(
       navigator,
       MOVIE_MEDIA_TYPE,
-      MediaPagingAdapter.SwipeConfig.forFavorite(),
+      SwipeConfig.forFavorite(),
       onDelete,
       onAddToWatchlist,
     )

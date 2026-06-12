@@ -10,9 +10,8 @@ plugins {
 android.namespace = "com.waffiq.bazz_movies.feature.list"
 
 dependencies {
+  implementation(project(":core:adapter"))
   implementation(project(":core:data"))
-  implementation(project(":core:uihelper"))
-  implementation(project(":core:utils"))
 
   implementation(libs.androidx.activity)
   implementation(libs.androidx.paging.runtime)

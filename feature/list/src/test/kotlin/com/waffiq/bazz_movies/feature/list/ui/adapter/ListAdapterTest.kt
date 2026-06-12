@@ -12,7 +12,7 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemListBinding
-import com.waffiq.bazz_movies.core.designsystem.databinding.ItemResultBinding
+import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaNoSwipeBinding
 import com.waffiq.bazz_movies.core.mappers.MediaItemMapper.toMediaItem
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
@@ -59,7 +59,7 @@ class ListAdapterTest {
   private lateinit var adapter: ListAdapter
   private lateinit var inflater: LayoutInflater
   private lateinit var itemListBinding: ItemListBinding
-  private lateinit var itemResultBInding: ItemResultBinding
+  private lateinit var listItemMediaNoSwipeBinding: ListItemMediaNoSwipeBinding
   private lateinit var gridViewHolder: ListAdapter.GridViewHolder
   private lateinit var listViewHolder: ListAdapter.ListViewHolder
   private lateinit var parent: FrameLayout
@@ -76,14 +76,14 @@ class ListAdapterTest {
     parent = FrameLayout(context)
     inflater = LayoutInflater.from(context)
     itemListBinding = ItemListBinding.inflate(inflater, parent, false)
-    itemResultBInding = ItemResultBinding.inflate(inflater, parent, false)
+    listItemMediaNoSwipeBinding = ListItemMediaNoSwipeBinding.inflate(inflater, parent, false)
   }
 
   private fun setupAdapter(mediaSource: MediaSource = MediaSource.Typed(MOVIE_MEDIA_TYPE)) {
     adapter = ListAdapter(navigator, mediaSource)
     recyclerView.adapter = adapter
     gridViewHolder = adapter.GridViewHolder(itemListBinding)
-    listViewHolder = adapter.ListViewHolder(itemResultBInding)
+    listViewHolder = adapter.ListViewHolder(listItemMediaNoSwipeBinding)
   }
 
   private fun performClick(expectedItem: MediaItem) {
@@ -286,7 +286,7 @@ class ListAdapterTest {
 
       // perform click to check if its list layout
       val listHolder = holder as ListAdapter.ListViewHolder
-      listHolder.binding.containerResult.performClick()
+      listHolder.binding.item.performClick()
 
       verify(navigator).openDetails(any(), eq(mediaMovieItem.copy(mediaType = "movie")))
     }

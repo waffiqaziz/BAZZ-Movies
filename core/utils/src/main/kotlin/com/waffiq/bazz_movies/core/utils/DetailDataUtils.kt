@@ -162,7 +162,7 @@ object DetailDataUtils {
    *
    * @return date string or null if both are unavailable.
    */
-  private val Dateable.displayDate: String?
+  val Dateable.displayDate: String?
     get() = listOf(
       releaseDate,
       firstAirDate,

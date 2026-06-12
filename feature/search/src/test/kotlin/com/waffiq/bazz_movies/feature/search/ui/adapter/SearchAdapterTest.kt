@@ -7,7 +7,7 @@ import androidx.paging.PagingData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
-import com.waffiq.bazz_movies.core.designsystem.databinding.SearchItemMediaBinding
+import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaNoSwipeBinding
 import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
@@ -41,7 +41,7 @@ class SearchAdapterTest {
 
   private lateinit var adapter: SearchAdapter
   private lateinit var inflater: LayoutInflater
-  private lateinit var binding: SearchItemMediaBinding
+  private lateinit var binding: ListItemMediaNoSwipeBinding
   private lateinit var viewHolder: SearchAdapter.ViewHolder
   private lateinit var parent: FrameLayout
 
@@ -58,7 +58,7 @@ class SearchAdapterTest {
     }
     parent = FrameLayout(context)
     inflater = LayoutInflater.from(context)
-    binding = SearchItemMediaBinding.inflate(inflater, parent, false)
+    binding = ListItemMediaNoSwipeBinding.inflate(inflater, parent, false)
     viewHolder = adapter.ViewHolder(binding)
   }
 
@@ -93,7 +93,7 @@ class SearchAdapterTest {
       binding.content.apply {
         assertEquals("Transformers", tvTitle.text.toString())
         assertEquals("Adventure, Science Fiction, Action", tvGenre.text.toString())
-        assertEquals("2007-06-27", tvYearReleased.text.toString())
+        assertEquals("Jun 27, 2007", tvYearReleased.text.toString())
       }
     }
 
@@ -114,7 +114,7 @@ class SearchAdapterTest {
       binding.content.apply {
         assertEquals("Bleach", tvTitle.text.toString())
         assertEquals("Action & Adventure, Animation, Sci-Fi & Fantasy", tvGenre.text.toString())
-        assertEquals("2004-10-05", tvYearReleased.text.toString())
+        assertEquals("Oct 05, 2004", tvYearReleased.text.toString())
       }
     }
 
@@ -139,7 +139,9 @@ class SearchAdapterTest {
 
       binding.content.apply {
         assertEquals("Jason Statham", tvTitle.text.toString())
-        assertEquals("The Meg, The Transporter, Wrath of Man", tvGenre.text.toString())
+        assertEquals(
+          "Known For:\n" + "The Meg, The Transporter, Wrath of Man", tvGenre.text.toString()
+        )
         assertEquals("Acting", tvYearReleased.text.toString())
       }
     }

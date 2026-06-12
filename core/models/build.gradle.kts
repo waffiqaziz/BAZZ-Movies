@@ -4,7 +4,7 @@ plugins {
   id("kotlin-parcelize")
 }
 
-android.namespace = "com.waffiq.bazz_movies.core.domain"
+android.namespace = "com.waffiq.bazz_movies.core.models"
 
 dependencies {
   testImplementation(libs.robolectric)

@@ -8,24 +8,29 @@ import androidx.annotation.VisibleForTesting
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.listitem.ListItemCardView
-import com.waffiq.bazz_movies.core.designsystem.databinding.ItemWatchlistBinding
-import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.SwipeCallbackFactory.createSwipeCallback
-import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local.MediaAdapterDBHelper.bindImageBackdrop
-import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local.MediaAdapterDBHelper.bindMetadata
-import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local.MediaAdapterDBHelper.bindOpenDetail
+import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaSwipeBinding
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.SwipeAdapterHelper.bindContent
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.SwipeAdapterHelper.createSwipeCallback
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local.MediaLocalAdapterHelper.bindMetaData
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local.MediaLocalAdapterHelper.bindOpenDetail
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local.MediaLocalAdapterHelper.bindPicture
 import com.waffiq.bazz_movies.core.models.Favorite
+import com.waffiq.bazz_movies.core.uihelper.ui.adapter.SwipeConfig
 import com.waffiq.bazz_movies.navigation.INavigator
 
-class WatchlistAdapterDB(
+class MediaLocalAdapter(
   private val navigator: INavigator,
+  private val config: SwipeConfig,
   private val onDelete: (Favorite, Int) -> Unit,
   private val onAddToWatchlist: (Favorite, Int) -> Unit,
-) : ListAdapter<Favorite, WatchlistAdapterDB.ViewHolder>(
-  MediaAdapterDBHelper.FavoriteDiffCallback(),
-) {
+) : ListAdapter<Favorite, MediaLocalAdapter.ViewHolder>(MediaLocalDiffCallback()) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-    val binding = ItemWatchlistBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    val binding = ListItemMediaSwipeBinding.inflate(
+      LayoutInflater.from(parent.context),
+      parent,
+      false,
+    )
     return ViewHolder(binding)
   }
 
@@ -36,7 +41,7 @@ class WatchlistAdapterDB(
     )
   }
 
-  inner class ViewHolder(private val binding: ItemWatchlistBinding) :
+  inner class ViewHolder(private val binding: ListItemMediaSwipeBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     lateinit var data: Favorite
@@ -47,10 +52,10 @@ class WatchlistAdapterDB(
     fun bind(fav: Favorite) {
       data = fav
 
-      bindOpenDetail(binding.containerResult, navigator, data)
-
-      bindMetadata(binding.tvTitle, binding.tvYearReleased, binding.tvGenre, data)
-      bindImageBackdrop(binding.ivPicture, data)
+      binding.containerResult.bindOpenDetail(navigator, data)
+      binding.bindContent(config)
+      binding.bindMetaData(fav)
+      binding.content.ivPicture.bindPicture(fav)
 
       swipeCallback = createSwipeCallback(
         startLayout = binding.revealLayoutStart,

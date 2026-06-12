@@ -20,6 +20,7 @@ dependencyResolutionManagement {
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 rootProject.name = "BAZZ-Movies"
 include(":app")
+include(":core:adapter")
 include(":core:common")
 include(":core:coroutines")
 include(":core:data")
