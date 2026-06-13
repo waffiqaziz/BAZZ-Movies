@@ -7,20 +7,9 @@
         errorLine1="targetSdk = &quot;36&quot;"
         errorLine2="            ~~~~">
         <location
-            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
+            file="../gradle/libs.versions.toml"
             line="3"
             column="13"/>
-    </issue>
-
-    <issue
-        id="AndroidGradlePluginVersion"
-        message="A newer version of Gradle than 9.5.0 is available: 9.5.1"
-        errorLine1="distributionUrl=https\://services.gradle.org/distributions/gradle-9.5.0-bin.zip"
-        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/wrapper/gradle-wrapper.properties"
-            line="4"
-            column="17"/>
     </issue>
 
     <issue
@@ -29,9 +18,53 @@
         errorLine1="compileSdk = &quot;36&quot;"
         errorLine2="             ~~~~">
         <location
-            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
+            file="../gradle/libs.versions.toml"
             line="4"
             column="14"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.activity:activity than 1.12.4 is available: 1.13.0"
+        errorLine1="activityKtx = &quot;1.12.4&quot;"
+        errorLine2="              ~~~~~~~~">
+        <location
+            file="../gradle/libs.versions.toml"
+            line="32"
+            column="15"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.core:core than 1.18.0 is available: 1.19.0"
+        errorLine1="coreKtx = &quot;1.18.0&quot;"
+        errorLine2="          ~~~~~~~~">
+        <location
+            file="../gradle/libs.versions.toml"
+            line="36"
+            column="11"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.core:core-ktx than 1.18.0 is available: 1.19.0"
+        errorLine1="coreKtx = &quot;1.18.0&quot;"
+        errorLine2="          ~~~~~~~~">
+        <location
+            file="../gradle/libs.versions.toml"
+            line="36"
+            column="11"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of org.jetbrains.kotlin.jvm than 2.3.21 is available: 2.4.0"
+        errorLine1="kotlin = &quot;2.3.21&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="../gradle/libs.versions.toml"
+            line="15"
+            column="10"/>
     </issue>
 
     <issue

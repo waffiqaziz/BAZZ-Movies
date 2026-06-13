@@ -63,6 +63,9 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRIBUTION }}
 
+      - name: Run android linter
+        run: ./gradlew lintRelease
+
       - name: Run Detekt on main sources
         run: ./gradlew detekt
 
@@ -423,6 +426,16 @@ jobs:
           flags: app
           token: ${{ secrets.CODECOV_TOKEN }}
           name: app-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with core-adapter flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: core-adapter
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: core-adapter-coverage
         continue-on-error: true
 
       - name: Upload coverage with core-common flag
