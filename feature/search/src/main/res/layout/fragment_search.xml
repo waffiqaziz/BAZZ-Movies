@@ -51,7 +51,7 @@
       android:clipToPadding="false"
       android:contentDescription="@string/search_results"
       android:visibility="visible"
-      tools:listitem="@layout/search_item_media"
+      tools:listitem="@layout/list_item_media_no_swipe"
       tools:visibility="visible" />
 
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

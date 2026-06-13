@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.feature.list.ui
 
+import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.SystemBarStyle
@@ -9,6 +10,7 @@ import androidx.annotation.StringRes
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -64,6 +66,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 @Suppress("TooManyFunctions")
 @AndroidEntryPoint
@@ -97,6 +100,7 @@ class ListActivity : AppCompatActivity() {
     setupRecyclerView(args.mediaType)
     setupList(args)
     observeLoadState()
+    adjustAdapterPadding()
   }
 
   private fun extractDataFromIntent(): ListArgs? = extractArgsItemFromIntent(intent)
@@ -304,7 +308,10 @@ class ListActivity : AppCompatActivity() {
       adapter.refresh()
       binding.swipeRefresh.isRefreshing = false
     }
-    binding.btnToggleLayout.setOnClickListener { toggleLayout() }
+    binding.btnToggleLayout.setOnClickListener {
+      toggleLayout()
+      adjustAdapterPadding()
+    }
   }
 
   private fun toggleLayout() {
@@ -333,12 +340,23 @@ class ListActivity : AppCompatActivity() {
     binding.btnToggleLayout.setIconResource(if (isGrid) ic_grid else ic_list)
   }
 
+  private fun adjustAdapterPadding() {
+    if (adapter.isGridMode()) {
+      binding.rvList.updatePadding(8.dp, 6.dp, 8.dp, 6.dp)
+    } else {
+      binding.rvList.updatePadding(0.dp, 6.dp, 0.dp, 6.dp)
+    }
+  }
+
   private fun calculateSpanCount(): Int {
     val displayMetrics = resources.displayMetrics
     val screenWidthDp = displayMetrics.widthPixels / displayMetrics.density
     val columnWidthDp = COLUMN_WIDTH
     return (screenWidthDp / columnWidthDp).toInt().coerceAtLeast(2)
   }
+
+  val Int.dp: Int
+    get() = (this * Resources.getSystem().displayMetrics.density).roundToInt()
 
   companion object {
     const val COLUMN_WIDTH = 120f

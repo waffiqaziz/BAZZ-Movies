@@ -21,6 +21,7 @@ import com.waffiq.bazz_movies.core.models.FavoriteParams
 import com.waffiq.bazz_movies.core.models.WatchlistParams
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
+import com.waffiq.bazz_movies.core.uihelper.ui.adapter.SwipeConfig
 import com.waffiq.bazz_movies.core.uihelper.utils.SpannableUtils.buildActionMessage
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
@@ -71,7 +72,7 @@ class LoggedUserDelegate(
     adapter = MediaPagingAdapter(
       navigator = navigator,
       mediaType = mediaType,
-      config = MediaPagingAdapter.SwipeConfig.forWatchlist(),
+      config = SwipeConfig.forWatchlist(),
       onDelete = { mediaItem ->
         isUndo = false
         isWantToDelete = true

@@ -2,12 +2,24 @@ package com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter
 
 import android.view.Gravity
 import android.view.View
+import androidx.appcompat.content.res.AppCompatResources
 import com.google.android.material.listitem.ListItemCardView
 import com.google.android.material.listitem.ListItemLayout
 import com.google.android.material.listitem.RevealableListItem
 import com.google.android.material.listitem.SwipeableListItem
+import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaSwipeBinding
+import com.waffiq.bazz_movies.core.uihelper.ui.adapter.SwipeConfig
 
-object SwipeCallbackFactory {
+object SwipeAdapterHelper {
+
+  fun ListItemMediaSwipeBinding.bindContent(config: SwipeConfig) {
+    btnActionStart.contentDescription =
+      btnActionStart.context.getString(config.deleteContentDescription)
+    btnActionEnd.contentDescription =
+      btnActionEnd.context.getString(config.endActionContentDescription)
+    btnActionEnd.icon =
+      AppCompatResources.getDrawable(btnActionEnd.context, config.endActionIcon)
+  }
 
   fun createSwipeCallback(
     startLayout: View,

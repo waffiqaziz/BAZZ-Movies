@@ -12,10 +12,11 @@ import com.waffiq.bazz_movies.core.designsystem.R.color.yellow_700
 import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.undo
-import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local.FavoriteAdapterDB
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local.MediaLocalAdapter
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlreadyUtils
 import com.waffiq.bazz_movies.core.models.Favorite
+import com.waffiq.bazz_movies.core.uihelper.ui.adapter.SwipeConfig
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
 import com.waffiq.bazz_movies.core.uihelper.utils.SpannableUtils.buildActionMessage
 import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentFavoriteChildBinding
@@ -33,7 +34,7 @@ class GuestUserDelegate(
   private val mediaType: String,
 ) {
 
-  private lateinit var adapter: FavoriteAdapterDB
+  private lateinit var adapter: MediaLocalAdapter
   private var currentSnackbar: Snackbar? = null
   private var isWantToDelete = false
 
@@ -51,8 +52,9 @@ class GuestUserDelegate(
   }
 
   private fun setupAdapter() {
-    adapter = FavoriteAdapterDB(
+    adapter = MediaLocalAdapter(
       navigator = navigator,
+      config = SwipeConfig.forFavorite(),
       onDelete = { favorite, position ->
         isWantToDelete = true
         deleteFavorite(favorite)

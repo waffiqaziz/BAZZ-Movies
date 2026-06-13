@@ -4,6 +4,7 @@ import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.BaseAdapterPagingTest
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.movieData
+import com.waffiq.bazz_movies.core.uihelper.ui.adapter.SwipeConfig
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -19,7 +20,7 @@ class WatchlistPagingAdapterTest : BaseAdapterPagingTest() {
     adapter = MediaPagingAdapter(
       navigator,
       MOVIE_MEDIA_TYPE,
-      MediaPagingAdapter.SwipeConfig.forWatchlist(),
+      SwipeConfig.forWatchlist(),
       onDelete,
       onAddToWatchlist,
     )

@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.feature.more.ui
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.platform.app.InstrumentationRegistry
 import com.waffiq.bazz_movies.core.designsystem.R.string.no
 import com.waffiq.bazz_movies.core.designsystem.R.string.warning
 import com.waffiq.bazz_movies.core.designsystem.R.string.warning_signOut_logged_user
@@ -149,6 +150,7 @@ class MoreFragmentSignOutTest : MoreFragmentTestHelper by DefaultMoreFragmentTes
     runTest {
       performSignOutAction()
       mockUIState.emit(UIState.Success(Unit))
+      InstrumentationRegistry.getInstrumentation().waitForIdleSync()
       advanceUntilIdle()
 
       verify { mockMoreLocalViewModel.deleteAllSearchHistory() }

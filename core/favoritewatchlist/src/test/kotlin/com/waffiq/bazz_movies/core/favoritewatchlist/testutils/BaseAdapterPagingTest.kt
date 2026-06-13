@@ -5,7 +5,7 @@ import androidx.annotation.IdRes
 import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
 import com.google.android.material.listitem.SwipeableListItem
-import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaBinding
+import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaSwipeBinding
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.movieData
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.MediaPagingAdapter
 import com.waffiq.bazz_movies.core.models.MediaItem
@@ -21,7 +21,7 @@ abstract class BaseAdapterPagingTest :
   protected lateinit var onDelete: (MediaItem) -> Unit
   protected lateinit var onAddToWatchlist: (MediaItem) -> Unit
   protected lateinit var inflater: LayoutInflater
-  protected lateinit var binding: ListItemMediaBinding
+  protected lateinit var binding: ListItemMediaSwipeBinding
   protected lateinit var viewHolder: MediaPagingAdapter.ViewHolder
 
   protected val pagingData = PagingData.from(listOf(movieData))
@@ -35,7 +35,7 @@ abstract class BaseAdapterPagingTest :
     onDelete = mockk(relaxed = true)
     onAddToWatchlist = mockk(relaxed = true)
     inflater = LayoutInflater.from(context)
-    binding = ListItemMediaBinding.inflate(inflater, null, false)
+    binding = ListItemMediaSwipeBinding.inflate(inflater, null, false)
   }
 
   protected suspend fun setupBoundViewHolder() {

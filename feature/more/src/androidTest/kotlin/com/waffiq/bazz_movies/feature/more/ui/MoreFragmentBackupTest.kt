@@ -115,13 +115,15 @@ class MoreFragmentBackupTest : MoreFragmentTestHelper by DefaultMoreFragmentTest
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       moreFragment.handleRestoreUri(testUri)
     }
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync()
     shortDelay()
     yes.performTextClick()
 
-    shortDelay()
+    shortDelay(500)
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       moreFragment.handleRestoreUri(testUri)
     }
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync()
     shortDelay()
     no.performTextClick()
   }

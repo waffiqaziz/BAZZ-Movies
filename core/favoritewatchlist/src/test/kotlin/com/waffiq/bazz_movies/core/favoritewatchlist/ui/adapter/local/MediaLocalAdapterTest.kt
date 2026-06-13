@@ -1,15 +1,12 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local
 
 import android.os.Looper
-import android.view.LayoutInflater
 import android.widget.FrameLayout
-import androidx.test.core.app.ApplicationProvider
 import com.google.android.material.listitem.SwipeableListItem
 import com.waffiq.bazz_movies.core.designsystem.R.id.container_result
 import com.waffiq.bazz_movies.core.designsystem.R.id.reveal_layout_end
 import com.waffiq.bazz_movies.core.designsystem.R.id.reveal_layout_start
-import com.waffiq.bazz_movies.core.designsystem.databinding.ItemWatchlistBinding
-import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.BaseAdapterDBTest
+import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.BaseMediaLocalAdapterTest
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.INA_MOVIE_TITLE
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.INA_MOVIE_TITLE2
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.favorite
@@ -20,19 +17,11 @@ import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNotNull
 import junit.framework.TestCase.assertSame
 import org.junit.Assert.assertThrows
-import org.junit.Before
 import org.junit.Test
 import org.robolectric.Shadows.shadowOf
 import org.robolectric.shadows.ShadowLooper
 
-class WatchlistAdapterDBTest : BaseAdapterDBTest() {
-  private lateinit var adapter: WatchlistAdapterDB
-
-  @Before
-  fun setup() {
-    super.setUp()
-    adapter = WatchlistAdapterDB(navigator, onDelete, onAddToWatchlist)
-  }
+class MediaLocalAdapterTest : BaseMediaLocalAdapterTest() {
 
   @Test
   fun submitList_whenCalledTwice_updatesListAndItemCount() {
@@ -57,24 +46,19 @@ class WatchlistAdapterDBTest : BaseAdapterDBTest() {
 
   @Test
   fun onBindViewHolder_whenCalled_bindsCorrectDataForAllCases() {
-    val inflater = LayoutInflater.from(context)
-    val binding = ItemWatchlistBinding.inflate(inflater, null, false)
-    val viewHolder = adapter.ViewHolder(binding)
-
     // valid data
     adapter.submitList(listOf(favorite))
-    ShadowLooper.runUiThreadTasksIncludingDelayedTasks()
 
     adapter.onBindViewHolder(viewHolder, 0)
-    assertEquals(INA_MOVIE_TITLE, binding.tvTitle.text.toString())
-    assertEquals("Action", binding.tvGenre.text.toString())
-    assertEquals("Apr 04, 1979", binding.tvYearReleased.text.toString())
+    binding.content.apply {
+      assertEquals(INA_MOVIE_TITLE, tvTitle.text.toString())
+      assertEquals("Action", tvGenre.text.toString())
+      assertEquals("Apr 04, 1979", tvYearReleased.text.toString())
 
-    // released date empty
-    adapter.submitList(listOf(favorite.copy(releaseDate = "")))
-    ShadowLooper.runUiThreadTasksIncludingDelayedTasks()
-    adapter.onBindViewHolder(viewHolder, 0)
-    assertEquals("N/A", binding.tvYearReleased.text.toString())
+      // released date empty
+      viewHolder.bind(favorite.copy(releaseDate = ""))
+      assertEquals("N/A", tvYearReleased.text.toString())
+    }
   }
 
   @Test
@@ -90,9 +74,6 @@ class WatchlistAdapterDBTest : BaseAdapterDBTest() {
 
   @Test
   fun bind_whenCalled_loadsCorrectImageOrPlaceholder() {
-    val binding = ItemWatchlistBinding.inflate(LayoutInflater.from(context))
-    val viewHolder = adapter.ViewHolder(binding)
-
     val testCases = listOf(
       favorite.copy(
         backDrop = "N/A",
@@ -107,16 +88,12 @@ class WatchlistAdapterDBTest : BaseAdapterDBTest() {
       assertNotNull(viewHolder.data)
 
       // expect the tag has correct ID
-      assertEquals(favoriteTitle, binding.ivPicture.tag)
+      assertEquals(favoriteTitle, binding.content.ivPicture.tag)
     }
   }
 
   @Test
   fun onBindViewHolder_whenClicked_callsNavigator() {
-    val inflater = LayoutInflater.from(ApplicationProvider.getApplicationContext())
-    val binding = ItemWatchlistBinding.inflate(inflater, FrameLayout(inflater.context), false)
-    val viewHolder = adapter.ViewHolder(binding)
-
     adapter.submitList(listOf(favorite))
     adapter.onBindViewHolder(viewHolder, 0)
 
@@ -143,7 +120,7 @@ class WatchlistAdapterDBTest : BaseAdapterDBTest() {
   @Test
   fun bind_whenSwipedRight_callsOnDelete() {
     provideRecyclerView(adapter, submitData = { adapter.submitList(listOf(favorite)) })
-    val viewHolder = provideViewHolder<WatchlistAdapterDB.ViewHolder>()
+    val viewHolder = provideViewHolder<MediaLocalAdapter.ViewHolder>()
 
     assertNotNull(viewHolder)
     assertNotNull(viewHolder?.swipeCallback)
@@ -161,7 +138,7 @@ class WatchlistAdapterDBTest : BaseAdapterDBTest() {
   @Test
   fun bind_whenSwipedLeft_callsOnAddToWatchlist() {
     provideRecyclerView(adapter, submitData = { adapter.submitList(listOf(favorite)) })
-    val viewHolder = provideViewHolder<WatchlistAdapterDB.ViewHolder>()
+    val viewHolder = provideViewHolder<MediaLocalAdapter.ViewHolder>()
 
     assertNotNull(viewHolder)
     assertNotNull(viewHolder?.swipeCallback)
@@ -179,7 +156,7 @@ class WatchlistAdapterDBTest : BaseAdapterDBTest() {
   @Test
   fun bind_whenSwiped_othersState() {
     provideRecyclerView(adapter, submitData = { adapter.submitList(listOf(favorite)) })
-    val viewHolder = provideViewHolder<WatchlistAdapterDB.ViewHolder>()
+    val viewHolder = provideViewHolder<MediaLocalAdapter.ViewHolder>()
 
     assertNotNull(viewHolder)
     assertNotNull(viewHolder?.swipeCallback)
@@ -201,9 +178,6 @@ class WatchlistAdapterDBTest : BaseAdapterDBTest() {
 
   @Test
   fun viewHolder_whenUnbound_throwsThenInitializes() {
-    val binding = ItemWatchlistBinding.inflate(LayoutInflater.from(context))
-    val viewHolder = adapter.ViewHolder(binding)
-
     // uninitialized access should throw exception
     assertThrows(UninitializedPropertyAccessException::class.java) { viewHolder.data }
 

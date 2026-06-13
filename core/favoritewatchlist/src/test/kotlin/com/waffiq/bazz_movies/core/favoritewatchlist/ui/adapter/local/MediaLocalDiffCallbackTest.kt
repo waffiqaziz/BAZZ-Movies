@@ -2,20 +2,30 @@ package com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local
 
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.TestData
 import com.waffiq.bazz_movies.core.models.Favorite
-import junit.framework.TestCase
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class DiffCallbackDBTest {
+class MediaLocalDiffCallbackTest {
 
   private val favorite = TestData().baseFavorite
-  private val diffCallback = MediaAdapterDBHelper.FavoriteDiffCallback()
+  private val diffCallback = MediaLocalDiffCallback()
+
+  private val testCases = listOf(
+    Pair(favorite, favorite.copy(isFavorite = !favorite.isFavorite)),
+    Pair(favorite, favorite.copy(isWatchlist = !favorite.isWatchlist)),
+    Pair(
+      favorite,
+      favorite.copy(mediaType = if (favorite.mediaType == "movie") "tv" else "movie"),
+    ),
+  )
 
   @Test
   fun areContentsTheSame_whenContentIsSame_returnsTrue() {
     val oldItem: Favorite = favorite
     val newItem: Favorite = favorite // same content
 
-    TestCase.assertTrue(diffCallback.areContentsTheSame(oldItem, newItem))
+    assertTrue(diffCallback.areContentsTheSame(oldItem, newItem))
   }
 
   @Test
@@ -38,40 +48,22 @@ class DiffCallbackDBTest {
       lastUpdated = 435,
     ) // different content
 
-    TestCase.assertFalse(diffCallback.areContentsTheSame(oldItem, newItem))
+    assertFalse(diffCallback.areContentsTheSame(oldItem, newItem))
   }
 
   @Test
   fun areContentsTheSame_whenDifferentContent_returnsFalse() {
-    val testCases = listOf(
-      Pair(favorite, favorite.copy(isFavorite = !favorite.isFavorite)),
-      Pair(favorite, favorite.copy(isWatchlist = !favorite.isWatchlist)),
-      Pair(
-        favorite,
-        favorite.copy(mediaType = if (favorite.mediaType == "movie") "tv" else "movie"),
-      ),
-    )
-
     testCases.forEach { (oldItem, newItem) ->
-      TestCase.assertFalse(diffCallback.areContentsTheSame(oldItem, newItem))
+      assertFalse(diffCallback.areContentsTheSame(oldItem, newItem))
     }
   }
 
   @Test
   fun areItemsTheSame_whenSameContent_returnsTrue() {
-    val testCases = listOf(
-      Pair(favorite, favorite.copy(isFavorite = !favorite.isFavorite)),
-      Pair(favorite, favorite.copy(isWatchlist = !favorite.isWatchlist)),
-      Pair(
-        favorite,
-        favorite.copy(mediaType = if (favorite.mediaType == "movie") "tv" else "movie"),
-      ),
-    )
-
     testCases.forEach { (oldItem, newItem) ->
-      TestCase.assertFalse(diffCallback.areItemsTheSame(oldItem, newItem))
+      assertFalse(diffCallback.areItemsTheSame(oldItem, newItem))
     }
 
-    TestCase.assertTrue(diffCallback.areItemsTheSame(favorite, favorite))
+    assertTrue(diffCallback.areItemsTheSame(favorite, favorite))
   }
 }

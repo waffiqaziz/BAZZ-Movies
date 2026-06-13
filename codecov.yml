@@ -38,6 +38,11 @@ flag_management:
       carryforward: true
       
     # Core modules
+    - name: core-adapter
+      paths:
+        - core/adapter/
+      carryforward: true
+
     - name: core-common
       paths:
         - core/common/

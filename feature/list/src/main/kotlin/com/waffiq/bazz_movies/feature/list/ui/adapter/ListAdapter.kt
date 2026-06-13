@@ -8,20 +8,11 @@ import android.view.animation.AnimationUtils
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_poster
-import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_search
-import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
+import com.bazz_movies.core.adapter.BindAdapterHelper.bindMetaData
+import com.bazz_movies.core.adapter.BindAdapterHelper.bindPicture
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemListBinding
-import com.waffiq.bazz_movies.core.designsystem.databinding.ItemResultBinding
+import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaNoSwipeBinding
 import com.waffiq.bazz_movies.core.models.MediaItem
-import com.waffiq.bazz_movies.core.utils.DetailDataUtils.dateOf
-import com.waffiq.bazz_movies.core.utils.DetailDataUtils.imageSource
-import com.waffiq.bazz_movies.core.utils.DetailDataUtils.posterSource
-import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
-import com.waffiq.bazz_movies.core.utils.GenreHelper.getGenre
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.MediaSource
 
@@ -45,7 +36,9 @@ class ListAdapter(private val navigator: INavigator, private val source: MediaSo
     if (viewType == VIEW_TYPE_GRID) {
       GridViewHolder(ItemListBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     } else {
-      ListViewHolder(ItemResultBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+      ListViewHolder(
+        ListItemMediaNoSwipeBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+      )
     }
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -66,41 +59,18 @@ class ListAdapter(private val navigator: INavigator, private val source: MediaSo
     BaseViewHolder(binding.root) {
 
     override fun bind(mediaItem: MediaItem) {
-      binding.imgPoster.contentDescription = titleHandler(mediaItem)
-      Glide.with(binding.imgPoster)
-        .load(mediaItem.posterSource)
-        .placeholder(ic_bazz_placeholder_poster)
-        .transform(CenterCrop())
-        .transition(withCrossFade())
-        .error(ic_poster_error)
-        .into(binding.imgPoster)
-
-      binding.imgPoster.setOnClickListener {
-        itemView.context.openDetails(mediaItem)
-      }
+      binding.imgPoster.bindPicture(mediaItem)
+      binding.imgPoster.setOnClickListener { itemView.context.openDetails(mediaItem) }
     }
   }
 
-  inner class ListViewHolder(internal val binding: ItemResultBinding) :
+  inner class ListViewHolder(internal val binding: ListItemMediaNoSwipeBinding) :
     BaseViewHolder(binding.root) {
 
     override fun bind(mediaItem: MediaItem) {
-      binding.ivPicture.contentDescription = titleHandler(mediaItem)
-      Glide.with(binding.ivPicture)
-        .load(mediaItem.imageSource)
-        .placeholder(ic_bazz_placeholder_search)
-        .transform(CenterCrop())
-        .transition(withCrossFade())
-        .error(ic_poster_error)
-        .into(binding.ivPicture)
-
-      binding.tvTitle.text = titleHandler(mediaItem)
-      binding.tvYearReleased.text = itemView.context.dateOf(mediaItem)
-      binding.tvGenre.text = itemView.context.getGenre(mediaItem.listGenreIds)
-
-      binding.containerResult.setOnClickListener {
-        itemView.context.openDetails(mediaItem)
-      }
+      binding.content.ivPicture.bindPicture(mediaItem)
+      binding.content.bindMetaData(mediaItem)
+      binding.item.setOnClickListener { itemView.context.openDetails(mediaItem) }
     }
   }
 

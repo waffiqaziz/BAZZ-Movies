@@ -11,8 +11,8 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.imageview.ShapeableImageView
-      android:layout_width="150dp"
-      android:layout_height="100dp"
+      android:layout_width="100dp"
+      android:layout_height="150dp"
       android:adjustViewBounds="true"
       android:contentDescription="@string/picture"
       android:src="@color/gray_700"
@@ -26,13 +26,20 @@
 
       <!-- Name/title -->
       <com.google.android.material.imageview.ShapeableImageView
-        android:layout_width="170dp"
+        android:layout_width="220dp"
         android:layout_height="20dp"
         android:src="@color/gray_700"
         app:shapeAppearanceOverlay="@style/roundedCornersImageView" />
 
       <com.google.android.material.imageview.ShapeableImageView
-        android:layout_width="80dp"
+        android:layout_width="100dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="9dp"
+        android:src="@color/gray_700"
+        app:shapeAppearanceOverlay="@style/roundedCornersImageView" />
+
+      <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="150dp"
         android:layout_height="18dp"
         android:layout_marginTop="9dp"
         android:src="@color/gray_700"
