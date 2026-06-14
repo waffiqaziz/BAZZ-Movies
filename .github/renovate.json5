@@ -35,42 +35,36 @@
         'androidx.activity{/,}**',
         'androidx.fragment{/,}**',
       ],
-      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'androidX lifecycle',
       matchPackageNames: [
         'androidx.lifecycle{/,}**',
       ],
-      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'androidX navigation',
       matchPackageNames: [
         'androidx.navigation{/,}**',
       ],
-      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'androidX room',
       matchPackageNames: [
         'androidx.room{/,}**',
       ],
-      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'androidX paging',
       matchPackageNames: [
         'androidx.paging{/,}**',
       ],
-      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'firebase',
       matchPackageNames: [
         'com.google.firebase{/,}**',
       ],
-      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'google services',
@@ -78,7 +72,6 @@
         '/com.google.android.gms/',
         '/com.google.android.play/',
       ],
-      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'networking libraries',
@@ -87,7 +80,6 @@
         '/com.squareup.moshi/',
         '/com.squareup.okhttp3/',
       ],
-      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'testing libraries',
@@ -97,7 +89,6 @@
         '/androidx.arch.core:core-testing/',
         '/com.google.truth/',
       ],
-      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'mocking libraries',
@@ -106,14 +97,12 @@
         '/mockk/',
       ],
       separateMajorMinor: true,
-      commitMessagePrefix: 'chore(deps-mock):',
     },
     {
       groupName: 'hilt dependency injection',
       matchPackageNames: [
         'com.google.dagger{/,}**',
       ],
-      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'android gradle plugin',
@@ -123,41 +112,18 @@
         '/com.android.application/',
         '/com.android.library/',
       ],
-      commitMessagePrefix: 'chore(deps):',
-    },
-    {
-      groupName: 'GitHub Actions',
-      matchDepTypes: [
-        'action',
-      ],
-      digest: {
-        enabled: false,
-      },
-      matchPackageNames: [
-        'gradle/actions/{/,}**',
-        'actions/{/,}**',
-        'reactivecircus/{/,}**',
-        'stefanzweifel/{/,}**',
-        'marocchino/{/,}**',
-        '!/^codecov//',
-        '!/^codacy//',
-      ],
-      commitMessagePrefix: 'chore(ci):',
     },
     {
       matchUpdateTypes: [
         'minor',
         'patch',
       ],
-      automerge: false,
       matchPackageNames: [
-        '*',
         '!/com.android.tools.build/',
         '!/org.jetbrains.kotlin/',
         '!/com.google.devtools.ksp/',
         '!/androidx.room/',
       ],
-      commitMessagePrefix: 'chore(deps):',
     },
   ],
   ignoreDeps: [],
