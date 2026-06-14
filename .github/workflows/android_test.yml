@@ -157,14 +157,37 @@ jobs:
           path: '**/build/reports/tests/testDebugUnitTest/'
 
   instrumentation_test:
-    name: Instrumentation Tests
+    name: Instrumentation Tests (${{ matrix.module }})
     needs: detekt_checks
     runs-on: ubuntu-latest
     timeout-minutes: 45
     continue-on-error: true
     permissions:
       contents: read
-      actions: write # Needed for cache and artifact upload
+      actions: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - module: about
+            gradle_task: :feature:about:connectedDebugAndroidTest
+          - module: detail
+            gradle_task: :feature:detail:connectedDebugAndroidTest
+          - module: favorite
+            gradle_task: :feature:favorite:connectedDebugAndroidTest
+          - module: home
+            gradle_task: :feature:home:connectedDebugAndroidTest
+          - module: list
+            gradle_task: :feature:list:connectedDebugAndroidTest
+          - module: login
+            gradle_task: :feature:login:connectedDebugAndroidTest
+          - module: more
+            gradle_task: :feature:more:connectedDebugAndroidTest
+          - module: person
+            gradle_task: :feature:person:connectedDebugAndroidTest
+          - module: search
+            gradle_task: :feature:search:connectedDebugAndroidTest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -199,7 +222,6 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRIBUTION }}
 
-      # skip cache operations for Renovate PRs
       - name: Cache Gradle dependencies
         if: github.actor != 'renovate[bot]'
         uses: actions/cache@v5
@@ -223,6 +245,7 @@ jobs:
           restore-keys: |
             build-cache-${{ runner.os }}-
 
+      # Each module gets its own AVD cache to avoid conflicts between parallel instances
       - name: AVD cache
         uses: actions/cache@v5
         id: avd-cache
@@ -230,9 +253,9 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-31
+          key: avd-31-${{ matrix.module }}
 
-      - name: create AVD and generate snapshot for caching
+      - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a
         with:
@@ -243,9 +266,7 @@ jobs:
           disable-animations: false
           script: echo "Generated AVD snapshot for caching."
 
-      # https://github.com/ReactiveCircus/android-emulator-runner/commit/e89f39f1abbbd05b1113a29cf4db69e7540cae5a
-      # v2.37.0
-      - name: Run instrumentation test
+      - name: Run instrumentation test (${{ matrix.module }})
         uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a
         with:
           api-level: ${{ env.ANDROID_API_LEVEL }}
@@ -255,20 +276,12 @@ jobs:
           disable-animations: true
           script: |
             adb wait-for-device
-            ./gradlew :feature:about:connectedDebugAndroidTest --stacktrace --continue
-            ./gradlew :feature:detail:connectedDebugAndroidTest --stacktrace --continue
-            ./gradlew :feature:favorite:connectedDebugAndroidTest --stacktrace --continue
-            ./gradlew :feature:home:connectedDebugAndroidTest --stacktrace --continue
-            ./gradlew :feature:list:connectedDebugAndroidTest --stacktrace --continue
-            ./gradlew :feature:login:connectedDebugAndroidTest --stacktrace --continue
-            ./gradlew :feature:more:connectedDebugAndroidTest --stacktrace --continue
-            ./gradlew :feature:person:connectedDebugAndroidTest --stacktrace --continue
-            ./gradlew :feature:search:connectedDebugAndroidTest --stacktrace && killall -INT crashpad_handler || true
+            ./gradlew ${{ matrix.gradle_task }} --stacktrace
 
-      # Cache instrumentation test results for the coverage job
-      - name: Cache instrumentation test results
+      # Cache per-module results so test_coverage can restore them individually
+      - name: Cache instrumentation test results (${{ matrix.module }})
         uses: actions/cache/save@v5
-        if: always() # Save cache even if tests fail
+        if: always()
         with:
           path: |
             ${{ github.workspace }}/**/build/outputs/androidTest-results/
@@ -277,13 +290,13 @@ jobs:
             ${{ github.workspace }}/**/build/test-results/connectedDebugAndroidTest/
             ${{ github.workspace }}/**/build/tmp/kotlin-classes/debug/
             ${{ github.workspace }}/**/build/tmp/kotlin-classes/debugAndroidTest/
-          key: instrumentation-test-results-${{ github.run_id }}
+          key: instrumentation-test-results-${{ github.run_id }}-${{ matrix.module }}
 
       - name: Upload Instrumentation Test Reports (if needed)
         if: failure()
         uses: actions/upload-artifact@v7
         with:
-          name: instrumentation-test-report
+          name: instrumentation-test-report-${{ matrix.module }}
           path: '**/build/reports/androidTests/connected/'
 
   test_coverage:
@@ -325,7 +338,6 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRIBUTION }}
 
-      # Restore cached unit test results
       - name: Restore unit test results
         id: cache_restore_unit
         uses: actions/cache/restore@v5
@@ -337,8 +349,104 @@ jobs:
             ${{ github.workspace }}/**/build/tmp/kotlin-classes/
           key: unit-test-results-${{ github.run_id }}
 
-      # Restore cached instrumentation test results
-      - name: Restore instrumentation test results
+      # Restore each module's instrumentation results individually
+      - name: Restore instrumentation test results (about)
+        uses: actions/cache/restore@v5
+        with:
+          path: |
+            ${{ github.workspace }}/**/build/outputs/androidTest-results/
+            ${{ github.workspace }}/**/build/outputs/code_coverage/
+            ${{ github.workspace }}/**/build/reports/androidTests/
+            ${{ github.workspace }}/**/build/test-results/connectedDebugAndroidTest/
+            ${{ github.workspace }}/**/build/tmp/kotlin-classes/debug/
+            ${{ github.workspace }}/**/build/tmp/kotlin-classes/debugAndroidTest/
+          key: instrumentation-test-results-${{ github.run_id }}-about
+
+      - name: Restore instrumentation test results (detail)
+        uses: actions/cache/restore@v5
+        with:
+          path: |
+            ${{ github.workspace }}/**/build/outputs/androidTest-results/
+            ${{ github.workspace }}/**/build/outputs/code_coverage/
+            ${{ github.workspace }}/**/build/reports/androidTests/
+            ${{ github.workspace }}/**/build/test-results/connectedDebugAndroidTest/
+            ${{ github.workspace }}/**/build/tmp/kotlin-classes/debug/
+            ${{ github.workspace }}/**/build/tmp/kotlin-classes/debugAndroidTest/
+          key: instrumentation-test-results-${{ github.run_id }}-detail
+
+      - name: Restore instrumentation test results (favorite)
+        uses: actions/cache/restore@v5
+        with:
+          path: |
+            ${{ github.workspace }}/**/build/outputs/androidTest-results/
+            ${{ github.workspace }}/**/build/outputs/code_coverage/
+            ${{ github.workspace }}/**/build/reports/androidTests/
+            ${{ github.workspace }}/**/build/test-results/connectedDebugAndroidTest/
+            ${{ github.workspace }}/**/build/tmp/kotlin-classes/debug/
+            ${{ github.workspace }}/**/build/tmp/kotlin-classes/debugAndroidTest/
+          key: instrumentation-test-results-${{ github.run_id }}-favorite
+
+      - name: Restore instrumentation test results (home)
+        uses: actions/cache/restore@v5
+        with:
+          path: |
+            ${{ github.workspace }}/**/build/outputs/androidTest-results/
+            ${{ github.workspace }}/**/build/outputs/code_coverage/
+            ${{ github.workspace }}/**/build/reports/androidTests/
+            ${{ github.workspace }}/**/build/test-results/connectedDebugAndroidTest/
+            ${{ github.workspace }}/**/build/tmp/kotlin-classes/debug/
+            ${{ github.workspace }}/**/build/tmp/kotlin-classes/debugAndroidTest/
+          key: instrumentation-test-results-${{ github.run_id }}-home
+
+      - name: Restore instrumentation test results (list)
+        uses: actions/cache/restore@v5
+        with:
+          path: |
+            ${{ github.workspace }}/**/build/outputs/androidTest-results/
+            ${{ github.workspace }}/**/build/outputs/code_coverage/
+            ${{ github.workspace }}/**/build/reports/androidTests/
+            ${{ github.workspace }}/**/build/test-results/connectedDebugAndroidTest/
+            ${{ github.workspace }}/**/build/tmp/kotlin-classes/debug/
+            ${{ github.workspace }}/**/build/tmp/kotlin-classes/debugAndroidTest/
+          key: instrumentation-test-results-${{ github.run_id }}-list
+
+      - name: Restore instrumentation test results (login)
+        uses: actions/cache/restore@v5
+        with:
+          path: |
+            ${{ github.workspace }}/**/build/outputs/androidTest-results/
+            ${{ github.workspace }}/**/build/outputs/code_coverage/
+            ${{ github.workspace }}/**/build/reports/androidTests/
+            ${{ github.workspace }}/**/build/test-results/connectedDebugAndroidTest/
+            ${{ github.workspace }}/**/build/tmp/kotlin-classes/debug/
+            ${{ github.workspace }}/**/build/tmp/kotlin-classes/debugAndroidTest/
+          key: instrumentation-test-results-${{ github.run_id }}-login
+
+      - name: Restore instrumentation test results (more)
+        uses: actions/cache/restore@v5
+        with:
+          path: |
+            ${{ github.workspace }}/**/build/outputs/androidTest-results/
+            ${{ github.workspace }}/**/build/outputs/code_coverage/
+            ${{ github.workspace }}/**/build/reports/androidTests/
+            ${{ github.workspace }}/**/build/test-results/connectedDebugAndroidTest/
+            ${{ github.workspace }}/**/build/tmp/kotlin-classes/debug/
+            ${{ github.workspace }}/**/build/tmp/kotlin-classes/debugAndroidTest/
+          key: instrumentation-test-results-${{ github.run_id }}-more
+
+      - name: Restore instrumentation test results (person)
+        uses: actions/cache/restore@v5
+        with:
+          path: |
+            ${{ github.workspace }}/**/build/outputs/androidTest-results/
+            ${{ github.workspace }}/**/build/outputs/code_coverage/
+            ${{ github.workspace }}/**/build/reports/androidTests/
+            ${{ github.workspace }}/**/build/test-results/connectedDebugAndroidTest/
+            ${{ github.workspace }}/**/build/tmp/kotlin-classes/debug/
+            ${{ github.workspace }}/**/build/tmp/kotlin-classes/debugAndroidTest/
+          key: instrumentation-test-results-${{ github.run_id }}-person
+
+      - name: Restore instrumentation test results (search)
         id: cache_restore_instrumentation
         uses: actions/cache/restore@v5
         with:
@@ -349,14 +457,15 @@ jobs:
             ${{ github.workspace }}/**/build/test-results/connectedDebugAndroidTest/
             ${{ github.workspace }}/**/build/tmp/kotlin-classes/debug/
             ${{ github.workspace }}/**/build/tmp/kotlin-classes/debugAndroidTest/
-          key: instrumentation-test-results-${{ github.run_id }}
+          key: instrumentation-test-results-${{ github.run_id }}-search
 
       # Fallback: run unit tests if cache missed
       - name: Run debug unit tests (fallback)
         if: steps.cache_restore_unit.outputs.cache-hit != 'true'
         run: ./gradlew testDebugUnitTest --stacktrace
 
-      # Fallback: run instrumentation tests if cache missed
+      # Fallback: run all instrumentation tests if the last module's cache missed
+      # (using cache-hit from the search module as a proxy for "did any matrix job save results")
       - name: Enable KVM (fallback)
         if: steps.cache_restore_instrumentation.outputs.cache-hit != 'true'
         run: |
@@ -388,7 +497,7 @@ jobs:
           echo "=== Checking Unit Test Results ==="
           find . -name "testDebugUnitTest.exec" -type f || echo "No unit test .exec files found"
           find . -path "*/build/test-results/testDebugUnitTest" -type d || echo "No unit test results found"
-          
+
           echo "=== Checking Instrumentation Test Results ==="
           find . -name "connectedDebugAndroidTest.exec" -type f || echo "No instrumentation test .exec files found"
           find . -path "*/build/test-results/connectedDebugAndroidTest" -type d || echo "No instrumentation test results found"
@@ -397,12 +506,11 @@ jobs:
         run: |
           echo "Generating combined coverage report..."
           ./gradlew createDebugCombinedCoverageReport --stacktrace
-          
+
           echo "=== Checking Generated Reports ==="
           find . -name "createDebugCombinedCoverageReport.xml" -type f || echo "No combined coverage report found"
           find . -path "*/build/reports/jacoco" -type d || echo "No jacoco reports directory found"
 
-      # Check if coverage report exists before uploading
       - name: Check coverage report exists
         id: check_coverage
         run: |
