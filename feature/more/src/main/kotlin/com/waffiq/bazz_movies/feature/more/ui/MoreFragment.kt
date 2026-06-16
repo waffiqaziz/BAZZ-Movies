@@ -187,7 +187,9 @@ class MoreFragment : Fragment() {
         requireContext().toastShort(getString(successMessage))
         openLoginActivity()
       }
+
       is UIState.Error -> errorSignOut(state.message)
+
       else -> Unit // Idle / Loading
     }
   }
