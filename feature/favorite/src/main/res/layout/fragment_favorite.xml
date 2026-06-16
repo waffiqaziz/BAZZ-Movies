@@ -44,6 +44,8 @@
 
     </com.google.android.material.tabs.TabLayout>
 
+    <include layout="@layout/divider"/>
+
   </com.google.android.material.appbar.AppBarLayout>
 
   <androidx.viewpager2.widget.ViewPager2
