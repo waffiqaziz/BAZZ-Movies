@@ -19,11 +19,11 @@
 
       <TextView
         android:id="@+id/tv_score_imdb"
-        style="@style/TextScore"
+        style="@style/TextAppearance.App.Score"
         tools:text="8.5" />
 
       <TextView
-        style="@style/TextScoreHeader"
+        style="@style/TextAppearance.App.Score.Header"
         android:text="@string/imdb" />
     </LinearLayout>
 
@@ -34,11 +34,11 @@
 
       <TextView
         android:id="@+id/tv_score_metascore"
-        style="@style/TextScore"
+        style="@style/TextAppearance.App.Score"
         tools:text="8.5" />
 
       <TextView
-        style="@style/TextScoreHeader"
+        style="@style/TextAppearance.App.Score.Header"
         android:text="@string/metascore" />
     </LinearLayout>
 
@@ -49,11 +49,11 @@
 
       <TextView
         android:id="@+id/tv_score_rotten_tomatoes"
-        style="@style/TextScore"
+        style="@style/TextAppearance.App.Score"
         tools:text="85%" />
 
       <TextView
-        style="@style/TextScoreHeader"
+        style="@style/TextAppearance.App.Score.Header"
         android:text="@string/r_tomatoes" />
     </LinearLayout>
 
@@ -64,11 +64,11 @@
 
       <TextView
         android:id="@+id/tv_score_tmdb"
-        style="@style/TextScore"
+        style="@style/TextAppearance.App.Score"
         tools:text="8.5" />
 
       <TextView
-        style="@style/TextScoreHeader"
+        style="@style/TextAppearance.App.Score.Header"
         android:text="@string/tmdb" />
     </LinearLayout>
 
@@ -79,11 +79,11 @@
 
       <TextView
         android:id="@+id/tv_score_your_score"
-        style="@style/TextScore"
+        style="@style/TextAppearance.App.Score"
         tools:text="8.5" />
 
       <TextView
-        style="@style/TextScoreHeader"
+        style="@style/TextAppearance.App.Score.Header"
         android:text="@string/your_score" />
     </LinearLayout>
 

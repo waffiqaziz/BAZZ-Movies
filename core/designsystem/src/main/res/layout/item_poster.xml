@@ -15,6 +15,6 @@
     android:adjustViewBounds="true"
     android:contentDescription="@string/picture"
     android:foreground="@drawable/bg_ripple_rounded_corner"
-    app:shapeAppearanceOverlay="@style/roundedCornersImageView"
+    app:shapeAppearanceOverlay="@style/ShapeAppearance.App.ImageView.Rounded"
     tools:background="@drawable/ic_bazz_placeholder_poster" />
 </FrameLayout>

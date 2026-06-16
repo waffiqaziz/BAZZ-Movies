@@ -13,11 +13,11 @@
   <!-- ========================== -->
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/app_bar_layout"
-    style="@style/AppBarLayoutStyle">
+    style="@style/Widget.App.AppBarLayout">
 
     <com.google.android.material.appbar.CollapsingToolbarLayout
       android:id="@+id/collapse"
-      style="@style/CollapsingToolbarLayoutStyle"
+      style="@style/Widget.App.CollapsingToolbarLayout"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       app:maxLines="2"
@@ -25,7 +25,7 @@
 
       <ImageView
         android:id="@+id/iv_picture"
-        style="@style/CollapseImageViewStyle"
+        style="@style/Widget.App.CollapsingToolbarLayout.ImageView"
         android:adjustViewBounds="true"
         android:contentDescription="@string/picture"
         tools:layout_height="450dp"
@@ -33,13 +33,13 @@
 
       <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
-        style="@style/MaterialToolbarStyle"
+        style="@style/Widget.App.Toolbar"
         android:paddingBottom="18dp"
         app:layout_collapseMode="pin">
 
         <Button
           android:id="@+id/btn_back"
-          style="@style/BackButton"
+          style="@style/Widget.App.Button.Circle.Back"
           android:layout_gravity="start|bottom"
           android:translationY="12dp" />
 
@@ -88,37 +88,37 @@
 
           <Button
             android:id="@+id/btn_instagram"
-            style="@style/MyIconButtonStyle"
+            style="@style/Widget.App.Button.IconButton"
             android:contentDescription="@string/open_actor_actress_instagram_page"
-            android:theme="@style/MyIconButtonStyle"
+            android:theme="@style/Widget.App.Button.IconButton"
             app:icon="@drawable/ic_instagram" />
 
           <Button
             android:id="@+id/btn_x"
-            style="@style/MyIconButtonStyle"
+            style="@style/Widget.App.Button.IconButton"
             android:contentDescription="@string/open_actor_x_account"
-            android:theme="@style/MyIconButtonStyle"
+            android:theme="@style/Widget.App.Button.IconButton"
             app:icon="@drawable/ic_x" />
 
           <Button
             android:id="@+id/btn_facebook"
-            style="@style/MyIconButtonStyle"
+            style="@style/Widget.App.Button.IconButton"
             android:contentDescription="@string/open_actor_actress_facebook_page"
-            android:theme="@style/MyIconButtonStyle"
+            android:theme="@style/Widget.App.Button.IconButton"
             app:icon="@drawable/ic_facebook" />
 
           <Button
             android:id="@+id/btn_tiktok"
-            style="@style/MyIconButtonStyle"
+            style="@style/Widget.App.Button.IconButton"
             android:contentDescription="@string/open_actor_actress_tiktok_page"
-            android:theme="@style/MyIconButtonStyle"
+            android:theme="@style/Widget.App.Button.IconButton"
             app:icon="@drawable/ic_tiktok" />
 
           <Button
             android:id="@+id/btn_youtube"
-            style="@style/MyIconButtonStyle"
+            style="@style/Widget.App.Button.IconButton"
             android:contentDescription="@string/open_actor_actress_youtube_channel"
-            android:theme="@style/MyIconButtonStyle"
+            android:theme="@style/Widget.App.Button.IconButton"
             app:icon="@drawable/ic_youtube" />
 
         </LinearLayout>
@@ -135,7 +135,7 @@
         <!-- List playing on -->
         <TextView
           android:id="@+id/tv_known_for"
-          style="@style/TextHeader2"
+          style="@style/TextAppearance.App.Header2"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/default_margin_parent_20"
@@ -162,7 +162,7 @@
 
           <TextView
             android:id="@+id/tv_biography_header"
-            style="@style/TextHeader2"
+            style="@style/TextAppearance.App.Header2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/biography"
@@ -183,18 +183,18 @@
 
             <Button
               android:id="@+id/btn_imdb"
-              style="@style/MyIconButtonStyle"
+              style="@style/Widget.App.Button.IconButton"
               android:contentDescription="@string/open_actor_actress_imdb_page"
-              android:theme="@style/MyIconButtonStyle"
+              android:theme="@style/Widget.App.Button.IconButton"
               android:visibility="gone"
               app:icon="@drawable/ic_imdb"
               tools:visibility="visible" />
 
             <Button
               android:id="@+id/btn_wikidata"
-              style="@style/MyIconButtonStyle"
+              style="@style/Widget.App.Button.IconButton"
               android:contentDescription="@string/open_actor_actress_wikidata_page"
-              android:theme="@style/MyIconButtonStyle"
+              android:theme="@style/Widget.App.Button.IconButton"
               android:visibility="gone"
               app:icon="@drawable/ic_wikidata"
               tools:visibility="visible" />
@@ -208,9 +208,9 @@
 
             <Button
               android:id="@+id/btn_link"
-              style="@style/MyIconButtonStyle"
+              style="@style/Widget.App.Button.IconButton"
               android:contentDescription="@string/open_actor_actress_home_page"
-              android:theme="@style/MyIconButtonStyle"
+              android:theme="@style/Widget.App.Button.IconButton"
               android:visibility="gone"
               app:icon="@drawable/ic_link"
               tools:visibility="visible" />
@@ -222,7 +222,7 @@
         <!-- Biography -->
         <io.github.glailton.expandabletextview.ExpandableTextView
           android:id="@+id/tv_biography"
-          style="@style/TextBody"
+          style="@style/TextAppearance.App.Body"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginHorizontal="@dimen/default_margin_parent_20"
@@ -244,7 +244,7 @@
         <!-- Born -->
         <TextView
           android:id="@+id/tv_born_header"
-          style="@style/TextHeader2"
+          style="@style/TextAppearance.App.Header2"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginHorizontal="@dimen/default_margin_parent_20"
@@ -253,7 +253,7 @@
 
         <TextView
           android:id="@+id/tv_born"
-          style="@style/TextBody"
+          style="@style/TextAppearance.App.Body"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginHorizontal="@dimen/default_margin_parent_20"
@@ -266,7 +266,7 @@
         <!-- Date of death-->
         <TextView
           android:id="@+id/tv_dead_header"
-          style="@style/TextHeader2"
+          style="@style/TextAppearance.App.Header2"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginHorizontal="@dimen/default_margin_parent_20"
@@ -275,7 +275,7 @@
 
         <TextView
           android:id="@+id/tv_death"
-          style="@style/TextBody"
+          style="@style/TextAppearance.App.Body"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginHorizontal="@dimen/default_margin_parent_20"
@@ -288,7 +288,7 @@
         <!-- List of photos -->
         <TextView
           android:id="@+id/tv_photos_header"
-          style="@style/TextHeader2"
+          style="@style/TextAppearance.App.Header2"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginHorizontal="@dimen/default_margin_parent_20"
@@ -318,13 +318,13 @@
   <!-- Background on start -->
   <View
     android:id="@+id/background_dim_person"
-    style="@style/MyDimStyle"
+    style="@style/Widget.App.DimOverlay"
     android:visibility="visible"
     tools:visibility="gone" />
 
   <com.google.android.material.loadingindicator.LoadingIndicator
     android:id="@+id/progress_bar"
-    style="@style/MyProgressBar"
+    style="@style/Widget.App.ProgressBar"
     android:layout_marginTop="200dp"
     tools:visibility="visible" />
 

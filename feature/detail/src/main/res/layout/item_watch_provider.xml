@@ -15,7 +15,7 @@
     android:backgroundTint="@android:color/transparent"
     android:clickable="true"
     android:focusable="true"
-    app:shapeAppearanceOverlay="@style/roundedCornersPoster"
+    app:shapeAppearanceOverlay="@style/ShapeAppearance.App.ImageView.Rounded"
     tools:src="@color/yellow" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

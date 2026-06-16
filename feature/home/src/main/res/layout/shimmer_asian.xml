@@ -16,7 +16,7 @@
       style="@style/LayoutHeaderTheme">
 
       <TextView
-        style="@style/TextHeader2"
+        style="@style/TextAppearance.App.Header2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -25,18 +25,18 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.button.MaterialButtonToggleGroup
-      style="@style/FilterButtonGroupStyle"
+      style="@style/Widget.App.ButtonGroup.Filter"
       android:layout_marginHorizontal="@dimen/default_margin_parent_20"
       android:layout_marginTop="10dp"
       android:layout_marginBottom="8dp">
 
       <com.google.android.material.button.MaterialButton
-        style="@style/FilterToggleOverlay"
+        style="@style/Widget.App.Button.FilterToggle"
         android:checked="true"
         android:text="@string/this_season" />
 
       <com.google.android.material.button.MaterialButton
-        style="@style/FilterToggleOverlay"
+        style="@style/Widget.App.Button.FilterToggle"
         android:text="@string/all_time" />
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
@@ -50,7 +50,7 @@
     android:layout_marginTop="22dp" />
 
   <TextView
-    style="@style/TextHeader2"
+    style="@style/TextAppearance.App.Header2"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/default_margin_parent_20"
@@ -64,7 +64,7 @@
     android:layout_marginTop="20dp" />
 
   <TextView
-    style="@style/TextHeader2"
+    style="@style/TextAppearance.App.Header2"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/default_margin_parent_20"
@@ -84,7 +84,7 @@
     android:layout_marginTop="12dp" />
 
   <TextView
-    style="@style/TextHeader2"
+    style="@style/TextAppearance.App.Header2"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/default_margin_parent_20"

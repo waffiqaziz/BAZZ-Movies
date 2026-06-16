@@ -16,25 +16,25 @@
     <!-- Color for all background -->
     <item name="android:windowBackground">@color/gray_1000</item>
 
-    <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
+    <item name="android:windowAnimationStyle">@style/Animation.App.Window</item>
 
     <item name="sideSheetDialogTheme">@style/ThemeOverlay.App.SideSheetDialog</item>
     <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
   </style>
 
-  <style name="WindowAnimationStyle">
+  <style name="Animation.App.Window" parent="">
     <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
     <item name="android:windowExitAnimation">@android:anim/fade_out</item>
   </style>
 
-  <style name="SplashScreenTheme" parent="Theme.SplashScreen">
+  <style name="Theme.App.SplashScreen" parent="Theme.SplashScreen">
     <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
     <item name="windowSplashScreenBackground">@color/gray_1000</item>
     <item name="windowSplashScreenAnimationDuration">300</item>
     <item name="postSplashScreenTheme">@style/Base.Theme.BAZZ_movies</item>
   </style>
 
-  <style name="FilterToggleOverlay" parent="Widget.Material3Expressive.Button.OutlinedButton">
+  <style name="Widget.App.Button.FilterToggle" parent="Widget.Material3Expressive.Button.OutlinedButton">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:minHeight">0dp</item>
@@ -51,7 +51,7 @@
     <item name="backgroundTint">@color/toggle_button_bg</item>
   </style>
 
-  <style name="FilterButtonGroupStyle" parent="Widget.Material3.MaterialButtonGroup.Connected">
+  <style name="Widget.App.ButtonGroup.Filter" parent="Widget.Material3.MaterialButtonGroup.Connected">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="fontFamily">@font/nunito_sans_bold</item>
@@ -61,18 +61,18 @@
     <item name="singleSelection">true</item>
   </style>
 
-  <style name="Theme.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+  <style name="Widget.App.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
     <item name="android:color">@color/gray_900</item>
   </style>
 
-  <style name="MyBottomNavigationStyle" parent="Widget.Material3.BottomNavigationView">
-    <item name="itemTextAppearanceActive">@style/CustomBottomNavigationTextAppearance</item>
-    <item name="itemTextAppearanceInactive">@style/CustomBottomNavigationTextAppearance</item>
-    <item name="itemActiveIndicatorStyle">@style/Theme.BottomNavigationView.ActiveIndicator</item>
+  <style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+    <item name="itemTextAppearanceActive">@style/TextAppearance.App.BottomNavigationView.Label</item>
+    <item name="itemTextAppearanceInactive">@style/TextAppearance.App.BottomNavigationView.Label</item>
+    <item name="itemActiveIndicatorStyle">@style/Widget.App.BottomNavigationView.ActiveIndicator</item>
     <item name="android:background">?attr/colorPrimary</item>
   </style>
 
-  <style name="CustomBottomNavigationTextAppearance">
+  <style name="TextAppearance.App.BottomNavigationView.Label" parent="">
     <item name="android:fontFamily">@font/nunito_sans_regular</item>
     <item name="android:textAppearance">@style/TextAppearance.Material3.LabelSmall</item>
     <item name="android:lineHeight" tools:targetApi="28">13sp</item>
@@ -89,19 +89,19 @@
     <item name="android:orientation">horizontal</item>
   </style>
 
-  <style name="MyDimStyle">
+  <style name="Widget.App.DimOverlay" parent="">
     <item name="android:background">@color/gray_900</item>
     <item name="android:layout_height">match_parent</item>
     <item name="android:layout_width">match_parent</item>
   </style>
 
-  <style name="MyDimStyleMatchParent">
+  <style name="Widget.App.DimOverlay.MatchParent" parent="">
     <item name="android:background">@color/gray_900</item>
     <item name="android:layout_height">match_parent</item>
     <item name="android:layout_width">match_parent</item>
   </style>
 
-  <style name="MyProgressBar">
+  <style name="Widget.App.ProgressBar" parent="">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_gravity">center</item>
@@ -111,7 +111,7 @@
     <item name="android:visibility">visible</item>
   </style>
 
-  <style name="MyLoginButtonPortrait" parent="Widget.Material3Expressive.Button">
+  <style name="Widget.App.Button.Login.Portrait" parent="Widget.Material3Expressive.Button">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_marginBottom">8dp</item>
@@ -123,7 +123,7 @@
     <item name="backgroundTint">@color/yellow</item>
   </style>
 
-  <style name="MyTransparentButton" parent="Widget.Material3.Button.TextButton">
+  <style name="Widget.App.Button.Transparent" parent="Widget.Material3.Button.TextButton">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:fontFamily">@font/nunito_sans_regular</item>
@@ -134,7 +134,7 @@
     <item name="cornerRadius">@dimen/button_radius</item>
   </style>
 
-  <style name="MyLoginButtonLand" parent="Widget.Material3.Button">
+  <style name="Widget.App.Button.Login.Land" parent="Widget.Material3.Button">
     <item name="android:layout_width">450dp</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_marginBottom">4dp</item>
@@ -145,7 +145,7 @@
     <item name="android:backgroundTint">@color/yellow</item>
   </style>
 
-  <style name="ButtonTryAgain" parent="ThemeOverlay.Material3.Button">
+  <style name="Widget.App.Button.TryAgain" parent="ThemeOverlay.Material3.Button">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_marginBottom">4dp</item>
@@ -178,37 +178,37 @@
     <item name="closeIcon">@drawable/ic_cross</item>
   </style>
 
-  <style name="TextTabLayoutStyle" parent="Widget.Material3.TabLayout">
+  <style name="Widget.App.TabLayout" parent="Widget.Material3.TabLayout">
     <item name="android:textSize">12sp</item>
     <item name="textAllCaps">false</item>
     <item name="fontFamily">@font/nunito_sans_semi_bold</item>
   </style>
 
-  <style name="TextHeader1">
+  <style name="TextAppearance.App.Header1" parent="">
     <item name="android:textAppearance">@style/TextAppearance.Material3.HeadlineSmall</item>
     <item name="android:textColor">?attr/colorOnPrimary</item>
     <item name="fontFamily">@font/nunito_sans_bold</item>
   </style>
 
-  <style name="TextHeader2">
+  <style name="TextAppearance.App.Header2" parent="">
     <item name="android:textAppearance">@style/TextAppearance.Material3.TitleMedium</item>
     <item name="android:textColor">?attr/colorOnPrimary</item>
     <item name="fontFamily">@font/nunito_sans_bold</item>
   </style>
 
-  <style name="TextHeader3">
+  <style name="TextAppearance.App.Header3" parent="">
     <item name="android:textAppearance">@style/TextAppearance.Material3.TitleSmall</item>
     <item name="android:textColor">?attr/colorOnPrimary</item>
     <item name="fontFamily">@font/nunito_sans_bold</item>
   </style>
 
-  <style name="TextDivider">
+  <style name="TextAppearance.App.Divider" parent="">
     <item name="android:textAppearance">@style/TextAppearance.Material3.BodyMedium</item>
     <item name="android:textColor">@color/gray_400</item>
     <item name="fontFamily">@font/nunito_sans_regular</item>
   </style>
 
-  <style name="TextCast">
+  <style name="TextAppearance.App.Cast" parent="">
     <item name="android:textAppearance">@style/TextAppearance.Material3.LabelSmall</item>
     <item name="android:maxLines">1</item>
     <item name="android:layout_gravity">center</item>
@@ -218,19 +218,19 @@
     <item name="fontFamily">@font/nunito_sans_regular</item>
   </style>
 
-  <style name="TextMetadata">
+  <style name="TextAppearance.App.Metadata" parent="">
     <item name="android:textAppearance">@style/TextAppearance.Material3.LabelMedium</item>
     <item name="android:textColor">@color/gray_200</item>
     <item name="fontFamily">@font/nunito_sans_regular</item>
   </style>
 
-  <style name="TextBody">
+  <style name="TextAppearance.App.Body" parent="">
     <item name="android:textAppearance">@style/TextAppearance.Material3.BodyMedium</item>
     <item name="android:textColor">@color/gray_200</item>
     <item name="fontFamily">@font/nunito_sans_regular</item>
   </style>
 
-  <style name="TextScore">
+  <style name="TextAppearance.App.Score" parent="">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:textAppearance">@style/TextAppearance.Material3.BodyLarge</item>
@@ -240,7 +240,7 @@
     <item name="android:text">@string/not_available</item>
   </style>
 
-  <style name="TextScoreHeader">
+  <style name="TextAppearance.App.Score.Header" parent="">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_marginTop">4dp</item>
@@ -299,7 +299,7 @@
     <item name="android:visibility">gone</item>
   </style>
 
-  <style name="ButtonMoreStyle">
+  <style name="Widget.App.Button.More" parent="">
     <item name="android:paddingStart">20dp</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_width">match_parent</item>
@@ -311,28 +311,28 @@
     <item name="fontFamily">@font/nunito_sans_regular</item>
   </style>
 
-  <style name="customButton">
+  <style name="Widget.App.Button.Compact" parent="">
     <item name="textAllCaps">false</item>
     <item name="android:minHeight">39dp</item>
     <item name="android:textColor">?attr/colorOnPrimary</item>
   </style>
 
-  <style name="roundedCornersImageView" parent="">
+  <style name="ShapeAppearance.App.ImageView.Rounded" parent="">
     <item name="cornerFamily">rounded</item>
     <item name="cornerSize">@dimen/button_radius</item>
   </style>
 
-  <style name="roundedCornersPoster" parent="">
+  <style name="ShapeAppearance.App.Poster.Rounded" parent="">
     <item name="cornerFamily">rounded</item>
     <item name="cornerSize">@dimen/button_radius</item>
   </style>
 
-  <style name="circleImage" parent="">
+  <style name="ShapeAppearance.App.Circle" parent="">
     <item name="cornerFamily">rounded</item>
     <item name="cornerSize">50%</item>
   </style>
 
-  <style name="CustomAlertDialogTheme" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+  <style name="ThemeOverlay.App.AlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
     <item name="colorSurfaceContainerHigh">@color/gray_850</item>
     <item name="colorOnSurface">@color/gray_200</item>
     <item name="colorPrimary">@color/gray_200</item>
@@ -340,14 +340,14 @@
     <item name="android:textColorSecondaryInverse">@color/gray_300</item>
     <item name="android:fontFamily">@font/nunito_sans_regular</item>
     <item name="android:backgroundTint">@color/gray_850</item>
-    <item name="materialAlertDialogBodyTextStyle">@style/CustomDialogBodyText</item>
+    <item name="materialAlertDialogBodyTextStyle">@style/TextAppearance.App.AlertDialog.Body</item>
   </style>
 
-  <style name="CustomDialogBodyText" parent="MaterialAlertDialog.Material3.Body.Text">
+  <style name="TextAppearance.App.AlertDialog.Body" parent="MaterialAlertDialog.Material3.Body.Text">
     <item name="android:textColor">@color/gray_300</item>
   </style>
 
-  <style name="ChipTextAppearance" parent="TextAppearance.MaterialComponents.Chip">
+  <style name="TextAppearance.App.Chip" parent="TextAppearance.MaterialComponents.Chip">
     <item name="android:fontFamily">@font/nunito_sans_regular</item>
   </style>
 
@@ -360,7 +360,7 @@
     <item name="bottomSheetStyle">@style/ModalBottomSheetDialog</item>
   </style>
 
-  <style name="MyIconButtonStyle" parent="ThemeOverlay.Material3Expressive.Button.IconButton.Standard">
+  <style name="Widget.App.Button.IconButton" parent="ThemeOverlay.Material3Expressive.Button.IconButton.Standard">
     <item name="materialIconButtonStyle">
       @style/Widget.Material3Expressive.Button.IconButton.Standard
     </item>
@@ -389,21 +389,21 @@
     <item name="cornerSize">32dp</item>
   </style>
 
-  <style name="ListItemRevealLayout.Start" parent="Widget.Material3.ListItemRevealLayout">
+  <style name="Widget.App.ListItemRevealLayout.Start" parent="Widget.Material3.ListItemRevealLayout">
     <item name="android:layout_height">match_parent</item>
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_gravity">start</item>
     <item name="primaryActionSwipeMode">direct</item>
   </style>
 
-  <style name="ListItemRevealLayout.End" parent="Widget.Material3.ListItemRevealLayout">
+  <style name="Widget.App.ListItemRevealLayout.End" parent="Widget.Material3.ListItemRevealLayout">
     <item name="android:layout_height">match_parent</item>
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_gravity">end</item>
     <item name="primaryActionSwipeMode">direct</item>
   </style>
 
-  <style name="ListItemReveal.Button.Start" parent="Widget.Material3.Button.IconButton.Filled">
+  <style name="Widget.App.ListItemReveal.Button.Start" parent="Widget.Material3.Button.IconButton.Filled">
     <item name="android:layout_height">match_parent</item>
     <item name="android:layout_width">64dp</item>
     <item name="android:layout_marginStart">2dp</item>
@@ -417,7 +417,7 @@
     <item name="primaryActionSwipeMode">direct</item>
   </style>
 
-  <style name="ListItemReveal.Button.End" parent="Widget.Material3.Button.IconButton.Filled">
+  <style name="Widget.App.ListItemReveal.Button.End" parent="Widget.Material3.Button.IconButton.Filled">
     <item name="android:layout_width">64dp</item>
     <item name="android:layout_height">match_parent</item>
     <item name="android:layout_marginStart">2dp</item>
@@ -430,7 +430,7 @@
     <item name="primaryActionSwipeMode">direct</item>
   </style>
 
-  <style name="ListItemCardView" parent="Widget.Material3.ListItemCardView">
+  <style name="Widget.App.ListItemCardView" parent="Widget.Material3.ListItemCardView">
     <item name="listItemCardViewStyle">?attr/listItemCardViewStyle</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
@@ -438,22 +438,22 @@
     <item name="shapeAppearance">?attr/listItemShapeAppearanceSingle</item>
   </style>
 
-  <style name="CollapsedTitleStyle" parent="TextAppearance.Material3.TitleMedium">
+  <style name="TextAppearance.App.CollapsingToolbar.Title.Collapsed" parent="TextAppearance.Material3.TitleMedium">
     <item name="fontFamily">@font/nunito_sans_bold</item>
     <item name="android:fontFamily">@font/nunito_sans_bold</item>
   </style>
 
-  <style name="CollapsedSubtitleStyle" parent="TextAppearance.Material3.BodySmall">
+  <style name="TextAppearance.App.CollapsingToolbar.Subtitle.Collapsed" parent="TextAppearance.Material3.BodySmall">
     <item name="fontFamily">@font/nunito_sans_bold</item>
     <item name="android:fontFamily">@font/nunito_sans_bold</item>
   </style>
 
-  <style name="ExtendedTitleStyle" parent="TextAppearance.Material3.HeadlineSmall.Emphasized">
+  <style name="TextAppearance.App.CollapsingToolbar.Title.Expanded" parent="TextAppearance.Material3.HeadlineSmall.Emphasized">
     <item name="fontFamily">@font/nunito_sans_bold</item>
     <item name="android:fontFamily">@font/nunito_sans_bold</item>
   </style>
 
-  <style name="ExpandedSubtitleStyle" parent="TextAppearance.Material3.BodyLarge">
+  <style name="TextAppearance.App.CollapsingToolbar.Subtitle.Expanded" parent="TextAppearance.Material3.BodyLarge">
     <item name="fontFamily">@font/nunito_sans_bold</item>
     <item name="android:fontFamily">@font/nunito_sans_bold</item>
     <item name="android:maxLines">2</item>
@@ -525,7 +525,7 @@
     <item name="iconTint">@color/yellow</item>
   </style>
 
-  <style name="CircleButton" parent="Widget.Material3Expressive.Button.IconButton.Filled">
+  <style name="Widget.App.Button.Circle" parent="Widget.Material3Expressive.Button.IconButton.Filled">
     <item name="android:layout_width">@dimen/button_size</item>
     <item name="android:layout_height">@dimen/button_size</item>
     <item name="android:insetLeft">0dp</item>
@@ -539,7 +539,7 @@
     <item name="iconTint">@color/yellow</item>
   </style>
 
-  <style name="BackButton" parent="CircleButton">
+  <style name="Widget.App.Button.Circle.Back" parent="Widget.App.Button.Circle">
     <item name="android:paddingBottom">8dp</item>
     <item name="android:paddingTop">8dp</item>
     <item name="android:paddingLeft">8.25dp</item>
@@ -548,33 +548,33 @@
     <item name="iconSize">28dp</item>
   </style>
 
-  <style name="AppBarLayoutStyle">
+  <style name="Widget.App.AppBarLayout" parent="">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:background">@null</item>
     <item name="android:translationZ">0.1dp</item>
   </style>
 
-  <style name="MaterialToolbarStyle">
+  <style name="Widget.App.Toolbar" parent="">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">@dimen/toolbar_height</item>
     <item name="android:clipToPadding">false</item>
     <item name="android:minHeight">0dp</item>
   </style>
 
-  <style name="CollapsingToolbarLayoutStyle">
+  <style name="Widget.App.CollapsingToolbarLayout" parent="">
     <item name="collapsedTitleTextColor">@color/white</item>
     <item name="collapsedTitleGravity">bottom</item>
-    <item name="collapsedTitleTextAppearance">@style/CollapsedTitleStyle</item>
+    <item name="collapsedTitleTextAppearance">@style/TextAppearance.App.CollapsingToolbar.Title.Collapsed</item>
     <item name="contentScrim">@color/gray_1000</item>
     <item name="expandedTitleGravity">bottom|center_horizontal</item>
     <item name="expandedTitleTextColor">@color/white</item>
     <item name="layout_scrollFlags">scroll|exitUntilCollapsed|enterAlwaysCollapsed</item>
-    <item name="expandedTitleTextAppearance">@style/ExtendedTitleStyle</item>
+    <item name="expandedTitleTextAppearance">@style/TextAppearance.App.CollapsingToolbar.Title.Expanded</item>
     <item name="titleCollapseMode">fade</item>
   </style>
 
-  <style name="CollapseImageViewStyle">
+  <style name="Widget.App.CollapsingToolbarLayout.ImageView" parent="">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">match_parent</item>
     <item name="android:foreground">@drawable/bg_gradient_shape</item>
@@ -583,13 +583,13 @@
     <item name="layout_collapseParallaxMultiplier">0.7</item>
   </style>
 
-  <style name="CreditsBottomSheetStyle" parent="ThemeOverlay.Material3.BottomSheetDialog">
+  <style name="ThemeOverlay.App.BottomSheetDialog.Credits" parent="ThemeOverlay.Material3.BottomSheetDialog">
     <item name="android:navigationBarColor">@color/gray_850</item>
     <item name="colorOnSurfaceVariant">@color/gray_700</item>
-    <item name="bottomSheetStyle">@style/MyBottomSheetStyle</item>
+    <item name="bottomSheetStyle">@style/Widget.App.BottomSheet</item>
   </style>
 
-  <style name="MyBottomSheetStyle" parent="Widget.Material3.BottomSheet.Modal">
+  <style name="Widget.App.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
     <item name="backgroundTint">@color/gray_900</item>
   </style>
 </resources>

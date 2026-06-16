@@ -61,7 +61,7 @@
   <!-- Forget password button -->
   <com.google.android.material.button.MaterialButton
     android:id="@+id/btn_forget_password"
-    style="@style/MyTransparentButton"
+    style="@style/Widget.App.Button.Transparent"
     android:layout_marginEnd="@dimen/default_margin_parent_20"
     android:text="@string/forget_password"
     app:layout_constraintBottom_toBottomOf="@+id/layout_bazz_movies"
@@ -141,7 +141,7 @@
   <!-- Login button -->
   <Button
     android:id="@+id/btn_login"
-    style="@style/MyLoginButtonLand"
+    style="@style/Widget.App.Button.Login.Land"
     android:contentDescription="@string/login"
     android:text="@string/login"
     app:layout_constraintBottom_toTopOf="@+id/tv_guest"
@@ -152,7 +152,7 @@
   <!-- Guest button -->
   <com.google.android.material.button.MaterialButton
     android:id="@+id/tv_guest"
-    style="@style/MyTransparentButton"
+    style="@style/Widget.App.Button.Transparent"
     android:text="@string/guest_session"
     app:layout_constraintBottom_toTopOf="@+id/tv_joinTMDB"
     app:layout_constraintEnd_toEndOf="@+id/btn_login"
@@ -162,7 +162,7 @@
   <!-- Create account button -->
   <com.google.android.material.button.MaterialButton
     android:id="@+id/tv_joinTMDB"
-    style="@style/MyTransparentButton"
+    style="@style/Widget.App.Button.Transparent"
     android:layout_marginBottom="8dp"
     android:gravity="center"
     android:text="@string/join_tmdb"
@@ -177,7 +177,7 @@
 
   <com.google.android.material.loadingindicator.LoadingIndicator
     android:id="@+id/progress_bar"
-    style="@style/MyProgressBar"
+    style="@style/Widget.App.ProgressBar"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

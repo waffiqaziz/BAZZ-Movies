@@ -13,7 +13,7 @@
     android:layout_margin="48dp"
     android:adjustViewBounds="true"
     android:contentDescription="@string/actress_photo"
-    app:shapeAppearanceOverlay="@style/roundedCornersPoster"
+    app:shapeAppearanceOverlay="@style/ShapeAppearance.App.ImageView.Rounded"
     tools:src="@tools:sample/avatars" />
 
 </FrameLayout>

@@ -8,11 +8,11 @@
   <!--  Swipe RIGHT (Delete action)-->
   <com.google.android.material.listitem.ListItemRevealLayout
     android:id="@+id/reveal_layout_start"
-    style="@style/ListItemRevealLayout.Start">
+    style="@style/Widget.App.ListItemRevealLayout.Start">
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/btn_action_start"
-      style="@style/ListItemReveal.Button.Start" />
+      style="@style/Widget.App.ListItemReveal.Button.Start" />
 
   </com.google.android.material.listitem.ListItemRevealLayout>
 
@@ -33,11 +33,11 @@
   <!--  Swipe LEFT (Favorite/Watchlist action)-->
   <com.google.android.material.listitem.ListItemRevealLayout
     android:id="@+id/reveal_layout_end"
-    style="@style/ListItemRevealLayout.End">
+    style="@style/Widget.App.ListItemRevealLayout.End">
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/btn_action_end"
-      style="@style/ListItemReveal.Button.End" />
+      style="@style/Widget.App.ListItemReveal.Button.End" />
 
   </com.google.android.material.listitem.ListItemRevealLayout>
 </com.google.android.material.listitem.ListItemLayout>

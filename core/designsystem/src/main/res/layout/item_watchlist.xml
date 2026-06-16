@@ -9,11 +9,11 @@
   <!-- LEFT RevealableListItem - Swipe RIGHT to reveal (Delete action) -->
   <com.google.android.material.listitem.ListItemRevealLayout
     android:id="@+id/reveal_layout_start"
-    style="@style/ListItemRevealLayout.Start">
+    style="@style/Widget.App.ListItemRevealLayout.Start">
 
     <Button
       android:id="@+id/btn_delete"
-      style="@style/ListItemReveal.Button.Start"
+      style="@style/Widget.App.ListItemReveal.Button.Start"
       android:contentDescription="@string/remove_from_watchlist" />
 
   </com.google.android.material.listitem.ListItemRevealLayout>
@@ -21,7 +21,7 @@
   <!-- Main content -->
   <com.google.android.material.listitem.ListItemCardView
     android:id="@+id/container_result"
-    style="@style/ListItemCardView">
+    style="@style/Widget.App.ListItemCardView">
 
     <LinearLayout
       android:layout_width="match_parent"
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:contentDescription="@string/picture"
-        app:shapeAppearanceOverlay="@style/roundedCornersImageView"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.App.ImageView.Rounded"
         tools:layout_height="100dp"
         tools:src="@color/red_matte" />
 
@@ -49,7 +49,7 @@
         <!-- Name/title -->
         <TextView
           android:id="@+id/tv_title"
-          style="@style/TextHeader3"
+          style="@style/TextAppearance.App.Header3"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:ellipsize="end"
@@ -60,7 +60,7 @@
         <!-- Released year/department-->
         <TextView
           android:id="@+id/tv_year_released"
-          style="@style/TextDivider"
+          style="@style/TextAppearance.App.Divider"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="6dp"
@@ -69,7 +69,7 @@
         <!-- Genre/playing as -->
         <TextView
           android:id="@+id/tv_genre"
-          style="@style/TextDivider"
+          style="@style/TextAppearance.App.Divider"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="6dp"
@@ -85,11 +85,11 @@
   <!-- RIGHT RevealableListItem - Swipe LEFT to reveal (Add to Watchlist action) -->
   <com.google.android.material.listitem.ListItemRevealLayout
     android:id="@+id/reveal_layout_end"
-    style="@style/ListItemRevealLayout.End">
+    style="@style/Widget.App.ListItemRevealLayout.End">
 
     <Button
       android:id="@+id/btn_watchlist"
-      style="@style/ListItemReveal.Button.End"
+      style="@style/Widget.App.ListItemReveal.Button.End"
       android:contentDescription="@string/add_to_favorite"
       app:icon="@drawable/ic_hearth" />
 

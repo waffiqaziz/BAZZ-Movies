@@ -28,7 +28,7 @@
       app:tabMode="auto"
       app:tabRippleColor="?attr/colorSurface"
       app:tabSelectedTextColor="?attr/colorAccent"
-      app:tabTextAppearance="@style/TextTabLayoutStyle"
+      app:tabTextAppearance="@style/Widget.App.TabLayout"
       app:tabTextColor="@color/white">
 
       <!-- Featured tab -->

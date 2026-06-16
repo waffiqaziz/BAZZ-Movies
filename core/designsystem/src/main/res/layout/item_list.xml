@@ -18,7 +18,7 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    app:shapeAppearanceOverlay="@style/roundedCornersImageView"
+    app:shapeAppearanceOverlay="@style/ShapeAppearance.App.ImageView.Rounded"
     tools:background="@drawable/ic_bazz_placeholder_poster"
     tools:layout_height="150dp"
     tools:layout_width="100dp" />

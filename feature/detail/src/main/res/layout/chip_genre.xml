@@ -10,7 +10,7 @@
     android:id="@+id/chip"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:textAppearance="@style/ChipTextAppearance"
+    android:textAppearance="@style/TextAppearance.App.Chip"
     android:textColor="@color/gray_600"
     app:chipBackgroundColor="@color/gray_900"
     app:chipStrokeColor="@color/gray_800"

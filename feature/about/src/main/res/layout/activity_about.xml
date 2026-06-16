@@ -24,7 +24,7 @@
 
       <Button
         android:id="@+id/btn_back"
-        style="@style/BackButton"
+        style="@style/Widget.App.Button.Circle.Back"
         android:layout_gravity="start|bottom"
         android:layout_marginRight="@dimen/margin_between_item"
         android:translationY="7dp" />
@@ -54,14 +54,14 @@
     <!-- ========================== -->
     <TextView
       android:id="@+id/tv_about_header"
-      style="@style/TextHeader1"
+      style="@style/TextAppearance.App.Header1"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:text="@string/about" />
 
     <TextView
       android:id="@+id/tv_tmdb_attribute"
-      style="@style/TextBody"
+      style="@style/TextAppearance.App.Body"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="8dp"
@@ -79,7 +79,7 @@
 
     <TextView
       android:id="@+id/tv_about_text"
-      style="@style/TextBody"
+      style="@style/TextAppearance.App.Body"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:text="@string/about_text" />
@@ -87,7 +87,7 @@
     <!-- ====== About button ====== -->
     <com.google.android.material.button.MaterialButton
       android:id="@+id/btn_about_us"
-      style="@style/MyTransparentButton"
+      style="@style/Widget.App.Button.Transparent"
       android:layout_gravity="center_horizontal"
       android:layout_marginTop="20dp"
       android:text="@string/about_us" />

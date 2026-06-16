@@ -25,7 +25,7 @@
       app:tabIndicatorColor="@color/yellow"
       app:tabRippleColor="@color/gray_300"
       app:tabSelectedTextColor="@color/yellow"
-      app:tabTextAppearance="@style/TextTabLayoutStyle"
+      app:tabTextAppearance="@style/Widget.App.TabLayout"
       app:tabTextColor="@color/white">
 
       <!-- Movies tab -->

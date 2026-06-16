@@ -19,12 +19,12 @@
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    app:shapeAppearanceOverlay="@style/circleImage"
+    app:shapeAppearanceOverlay="@style/ShapeAppearance.App.Circle"
     tools:src="@tools:sample/avatars" />
 
   <TextView
     android:id="@+id/tv_name"
-    style="@style/TextBody"
+    style="@style/TextAppearance.App.Body"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="12dp"
@@ -41,7 +41,7 @@
     tools:text="Sam Worthington" />
 
   <TextView
-    style="@style/TextDivider"
+    style="@style/TextAppearance.App.Divider"
     android:id="@+id/tv_role"
     android:layout_width="0dp"
     android:layout_height="wrap_content"

@@ -10,28 +10,28 @@
 
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/appBarLayout"
-    style="@style/AppBarLayoutStyle">
+    style="@style/Widget.App.AppBarLayout">
 
     <com.google.android.material.appbar.CollapsingToolbarLayout
       android:id="@+id/collapse"
-      style="@style/CollapsingToolbarLayoutStyle"
+      style="@style/Widget.App.CollapsingToolbarLayout"
       android:layout_width="match_parent"
       android:layout_height="190dp"
       app:collapsedSubtitleTextColor="@color/gray_300"
-      app:collapsedSubtitleTextAppearance="@style/CollapsedSubtitleStyle"
-      app:expandedSubtitleTextAppearance="@style/ExpandedSubtitleStyle"
+      app:collapsedSubtitleTextAppearance="@style/TextAppearance.App.CollapsingToolbar.Subtitle.Collapsed"
+      app:expandedSubtitleTextAppearance="@style/TextAppearance.App.CollapsingToolbar.Subtitle.Expanded"
       app:expandedSubtitleTextColor="@color/gray_300">
 
       <ImageView
         android:id="@+id/iv_picture"
-        style="@style/CollapseImageViewStyle"
+        style="@style/Widget.App.CollapsingToolbarLayout.ImageView"
         android:contentDescription="@string/poster"
         tools:layout_height="350dp"
         tools:src="@tools:sample/backgrounds/scenic" />
 
       <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
-        style="@style/MaterialToolbarStyle"
+        style="@style/Widget.App.Toolbar"
         android:paddingBottom="8dp"
         app:layout_collapseMode="pin"
         tools:subtitle="Medium Subtitle"
@@ -39,13 +39,13 @@
 
         <Button
           android:id="@+id/btn_back"
-          style="@style/BackButton"
+          style="@style/Widget.App.Button.Circle.Back"
           android:layout_gravity="start|bottom"
           android:translationY="2dp" />
 
         <com.google.android.material.button.MaterialButton
           android:id="@+id/btn_toggle_layout"
-          style="@style/CircleButton"
+          style="@style/Widget.App.Button.Circle"
           android:layout_gravity="end|bottom"
           android:layout_marginEnd="16dp"
           android:contentDescription="@string/toggle_list_layout"
@@ -88,7 +88,7 @@
 
   <com.google.android.material.loadingindicator.LoadingIndicator
     android:id="@+id/loading_indicator"
-    style="@style/MyProgressBar"
+    style="@style/Widget.App.ProgressBar"
     tools:visibility="visible" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
