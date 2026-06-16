@@ -82,15 +82,6 @@
       ],
     },
     {
-      groupName: 'testing libraries',
-      matchPackageNames: [
-        '/junit/',
-        '/androidx.test/',
-        '/androidx.arch.core:core-testing/',
-        '/com.google.truth/',
-      ],
-    },
-    {
       groupName: 'mocking libraries',
       matchPackageNames: [
         '/mockito/',
