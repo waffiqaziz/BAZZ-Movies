@@ -17,7 +17,7 @@ ksp = "2.3.9"
 hilt = "2.59.2"
 
 # Google Services
-gms = "4.4.4"
+gms = "4.5.0"
 crashlytics = "3.0.7"
 firebaseBom = "34.14.1"
 firebasePerfPlugin = "2.0.2"
