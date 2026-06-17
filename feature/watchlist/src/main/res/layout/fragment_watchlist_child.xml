@@ -47,7 +47,7 @@
 
   <com.google.android.material.loadingindicator.LoadingIndicator
     android:id="@+id/progress_bar"
-    style="@style/MyProgressBar"
+    style="@style/Widget.App.ProgressBar"
     android:layout_marginBottom="@dimen/margin_to_centered"
     tools:visibility="visible" />
 

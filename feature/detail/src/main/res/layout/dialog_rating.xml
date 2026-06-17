@@ -25,7 +25,7 @@
     app:layout_constraintTop_toTopOf="parent" />
 
   <TextView
-    style="@style/TextHeader1"
+    style="@style/TextAppearance.App.Header1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/your_rating"
@@ -46,7 +46,7 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/btn_cancel"
-    style="@style/customButton"
+    style="@style/Widget.App.Button.Compact"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="29dp"
@@ -59,7 +59,7 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/btn_submit"
-    style="@style/customButton"
+    style="@style/Widget.App.Button.Compact"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:backgroundTint="@color/green"

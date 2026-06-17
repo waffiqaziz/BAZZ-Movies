@@ -26,7 +26,7 @@
       android:layout_gravity="center"
       android:adjustViewBounds="true"
       android:contentDescription="@string/picture"
-      app:shapeAppearanceOverlay="@style/roundedCornersImageView"
+      app:shapeAppearanceOverlay="@style/ShapeAppearance.App.ImageView.Rounded"
       tools:background="@tools:sample/avatars" />
 
     <!-- Name -->
@@ -35,7 +35,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="4dp"
-      android:theme="@style/TextCast"
+      android:theme="@style/TextAppearance.App.Cast"
       tools:text="Sam Worthington" />
 
     <TextView
@@ -44,14 +44,14 @@
       android:layout_gravity="center"
       android:text="@string/as"
       android:textColor="@color/gray_400"
-      android:theme="@style/TextCast" />
+      android:theme="@style/TextAppearance.App.Cast" />
 
     <!-- Character names -->
     <TextView
       android:id="@+id/tv_cast_character"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:theme="@style/TextCast"
+      android:theme="@style/TextAppearance.App.Cast"
       tools:text="Jake Sully" />
 
   </LinearLayout>

@@ -16,7 +16,7 @@
 
   <TextView
     android:id="@+id/tv_search_any_movies"
-    style="@style/TextHeader1"
+    style="@style/TextAppearance.App.Header1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/default_margin_parent_20"
@@ -25,7 +25,7 @@
 
   <TextView
     android:id="@+id/tv_explore_tmdb"
-    style="@style/TextDivider"
+    style="@style/TextAppearance.App.Divider"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center"

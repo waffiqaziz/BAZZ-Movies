@@ -18,6 +18,6 @@
       android:adjustViewBounds="true"
       android:background="@color/gray_700"
       android:contentDescription="@string/picture"
-      app:shapeAppearanceOverlay="@style/roundedCornersImageView" />
+      app:shapeAppearanceOverlay="@style/ShapeAppearance.App.ImageView.Rounded" />
   </com.facebook.shimmer.ShimmerFrameLayout>
 </FrameLayout>

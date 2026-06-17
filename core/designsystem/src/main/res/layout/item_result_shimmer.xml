@@ -21,7 +21,7 @@
       android:layout_height="100dp"
       android:adjustViewBounds="true"
       android:contentDescription="@string/picture"
-      app:shapeAppearanceOverlay="@style/roundedCornersImageView"
+      app:shapeAppearanceOverlay="@style/ShapeAppearance.App.ImageView.Rounded"
       tools:layout_height="100dp"
       tools:src="@color/red_matte" />
 
@@ -34,7 +34,7 @@
       <!-- Name/title -->
       <TextView
         android:id="@+id/tv_title"
-        style="@style/TextHeader3"
+        style="@style/TextAppearance.App.Header3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -46,7 +46,7 @@
       <!-- Released year/department-->
       <TextView
         android:id="@+id/tv_year_released"
-        style="@style/TextDivider"
+        style="@style/TextAppearance.App.Divider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
@@ -56,7 +56,7 @@
       <!-- Genre/playing as -->
       <TextView
         android:id="@+id/tv_genre"
-        style="@style/TextDivider"
+        style="@style/TextAppearance.App.Divider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"

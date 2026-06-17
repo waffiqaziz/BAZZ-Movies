@@ -126,14 +126,14 @@
       android:orientation="horizontal">
 
       <TextView
-        style="@style/TextBody"
+        style="@style/TextAppearance.App.Body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/data_powered_by" />
 
       <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_justwatch"
-        style="@style/MyTransparentButton"
+        style="@style/Widget.App.Button.Transparent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="-5dp"
@@ -145,7 +145,7 @@
 
     <TextView
       android:id="@+id/tv_watch_providers_message"
-      style="@style/TextBody"
+      style="@style/TextAppearance.App.Body"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginHorizontal="@dimen/default_margin_parent_20"

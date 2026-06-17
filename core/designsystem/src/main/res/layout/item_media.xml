@@ -12,7 +12,7 @@
     android:layout_width="100dp"
     android:layout_height="150dp"
     android:contentDescription="@string/picture"
-    app:shapeAppearanceOverlay="@style/roundedCornersImageView"
+    app:shapeAppearanceOverlay="@style/ShapeAppearance.App.ImageView.Rounded"
     tools:src="@drawable/ic_bazz_placeholder_poster" />
 
   <LinearLayout
@@ -37,7 +37,7 @@
 
     <TextView
       android:id="@+id/tv_year_released"
-      style="@style/TextBody"
+      style="@style/TextAppearance.App.Body"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="4dp"
@@ -46,7 +46,7 @@
 
     <TextView
       android:id="@+id/tv_genre"
-      style="@style/TextBody"
+      style="@style/TextAppearance.App.Body"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="4dp"

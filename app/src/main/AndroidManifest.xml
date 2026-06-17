@@ -52,7 +52,7 @@
     <activity
       android:name=".RoutingActivity"
       android:exported="true"
-      android:theme="@style/SplashScreenTheme">
+      android:theme="@style/Theme.App.SplashScreen">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />

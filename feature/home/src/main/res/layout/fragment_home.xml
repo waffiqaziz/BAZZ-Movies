@@ -28,7 +28,7 @@
       app:tabMode="auto"
       app:tabRippleColor="?attr/colorSurface"
       app:tabSelectedTextColor="?attr/colorAccent"
-      app:tabTextAppearance="@style/TextTabLayoutStyle"
+      app:tabTextAppearance="@style/Widget.App.TabLayout"
       app:tabTextColor="@color/white">
 
       <!-- Featured tab -->
@@ -54,10 +54,7 @@
 
     </com.google.android.material.tabs.TabLayout>
 
-    <View
-      android:layout_width="match_parent"
-      android:layout_height="1dp"
-      android:background="@color/gray_700" />
+    <include layout="@layout/divider"/>
 
   </com.google.android.material.appbar.AppBarLayout>
 

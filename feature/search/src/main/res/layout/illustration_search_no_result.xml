@@ -16,7 +16,7 @@
 
   <TextView
     android:id="@+id/tv_header_noResult"
-    style="@style/TextHeader1"
+    style="@style/TextAppearance.App.Header1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="-40dp"
@@ -24,7 +24,7 @@
 
   <TextView
     android:id="@+id/tv_no_data"
-    style="@style/TextDivider"
+    style="@style/TextAppearance.App.Divider"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center"

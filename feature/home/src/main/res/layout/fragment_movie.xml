@@ -34,7 +34,7 @@
           android:layout_marginTop="@dimen/default_margin_parent_20">
 
           <TextView
-            style="@style/TextHeader2"
+            style="@style/TextAppearance.App.Header2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
@@ -64,7 +64,7 @@
           android:layout_marginTop="16dp">
 
           <TextView
-            style="@style/TextHeader2"
+            style="@style/TextAppearance.App.Header2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
@@ -101,7 +101,7 @@
           android:layout_marginTop="12dp">
 
           <TextView
-            style="@style/TextHeader2"
+            style="@style/TextAppearance.App.Header2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
@@ -137,7 +137,7 @@
           android:layout_marginTop="12dp">
 
           <TextView
-            style="@style/TextHeader2"
+            style="@style/TextAppearance.App.Header2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"

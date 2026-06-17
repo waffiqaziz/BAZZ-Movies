@@ -20,49 +20,49 @@
         android:layout_width="100dp"
         android:layout_height="150dp"
         android:src="@color/gray_700"
-        app:shapeAppearanceOverlay="@style/roundedCornersImageView" />
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.App.ImageView.Rounded" />
 
       <com.google.android.material.imageview.ShapeableImageView
         android:layout_width="100dp"
         android:layout_height="150dp"
         android:layout_marginLeft="12dp"
         android:src="@color/gray_700"
-        app:shapeAppearanceOverlay="@style/roundedCornersImageView" />
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.App.ImageView.Rounded" />
 
       <com.google.android.material.imageview.ShapeableImageView
         android:layout_width="100dp"
         android:layout_height="150dp"
         android:layout_marginLeft="12dp"
         android:src="@color/gray_700"
-        app:shapeAppearanceOverlay="@style/roundedCornersImageView" />
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.App.ImageView.Rounded" />
 
       <com.google.android.material.imageview.ShapeableImageView
         android:layout_width="100dp"
         android:layout_height="150dp"
         android:layout_marginLeft="12dp"
         android:src="@color/gray_700"
-        app:shapeAppearanceOverlay="@style/roundedCornersImageView" />
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.App.ImageView.Rounded" />
 
       <com.google.android.material.imageview.ShapeableImageView
         android:layout_width="100dp"
         android:layout_height="150dp"
         android:layout_marginLeft="12dp"
         android:src="@color/gray_700"
-        app:shapeAppearanceOverlay="@style/roundedCornersImageView" />
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.App.ImageView.Rounded" />
 
       <com.google.android.material.imageview.ShapeableImageView
         android:layout_width="100dp"
         android:layout_height="150dp"
         android:layout_marginLeft="12dp"
         android:src="@color/gray_700"
-        app:shapeAppearanceOverlay="@style/roundedCornersImageView" />
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.App.ImageView.Rounded" />
 
       <com.google.android.material.imageview.ShapeableImageView
         android:layout_width="100dp"
         android:layout_height="150dp"
         android:layout_marginLeft="12dp"
         android:src="@color/gray_700"
-        app:shapeAppearanceOverlay="@style/roundedCornersImageView" />
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.App.ImageView.Rounded" />
 
     </LinearLayout>
   </com.facebook.shimmer.ShimmerFrameLayout>

@@ -39,7 +39,7 @@
             style="@style/LayoutHeaderTheme">
 
             <TextView
-              style="@style/TextHeader2"
+              style="@style/TextAppearance.App.Header2"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center_vertical"
@@ -57,19 +57,19 @@
 
           <com.google.android.material.button.MaterialButtonToggleGroup
             android:id="@+id/button_group"
-            style="@style/FilterButtonGroupStyle"
+            style="@style/Widget.App.ButtonGroup.Filter"
             android:layout_marginHorizontal="@dimen/default_margin_parent_20"
             android:layout_marginBottom="8dp">
 
             <com.google.android.material.button.MaterialButton
               android:id="@+id/btn_anime_this_season"
-              style="@style/FilterToggleOverlay"
+              style="@style/Widget.App.Button.FilterToggle"
               android:checked="true"
               android:text="@string/this_season" />
 
             <com.google.android.material.button.MaterialButton
               android:id="@+id/btn_anime_all_time"
-              style="@style/FilterToggleOverlay"
+              style="@style/Widget.App.Button.FilterToggle"
               android:text="@string/all_time" />
 
           </com.google.android.material.button.MaterialButtonToggleGroup>
@@ -88,7 +88,7 @@
           android:layout_marginTop="12dp">
 
           <TextView
-            style="@style/TextHeader2"
+            style="@style/TextAppearance.App.Header2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
@@ -117,7 +117,7 @@
           android:layout_marginTop="12dp">
 
           <TextView
-            style="@style/TextHeader2"
+            style="@style/TextAppearance.App.Header2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
@@ -147,7 +147,7 @@
           android:layout_marginTop="12dp">
 
           <TextView
-            style="@style/TextHeader2"
+            style="@style/TextAppearance.App.Header2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
@@ -176,7 +176,7 @@
           android:layout_marginTop="12dp">
 
           <TextView
-            style="@style/TextHeader2"
+            style="@style/TextAppearance.App.Header2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"

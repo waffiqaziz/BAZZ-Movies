@@ -13,17 +13,17 @@
   <!-- ========================== -->
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/app_bar_layout"
-    style="@style/AppBarLayoutStyle">
+    style="@style/Widget.App.AppBarLayout">
 
     <com.google.android.material.appbar.MaterialToolbar
       android:id="@+id/toolbar"
-      style="@style/MaterialToolbarStyle"
+      style="@style/Widget.App.Toolbar"
       android:paddingBottom="@dimen/margin_each_item">
 
       <!-- Back button -->
       <Button
         android:id="@+id/btn_back"
-        style="@style/BackButton"
+        style="@style/Widget.App.Button.Circle.Back"
         android:layout_gravity="start|bottom" />
 
       <!-- Favorite watchlist button -->
@@ -109,7 +109,7 @@
           <!-- Backdrop image -->
           <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_picture_backdrop"
-            style="@style/roundedCornersPoster"
+            style="@style/ShapeAppearance.App.ImageView.Rounded"
             android:layout_width="match_parent"
             android:layout_height="270dp"
             android:adjustViewBounds="true"
@@ -175,13 +175,13 @@
             android:contentDescription="@string/poster"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_picture_backdrop"
-            app:shapeAppearanceOverlay="@style/roundedCornersPoster"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.App.ImageView.Rounded"
             tools:src="@drawable/ic_bazz_placeholder_poster" />
 
           <!-- Title -->
           <TextView
             android:id="@+id/tv_title"
-            style="@style/TextHeader1"
+            style="@style/TextAppearance.App.Header1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -197,7 +197,7 @@
           <!-- Release date -->
           <TextView
             android:id="@+id/tv_year_released"
-            style="@style/TextMetadata"
+            style="@style/TextAppearance.App.Metadata"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -208,7 +208,7 @@
           <!-- Region -->
           <TextView
             android:id="@+id/tv_region_release"
-            style="@style/TextMetadata"
+            style="@style/TextAppearance.App.Metadata"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_detail_info"
@@ -241,7 +241,7 @@
           <!-- TV/Movie -->
           <TextView
             android:id="@+id/tv_mediaType"
-            style="@style/TextMetadata"
+            style="@style/TextAppearance.App.Metadata"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_detail_info"
@@ -264,7 +264,7 @@
           <!-- Duration -->
           <TextView
             android:id="@+id/tv_duration"
-            style="@style/TextMetadata"
+            style="@style/TextAppearance.App.Metadata"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_detail_info"
@@ -329,7 +329,7 @@
 
           <TextView
             android:id="@+id/tv_summary_header"
-            style="@style/TextHeader2"
+            style="@style/TextAppearance.App.Header2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -339,17 +339,17 @@
 
           <Button
             android:id="@+id/btn_sidebar"
-            style="@style/MyIconButtonStyle"
+            style="@style/Widget.App.Button.IconButton"
             android:layout_marginEnd="@dimen/default_margin_parent_20"
             android:contentDescription="@string/more_information"
-            android:theme="@style/MyIconButtonStyle"
+            android:theme="@style/Widget.App.Button.IconButton"
             app:icon="@drawable/ic_sidebar" />
 
         </LinearLayout>
 
         <io.github.glailton.expandabletextview.ExpandableTextView
           android:id="@+id/tv_overview"
-          style="@style/TextBody"
+          style="@style/TextAppearance.App.Body"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginHorizontal="@dimen/default_margin_parent_20"
@@ -387,7 +387,7 @@
 
           <TextView
             android:id="@+id/tv_cast_header"
-            style="@style/TextHeader2"
+            style="@style/TextAppearance.App.Header2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
@@ -429,7 +429,7 @@
 
           <TextView
             android:id="@+id/tv_recommendation_header"
-            style="@style/TextHeader2"
+            style="@style/TextAppearance.App.Header2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
@@ -465,14 +465,14 @@
   <!-- Background overlay on start -->
   <View
     android:id="@+id/background_dim_movie"
-    style="@style/MyDimStyle"
+    style="@style/Widget.App.DimOverlay"
     android:layout_gravity="center"
     android:visibility="visible"
     tools:visibility="gone" />
 
   <com.google.android.material.loadingindicator.LoadingIndicator
     android:id="@+id/progress_bar"
-    style="@style/MyProgressBar"
+    style="@style/Widget.App.ProgressBar"
     tools:visibility="visible" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

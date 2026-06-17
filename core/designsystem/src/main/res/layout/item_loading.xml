@@ -9,7 +9,7 @@
   <!-- Error message -->
   <TextView
     android:id="@+id/error_msg"
-    style="@style/TextDivider"
+    style="@style/TextAppearance.App.Divider"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
@@ -32,7 +32,7 @@
   <!-- Retry button -->
   <com.google.android.material.button.MaterialButton
     android:id="@+id/retry_button"
-    style="@style/ButtonTryAgain"
+    style="@style/Widget.App.Button.TryAgain"
     android:layout_gravity="center"
     android:text="@string/retry" />
 </LinearLayout>

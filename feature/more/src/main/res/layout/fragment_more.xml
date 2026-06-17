@@ -30,7 +30,7 @@
           android:layout_height="48dp"
           android:layout_gravity="center_vertical"
           android:contentDescription="@string/image_profile"
-          app:shapeAppearanceOverlay="@style/circleImage"
+          app:shapeAppearanceOverlay="@style/ShapeAppearance.App.Circle"
           tools:src="@drawable/ic_bazz_logo" />
 
         <LinearLayout
@@ -43,7 +43,7 @@
 
           <TextView
             android:id="@+id/tv_fullName"
-            style="@style/TextHeader2"
+            style="@style/TextAppearance.App.Header2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Name" />
@@ -94,7 +94,7 @@
               app:srcCompat="@drawable/ic_region" />
 
             <TextView
-              style="@style/TextBody"
+              style="@style/TextAppearance.App.Body"
               android:layout_width="0dp"
               android:layout_height="wrap_content"
               android:layout_marginStart="12dp"
@@ -145,7 +145,7 @@
               app:srcCompat="@drawable/ic_faq" />
 
             <TextView
-              style="@style/TextBody"
+              style="@style/TextAppearance.App.Body"
               android:layout_width="0dp"
               android:layout_height="wrap_content"
               android:layout_marginStart="12dp"
@@ -179,7 +179,7 @@
               app:srcCompat="@drawable/ic_lamp" />
 
             <TextView
-              style="@style/TextBody"
+              style="@style/TextAppearance.App.Body"
               android:layout_width="0dp"
               android:layout_height="wrap_content"
               android:layout_marginStart="12dp"
@@ -212,7 +212,7 @@
               app:srcCompat="@drawable/ic_about" />
 
             <TextView
-              style="@style/TextBody"
+              style="@style/TextAppearance.App.Body"
               android:layout_width="0dp"
               android:layout_height="wrap_content"
               android:layout_marginStart="12dp"
@@ -252,7 +252,7 @@
               tools:ignore="UseCompoundDrawables">
 
               <TextView
-                style="@style/TextBody"
+                style="@style/TextAppearance.App.Body"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -281,7 +281,7 @@
               tools:ignore="UseCompoundDrawables">
 
               <TextView
-                style="@style/TextBody"
+                style="@style/TextAppearance.App.Body"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -316,7 +316,7 @@
             tools:ignore="UseCompoundDrawables">
 
             <TextView
-              style="@style/TextBody"
+              style="@style/TextAppearance.App.Body"
               android:layout_width="0dp"
               android:layout_height="wrap_content"
               android:layout_weight="1"
@@ -345,7 +345,7 @@
             tools:ignore="UseCompoundDrawables">
 
             <TextView
-              style="@style/TextBody"
+              style="@style/TextAppearance.App.Body"
               android:layout_width="0dp"
               android:layout_height="wrap_content"
               android:layout_weight="1"
@@ -384,7 +384,7 @@
 
   <com.google.android.material.loadingindicator.LoadingIndicator
     android:id="@+id/progress_bar"
-    style="@style/MyProgressBar"
+    style="@style/Widget.App.ProgressBar"
     android:visibility="gone"
     tools:visibility="visible" />
 
