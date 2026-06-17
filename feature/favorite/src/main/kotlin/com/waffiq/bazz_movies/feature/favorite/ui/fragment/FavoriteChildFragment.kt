@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
+import com.waffiq.bazz_movies.core.favoritewatchlist.databinding.FragmentChildBinding
 import com.waffiq.bazz_movies.core.models.MediaItem
-import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentFavoriteChildBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class FavoriteChildFragment : BaseFavoriteFragment<MediaItem>() {
 
-  private var _binding: FragmentFavoriteChildBinding? = null
+  private var _binding: FragmentChildBinding? = null
   override val binding get() = _binding ?: error(getString(binding_error))
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -27,7 +27,7 @@ class FavoriteChildFragment : BaseFavoriteFragment<MediaItem>() {
     container: ViewGroup?,
     savedInstanceState: Bundle?,
   ): View {
-    _binding = FragmentFavoriteChildBinding.inflate(inflater, container, false)
+    _binding = FragmentChildBinding.inflate(inflater, container, false)
     return binding.root
   }
 

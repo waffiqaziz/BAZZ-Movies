@@ -12,6 +12,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.color.yellow_700
 import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.undo
+import com.waffiq.bazz_movies.core.favoritewatchlist.databinding.FragmentChildBinding
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.MediaPagingAdapter
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.handlePagingLoadState
@@ -25,7 +26,6 @@ import com.waffiq.bazz_movies.core.uihelper.ui.adapter.SwipeConfig
 import com.waffiq.bazz_movies.core.uihelper.utils.SpannableUtils.buildActionMessage
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
-import com.waffiq.bazz_movies.feature.watchlist.databinding.FragmentWatchlistChildBinding
 import com.waffiq.bazz_movies.feature.watchlist.ui.viewmodel.WatchlistViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import kotlinx.coroutines.launch
@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
  */
 class LoggedUserDelegate(
   private val fragment: Fragment,
-  private val binding: FragmentWatchlistChildBinding,
+  private val binding: FragmentChildBinding,
   private val watchlistViewModel: WatchlistViewModel,
   private val baseViewModel: BaseViewModel,
   private val mediaType: String,
@@ -84,7 +84,7 @@ class LoggedUserDelegate(
         postToAddFavorite(titleHandler(mediaItem), mediaItem.id)
       },
     )
-    binding.rvWatchlist.adapter = adapter.withLoadStateFooter(
+    binding.recyclerView.adapter = adapter.withLoadStateFooter(
       footer = LoadingStateAdapter { adapter.retry() },
     )
   }
@@ -136,21 +136,21 @@ class LoggedUserDelegate(
 
   private fun handleSnackbarData(data: SnackBarUserLoginData) {
     when {
-      !isUndo && data.isSuccess && isWantToDelete -> {
+      isUndo -> {
+        if (data.isSuccess) adapter.refresh()
+      }
+
+      data.isSuccess && isWantToDelete -> {
         showUndoSnackbar(data.title, data.favoriteModel, data.watchlistModel)
         adapter.refresh()
       }
 
-      !isUndo && !data.isSuccess -> {
+      !data.isSuccess -> {
         showWarningSnackbar(Event(data.title))
       }
 
-      !isUndo -> {
+      else -> {
         showUndoSnackbar(data.title, data.favoriteModel, data.watchlistModel)
-      }
-
-      isUndo && data.isSuccess -> {
-        adapter.refresh()
       }
     }
   }
@@ -159,10 +159,7 @@ class LoggedUserDelegate(
     fragment.viewLifecycleOwner.handlePagingLoadState(
       adapterPaging = adapter,
       loadStateFlow = adapter.loadStateFlow,
-      recyclerView = binding.rvWatchlist,
-      progressBar = binding.progressBar,
-      errorView = binding.illustrationError.root,
-      emptyView = binding.illustrationNoDataView.root,
+      binding = binding,
       onError = { error ->
         if (baseViewModel.isSnackbarShown.value == false) {
           showWarningSnackbar(error)

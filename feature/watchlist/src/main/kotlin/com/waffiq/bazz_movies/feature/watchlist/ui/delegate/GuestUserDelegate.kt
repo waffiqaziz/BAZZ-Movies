@@ -12,6 +12,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.color.yellow_700
 import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.undo
+import com.waffiq.bazz_movies.core.favoritewatchlist.databinding.FragmentChildBinding
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local.MediaLocalAdapter
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlreadyUtils
@@ -19,7 +20,6 @@ import com.waffiq.bazz_movies.core.models.Favorite
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.SwipeConfig
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
 import com.waffiq.bazz_movies.core.uihelper.utils.SpannableUtils.buildActionMessage
-import com.waffiq.bazz_movies.feature.watchlist.databinding.FragmentWatchlistChildBinding
 import com.waffiq.bazz_movies.navigation.INavigator
 
 /**
@@ -28,7 +28,7 @@ import com.waffiq.bazz_movies.navigation.INavigator
  */
 class GuestUserDelegate(
   private val fragment: Fragment,
-  private val binding: FragmentWatchlistChildBinding,
+  private val binding: FragmentChildBinding,
   private val navigator: INavigator,
   private val sharedDBViewModel: SharedDBViewModel,
   private val mediaType: String,
@@ -39,6 +39,7 @@ class GuestUserDelegate(
   private var isWantToDelete = false
 
   private val snackbarAnchor = navigator.snackbarAnchor()
+  private val context = fragment.requireContext()
 
   fun setup() {
     setupAdapter()
@@ -65,7 +66,7 @@ class GuestUserDelegate(
         addToFavorite(favorite, position)
       },
     )
-    binding.rvWatchlist.adapter = adapter
+    binding.recyclerView.adapter = adapter
   }
 
   private fun setupRefresh() {
@@ -92,7 +93,7 @@ class GuestUserDelegate(
     }
 
   private fun updateViewVisibility(hasData: Boolean) {
-    binding.rvWatchlist.visibility = if (hasData) View.VISIBLE else View.GONE
+    binding.recyclerView.visibility = if (hasData) View.VISIBLE else View.GONE
     binding.illustrationNoDataView.root.visibility = if (hasData) View.GONE else View.VISIBLE
     binding.progressBar.visibility = View.GONE
   }
@@ -132,7 +133,7 @@ class GuestUserDelegate(
         handleUndo(position)
       }
       anchorView = fragment.requireActivity().findViewById(snackbarAnchor)
-      setActionTextColor(ContextCompat.getColor(fragment.requireContext(), yellow_700))
+      setActionTextColor(ContextCompat.getColor(context, yellow_700))
       show()
     }
   }
@@ -155,22 +156,20 @@ class GuestUserDelegate(
     } else {
       sharedDBViewModel.insertToDB(watchlistItem.copy(isWatchlist = true))
     }
-    binding.rvWatchlist.scrollToPosition(position)
+    binding.recyclerView.scrollToPosition(position)
   }
 
   private fun observeDbOperations() {
     sharedDBViewModel.dbResult.observe(fragment.viewLifecycleOwner) { eventResult ->
       eventResult.getContentIfNotHandled()?.let {
-        if (it is DbResult.Error) {
-          fragment.requireContext().toastShort(it.errorMessage)
-        }
+        if (it is DbResult.Error) context.toastShort(it.errorMessage)
       }
     }
   }
 
   private fun showAlreadySnackbar(event: Event<String>) {
     currentSnackbar = SnackbarAlreadyUtils.snackBarAlready(
-      fragment.requireContext(),
+      context,
       fragment.requireActivity().findViewById(snackbarAnchor),
       fragment.requireActivity().findViewById(snackbarAnchor),
       event,

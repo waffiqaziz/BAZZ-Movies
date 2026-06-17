@@ -8,7 +8,10 @@ plugins {
   alias(libs.plugins.bazzmovies.hilt)
 }
 
-android.namespace = "com.waffiq.bazz_movies.core.favoritewatchlist"
+android {
+  namespace = "com.waffiq.bazz_movies.core.favoritewatchlist"
+  buildFeatures.viewBinding = true
+}
 
 dependencies {
   api(project(":core:data"))
@@ -19,9 +22,11 @@ dependencies {
   api(project(":core:user"))
   api(project(":core:utils"))
   implementation(project(":core:adapter"))
+  implementation(project(":core:designsystem"))
   implementation(project(":navigation"))
 
   implementation(libs.androidx.recyclerview)
+  api(libs.androidx.swiperefreshlayout)
   api(libs.androidx.paging.runtime)
 
   testImplementation(project(":core:test"))

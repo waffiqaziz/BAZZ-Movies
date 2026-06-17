@@ -123,8 +123,7 @@
   <string name="yt_not_installed">Youtube App Not Installed</string>
   <string name="backdrop_not_found">*Official backdrop has not been released yet</string>
   <string name="data_powered_by">*Data powered by</string>
-  <string name="where_to_watch_down">Where to watch  ▾</string>
-  <string name="where_to_watch_up">Where to watch  ▴</string>
+  <string name="where_to_watch">Where to watch</string>
   <string name="ads">Ads</string>
   <string name="buy">Buy</string>
   <string name="rent">Rent</string>

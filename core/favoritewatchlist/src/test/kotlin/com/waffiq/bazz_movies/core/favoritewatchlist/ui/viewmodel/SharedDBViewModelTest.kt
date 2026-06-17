@@ -6,7 +6,11 @@ import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.domain.usecase.FavoriteLocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.favoritewatchlist.LiveDataCollectors
-import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.TestData
+import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.favorite
+import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.favoriteMoviesList
+import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.favoriteTvList
+import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.watchlistMovieList
+import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.watchlistTvList
 import com.waffiq.bazz_movies.core.models.Favorite
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import io.mockk.coEvery
@@ -28,10 +32,6 @@ class SharedDBViewModelTest {
 
   private lateinit var viewModel: SharedDBViewModel
   private val localDatabaseUseCase: FavoriteLocalDatabaseUseCase = mockk()
-
-  // test data collections
-  private val testData = TestData()
-  private val baseFavorite = testData.baseFavorite
 
   @get:Rule
   val instantExecutorRule = InstantTaskExecutorRule()
@@ -75,15 +75,15 @@ class SharedDBViewModelTest {
   fun insertToDB_whenSuccessful_emitsSuccess() =
     runTest {
       val dbResult = DbResult.Success(1)
-      coEvery { localDatabaseUseCase.insertToDB(baseFavorite) } returns dbResult
+      coEvery { localDatabaseUseCase.insertToDB(favorite) } returns dbResult
 
       val results = collectDbResults {
-        viewModel.insertToDB(baseFavorite)
+        viewModel.insertToDB(favorite)
       }
 
       assertThat(results).hasSize(1)
       assertThat(results[0].peekContent()).isEqualTo(dbResult)
-      coVerify { localDatabaseUseCase.insertToDB(baseFavorite) }
+      coVerify { localDatabaseUseCase.insertToDB(favorite) }
     }
 
   @Test
@@ -93,7 +93,7 @@ class SharedDBViewModelTest {
         mockSetup = {
           coEvery { localDatabaseUseCase.deleteFromDB(any(), any()) } returns DbResult.Success(1)
         },
-        operation = { viewModel.deleteFromDB(baseFavorite) },
+        operation = { viewModel.deleteFromDB(favorite) },
         verification = { coVerify { localDatabaseUseCase.deleteFromDB(any(), any()) } },
         dbResult = DbResult.Success(1),
       )
@@ -106,7 +106,7 @@ class SharedDBViewModelTest {
         mockSetup = {
           coEvery { localDatabaseUseCase.update(any()) } returns DbResult.Success(Unit)
         },
-        operation = { viewModel.updateDB(baseFavorite) },
+        operation = { viewModel.updateDB(favorite) },
         verification = {
           coVerify { localDatabaseUseCase.update(any()) }
         },
@@ -123,7 +123,7 @@ class SharedDBViewModelTest {
       val collectors = LiveDataCollectors(viewModelWithData)
       advanceUntilIdle()
 
-      collectors.assertAllDataTransformed(testData)
+      collectors.assertAllDataTransformed()
     }
 
   private fun TestScope.collectDbResults(operation: suspend () -> Unit): List<Event<DbResult<*>>> {
@@ -154,7 +154,7 @@ class SharedDBViewModelTest {
     assertThat(dbResults).hasSize(1)
     assertThat(dbResults[0].peekContent()).isEqualTo(dbResult)
     assertThat(undoResults).hasSize(1)
-    assertThat(undoResults[0].peekContent()).isEqualTo(baseFavorite)
+    assertThat(undoResults[0].peekContent()).isEqualTo(favorite)
 
     verification()
   }
@@ -162,15 +162,15 @@ class SharedDBViewModelTest {
   private fun setupFlowsWithTestData() {
     every {
       localDatabaseUseCase.favoriteTvFromDB
-    } returns MutableStateFlow(testData.favoriteTvList)
+    } returns MutableStateFlow(favoriteTvList)
     every {
       localDatabaseUseCase.favoriteMoviesFromDB
-    } returns MutableStateFlow(testData.favoriteMoviesList)
+    } returns MutableStateFlow(favoriteMoviesList)
     every {
       localDatabaseUseCase.watchlistTvFromDB
-    } returns MutableStateFlow(testData.watchlistTvList)
+    } returns MutableStateFlow(watchlistTvList)
     every {
       localDatabaseUseCase.watchlistMovieFromDB
-    } returns MutableStateFlow(testData.watchlistMovieList)
+    } returns MutableStateFlow(watchlistMovieList)
   }
 }

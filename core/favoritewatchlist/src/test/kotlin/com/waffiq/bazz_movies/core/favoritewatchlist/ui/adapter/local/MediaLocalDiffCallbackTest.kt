@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local
 
-import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.TestData
+import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.favorite
 import com.waffiq.bazz_movies.core.models.Favorite
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -8,7 +8,6 @@ import org.junit.Test
 
 class MediaLocalDiffCallbackTest {
 
-  private val favorite = TestData().baseFavorite
   private val diffCallback = MediaLocalDiffCallback()
 
   private val testCases = listOf(
