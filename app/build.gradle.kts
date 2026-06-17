@@ -57,6 +57,12 @@ dependencies {
   androidTestImplementation(libs.mockk.android)
 }
 
+// conflicts with protobuf-javalite
+// https://github.com/android/android-test/issues/999
+configurations.androidTestImplementation.configure {
+  exclude(group = "com.google.protobuf", module = "protobuf-lite")
+}
+
 dependencyGuard {
   configuration("releaseCompileClasspath")
   configuration("releaseRuntimeClasspath")
