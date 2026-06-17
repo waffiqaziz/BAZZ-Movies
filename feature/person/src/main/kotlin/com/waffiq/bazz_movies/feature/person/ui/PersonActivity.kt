@@ -220,11 +220,15 @@ class PersonActivity : AppCompatActivity() {
     if (isLoading) {
       binding.backgroundDimPerson.isVisible = true // blur background when loading
       binding.progressBar.isVisible = true
+      binding.nestedScrollViewPerson.isNestedScrollingEnabled = false
+      binding.swipeRefresh.isEnabled = false
     } else {
       val animation = animFadeOutLong(this)
       binding.backgroundDimPerson.startAnimation(animation)
       binding.progressBar.startAnimation(animation)
 
+      binding.nestedScrollViewPerson.isNestedScrollingEnabled = true
+      binding.swipeRefresh.isEnabled = true
       binding.backgroundDimPerson.isGone = true
       binding.progressBar.isGone = true
     }

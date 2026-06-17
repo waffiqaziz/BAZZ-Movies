@@ -418,9 +418,13 @@ class DetailUIManager(
     if (isLoading) {
       binding.appBarLayout.isVisible = false
       binding.progressBar.isVisible = true
+      binding.nestedScrollView.isNestedScrollingEnabled = false
+      binding.swipeRefresh.isEnabled = false
     } else {
       binding.appBarLayout.isVisible = true
       binding.progressBar.isVisible = false
+      binding.nestedScrollView.isNestedScrollingEnabled = true
+      binding.swipeRefresh.isEnabled = true
       fadeOut(binding.backgroundDimMovie, DEBOUNCE_LONG)
     }
   }
