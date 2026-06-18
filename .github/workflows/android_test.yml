@@ -35,6 +35,9 @@ jobs:
       contents: read
     timeout-minutes: 15
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
       - name: Run Setup
         uses: ./.github/actions/setup-gradle
         with:
@@ -61,6 +64,9 @@ jobs:
           - target: "Test Sources"
             command: "detektTest"
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
       - name: Run Setup
         uses: ./.github/actions/setup-gradle
         with:
@@ -82,6 +88,9 @@ jobs:
       contents: read
       actions: write # Needed for cache and artifact upload
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
       - name: Run Setup
         uses: ./.github/actions/setup-gradle
         with:
@@ -170,6 +179,9 @@ jobs:
             gradle_task: :feature:search:connectedDebugAndroidTest
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
       - name: Run Setup
         uses: ./.github/actions/setup-gradle
         with:
@@ -271,6 +283,9 @@ jobs:
       contents: read
       actions: write # Needed for cache and artifact upload
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
       - name: Run Setup
         uses: ./.github/actions/setup-gradle
         with:
