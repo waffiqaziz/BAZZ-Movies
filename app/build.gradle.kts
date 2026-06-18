@@ -10,6 +10,7 @@ plugins {
 
 dependencies {
   implementation(project(":core:designsystem"))
+  implementation(project(":core:favoritewatchlist"))
   implementation(project(":core:models"))
   implementation(project(":core:uihelper"))
   implementation(project(":core:user"))
@@ -54,6 +55,12 @@ dependencies {
   androidTestImplementation(libs.mockito.android)
   androidTestImplementation(libs.mockito.android.kotlin)
   androidTestImplementation(libs.mockk.android)
+}
+
+// conflicts with protobuf-javalite
+// https://github.com/android/android-test/issues/999
+configurations.androidTestImplementation.configure {
+  exclude(group = "com.google.protobuf", module = "protobuf-lite")
 }
 
 dependencyGuard {

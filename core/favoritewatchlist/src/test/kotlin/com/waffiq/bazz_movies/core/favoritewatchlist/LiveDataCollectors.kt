@@ -1,7 +1,10 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist
 
 import com.google.common.truth.Truth.assertThat
-import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.TestData
+import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.favoriteMoviesList
+import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.favoriteTvList
+import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.watchlistMovieList
+import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.watchlistTvList
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.models.Favorite
 
@@ -22,17 +25,17 @@ class LiveDataCollectors(viewModel: SharedDBViewModel) {
     viewModel.watchlistMoviesDB.observeForever { observedWatchlistMovies.add(it) }
   }
 
-  fun assertAllDataTransformed(testData: TestData) {
+  fun assertAllDataTransformed() {
     assertThat(observedFavoriteTvs).isNotEmpty()
-    assertThat(observedFavoriteTvs[0]).isEqualTo(testData.favoriteTvList)
+    assertThat(observedFavoriteTvs[0]).isEqualTo(favoriteTvList)
 
     assertThat(observedFavoriteMovies).isNotEmpty()
-    assertThat(observedFavoriteMovies[0]).isEqualTo(testData.favoriteMoviesList)
+    assertThat(observedFavoriteMovies[0]).isEqualTo(favoriteMoviesList)
 
     assertThat(observedWatchlistTvs).isNotEmpty()
-    assertThat(observedWatchlistTvs[0]).isEqualTo(testData.watchlistTvList)
+    assertThat(observedWatchlistTvs[0]).isEqualTo(watchlistTvList)
 
     assertThat(observedWatchlistMovies).isNotEmpty()
-    assertThat(observedWatchlistMovies[0]).isEqualTo(testData.watchlistMovieList)
+    assertThat(observedWatchlistMovies[0]).isEqualTo(watchlistMovieList)
   }
 }

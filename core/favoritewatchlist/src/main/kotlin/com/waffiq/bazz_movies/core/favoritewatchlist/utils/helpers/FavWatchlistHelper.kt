@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers
 
-import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
@@ -9,10 +8,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.loadingindicator.LoadingIndicator
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Event
+import com.waffiq.bazz_movies.core.favoritewatchlist.databinding.FragmentChildBinding
 import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.core.utils.PagingLoadStateHelper.pagingErrorHandling
 import kotlinx.coroutines.flow.Flow
@@ -39,54 +37,63 @@ object FavWatchlistHelper {
    *
    * @param adapterPaging The `PagingDataAdapter` that handles the data.
    * @param loadStateFlow The flow of load states to monitor.
-   * @param recyclerView The `RecyclerView` that displays the data.
-   * @param progressBar The `ProgressBar` that shows when data is loading.
-   * @param errorView The view that shows when an error occurs.
-   * @param emptyView The view that shows when no data is available.
+   * @param binding The `FragmentChildBinding` layout.
    * @param onError Handle an errors, passing the error message inside an `Event`.
    */
   fun LifecycleOwner.handlePagingLoadState(
     adapterPaging: PagingDataAdapter<*, *>,
     loadStateFlow: Flow<CombinedLoadStates>,
-    recyclerView: RecyclerView,
-    progressBar: LoadingIndicator,
-    errorView: View,
-    emptyView: View,
+    binding: FragmentChildBinding,
     onError: (Event<String>) -> Unit, // A callback for when there’s an error
   ) {
     lifecycleScope.launch {
       loadStateFlow.debounce(DEBOUNCE_SHORT).distinctUntilChanged().collectLatest { loadState ->
         when {
           loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading -> {
-            progressBar.isVisible = true
-            recyclerView.isVisible = true
-            errorView.isVisible = false
-            emptyView.isVisible = false
+            binding.apply {
+              progressBar.isVisible = true
+              swipeRefresh.isEnabled = false
+              recyclerView.isEnabled = false
+              recyclerView.isVisible = true
+              illustrationError.containerIllError.isVisible = false
+              illustrationNoDataView.containerNoData.isVisible = false
+            }
           }
 
           loadState.refresh is LoadState.Error -> {
-            progressBar.isVisible = false
-            recyclerView.isVisible = adapterPaging.itemCount > 0
-            errorView.isVisible = adapterPaging.itemCount <= 0
-            emptyView.isVisible = false
-
+            binding.apply {
+              progressBar.isVisible = false
+              swipeRefresh.isEnabled = false
+              recyclerView.isEnabled = false
+              recyclerView.isVisible = adapterPaging.itemCount > 0
+              illustrationError.containerIllError.isVisible = adapterPaging.itemCount <= 0
+              illustrationNoDataView.containerNoData.isVisible = false
+            }
             // trigger the error callback
             val error = (loadState.refresh as LoadState.Error).error
             onError(Event(pagingErrorHandling(error)))
           }
 
           loadState.append.endOfPaginationReached && adapterPaging.itemCount < 1 -> {
-            progressBar.isVisible = false
-            recyclerView.isVisible = false
-            errorView.isVisible = false
-            emptyView.isVisible = true
+            binding.apply {
+              progressBar.isVisible = false
+              swipeRefresh.isEnabled = false
+              recyclerView.isVisible = false
+              recyclerView.isEnabled = false
+              illustrationError.containerIllError.isVisible = false
+              illustrationNoDataView.containerNoData.isVisible = true
+            }
           }
 
           else -> {
-            progressBar.isVisible = false
-            recyclerView.isVisible = true
-            errorView.isVisible = false
-            emptyView.isVisible = false
+            binding.apply {
+              progressBar.isVisible = false
+              swipeRefresh.isEnabled = true
+              recyclerView.isEnabled = true
+              recyclerView.isVisible = true
+              illustrationError.containerIllError.isVisible = false
+              illustrationNoDataView.containerNoData.isVisible = false
+            }
           }
         }
       }

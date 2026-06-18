@@ -1,11 +1,11 @@
 package com.waffiq.bazz_movies.feature.favorite.ui
 
 import com.waffiq.bazz_movies.core.designsystem.R.string.tv_series
+import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.snackbar_anchor_test
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performTextClick
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.feature.favorite.R.id.snackbar_anchor_test
 import com.waffiq.bazz_movies.feature.favorite.testutils.DefaultFavoriteFragmentTestHelper
 import com.waffiq.bazz_movies.feature.favorite.testutils.FavoriteFragmentTestHelper
 import com.waffiq.bazz_movies.feature.favorite.ui.viewmodel.FavoriteViewModel

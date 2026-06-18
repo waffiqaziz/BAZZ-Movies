@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.feature.detail.ui.manager
 import android.content.Context
 import android.content.Intent
 import android.view.View
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -11,8 +12,8 @@ import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.waffiq.bazz_movies.core.common.utils.Constants.JUSTWATCH_LINK_MAIN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_LINK_MAIN
-import com.waffiq.bazz_movies.core.designsystem.R.string.where_to_watch_down
-import com.waffiq.bazz_movies.core.designsystem.R.string.where_to_watch_up
+import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_arrow_down
+import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_arrow_up
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding
@@ -103,11 +104,10 @@ class WatchProvidersManager(
     TransitionManager.beginDelayedTransition(provider.watchProviderSection, AutoTransition())
     provider.groupWatchProviders.visibility = if (isExpanded) View.VISIBLE else View.GONE
 
-    provider.tvToggleWatchProviders.text = if (isExpanded) {
-      context.getString(where_to_watch_up)
-    } else {
-      context.getString(where_to_watch_down)
-    }
+    val drawableRes = if (isExpanded) ic_arrow_up else ic_arrow_down
+    val drawable = AppCompatResources.getDrawable(provider.root.context, drawableRes)
+    provider.tvToggleWatchProviders
+      .setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
   }
 
   /**

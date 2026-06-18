@@ -21,11 +21,10 @@ import com.waffiq.bazz_movies.R.id.navigation_home
 import com.waffiq.bazz_movies.R.id.navigation_more
 import com.waffiq.bazz_movies.R.id.navigation_search
 import com.waffiq.bazz_movies.R.id.navigation_watchlist
-import com.waffiq.bazz_movies.feature.favorite.R.id.fragment_favorite
+import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.fragment_parent
 import com.waffiq.bazz_movies.feature.home.R.id.fragment_featured
 import com.waffiq.bazz_movies.feature.more.R.id.fragment_more
 import com.waffiq.bazz_movies.feature.search.R.id.fragment_search
-import com.waffiq.bazz_movies.feature.watchlist.R.id.fragment_watchlist
 import com.waffiq.bazz_movies.testrule.CleanDataStoreTestRule
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -124,12 +123,12 @@ class MainActivityTest {
 
     // My Favorite navigation
     onView(withId(bottom_navigation)).perform(selectMenuItem(navigation_favorite))
-    onView(withId(fragment_favorite)).check(matches(isDisplayed()))
+    onView(withId(fragment_parent)).check(matches(isDisplayed()))
     Thread.sleep(DELAY_TIME)
 
     // My Watchlist navigation
     onView(withId(bottom_navigation)).perform(selectMenuItem(navigation_watchlist))
-    onView(withId(fragment_watchlist)).check(matches(isDisplayed()))
+    onView(withId(fragment_parent)).check(matches(isDisplayed()))
     Thread.sleep(DELAY_TIME)
 
     // More navigation

@@ -11,15 +11,15 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
+import com.waffiq.bazz_movies.core.favoritewatchlist.databinding.FragmentParentBinding
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.common.Constants.tabMoviesTvHeadingArray
-import com.waffiq.bazz_movies.feature.watchlist.databinding.FragmentWatchlistBinding
 import com.waffiq.bazz_movies.feature.watchlist.ui.WatchlistViewPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class WatchlistFragment : Fragment() {
 
-  private var _binding: FragmentWatchlistBinding? = null
+  private var _binding: FragmentParentBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
   private lateinit var viewpager: ViewPager2
@@ -31,7 +31,7 @@ class WatchlistFragment : Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?,
   ): View {
-    _binding = FragmentWatchlistBinding.inflate(inflater, container, false)
+    _binding = FragmentParentBinding.inflate(inflater, container, false)
     return binding.root
   }
 

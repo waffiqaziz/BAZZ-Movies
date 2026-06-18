@@ -30,8 +30,8 @@ import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltConta
 import com.waffiq.bazz_movies.core.models.Favorite
 import com.waffiq.bazz_movies.core.models.UserModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.feature.favorite.R.id.rv_favorite
-import com.waffiq.bazz_movies.feature.favorite.R.id.swipe_refresh
+import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.recycler_view
+import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.swipe_refresh
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.favoriteMovie
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.favoriteMovie2
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.favoriteTv
@@ -120,10 +120,10 @@ class DefaultFavoriteFragmentTestHelper : FavoriteFragmentTestHelper {
   }
 
   override fun performSwipeActions() {
-    rv_favorite.isDisplayed()
+    recycler_view.isDisplayed()
     onIdle()
 
-    rv_favorite.scrollToPosition(0)
+    recycler_view.scrollToPosition(0)
     performSwipeAction(0, swipeLeft())
     performSwipeAction(1, swipeRight())
   }
@@ -141,7 +141,7 @@ class DefaultFavoriteFragmentTestHelper : FavoriteFragmentTestHelper {
   }
 
   override fun performSwipeAction(position: Int, viewAction: ViewAction) {
-    rv_favorite.actionOnItemAt(position, viewAction)
+    recycler_view.actionOnItemAt(position, viewAction)
   }
 
   override fun Int.assertViewPagerPosition(expected: Int) {

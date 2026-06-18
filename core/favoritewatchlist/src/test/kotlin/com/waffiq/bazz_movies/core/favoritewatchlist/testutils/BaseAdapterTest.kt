@@ -2,7 +2,9 @@ package com.waffiq.bazz_movies.core.favoritewatchlist.testutils
 
 import android.content.Context
 import android.os.Looper
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.FrameLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
@@ -20,8 +22,10 @@ import org.robolectric.Shadows.shadowOf
 abstract class BaseAdapterTest<T, A : RecyclerView.Adapter<*>> {
 
   protected lateinit var context: Context
+  protected lateinit var parent: FrameLayout
   protected lateinit var recyclerView: RecyclerView
   protected lateinit var navigator: INavigator
+  protected lateinit var inflater: LayoutInflater
 
   @Before
   open fun setUp() {
@@ -29,6 +33,8 @@ abstract class BaseAdapterTest<T, A : RecyclerView.Adapter<*>> {
     context = ApplicationProvider.getApplicationContext<Context>().apply {
       setTheme(Base_Theme_BAZZ_movies)
     }
+    parent = FrameLayout(context)
+    inflater = LayoutInflater.from(context)
   }
 
   protected fun provideRecyclerView(adapter: A, submitData: suspend () -> Unit) =
@@ -50,4 +56,21 @@ abstract class BaseAdapterTest<T, A : RecyclerView.Adapter<*>> {
 
   protected inline fun <reified VH : RecyclerView.ViewHolder> provideViewHolder(): VH? =
     recyclerView.findViewHolderForAdapterPosition(0) as? VH
+
+  /**
+   * Attaches [adapter] to a real RecyclerView, lays it out, and returns it.
+   * Use this when tests involve click listeners that rely on [bindingAdapterPosition].
+   */
+  protected fun attachAdapter(adapter: A): RecyclerView {
+    return RecyclerView(context).apply {
+      layoutManager = LinearLayoutManager(context)
+      this.adapter = adapter
+      measure(
+        View.MeasureSpec.makeMeasureSpec(1080, View.MeasureSpec.EXACTLY),
+        View.MeasureSpec.makeMeasureSpec(1920, View.MeasureSpec.EXACTLY),
+      )
+      layout(0, 0, 1080, 1920)
+      shadowOf(Looper.getMainLooper()).idle()
+    }
+  }
 }

@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
+import com.waffiq.bazz_movies.core.favoritewatchlist.databinding.FragmentChildBinding
 import com.waffiq.bazz_movies.core.models.MediaItem
-import com.waffiq.bazz_movies.feature.watchlist.databinding.FragmentWatchlistChildBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class WatchlistChildFragment : BaseWatchlistFragment<MediaItem>() {
 
-  private var _binding: FragmentWatchlistChildBinding? = null
+  private var _binding: FragmentChildBinding? = null
   override val binding get() = _binding ?: error(getString(binding_error))
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -27,7 +27,8 @@ class WatchlistChildFragment : BaseWatchlistFragment<MediaItem>() {
     container: ViewGroup?,
     savedInstanceState: Bundle?,
   ): View {
-    _binding = FragmentWatchlistChildBinding.inflate(inflater, container, false)
+
+    _binding = FragmentChildBinding.inflate(inflater, container, false)
     return binding.root
   }
 

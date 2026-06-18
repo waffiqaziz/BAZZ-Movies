@@ -40,4 +40,52 @@ object DummyData {
     voteAverage = 10f,
     posterPath = "posterPath.jpg",
   )
+
+  val favoriteTvList = listOf(
+    favorite.copy(id = 1, mediaId = 101, mediaType = "tv", title = "TV Show 1"),
+    favorite.copy(id = 2, mediaId = 102, mediaType = "tv", title = "TV Show 2"),
+  )
+
+  val favoriteMoviesList = listOf(
+    favorite.copy(id = 3, mediaId = 201, mediaType = "movie", title = "Movie 1"),
+    favorite.copy(id = 4, mediaId = 202, mediaType = "movie", title = "Movie 2"),
+  )
+
+  val watchlistTvList = listOf(
+    favorite.copy(
+      id = 5,
+      mediaId = 301,
+      mediaType = "tv",
+      title = "TV Show 3",
+      isWatchlist = true,
+      isFavorite = false,
+    ),
+    favorite.copy(
+      id = 6,
+      mediaId = 302,
+      mediaType = "tv",
+      title = "TV Show 4",
+      isWatchlist = true,
+      isFavorite = false,
+    ),
+  )
+
+  val watchlistMovieList = listOf(
+    favorite.copy(
+      id = 7,
+      mediaId = 401,
+      mediaType = "movie",
+      title = "Movie 3",
+      isWatchlist = true,
+      isFavorite = false,
+    ),
+    favorite.copy(
+      id = 8,
+      mediaId = 402,
+      mediaType = "movie",
+      title = "Movie 4",
+      isWatchlist = true,
+      isFavorite = false,
+    ),
+  )
 }

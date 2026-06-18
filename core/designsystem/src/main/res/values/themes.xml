@@ -293,8 +293,6 @@
   <style name="GroupWatchProviders">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_marginStart">4dp</item>
-    <item name="android:layout_marginEnd">4dp</item>
     <item name="android:orientation">vertical</item>
     <item name="android:visibility">gone</item>
   </style>
@@ -379,6 +377,8 @@
     <item name="iconPadding">0dp</item>
     <item name="iconSize">32dp</item>
     <item name="iconTint">?attr/colorAccent</item>
+    <item name="colorContainer">@android:color/transparent</item>
+    <item name="colorOnContainer">@color/gray_400</item>
     <item name="materialSizeOverlay">
       @style/SizeOverlay.Material3Expressive.Button.IconButton.Medium
     </item>

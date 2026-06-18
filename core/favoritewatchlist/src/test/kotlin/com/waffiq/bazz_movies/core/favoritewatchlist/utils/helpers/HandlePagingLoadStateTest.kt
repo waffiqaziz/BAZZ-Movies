@@ -1,6 +1,10 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers
 
+import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.FrameLayout
+import androidx.annotation.IdRes
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -10,9 +14,13 @@ import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.loadingindicator.LoadingIndicator
+import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Event
+import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
+import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.illustration_error
+import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.illustration_no_data_view
+import com.waffiq.bazz_movies.core.favoritewatchlist.databinding.FragmentChildBinding
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.handlePagingLoadState
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import io.mockk.every
@@ -33,32 +41,34 @@ import java.io.IOException
 @RunWith(RobolectricTestRunner::class)
 class HandlePagingLoadStateTest {
 
+  private lateinit var context: Context
+  private lateinit var parent: FrameLayout
+  private lateinit var inflater: LayoutInflater
+
   private lateinit var lifecycleOwner: TestLifecycleOwner
   private lateinit var mockAdapter: PagingDataAdapter<Any, RecyclerView.ViewHolder>
-  private lateinit var mockRecyclerView: RecyclerView
-  private lateinit var mockProgressBar: LoadingIndicator
-  private lateinit var mockErrorView: View
-  private lateinit var mockEmptyView: View
   private lateinit var loadStateFlow: MutableStateFlow<CombinedLoadStates>
-  private lateinit var onErrorCallback: (Event<String>?) -> Unit
+  private lateinit var onErrorCallback: (Event<String>) -> Unit
+  private lateinit var binding: FragmentChildBinding
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
   @Before
   fun setup() {
+    context = ApplicationProvider.getApplicationContext<Context>().apply {
+      setTheme(Base_Theme_BAZZ_movies)
+    }
+    inflater = LayoutInflater.from(context) // Fixed: Initialize inflater
+    parent = FrameLayout(context)
+    binding = FragmentChildBinding.inflate(inflater, parent, false)
+
     lifecycleOwner = TestLifecycleOwner()
     lifecycleOwner.registry.currentState = Lifecycle.State.RESUMED
 
-    // setup mocks
     mockAdapter = mockk(relaxed = true)
-    mockRecyclerView = mockk(relaxed = true)
-    mockProgressBar = mockk(relaxed = true)
-    mockErrorView = mockk(relaxed = true)
-    mockEmptyView = mockk(relaxed = true)
     onErrorCallback = mockk(relaxed = true)
 
-    // setup initial load state flow
     loadStateFlow = MutableStateFlow(createLoadState(refresh = LoadState.NotLoading(false)))
   }
 
@@ -71,11 +81,7 @@ class HandlePagingLoadStateTest {
       refresh = refresh,
       prepend = prepend,
       append = append,
-      source = LoadStates(
-        refresh = refresh,
-        prepend = prepend,
-        append = append,
-      ),
+      source = LoadStates(refresh = refresh, prepend = prepend, append = append),
       mediator = null,
     )
 
@@ -86,10 +92,7 @@ class HandlePagingLoadStateTest {
       lifecycleOwner.handlePagingLoadState(
         mockAdapter,
         loadStateFlow,
-        mockRecyclerView,
-        mockProgressBar,
-        mockErrorView,
-        mockEmptyView,
+        binding,
         onErrorCallback,
       )
 
@@ -104,15 +107,18 @@ class HandlePagingLoadStateTest {
     emptyVisible: Boolean,
     errorCallbackCalled: Boolean = false,
   ) {
-    verify { mockProgressBar.isVisible = progressVisible }
-    verify { mockRecyclerView.isVisible = recyclerVisible }
-    verify { mockErrorView.isVisible = errorVisible }
-    verify { mockEmptyView.isVisible = emptyVisible }
+    assertEquals(binding.progressBar.isVisible, progressVisible)
+    assertEquals(binding.recyclerView.isVisible, recyclerVisible)
+    assertEquals(errorVisible, isViewVisible(illustration_error))
+    assertEquals(emptyVisible, isViewVisible(illustration_no_data_view))
 
     if (errorCallbackCalled) {
       verify { onErrorCallback(any()) }
     }
   }
+
+  private fun isViewVisible(@IdRes id: Int): Boolean =
+    binding.root.findViewById<View>(id).isVisible
 
   @Test
   fun handlePagingLoadState_whenRefreshIsLoading_showsProgressBarAndRecyclerView() =
@@ -229,17 +235,14 @@ class HandlePagingLoadStateTest {
       lifecycleOwner.handlePagingLoadState(
         mockAdapter,
         loadStateFlow,
-        mockRecyclerView,
-        mockProgressBar,
-        mockErrorView,
-        mockEmptyView,
+        binding,
         onErrorCallback,
       )
 
       // first state - loading
       loadStateFlow.value = createLoadState(refresh = LoadState.Loading)
 
-      // advance time but not enough to trigger debounce
+      // wait
       advanceTimeBy(DEBOUNCE_SHORT - 100)
 
       // second state - normal - overwrites the first one before debounce completes
@@ -248,16 +251,13 @@ class HandlePagingLoadStateTest {
       // complete all pending work
       advanceUntilIdle()
 
-      // only second state should take effect
+      // not loadin, and back to normal state
       verifyViewState(
         progressVisible = false,
         recyclerVisible = true,
         errorVisible = false,
         emptyVisible = false,
       )
-
-      // verify first state didn't take effect, progressbar is not visible
-      verify(exactly = 0) { mockProgressBar.isVisible = true }
     }
 
   @Test
@@ -265,16 +265,12 @@ class HandlePagingLoadStateTest {
     runTest {
       // track number of calls to a callback
       var callCount = 0
-      val trackingCallback: (Event<String>?) -> Unit = { callCount++ }
+      val trackingCallback: (Event<String>) -> Unit = { callCount++ }
 
-      // setup handler with tracking callback
       lifecycleOwner.handlePagingLoadState(
         mockAdapter,
         loadStateFlow,
-        mockRecyclerView,
-        mockProgressBar,
-        mockErrorView,
-        mockEmptyView,
+        binding,
         trackingCallback,
       )
 
@@ -282,7 +278,7 @@ class HandlePagingLoadStateTest {
       loadStateFlow.value = createLoadState(refresh = LoadState.Loading)
       advanceTimeBy(DEBOUNCE_SHORT * 2)
 
-      // loading state doesn't trigger error callback
+      // loading state should not trigger error callback
       assertEquals(0, callCount)
 
       // create an error state

@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.testutils
 
-import android.view.LayoutInflater
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.recyclerview.widget.RecyclerView
 import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaSwipeBinding
@@ -15,10 +14,9 @@ abstract class BaseMediaLocalAdapterTest : BaseAdapterTest<Favorite, RecyclerVie
 
   protected lateinit var onDelete: (Favorite, Int) -> Unit
   protected lateinit var onAddToWatchlist: (Favorite, Int) -> Unit
-  protected lateinit var binding : ListItemMediaSwipeBinding
-  protected lateinit var inflater :LayoutInflater
+  protected lateinit var binding: ListItemMediaSwipeBinding
   protected lateinit var adapter: MediaLocalAdapter
-  protected lateinit var viewHolder:  MediaLocalAdapter.ViewHolder
+  protected lateinit var viewHolder: MediaLocalAdapter.ViewHolder
 
   @get:Rule
   val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -29,7 +27,6 @@ abstract class BaseMediaLocalAdapterTest : BaseAdapterTest<Favorite, RecyclerVie
     onDelete = mockk(relaxed = true)
     onAddToWatchlist = mockk(relaxed = true)
 
-    inflater = LayoutInflater.from(context)
     binding = ListItemMediaSwipeBinding.inflate(inflater, null, false)
 
     adapter = MediaLocalAdapter(navigator, SwipeConfig.forFavorite(), onDelete, onAddToWatchlist)

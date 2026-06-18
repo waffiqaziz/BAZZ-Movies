@@ -21,7 +21,6 @@ dependencies {
 
   implementation(libs.androidx.fragment.ktx)
   implementation(libs.androidx.viewpager2)
-  implementation(libs.androidx.swiperefreshlayout)
 
   // room
   implementation(libs.androidx.room.common)

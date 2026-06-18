@@ -302,7 +302,6 @@
           android:layout_marginTop="8dp"
           android:clipToPadding="false"
           android:contentDescription="@string/playing_as"
-          android:nestedScrollingEnabled="false"
           android:paddingStart="@dimen/default_margin_parent_20"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:listitem="@layout/item_poster"

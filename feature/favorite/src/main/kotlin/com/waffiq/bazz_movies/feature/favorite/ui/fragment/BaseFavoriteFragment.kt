@@ -6,13 +6,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.waffiq.bazz_movies.core.common.utils.Constants
+import com.waffiq.bazz_movies.core.favoritewatchlist.databinding.FragmentChildBinding
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.core.utils.LayoutHelper.initLinearLayoutManagerVertical
-import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentFavoriteChildBinding
 import com.waffiq.bazz_movies.feature.favorite.ui.delegate.GuestUserDelegate
 import com.waffiq.bazz_movies.feature.favorite.ui.delegate.LoggedUserDelegate
 import com.waffiq.bazz_movies.feature.favorite.ui.viewmodel.FavoriteViewModel
@@ -45,7 +45,7 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
   private var loggedUserDelegate: LoggedUserDelegate? = null
   private var guestUserDelegate: GuestUserDelegate? = null
 
-  protected abstract val binding: FragmentFavoriteChildBinding
+  protected abstract val binding: FragmentChildBinding
   protected abstract fun getMediaType(): String
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,7 +56,7 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
   }
 
   private fun setupRecyclerView() {
-    binding.rvFavorite.apply {
+    binding.recyclerView.apply {
       layoutManager = initLinearLayoutManagerVertical(requireContext())
       itemAnimator = DefaultItemAnimator()
     }

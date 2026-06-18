@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.testutils
 
-import android.view.LayoutInflater
 import androidx.annotation.IdRes
 import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
@@ -20,7 +19,6 @@ abstract class BaseAdapterPagingTest :
   protected lateinit var adapter: MediaPagingAdapter
   protected lateinit var onDelete: (MediaItem) -> Unit
   protected lateinit var onAddToWatchlist: (MediaItem) -> Unit
-  protected lateinit var inflater: LayoutInflater
   protected lateinit var binding: ListItemMediaSwipeBinding
   protected lateinit var viewHolder: MediaPagingAdapter.ViewHolder
 
@@ -34,7 +32,6 @@ abstract class BaseAdapterPagingTest :
     super.setUp()
     onDelete = mockk(relaxed = true)
     onAddToWatchlist = mockk(relaxed = true)
-    inflater = LayoutInflater.from(context)
     binding = ListItemMediaSwipeBinding.inflate(inflater, null, false)
   }
 

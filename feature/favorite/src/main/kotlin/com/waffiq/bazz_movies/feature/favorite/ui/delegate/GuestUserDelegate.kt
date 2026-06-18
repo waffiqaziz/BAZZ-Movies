@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.feature.favorite.ui.delegate
 
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import com.google.android.material.snackbar.Snackbar
@@ -12,6 +11,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.color.yellow_700
 import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.undo
+import com.waffiq.bazz_movies.core.favoritewatchlist.databinding.FragmentChildBinding
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local.MediaLocalAdapter
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlreadyUtils
@@ -19,7 +19,6 @@ import com.waffiq.bazz_movies.core.models.Favorite
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.SwipeConfig
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
 import com.waffiq.bazz_movies.core.uihelper.utils.SpannableUtils.buildActionMessage
-import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentFavoriteChildBinding
 import com.waffiq.bazz_movies.navigation.INavigator
 
 /**
@@ -28,7 +27,7 @@ import com.waffiq.bazz_movies.navigation.INavigator
  */
 class GuestUserDelegate(
   private val fragment: Fragment,
-  private val binding: FragmentFavoriteChildBinding,
+  private val binding: FragmentChildBinding,
   private val navigator: INavigator,
   private val sharedDBViewModel: SharedDBViewModel,
   private val mediaType: String,
@@ -39,6 +38,7 @@ class GuestUserDelegate(
   private var isWantToDelete = false
 
   private val snackbarAnchor = navigator.snackbarAnchor()
+  private val context = fragment.requireContext()
 
   fun setup() {
     setupAdapter()
@@ -65,7 +65,7 @@ class GuestUserDelegate(
         addToWatchlist(favorite, position)
       },
     )
-    binding.rvFavorite.adapter = adapter
+    binding.recyclerView.adapter = adapter
   }
 
   private fun setupRefresh() {
@@ -92,7 +92,7 @@ class GuestUserDelegate(
     }
 
   private fun updateViewVisibility(hasData: Boolean) {
-    binding.rvFavorite.visibility = if (hasData) View.VISIBLE else View.GONE
+    binding.recyclerView.visibility = if (hasData) View.VISIBLE else View.GONE
     binding.illustrationNoDataView.root.visibility = if (hasData) View.GONE else View.VISIBLE
     binding.progressBar.visibility = View.GONE
   }
@@ -132,7 +132,7 @@ class GuestUserDelegate(
         handleUndo(position)
       }
       anchorView = fragment.requireActivity().findViewById(snackbarAnchor)
-      setActionTextColor(ContextCompat.getColor(fragment.requireContext(), yellow_700))
+      setActionTextColor(context.getColor(yellow_700))
       show()
     }
   }
@@ -142,27 +142,25 @@ class GuestUserDelegate(
       if (isWantToDelete) {
         restoreFavorite(favorite, position)
       } else {
-        // undo add to watchlist
         sharedDBViewModel.updateDB(favorite.copy(isWatchlist = false))
       }
     }
   }
 
   private fun restoreFavorite(favorite: Favorite, position: Int) {
-    // undo delete from favorite
     if (favorite.isWatchlist) {
       sharedDBViewModel.updateDB(favorite.copy(isFavorite = true))
     } else {
       sharedDBViewModel.insertToDB(favorite.copy(isFavorite = true))
     }
-    binding.rvFavorite.scrollToPosition(position)
+    binding.recyclerView.scrollToPosition(position)
   }
 
   private fun observeDbOperations() {
     sharedDBViewModel.dbResult.observe(fragment.viewLifecycleOwner) { eventResult ->
       eventResult.getContentIfNotHandled()?.let {
         if (it is DbResult.Error) {
-          fragment.requireContext().toastShort(it.errorMessage)
+          context.toastShort(it.errorMessage)
         }
       }
     }
@@ -170,7 +168,7 @@ class GuestUserDelegate(
 
   private fun showAlreadySnackbar(event: Event<String>) {
     currentSnackbar = SnackbarAlreadyUtils.snackBarAlready(
-      fragment.requireContext(),
+      context,
       fragment.requireActivity().findViewById(snackbarAnchor),
       fragment.requireActivity().findViewById(snackbarAnchor),
       event,

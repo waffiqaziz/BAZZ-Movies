@@ -16,6 +16,9 @@ import com.waffiq.bazz_movies.core.designsystem.R.color.red_matte
 import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.already_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_favorite
+import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.snackbar_anchor_test
+import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.view_pager
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
@@ -23,8 +26,6 @@ import com.waffiq.bazz_movies.core.models.FavoriteParams
 import com.waffiq.bazz_movies.core.models.WatchlistParams
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.feature.favorite.R.id.snackbar_anchor_test
-import com.waffiq.bazz_movies.feature.favorite.R.id.view_pager
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.favoriteMovie
 import com.waffiq.bazz_movies.feature.favorite.testutils.DefaultFavoriteFragmentTestHelper
 import com.waffiq.bazz_movies.feature.favorite.testutils.FavoriteFragmentTestHelper
@@ -34,6 +35,7 @@ import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -90,6 +92,10 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
   @JvmField
   val mockSharedDBViewModel: SharedDBViewModel = mockk(relaxed = true)
 
+  @BindValue
+  @JvmField
+  val mockBaseViewModel: BaseViewModel = mockk(relaxed = true)
+
   @Before
   fun setUp() {
     hiltRule.inject()
@@ -129,10 +135,24 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
     }
 
   @Test
+  fun addToWatchlist_butDuplicate_showsSnackbarDuplicate() =
+    runTest {
+      loggedUser(mockFavoriteViewModel)
+      launchFragment()
+
+      performSwipeAction(1, swipeRight())
+
+      mockSnackBarAlready.postValue(Event("This Movie"))
+      onIdle()
+
+      val snackbarText = getString(favoriteFragment.requireActivity(), already_watchlist)
+      snackbar_text.doesHaveText("This Movie $snackbarText")
+    }
+
+  @Test
   fun loggedUser_swipeRight_showDeletedSnackbar() =
     runTest {
       val data = snackBarLoginData.copy(
-
         favoriteModel = FavoriteParams(
           mediaType = "movie",
           mediaId = 12345,
@@ -200,6 +220,64 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
     }
 
   @Test
+  fun undoDelete_withSuccessResponse_invokesPostFavoriteTwice() = runTest {
+    val deleteData = snackBarLoginData.copy(
+      favoriteModel = FavoriteParams(
+        mediaType = "movie",
+        mediaId = 12345,
+        favorite = false,
+      ),
+    )
+
+    loggedUser(mockFavoriteViewModel)
+    launchFragment()
+
+    performSwipeAction(1, swipeRight())
+    mockSnackBarChannel.send(deleteData)
+    onIdle()
+
+    performUndoAction()
+    val undoSuccessData = snackBarLoginData.copy(
+      isSuccess = true,
+      favoriteModel = null,
+      watchlistModel = null,
+    )
+    mockSnackBarChannel.send(undoSuccessData)
+    onIdle()
+
+    coVerify(atLeast = 2) { mockFavoriteViewModel.postFavorite(any(), any()) }
+  }
+
+  @Test
+  fun undoDelete_withFailedResponse_invokesPostFavoriteOnce() = runTest {
+    val deleteData = snackBarLoginData.copy(
+      favoriteModel = FavoriteParams(
+        mediaType = "movie",
+        mediaId = 12345,
+        favorite = false,
+      ),
+    )
+
+    loggedUser(mockFavoriteViewModel)
+    launchFragment()
+
+    performSwipeAction(1, swipeRight())
+    mockSnackBarChannel.send(deleteData)
+    onIdle()
+
+    performUndoAction()
+    val undoFailedData = snackBarLoginData.copy(
+      isSuccess = false,
+      favoriteModel = null,
+      watchlistModel = null,
+    )
+    mockSnackBarChannel.send(undoFailedData)
+    onIdle()
+
+    coVerify(atLeast = 1) { mockFavoriteViewModel.postFavorite(any(), any()) }
+  }
+
+  @Test
   fun guestUser_swipeAction_shouldPassed() {
     guestUser(mockSharedDBViewModel)
     launchFragment()
@@ -211,7 +289,7 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
     val data = favoriteMovie.copy(isWatchlist = true)
     guestUser(mockSharedDBViewModel)
 
-    // setup first item is on watchlist, and second item not in watchlist
+    // set first item is on watchlist, and second item not in watchlist
     mockFavoriteMoviesFromDB.postValue(listOf(data, favoriteMovie.copy(id = 4567)))
     launchFragment()
 

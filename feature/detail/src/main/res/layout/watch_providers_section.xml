@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/watch_provider_section"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/watch_provider_section"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:orientation="vertical"
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools">
+  android:orientation="vertical">
 
-  <com.google.android.material.button.MaterialButton
+  <TextView
     android:id="@+id/tv_toggle_watch_providers"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:backgroundTint="@android:color/transparent"
+    android:layout_height="44dp"
+    android:layout_gravity="center_vertical"
     android:fontFamily="@font/nunito_sans_bold"
     android:foreground="?attr/selectableItemBackground"
-    android:gravity="start|center"
-    android:text="@string/where_to_watch_down"
-    android:textAllCaps="false"
+    android:gravity="center_vertical"
+    android:paddingHorizontal="@dimen/default_margin_parent_20"
+    android:text="@string/where_to_watch"
     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
     android:textColor="@color/gray_100"
-    app:cornerRadius="@dimen/button_radius"
-    app:rippleColor="@color/gray_800" />
+    app:drawableEndCompat="@drawable/ic_arrow_down"
+    app:drawableTint="@color/white" />
 
   <LinearLayout
     android:id="@+id/group_watch_providers"

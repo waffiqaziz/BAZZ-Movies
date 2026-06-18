@@ -8,6 +8,9 @@ import androidx.paging.PagingState
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.viewpager2.widget.ViewPager2
+import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.illustration_no_data_view
+import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.progress_bar
+import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.view_pager
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomAssertions.waitFor
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
@@ -16,9 +19,6 @@ import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltConta
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.feature.favorite.R.id.illustration_no_data_view
-import com.waffiq.bazz_movies.feature.favorite.R.id.progress_bar
-import com.waffiq.bazz_movies.feature.favorite.R.id.view_pager
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.userModel
 import com.waffiq.bazz_movies.feature.favorite.testutils.DefaultFavoriteFragmentTestHelper
 import com.waffiq.bazz_movies.feature.favorite.testutils.FavoriteFragmentTestHelper
