@@ -27,7 +27,6 @@ class WatchlistChildFragment : BaseWatchlistFragment<MediaItem>() {
     container: ViewGroup?,
     savedInstanceState: Bundle?,
   ): View {
-
     _binding = FragmentChildBinding.inflate(inflater, container, false)
     return binding.root
   }

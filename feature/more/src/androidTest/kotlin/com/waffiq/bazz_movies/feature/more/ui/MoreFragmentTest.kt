@@ -17,6 +17,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.platform.app.InstrumentationRegistry
 import com.waffiq.bazz_movies.core.common.utils.Constants.FAQ_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.FORM_HELPER
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
@@ -237,6 +238,8 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
     onView(isAssignableFrom(EditText::class.java))
       .inRoot(isDialog())
       .perform(typeText("Ind"), closeSoftKeyboard())
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+
     onView(withText("Indonesia"))
       .inRoot(isDialog())
       .perform(click())

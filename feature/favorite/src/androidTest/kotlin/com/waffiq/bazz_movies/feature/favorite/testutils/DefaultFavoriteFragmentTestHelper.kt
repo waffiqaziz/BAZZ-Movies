@@ -18,6 +18,8 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.designsystem.R.string.undo
+import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.recycler_view
+import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.swipe_refresh
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions.actionOnItemAt
@@ -30,8 +32,6 @@ import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltConta
 import com.waffiq.bazz_movies.core.models.Favorite
 import com.waffiq.bazz_movies.core.models.UserModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.recycler_view
-import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.swipe_refresh
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.favoriteMovie
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.favoriteMovie2
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.favoriteTv

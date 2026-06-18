@@ -28,53 +28,59 @@ permissions:
   contents: read
 
 jobs:
-  detekt_checks:
-    name: Detekt Checks
+  android_linter:
+    name: Android Linter
+    runs-on: ubuntu-latest
     permissions:
       contents: read
-    runs-on: ubuntu-latest
     timeout-minutes: 15
-
     steps:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Grant execute permission for Gradle wrapper
-        run: chmod +x ./gradlew
-
-      - name: Get local.properties from secrets
-        run: echo "${{ secrets.LOCAL_PROPERTIES }}" > $GITHUB_WORKSPACE/local.properties
-
-      - name: Copy CI gradle.properties
-        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
-
-      - name: Set up JDK 21 (with cache)
-        if: github.actor != 'renovate[bot]'
-        uses: actions/setup-java@v5
+      - name: Run Setup
+        uses: ./.github/actions/setup-gradle
         with:
-          java-version: ${{ env.JAVA_VERSION }}
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
-          cache: ${{ env.GRADLE_CACHE }}
-
-      - name: Set up JDK 21 (without cache)
-        if: github.actor == 'renovate[bot]'
-        uses: actions/setup-java@v5
-        with:
-          java-version: ${{ env.JAVA_VERSION }}
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
+          local_properties: ${{ secrets.LOCAL_PROPERTIES }}
+          java_version: ${{ env.JAVA_VERSION }}
+          java_distribution: ${{ env.JAVA_DISTRIBUTION }}
+          gradle_cache: ${{ env.GRADLE_CACHE }}
 
       - name: Run android linter
         run: ./gradlew lintRelease
 
-      - name: Run Detekt on main sources
-        run: ./gradlew detekt
+  detekt_checks:
+    name: Detekt Checks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: "Main Sources"
+            command: "detekt"
+          - target: "Test Sources"
+            command: "detektTest"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
 
-      - name: Run Detekt on test sources
-        run: ./gradlew detektTest
+      - name: Run Setup
+        uses: ./.github/actions/setup-gradle
+        with:
+          local_properties: ${{ secrets.LOCAL_PROPERTIES }}
+          java_version: ${{ env.JAVA_VERSION }}
+          java_distribution: ${{ env.JAVA_DISTRIBUTION }}
+          gradle_cache: ${{ env.GRADLE_CACHE }}
+
+      - name: Run Detekt Checks
+        run: ./gradlew ${{ matrix.command }}
 
   unit_test:
     name: Unit Tests
-    needs: detekt_checks
+    needs: [ detekt_checks, android_linter ]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     continue-on-error: true
@@ -85,29 +91,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Grant execute permission for Gradle wrapper
-        run: chmod +x ./gradlew
-
-      - name: Copy CI gradle.properties
-        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
-
-      - name: Get local.properties from secrets
-        run: echo "${{ secrets.LOCAL_PROPERTIES }}" > $GITHUB_WORKSPACE/local.properties
-
-      - name: Set up JDK 21 (with cache)
-        if: github.actor != 'renovate[bot]'
-        uses: actions/setup-java@v5
+      - name: Run Setup
+        uses: ./.github/actions/setup-gradle
         with:
-          java-version: ${{ env.JAVA_VERSION }}
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
-          cache: ${{ env.GRADLE_CACHE }}
-
-      - name: Set up JDK 21 (without cache)
-        if: github.actor == 'renovate[bot]'
-        uses: actions/setup-java@v5
-        with:
-          java-version: ${{ env.JAVA_VERSION }}
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
+          local_properties: ${{ secrets.LOCAL_PROPERTIES }}
+          java_version: ${{ env.JAVA_VERSION }}
+          java_distribution: ${{ env.JAVA_DISTRIBUTION }}
+          gradle_cache: ${{ env.GRADLE_CACHE }}
 
       # skip cache operations for Renovate PRs
       - name: Cache Gradle dependencies
@@ -158,7 +148,7 @@ jobs:
 
   instrumentation_test:
     name: Instrumentation Tests (${{ matrix.module }})
-    needs: detekt_checks
+    needs: [ detekt_checks, android_linter ]
     runs-on: ubuntu-latest
     timeout-minutes: 45
     continue-on-error: true
@@ -192,35 +182,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Grant execute permission for Gradle wrapper
-        run: chmod +x ./gradlew
-
-      - name: Copy CI gradle.properties
-        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
-
-      - name: Get local.properties from secrets
-        run: echo "${{ secrets.LOCAL_PROPERTIES }}" > $GITHUB_WORKSPACE/local.properties
+      - name: Run Setup
+        uses: ./.github/actions/setup-gradle
+        with:
+          local_properties: ${{ secrets.LOCAL_PROPERTIES }}
+          java_version: ${{ env.JAVA_VERSION }}
+          java_distribution: ${{ env.JAVA_DISTRIBUTION }}
+          gradle_cache: ${{ env.GRADLE_CACHE }}
 
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
-
-      - name: Set up JDK 21 (with cache)
-        if: github.actor != 'renovate[bot]'
-        uses: actions/setup-java@v5
-        with:
-          java-version: ${{ env.JAVA_VERSION }}
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
-          cache: ${{ env.GRADLE_CACHE }}
-
-      - name: Set up JDK 21 (without cache)
-        if: github.actor == 'renovate[bot]'
-        uses: actions/setup-java@v5
-        with:
-          java-version: ${{ env.JAVA_VERSION }}
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
 
       - name: Cache Gradle dependencies
         if: github.actor != 'renovate[bot]'
@@ -311,32 +285,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
+      - name: Run Setup
+        uses: ./.github/actions/setup-gradle
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Grant execute permission for Gradle wrapper
-        run: chmod +x ./gradlew
-
-      - name: Copy CI gradle.properties
-        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
-
-      - name: Get local.properties from secrets
-        run: echo "${{ secrets.LOCAL_PROPERTIES }}" > $GITHUB_WORKSPACE/local.properties
-
-      - name: Set up JDK 21 (with cache)
-        if: github.actor != 'renovate[bot]'
-        uses: actions/setup-java@v5
-        with:
-          java-version: ${{ env.JAVA_VERSION }}
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
-          cache: ${{ env.GRADLE_CACHE }}
-
-      - name: Set up JDK 21 (without cache)
-        if: github.actor == 'renovate[bot]'
-        uses: actions/setup-java@v5
-        with:
-          java-version: ${{ env.JAVA_VERSION }}
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
+          local_properties: ${{ secrets.LOCAL_PROPERTIES }}
+          java_version: ${{ env.JAVA_VERSION }}
+          java_distribution: ${{ env.JAVA_DISTRIBUTION }}
+          gradle_cache: ${{ env.GRADLE_CACHE }}
 
       - name: Restore unit test results
         id: cache_restore_unit

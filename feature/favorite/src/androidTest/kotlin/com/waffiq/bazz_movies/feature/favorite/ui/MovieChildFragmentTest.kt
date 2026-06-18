@@ -220,62 +220,64 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
     }
 
   @Test
-  fun undoDelete_withSuccessResponse_invokesPostFavoriteTwice() = runTest {
-    val deleteData = snackBarLoginData.copy(
-      favoriteModel = FavoriteParams(
-        mediaType = "movie",
-        mediaId = 12345,
-        favorite = false,
-      ),
-    )
+  fun undoDelete_withSuccessResponse_invokesPostFavoriteTwice() =
+    runTest {
+      val deleteData = snackBarLoginData.copy(
+        favoriteModel = FavoriteParams(
+          mediaType = "movie",
+          mediaId = 12345,
+          favorite = false,
+        ),
+      )
 
-    loggedUser(mockFavoriteViewModel)
-    launchFragment()
+      loggedUser(mockFavoriteViewModel)
+      launchFragment()
 
-    performSwipeAction(1, swipeRight())
-    mockSnackBarChannel.send(deleteData)
-    onIdle()
+      performSwipeAction(1, swipeRight())
+      mockSnackBarChannel.send(deleteData)
+      onIdle()
 
-    performUndoAction()
-    val undoSuccessData = snackBarLoginData.copy(
-      isSuccess = true,
-      favoriteModel = null,
-      watchlistModel = null,
-    )
-    mockSnackBarChannel.send(undoSuccessData)
-    onIdle()
+      performUndoAction()
+      val undoSuccessData = snackBarLoginData.copy(
+        isSuccess = true,
+        favoriteModel = null,
+        watchlistModel = null,
+      )
+      mockSnackBarChannel.send(undoSuccessData)
+      onIdle()
 
-    coVerify(atLeast = 2) { mockFavoriteViewModel.postFavorite(any(), any()) }
-  }
+      coVerify(atLeast = 2) { mockFavoriteViewModel.postFavorite(any(), any()) }
+    }
 
   @Test
-  fun undoDelete_withFailedResponse_invokesPostFavoriteOnce() = runTest {
-    val deleteData = snackBarLoginData.copy(
-      favoriteModel = FavoriteParams(
-        mediaType = "movie",
-        mediaId = 12345,
-        favorite = false,
-      ),
-    )
+  fun undoDelete_withFailedResponse_invokesPostFavoriteOnce() =
+    runTest {
+      val deleteData = snackBarLoginData.copy(
+        favoriteModel = FavoriteParams(
+          mediaType = "movie",
+          mediaId = 12345,
+          favorite = false,
+        ),
+      )
 
-    loggedUser(mockFavoriteViewModel)
-    launchFragment()
+      loggedUser(mockFavoriteViewModel)
+      launchFragment()
 
-    performSwipeAction(1, swipeRight())
-    mockSnackBarChannel.send(deleteData)
-    onIdle()
+      performSwipeAction(1, swipeRight())
+      mockSnackBarChannel.send(deleteData)
+      onIdle()
 
-    performUndoAction()
-    val undoFailedData = snackBarLoginData.copy(
-      isSuccess = false,
-      favoriteModel = null,
-      watchlistModel = null,
-    )
-    mockSnackBarChannel.send(undoFailedData)
-    onIdle()
+      performUndoAction()
+      val undoFailedData = snackBarLoginData.copy(
+        isSuccess = false,
+        favoriteModel = null,
+        watchlistModel = null,
+      )
+      mockSnackBarChannel.send(undoFailedData)
+      onIdle()
 
-    coVerify(atLeast = 1) { mockFavoriteViewModel.postFavorite(any(), any()) }
-  }
+      coVerify(atLeast = 1) { mockFavoriteViewModel.postFavorite(any(), any()) }
+    }
 
   @Test
   fun guestUser_swipeAction_shouldPassed() {
