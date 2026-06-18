@@ -140,7 +140,8 @@ class SearchAdapterTest {
       binding.content.apply {
         assertEquals("Jason Statham", tvTitle.text.toString())
         assertEquals(
-          "Known For:\n" + "The Meg, The Transporter, Wrath of Man", tvGenre.text.toString()
+          "Known For:\n" + "The Meg, The Transporter, Wrath of Man",
+          tvGenre.text.toString(),
         )
         assertEquals("Acting", tvYearReleased.text.toString())
       }

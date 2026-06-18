@@ -10,7 +10,10 @@ object UtilHelper {
   inline fun <reified VH : RecyclerView.ViewHolder> getViewHolderAt(
     recyclerView: RecyclerView,
     position: Int,
-  ): VH = recyclerView.findViewHolderForAdapterPosition(position) as? VH
-    ?: error("No ViewHolder found at position $position. " +
-      "Make sure the RecyclerView is laid out and the position is visible.")
+  ): VH =
+    recyclerView.findViewHolderForAdapterPosition(position) as? VH
+      ?: error(
+        "No ViewHolder found at position $position. " +
+          "Make sure the RecyclerView is laid out and the position is visible.",
+      )
 }

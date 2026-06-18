@@ -117,8 +117,7 @@ class HandlePagingLoadStateTest {
     }
   }
 
-  private fun isViewVisible(@IdRes id: Int): Boolean =
-    binding.root.findViewById<View>(id).isVisible
+  private fun isViewVisible(@IdRes id: Int): Boolean = binding.root.findViewById<View>(id).isVisible
 
   @Test
   fun handlePagingLoadState_whenRefreshIsLoading_showsProgressBarAndRecyclerView() =

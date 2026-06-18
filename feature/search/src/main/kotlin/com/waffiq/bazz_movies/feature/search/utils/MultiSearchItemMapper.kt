@@ -15,6 +15,7 @@ object MultiSearchItemMapper {
       overview = overview,
       title = title,
       name = name,
+      voteAverage = voteAverage.toFloat(),
       originalTitle = originalTitle,
       originalName = originalName,
       mediaType = mediaType,
