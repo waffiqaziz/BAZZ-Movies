@@ -1,0 +1,49 @@
+name: 'Setup Android & Gradle'
+description: 'Shared setup steps for Android/Gradle jobs'
+
+inputs:
+  local_properties:
+    description: 'The local.properties secret content'
+    required: true
+  java_version:
+    description: 'Java version'
+    default: '21'
+  java_distribution:
+    description: 'Java distribution'
+    default: 'temurin'
+  gradle_cache:
+    description: 'Gradle cache type'
+    default: 'gradle'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v6
+
+    - name: Grant execute permission for Gradle wrapper
+      shell: bash
+      run: chmod +x ./gradlew
+
+    - name: Get local.properties from secrets
+      shell: bash
+      run: echo "${{ inputs.local_properties }}" > $GITHUB_WORKSPACE/local.properties
+
+    - name: Copy CI gradle.properties
+      shell: bash
+      run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+
+    - name: Set up JDK 21 (with cache)
+      if: github.actor != 'renovate[bot]'
+      uses: actions/setup-java@v5
+      with:
+        java-version: ${{ inputs.java_version }}
+        distribution: ${{ inputs.java_distribution }}
+        cache: ${{ inputs.gradle_cache }}
+
+    - name: Set up JDK 21 (without cache)
+      if: github.actor == 'renovate[bot]'
+      uses: actions/setup-java@v5
+      with:
+        java-version: ${{ inputs.java_version }}
+        distribution: ${{ inputs.java_distribution }}
