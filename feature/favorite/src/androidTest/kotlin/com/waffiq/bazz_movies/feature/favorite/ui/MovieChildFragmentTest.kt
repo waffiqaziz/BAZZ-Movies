@@ -294,7 +294,7 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
     launchFragment()
 
     // swipe right delete data already in watchlist
-    performSwipeAction(1, swipeRight())
+    performSwipeAction(0, swipeRight())
     mockUndoDB.postValue(Event(data))
     onIdle()
 
@@ -303,7 +303,7 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
     performUndoAction()
 
     // swipe right delete data not in watchlist
-    performSwipeAction(2, swipeRight())
+    performSwipeAction(1, swipeRight())
     mockUndoDB.postValue(Event(favoriteMovie.copy(id = 4567)))
     onIdle()
     performUndoAction()
@@ -319,7 +319,7 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
     launchFragment()
 
     // swipe left (isWantToDelete = false)
-    performSwipeAction(1, swipeLeft())
+    performSwipeAction(0, swipeLeft())
 
     mockUndoDB.postValue(Event(data))
     onIdle()
@@ -339,7 +339,7 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
     launchFragment()
 
     // swipe left (isWantToDelete = false)
-    performSwipeAction(2, swipeLeft())
+    performSwipeAction(1, swipeLeft())
     mockUndoDB.postValue(Event(data))
     onIdle()
 
@@ -359,7 +359,7 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
     launchFragment()
 
     // swipe left (isWantToDelete = false)
-    performSwipeAction(1, swipeLeft())
+    performSwipeAction(0, swipeLeft())
     mockUndoDB.postValue(Event(data))
     onIdle()
 
@@ -377,7 +377,7 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
     launchFragment()
 
     // swipe left (isWantToDelete = false)
-    performSwipeAction(1, swipeLeft())
+    performSwipeAction(0, swipeLeft())
     mockUndoDB.postValue(Event(data))
     onIdle()
 
