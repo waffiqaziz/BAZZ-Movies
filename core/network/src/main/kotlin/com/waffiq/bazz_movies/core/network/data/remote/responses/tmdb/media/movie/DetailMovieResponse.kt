@@ -8,7 +8,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.rele
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ProductionCompaniesResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SpokenLanguagesResponseItem
 
-@JsonClass(generateAdapter = false)
+@JsonClass(generateAdapter = true)
 data class DetailMovieResponse(
 
   @Json(name = "original_language")

@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.cas
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = false)
+@JsonClass(generateAdapter = true)
 data class MediaCrewResponseItem(
 
   @Json(name = "gender")

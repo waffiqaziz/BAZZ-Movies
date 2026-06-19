@@ -30,6 +30,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.D
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.LastEpisodeToAirResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.NetworksItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.NextEpisodeToAirResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ProductionCompaniesResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SeasonsItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SpokenLanguagesResponseItem
@@ -1352,5 +1353,11 @@ object DataDumpManager {
   val tvKeywordsResponse = TvKeywordsResponse(
     id = 1222,
     keywords = listOf(mediaKeywordsResponseItem),
+  )
+
+  val nextEpisodeToAirResponse = NextEpisodeToAirResponse(
+    id = 67884,
+    name = "name episode",
+    airDate = "2026-06-20",
   )
 }

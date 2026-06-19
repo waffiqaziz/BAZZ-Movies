@@ -7,12 +7,14 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.D
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.LastEpisodeToAirResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.NetworksItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.NextEpisodeToAirResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SeasonsItemResponse
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ContentRatings
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ContentRatingsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.CreatedByItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.LastEpisodeToAir
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.NetworksItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.NextEpisodeToAir
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.SeasonsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
@@ -55,7 +57,7 @@ object TvMapper {
       listEpisodeRunTime = episodeRunTime,
       contentRatings = contentRatingsResponse?.toContentRatings(),
       adult = adult,
-      nextEpisodeToAir = nextEpisodeToAir,
+      nextEpisodeToAir = nextEpisodeToAir?.toNextEpisodeToAir(),
       inProduction = inProduction,
       lastAirDate = lastAirDate,
       homepage = homepage,
@@ -130,5 +132,12 @@ object TvMapper {
       tvrageId = tvrageId,
       facebookId = facebookId,
       instagramId = instagramId,
+    )
+
+  fun NextEpisodeToAirResponse.toNextEpisodeToAir() =
+    NextEpisodeToAir(
+      id = id,
+      name = name,
+      airDate = airDate,
     )
 }

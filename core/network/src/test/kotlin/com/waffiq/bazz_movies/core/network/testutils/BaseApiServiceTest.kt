@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.core.network.testutils
 
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.TvApiService
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -20,7 +19,6 @@ abstract class BaseApiServiceTest {
     mockWebServer = MockWebServer()
 
     val moshi = Moshi.Builder()
-      .add(KotlinJsonAdapterFactory())
       .build()
 
     val retrofit = Retrofit.Builder()

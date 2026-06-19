@@ -61,7 +61,8 @@ abstract class BaseAdapterTest<T, A : RecyclerView.Adapter<*>> {
    * Attaches [adapter] to a real RecyclerView, lays it out, and returns it.
    * Use this when tests involve click listeners that rely on [bindingAdapterPosition].
    */
-  protected fun attachAdapter(adapter: A): RecyclerView = RecyclerView(context).apply {
+  protected fun attachAdapter(adapter: A): RecyclerView =
+    RecyclerView(context).apply {
       layoutManager = LinearLayoutManager(context)
       this.adapter = adapter
       measure(

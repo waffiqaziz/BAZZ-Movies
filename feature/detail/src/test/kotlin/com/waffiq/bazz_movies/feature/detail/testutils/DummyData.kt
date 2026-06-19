@@ -22,6 +22,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.C
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.LastEpisodeToAirResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.NetworksItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.NextEpisodeToAirResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SeasonsItemResponse
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinString
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
@@ -56,6 +57,7 @@ import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAg
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformDuration
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformTMDBScore
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toNextEpisodeToAir
 
 // Used as data dumb testing
 object DummyData {
@@ -210,6 +212,14 @@ object DummyData {
     contentRatingsItemResponse = listOf(contentRatingsItemResponse),
   )
 
+  val nextEpisodeToAirResponse = NextEpisodeToAirResponse(
+    id = 674,
+    name = "name",
+    airDate = "2026-06-19",
+  )
+
+  val nextEpisodeToAir = nextEpisodeToAirResponse.toNextEpisodeToAir()
+
   val detailTvResponse = DetailTvResponse(
     originalLanguage = "en",
     numberOfEpisodes = 10,
@@ -275,7 +285,7 @@ object DummyData {
     listEpisodeRunTime = listOf(47),
     contentRatings = ContentRatings(),
     adult = false,
-    nextEpisodeToAir = "Episode data",
+    nextEpisodeToAir = nextEpisodeToAir,
     inProduction = false,
     lastAirDate = "2013-09-29",
     homepage = "http://www.amc.com/shows/breaking-bad",

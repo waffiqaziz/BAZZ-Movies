@@ -37,6 +37,7 @@ dependencies {
 
   // retrofit & moshi
   api(libs.bundles.retrofit)
+  implementation(libs.androidx.paging.runtime.ktx)
   ksp(libs.moshi.kotlin.codegen)
 
   testImplementation(project(":core:test"))
@@ -47,4 +48,21 @@ dependencies {
   testImplementation(libs.mockwebserver)
   testImplementation(libs.truth)
   testImplementation(libs.turbine)
+}
+
+kotlin {
+  compilerOptions {
+    // Suppress redundant .toInt() warnings in Moshi codegen generated adapters
+    // This is a known kotlin issue:
+    // - https://youtrack.jetbrains.com/issue/KT-80060/
+    // - https://youtrack.jetbrains.com/projects/KT/issues/KT-83441/
+    // - https://youtrack.jetbrains.com/issue/KT-80060/
+    //
+    // Fixed on Kotlin 2.4.0, but due to QodeQL not yet supported, see
+    // https://github.com/github/codeql/issues/21938
+    // We will remove this until its supported.
+    freeCompilerArgs.addAll(
+      "-Xwarning-level=REDUNDANT_CALL_OF_CONVERSION_METHOD:disabled"
+    )
+  }
 }

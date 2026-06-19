@@ -34,7 +34,7 @@ data class TvDetail(
   val listEpisodeRunTime: List<Int?>? = null,
   val contentRatings: ContentRatings? = null,
   val adult: Boolean? = null,
-  val nextEpisodeToAir: Any? = null,
+  val nextEpisodeToAir: NextEpisodeToAir? = null,
   val inProduction: Boolean? = null,
   val lastAirDate: String? = null,
   val homepage: String? = null,

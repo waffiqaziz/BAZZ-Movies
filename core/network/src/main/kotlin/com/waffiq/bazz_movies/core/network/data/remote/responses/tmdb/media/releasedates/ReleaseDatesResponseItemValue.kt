@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.rel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = false)
+@JsonClass(generateAdapter = true)
 data class ReleaseDatesResponseItemValue(
   @Json(name = "descriptors")
   val descriptors: List<Any?>? = null,

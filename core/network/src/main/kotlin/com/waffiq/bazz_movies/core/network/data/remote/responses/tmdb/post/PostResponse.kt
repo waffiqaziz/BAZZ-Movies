@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = false)
+@JsonClass(generateAdapter = true)
 data class PostResponse(
   @Json(name = "success")
   val success: Boolean? = null,
