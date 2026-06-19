@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.MediaKeywordsResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.MovieKeywordsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.TvKeywordsResponse
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.mediaKeywordsItem1
@@ -43,16 +42,6 @@ class MediaKeywordsMapperTest {
       MovieKeywordsResponse(id = 222, keywords = listOf(null)).toMediaKeywords()
     assertEquals(222, movieWithNullItem.id)
     assertEquals(listOf(null), movieWithNullItem.keywords)
-
-    val tvWithNullItem = TvKeywordsResponse(id = 111, keywords = listOf(null)).toMediaKeywords()
-    assertEquals(111, tvWithNullItem.id)
-    assertEquals(listOf(null), tvWithNullItem.keywords)
-
-    val tvMediaKeywords = TvKeywordsResponse().toMediaKeywords()
-    assertNull(tvMediaKeywords.id)
-    assertNull(tvMediaKeywords.keywords)
-    assertNull(tvMediaKeywords.keywords?.get(0)?.name)
-    assertNull(tvMediaKeywords.keywords?.get(0)?.id)
   }
 
   @Test

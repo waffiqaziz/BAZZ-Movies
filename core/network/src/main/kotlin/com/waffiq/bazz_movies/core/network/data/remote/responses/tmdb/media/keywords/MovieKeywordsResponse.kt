@@ -7,8 +7,8 @@ import com.squareup.moshi.JsonClass
 data class MovieKeywordsResponse(
 
   @Json(name = "keywords")
-  val keywords: List<MediaKeywordsResponseItem?>? = null,
+  override val keywords: List<MediaKeywordsResponseItem?>? = null,
 
   @Json(name = "id")
-  val id: Int? = null,
-)
+  override val id: Int? = null,
+) : KeywordsResponse
