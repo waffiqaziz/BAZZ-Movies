@@ -38,7 +38,7 @@ class DetailTvTest {
     assertEquals(1, tvDetail.listEpisodeRunTime?.size)
     assertNotNull(tvDetail.contentRatings)
     assertEquals(false, tvDetail.adult)
-    assertEquals("Episode data", tvDetail.nextEpisodeToAir)
+    assertEquals(674, tvDetail.nextEpisodeToAir?.id)
     assertEquals(false, tvDetail.inProduction)
     assertEquals("2013-09-29", tvDetail.lastAirDate)
     assertEquals("http://www.amc.com/shows/breaking-bad", tvDetail.homepage)

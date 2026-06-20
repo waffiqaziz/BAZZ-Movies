@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = false)
+@JsonClass(generateAdapter = true)
 data class PostFavoriteWatchlistResponse(
   @Json(name = "status_code")
   val statusCode: Int? = null,

@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.core.network.di
 
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.waffiq.bazz_movies.core.network.BuildConfig.OMDB_API_KEY
 import com.waffiq.bazz_movies.core.network.BuildConfig.OMDb_API_URL
 import com.waffiq.bazz_movies.core.network.BuildConfig.TMDB_API_KEY
@@ -54,7 +53,6 @@ class NetworkModule {
   fun provideMoshi(): Moshi =
     Moshi.Builder()
       .add(RatedResponseAdapter())
-      .add(KotlinJsonAdapterFactory())
       .build()
 
   @Singleton

@@ -1,12 +1,14 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class MovieKeywordsResponse(
 
   @Json(name = "keywords")
-  val keywords: List<MediaKeywordsResponseItem?>? = null,
+  override val keywords: List<MediaKeywordsResponseItem?>? = null,
 
   @Json(name = "id")
-  val id: Int? = null,
-)
+  override val id: Int? = null,
+) : KeywordsResponse

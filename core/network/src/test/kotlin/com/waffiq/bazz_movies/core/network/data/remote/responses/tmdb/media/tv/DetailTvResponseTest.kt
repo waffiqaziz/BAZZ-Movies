@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.GenresResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.ProductionCountriesResponseItem
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.detailTvResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.nextEpisodeToAirResponse
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNull
 import junit.framework.TestCase.assertTrue
@@ -152,12 +153,11 @@ class DetailTvResponseTest {
       episodeRunTime = listOf(123),
       contentRatingsResponse = ContentRatingsResponse(),
       adult = false,
-      nextEpisodeToAir = "next_episode_to_air",
+      nextEpisodeToAir = nextEpisodeToAirResponse,
       inProduction = false,
       lastAirDate = "last_air_date",
       homepage = "home_page",
       status = "status",
-
     )
     assertNull(detailTvResponse.productionCountriesResponse?.get(0)?.name)
 

@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonClass
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.GenresResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.ProductionCountriesResponseItem
 
-@JsonClass(generateAdapter = false)
+@JsonClass(generateAdapter = true)
 data class DetailTvResponse(
 
   @Json(name = "original_language")
@@ -93,7 +93,7 @@ data class DetailTvResponse(
   val adult: Boolean? = null,
 
   @Json(name = "next_episode_to_air")
-  val nextEpisodeToAir: Any? = null,
+  val nextEpisodeToAir: NextEpisodeToAirResponse? = null,
 
   @Json(name = "in_production")
   val inProduction: Boolean? = null,

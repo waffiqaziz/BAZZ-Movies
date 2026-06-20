@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.core.network.data.remote.responses.omdb
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = false)
+@JsonClass(generateAdapter = true)
 data class OMDbDetailsResponse(
 
   @Json(name = "Metascore")
@@ -82,7 +82,7 @@ data class OMDbDetailsResponse(
   val writer: String? = null,
 )
 
-@JsonClass(generateAdapter = false)
+@JsonClass(generateAdapter = true)
 data class RatingsItemResponse(
 
   @Json(name = "Value")
