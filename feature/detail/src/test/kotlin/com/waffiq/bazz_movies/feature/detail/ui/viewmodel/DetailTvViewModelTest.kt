@@ -3,7 +3,6 @@ package com.waffiq.bazz_movies.feature.detail.ui.viewmodel
 import androidx.paging.PagingData
 import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailViewModelTest
-import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.omdbDetails
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -20,11 +19,46 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
     runTest {
       coEvery { mockGetMediaDetailUseCase.getTvDetailWithUserRegion(tvId) } returns
         successFlow(mockMediaDetail)
+      setupGetOMDbDetailsMockReturnValue()
 
       testViewModelState(
         runBlock = { viewModel.getTvDetail(tvId) },
         stateSelector = { it.detail },
         expectedStates = listOf(mockMediaDetail),
+        verifyBlock = {
+          verify(exactly = 1) { mockGetMediaDetailUseCase.getTvDetailWithUserRegion(tvId) }
+        },
+      )
+    }
+
+  @Test
+  fun getTvDetail_whenImdbIsMissing_emitsSuccess() =
+    runTest {
+      coEvery { mockGetMediaDetailUseCase.getTvDetailWithUserRegion(tvId) } returns
+        successFlow(mockMediaDetail.copy(imdbId = null))
+      setupGetOMDbDetailsMockReturnValue()
+
+      testViewModelState(
+        runBlock = { viewModel.getTvDetail(tvId) },
+        stateSelector = { it.detail },
+        expectedStates = listOf(mockMediaDetail.copy(imdbId = null)),
+        verifyBlock = {
+          verify(exactly = 1) { mockGetMediaDetailUseCase.getTvDetailWithUserRegion(tvId) }
+        },
+      )
+    }
+
+  @Test
+  fun getTvDetail_whenImdbIsEmpty_emitsSuccess() =
+    runTest {
+      coEvery { mockGetMediaDetailUseCase.getTvDetailWithUserRegion(tvId) } returns
+        successFlow(mockMediaDetail.copy(imdbId = ""))
+      setupGetOMDbDetailsMockReturnValue()
+
+      testViewModelState(
+        runBlock = { viewModel.getTvDetail(tvId) },
+        stateSelector = { it.detail },
+        expectedStates = listOf(mockMediaDetail.copy(imdbId = "")),
         verifyBlock = {
           verify(exactly = 1) { mockGetMediaDetailUseCase.getTvDetailWithUserRegion(tvId) }
         },
@@ -184,31 +218,6 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
       itemAssertions = { snapshot ->
         assertThat(snapshot).containsExactly(mockMediaItem)
       },
-    )
-  }
-
-  @Test
-  fun getTvAllScore_whenSuccessful_emitsSuccess() {
-    coEvery { mockGetOMDbDetailUseCase.getTvAllScore(tvId) } returns
-      successFlow(omdbDetails)
-
-    testViewModelState(
-      runBlock = { viewModel.getTvAllScore(tvId) },
-      stateSelector = { it.omdbDetails },
-      expectedStates = listOf(omdbDetails),
-      verifyBlock = { coVerify { mockGetOMDbDetailUseCase.getTvAllScore(tvId) } },
-    )
-  }
-
-  @Test
-  fun getTvAllScore_whenLoading_emitsLoading() {
-    coEvery { mockGetOMDbDetailUseCase.getTvAllScore(tvId) } returns loadingFlow
-
-    testViewModelState(
-      runBlock = { viewModel.getTvAllScore(tvId) },
-      stateSelector = { it.omdbDetails },
-      expectedLoadingStates = listOf(true),
-      verifyBlock = { coVerify { mockGetOMDbDetailUseCase.getTvAllScore(tvId) } },
     )
   }
 }

@@ -131,9 +131,14 @@ class MediaDetailViewModel @Inject constructor(
 
   // region TV-SERIES
   fun getTvDetail(tvId: Int) {
-    singleExecuteUseCase(
+    executeUseCase(
       flowProvider = { getMediaDetailUseCase.getTvDetailWithUserRegion(tvId) },
-      onSuccess = { copy(detail = it) },
+      onSuccess = {
+        updateState { copy(detail = it) }
+        if (!it.imdbId.isNullOrEmpty()) {
+          getOMDbDetails(it.imdbId)
+        }
+      },
     )
   }
 
@@ -171,14 +176,6 @@ class MediaDetailViewModel @Inject constructor(
         getMediaDetailUseCase.getTvWatchProvidersWithUserRegion(tvId),
       )
     }
-  }
-
-  fun getTvAllScore(tvId: Int) {
-    executeUseCase(
-      flowProvider = { getOMDbDetailUseCase.getTvAllScore(tvId) },
-      onSuccess = { updateState { copy(omdbDetails = it) } },
-      onLoading = { updateState { copy(isLoading = true) } },
-    )
   }
   // endregion TV-SERIES
 

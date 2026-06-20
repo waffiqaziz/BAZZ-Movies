@@ -30,6 +30,7 @@ class DetailTvResponseTest {
     assertEquals("https://program.imbc.com/WhenThePhoneRings", detailTvResponse.homepage)
     assertEquals("Kim Ji-woon", detailTvResponse.createdByResponse?.get(0)?.name)
     assertTrue(detailTvResponse.adult == false)
+    assertEquals("avatarthelastairbender", detailTvResponse.externalIds?.facebookId)
     assertEquals(
       "JUJUTSU KAISEN Opening | Kaikai Kitan by Eve",
       detailTvResponse.videos?.results[0]?.name,
@@ -125,6 +126,7 @@ class DetailTvResponseTest {
     assertNull(detailTvResponse.lastAirDate)
     assertNull(detailTvResponse.homepage)
     assertNull(detailTvResponse.status)
+    assertNull(detailTvResponse.externalIds)
     assertNull(detailTvResponse.videos)
   }
 

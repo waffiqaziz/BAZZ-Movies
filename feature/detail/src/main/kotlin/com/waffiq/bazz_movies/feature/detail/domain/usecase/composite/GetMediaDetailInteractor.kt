@@ -74,14 +74,12 @@ class GetMediaDetailInteractor @Inject constructor(
       combine(
         detailRepository.getTvDetail(tvId),
         detailRepository.getTvKeywords(tvId.toString()),
-        detailRepository.getTvExternalIds(tvId),
-      ) { detail, keywords, externalIds ->
+      ) { detail, keywords ->
         when (detail) {
           is Outcome.Success -> Outcome.Success(
             detail.data.toMediaDetail(
               userRegion = region,
               mediaKeywords = (keywords as? Outcome.Success)?.data,
-              externalIds = (externalIds as? Outcome.Success)?.data,
             ),
           )
 

@@ -63,6 +63,7 @@ class TvMapperTest {
     assertEquals("2024-01-15", tvDetail.lastAirDate)
     assertEquals("https://testtv.com", tvDetail.homepage)
     assertEquals("Returning Series", tvDetail.status)
+    assertEquals(999, tvDetail.externalIds?.id)
     assertEquals("Link Trailer", tvDetail.videos?.results[0]?.key)
   }
 
@@ -81,6 +82,7 @@ class TvMapperTest {
     assertEquals(null, detailTv.listOriginCountry)
     assertEquals(null, detailTv.listEpisodeRunTime)
     assertEquals(null, detailTv.contentRatings)
+    assertEquals(null, detailTv.externalIds)
     assertEquals(null, detailTv.videos)
   }
 

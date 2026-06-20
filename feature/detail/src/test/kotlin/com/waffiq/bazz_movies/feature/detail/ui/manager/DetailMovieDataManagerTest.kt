@@ -43,7 +43,6 @@ class DetailMovieDataManagerTest {
     manager.loadAllData()
 
     verifyTvCalls()
-    verify { detailViewModel.getTvAllScore(1234) }
   }
 
   @Test

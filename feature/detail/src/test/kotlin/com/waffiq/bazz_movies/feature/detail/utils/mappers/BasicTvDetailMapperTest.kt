@@ -3,9 +3,7 @@ package com.waffiq.bazz_movies.feature.detail.utils.mappers
 import com.waffiq.bazz_movies.core.models.GenresItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.fullTvDetail
-import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.mediaKeywords
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.mediaKeywordsItems
-import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.tvExternalIds
 import com.waffiq.bazz_movies.feature.detail.testutils.MapperHelperTest.stubToMediaDetail
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.BasicMediaDetailMapper.toMediaDetail
 import org.junit.Assert.assertEquals
@@ -49,12 +47,14 @@ class BasicTvDetailMapperTest {
       numberOfEpisodes = null,
       firstAirDate = null,
       popularity = null,
+      externalIds = null
     ).stubToMediaDetail()
 
     assertEquals(0, result.id)
     assertNull(result.tmdbScore)
     assertNull(result.genre)
     assertNull(result.genreId)
+    assertEquals("", result.imdbId)
     assertEquals("", result.language)
     assertNull(result.status)
     assertNull(result.totalSeasons)
@@ -65,29 +65,16 @@ class BasicTvDetailMapperTest {
   }
 
   @Test
-  fun tvDetail_externalIdsNull_returnsEmptyImdbId() {
-    val result = fullTvDetail.toMediaDetail("US", mediaKeywords, externalIds = null)
-    assertEquals("", result.imdbId)
-  }
-
-  @Test
-  fun tvDetail_externalIdsImdbIdNull_returnsEmptyImdbId() {
-    val externalIdsWithNullImdb = tvExternalIds.copy(imdbId = null)
-    val result = fullTvDetail.toMediaDetail("US", mediaKeywords, externalIdsWithNullImdb)
-    assertEquals("", result.imdbId)
-  }
-
-  @Test
   fun tvDetail_mediaKeywordsNull_returnsNullKeywords() {
     val result =
-      fullTvDetail.toMediaDetail("US", mediaKeywords = null, externalIds = tvExternalIds)
+      fullTvDetail.toMediaDetail("US", mediaKeywords = null)
     assertNull(result.keywords)
   }
 
   @Test
   fun tvDetail_mediaKeywordsWithNullKeywordsList_returnsNull() {
     val keywordsWithNullList = MediaKeywords(id = 100, keywords = null)
-    val result = fullTvDetail.toMediaDetail("US", keywordsWithNullList, tvExternalIds)
+    val result = fullTvDetail.toMediaDetail("US", keywordsWithNullList)
     assertNull(result.keywords)
   }
 

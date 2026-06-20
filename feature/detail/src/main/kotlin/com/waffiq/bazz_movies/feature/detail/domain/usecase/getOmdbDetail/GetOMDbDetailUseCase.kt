@@ -6,5 +6,4 @@ import kotlinx.coroutines.flow.Flow
 
 interface GetOMDbDetailUseCase {
   fun getOMDbDetails(imdbId: String): Flow<Outcome<OMDbDetails>>
-  fun getTvAllScore(tvId: Int): Flow<Outcome<OMDbDetails>>
 }

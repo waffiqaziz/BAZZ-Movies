@@ -63,6 +63,7 @@ object TvMapper {
       lastAirDate = lastAirDate,
       homepage = homepage,
       status = status,
+      externalIds = externalIds?.toExternalTvID(),
       videos = videos?.toVideo(),
     )
 

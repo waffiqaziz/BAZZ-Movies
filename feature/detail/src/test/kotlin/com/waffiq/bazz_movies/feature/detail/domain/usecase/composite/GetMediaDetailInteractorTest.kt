@@ -4,7 +4,6 @@ import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
-import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseInteractorTest
@@ -16,7 +15,6 @@ import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.detailTv
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.mediaKeywords
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.movieCredits
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.tvCredits
-import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.tvExternalIds
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.watchProviders
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -225,8 +223,6 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
     runTest {
       every { mockDetailRepository.getTvKeywords(TV_ID.toString()) } returns
         flowOf(Outcome.Error("error"))
-      every { mockDetailRepository.getTvExternalIds(TV_ID) } returns
-        flowOf(Outcome.Error("error"))
       testErrorScenario(
         mockCall = { mockDetailRepository.getTvDetail(TV_ID) },
         interactorCall = { interactor.getTvDetailWithUserRegion(TV_ID) },
@@ -248,7 +244,6 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
     runTest {
       every { mockDetailRepository.getTvKeywords(TV_ID.toString()) } returns
         flowOf(Outcome.Error("keywords error"))
-      stubGetTvExternalIdsSuccessWithEmptyData()
 
       testSuccessScenario(
         mockCall = { mockDetailRepository.getTvDetail(TV_ID) },
@@ -265,7 +260,6 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
     runTest {
       every { mockDetailRepository.getTvKeywords(TV_ID.toString()) } returns
         flowOf(Outcome.Loading)
-      stubGetTvExternalIdsSuccessWithEmptyData()
 
       testSuccessScenario(
         mockCall = { mockDetailRepository.getTvDetail(TV_ID) },
@@ -281,8 +275,6 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
   fun getTvDetailWithUserRegion_whenExternalIdsError_emitsSuccessWithNullKeywords() =
     runTest {
       stubGetTvKeywordsSuccessWithEmptyData()
-      every { mockDetailRepository.getTvExternalIds(TV_ID) } returns
-        flowOf(Outcome.Error("Error"))
 
       testSuccessScenario(
         mockCall = { mockDetailRepository.getTvDetail(TV_ID) },
@@ -298,8 +290,6 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
   fun getTvDetailWithUserRegion_whenExternalIdsLoading_emitsSuccessWithNullKeywords() =
     runTest {
       stubGetTvKeywordsSuccessWithEmptyData()
-      every { mockDetailRepository.getTvExternalIds(TV_ID) } returns
-        flowOf(Outcome.Loading)
 
       testSuccessScenario(
         mockCall = { mockDetailRepository.getTvDetail(TV_ID) },
@@ -365,18 +355,11 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
   private fun setupExternalIdAndKeywordsMockData() {
     every { mockDetailRepository.getTvKeywords(TV_ID.toString()) } returns
       flowOf(Outcome.Success(mediaKeywords))
-    every { mockDetailRepository.getTvExternalIds(TV_ID) } returns
-      flowOf(Outcome.Success(tvExternalIds))
   }
 
   private fun stubGetTvKeywordsSuccessWithEmptyData() {
     every { mockDetailRepository.getTvKeywords(TV_ID.toString()) } returns
       flowOf(Outcome.Success(MediaKeywords()))
-  }
-
-  private fun stubGetTvExternalIdsSuccessWithEmptyData() {
-    every { mockDetailRepository.getTvExternalIds(TV_ID) } returns
-      flowOf(Outcome.Success(TvExternalIds()))
   }
 
   private fun stubGetMovieKeywordsSuccessful() {

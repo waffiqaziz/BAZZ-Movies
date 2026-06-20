@@ -22,8 +22,7 @@ class DetailMovieViewModelTest : BaseMediaDetailViewModelTest() {
     runTest {
       coEvery { mockGetMediaDetailUseCase.getMovieDetailWithUserRegion(movieId) } returns
         successFlow(mockMediaDetail)
-      coEvery { mockGetOMDbDetailUseCase.getOMDbDetails(any()) } returns
-        successFlow(mockOmdb)
+      setupGetOMDbDetailsMockReturnValue()
 
       testViewModelState(
         runBlock = { viewModel.getMovieDetail(movieId) },
@@ -62,9 +61,7 @@ class DetailMovieViewModelTest : BaseMediaDetailViewModelTest() {
       testViewModelState(
         runBlock = { viewModel.getMovieDetail(movieId) },
         stateSelector = { it.detail },
-        expectedStates = listOf(
-          mockMediaDetail.copy(imdbId = ""),
-        ),
+        expectedStates = listOf(mockMediaDetail.copy(imdbId = "")),
         verifyBlock = {
           verify(exactly = 1) { mockGetMediaDetailUseCase.getMovieDetailWithUserRegion(movieId) }
         },

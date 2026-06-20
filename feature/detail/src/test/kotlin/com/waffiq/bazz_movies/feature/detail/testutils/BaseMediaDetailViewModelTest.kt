@@ -69,7 +69,6 @@ abstract class BaseMediaDetailViewModelTest {
   protected val tvId = TV_ID
   protected val errorMessage = ERROR_MESSAGE
 
-  protected val mockVideoLink = String()
   protected val mockMediaItem = mockk<MediaItem>()
   protected val mockMediaDetail = movieMediaDetail
   protected val mockMediaStated = MediaState(

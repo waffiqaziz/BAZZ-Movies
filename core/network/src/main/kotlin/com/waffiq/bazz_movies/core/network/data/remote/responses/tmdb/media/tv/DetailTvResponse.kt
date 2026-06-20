@@ -108,6 +108,9 @@ data class DetailTvResponse(
   @Json(name = "status")
   val status: String? = null,
 
+  @Json(name = "external_ids")
+  val externalIds: ExternalIdResponse? = null,
+
   @Json(name = "videos")
   val videos: VideoResponse? = null,
 )

@@ -12,7 +12,6 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
-import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAgeRating
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformDuration
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformTMDBScore
@@ -21,11 +20,7 @@ import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.get
 
 object BasicMediaDetailMapper {
 
-  fun TvDetail.toMediaDetail(
-    userRegion: String,
-    mediaKeywords: MediaKeywords?,
-    externalIds: TvExternalIds?,
-  ): MediaDetail =
+  fun TvDetail.toMediaDetail(userRegion: String, mediaKeywords: MediaKeywords?): MediaDetail =
     MediaDetail(
       id = id ?: 0,
       genre = transformListGenreToJoinString(listGenres),

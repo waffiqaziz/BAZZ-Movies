@@ -919,6 +919,18 @@ object DataDumpManager {
     ),
   )
 
+  val externalIdResponseDump = ExternalIdResponse(
+    imdbId = "tt0417299",
+    freebaseMid = "/m/05h95s",
+    tvdbId = 74852,
+    freebaseId = "/en/avatar_the_last_airbender",
+    id = 246,
+    twitterId = null,
+    tvrageId = 2680,
+    facebookId = "avatarthelastairbender",
+    instagramId = "avatarthelastairbender",
+  )
+
   val detailTvResponseDump = DetailTvResponse(
     originalLanguage = "ko",
     numberOfEpisodes = 12,
@@ -977,19 +989,8 @@ object DataDumpManager {
     lastAirDate = "2025-01-04",
     homepage = "https://program.imbc.com/WhenThePhoneRings",
     status = "Ended",
+    externalIds = externalIdResponseDump,
     videos = videoTvResponseDump,
-  )
-
-  val externalIdResponseDump = ExternalIdResponse(
-    imdbId = "tt0417299",
-    freebaseMid = "/m/05h95s",
-    tvdbId = 74852,
-    freebaseId = "/en/avatar_the_last_airbender",
-    id = 246,
-    twitterId = null,
-    tvrageId = 2680,
-    facebookId = "avatarthelastairbender",
-    instagramId = "avatarthelastairbender",
   )
 
   val statedResponseDump1 = MediaStateResponse(

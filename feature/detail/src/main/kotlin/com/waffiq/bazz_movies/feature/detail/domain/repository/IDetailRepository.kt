@@ -6,7 +6,6 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
-import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import kotlinx.coroutines.flow.Flow
 
@@ -17,7 +16,6 @@ interface IDetailRepository {
   fun getMovieWatchProviders(id: Int): Flow<Outcome<WatchProviders>>
   fun getMovieKeywords(movieId: String): Flow<Outcome<MediaKeywords>>
   fun getTvDetail(tvId: Int): Flow<Outcome<TvDetail>>
-  fun getTvExternalIds(tvId: Int): Flow<Outcome<TvExternalIds>>
   fun getTvCredits(tvId: Int): Flow<Outcome<MediaCredits>>
   fun getTvWatchProviders(id: Int): Flow<Outcome<WatchProviders>>
   fun getTvKeywords(tvId: String): Flow<Outcome<MediaKeywords>>

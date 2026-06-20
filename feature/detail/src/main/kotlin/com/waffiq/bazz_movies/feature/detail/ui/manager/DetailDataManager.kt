@@ -65,7 +65,6 @@ class DetailDataManager(
    * - Watch providers based on the user's region
    */
   private fun loadTvData() {
-    detailViewModel.getTvAllScore(dataExtra.id)
     detailViewModel.getTvCredits(dataExtra.id)
     detailViewModel.getTvDetail(dataExtra.id)
     detailViewModel.getTvWatchProviders(dataExtra.id)
