@@ -11,11 +11,13 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
+import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAgeRating
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformDuration
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformTMDBScore
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.toLink
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.WatchProvidersMapper.toWatchProvidersState
 
 object BasicMediaDetailMapper {
 
@@ -30,6 +32,8 @@ object BasicMediaDetailMapper {
       releaseDateRegion = getReleaseDateRegion(this),
       status = status,
       trailer = videos?.toLink(),
+      watchProviders = watchProviders?.toWatchProvidersState(userRegion)
+        ?: WatchProvidersUiState.Error("No watch providers available"),
       language = getLanguageName(originalLanguage),
       keywords = keywords?.keywords,
       totalEpisodes = numberOfEpisodes,
@@ -56,6 +60,8 @@ object BasicMediaDetailMapper {
       releaseDateRegion = releaseDateRegion,
       status = status,
       trailer = videos?.toLink(),
+      watchProviders = watchProviders?.toWatchProvidersState(releaseDateRegion.regionRelease)
+        ?: WatchProvidersUiState.Error("No watch providers available"),
       budget = toUsd(budget),
       revenue = toUsd(revenue),
       language = getLanguageName(originalLanguage),

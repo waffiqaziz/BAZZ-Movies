@@ -133,14 +133,16 @@ class MediaDetailActivityWatchProvidersTest : BaseMediaDetailActivityTest() {
   fun watchProviderState_whenSuccessfulButEmptyData_hidesTheLayout() {
     context.launchMediaDetailActivity {
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        uiState.update { s ->
-          s.copy(
-            watchProviders = WatchProvidersUiState.Success(
-              emptyList(),
-              emptyList(),
-              emptyList(),
-              emptyList(),
-              emptyList(),
+        uiState.update { state ->
+          state.copy(
+            detail = state.detail?.copy(
+              watchProviders = WatchProvidersUiState.Success(
+                emptyList(),
+                emptyList(),
+                emptyList(),
+                emptyList(),
+                emptyList(),
+              ),
             ),
           )
         }
@@ -161,8 +163,12 @@ class MediaDetailActivityWatchProvidersTest : BaseMediaDetailActivityTest() {
   fun watchProviderState_whenErrorOccurs_showsError() {
     context.launchMediaDetailActivity {
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        uiState.update { s ->
-          s.copy(watchProviders = WatchProvidersUiState.Error("Error fetching watch providers"))
+        uiState.update { state ->
+          state.copy(
+            detail = state.detail?.copy(
+              watchProviders = WatchProvidersUiState.Error("Error fetching watch providers"),
+            ),
+          )
         }
       }
       performClickWatchProvidersButton()
@@ -183,7 +189,11 @@ class MediaDetailActivityWatchProvidersTest : BaseMediaDetailActivityTest() {
   fun watchProviderState_whenLoading_showsProgressBar() {
     context.launchMediaDetailActivity {
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        uiState.update { s -> s.copy(watchProviders = WatchProvidersUiState.Loading) }
+        uiState.update { state ->
+          state.copy(
+            detail = state.detail?.copy(watchProviders = WatchProvidersUiState.Loading),
+          )
+        }
       }
       shortDelay()
       progress_bar.isDisplayed()

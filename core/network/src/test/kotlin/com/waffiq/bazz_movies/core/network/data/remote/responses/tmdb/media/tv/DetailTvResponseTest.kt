@@ -4,6 +4,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.Genr
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.ProductionCountriesResponseItem
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.detailTvResponseDump
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.nextEpisodeToAirResponse
+import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.watchProvidersResultsMap
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNull
 import junit.framework.TestCase.assertTrue
@@ -36,6 +37,7 @@ class DetailTvResponseTest {
       "JUJUTSU KAISEN Opening | Kaikai Kitan by Eve",
       detailTvResponse.videos?.results[0]?.name,
     )
+    assertEquals(watchProvidersResultsMap, detailTvResponse.watchProviders?.results)
   }
 
   @Test
@@ -130,6 +132,7 @@ class DetailTvResponseTest {
     assertNull(detailTvResponse.status)
     assertNull(detailTvResponse.externalIds)
     assertNull(detailTvResponse.videos)
+    assertNull(detailTvResponse.watchProviders)
   }
 
   @Test

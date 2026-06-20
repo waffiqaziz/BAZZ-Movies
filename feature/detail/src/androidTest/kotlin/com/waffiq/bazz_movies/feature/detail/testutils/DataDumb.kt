@@ -101,6 +101,21 @@ object DataDumb {
     isFavorite = true,
   )
 
+  val testProvider = Provider(
+    logoPath = "logo path",
+    providerId = 123,
+    providerName = "provider name",
+    displayPriority = 1,
+  )
+
+  val testWatchProvidersUiState = WatchProvidersUiState.Success(
+    ads = listOf(testProvider),
+    buy = listOf(testProvider),
+    flatrate = listOf(testProvider),
+    free = listOf(testProvider),
+    rent = listOf(testProvider),
+  )
+
   val testMediaDetail = MediaDetail(
     id = 12345678,
     genre = "Action",
@@ -111,6 +126,7 @@ object DataDumb {
     tmdbScore = "100",
     status = "released",
     trailer = "video trailer",
+    watchProviders = testWatchProvidersUiState,
     releaseDateRegion = ReleaseDateRegion(
       regionRelease = "ID",
       releaseDate = "Jul 23, 2025",
@@ -151,21 +167,6 @@ object DataDumb {
     originCountry = null,
   )
 
-  val testProvider = Provider(
-    logoPath = "logo path",
-    providerId = 123,
-    providerName = "provider name",
-    displayPriority = 1,
-  )
-
-  val testWatchProvidersUiState = WatchProvidersUiState.Success(
-    ads = listOf(testProvider),
-    buy = listOf(testProvider),
-    flatrate = listOf(testProvider),
-    free = listOf(testProvider),
-    rent = listOf(testProvider),
-  )
-
   val mediaDetailUiState = MediaDetailUiState(
     detail = testMediaDetail,
     credits = MediaCredits(
@@ -174,7 +175,6 @@ object DataDumb {
       crew = listOf(MediaCrewItem()),
     ),
     omdbDetails = OMDbDetails(),
-    watchProviders = testWatchProvidersUiState,
     itemState = MediaState(
       id = 90,
       favorite = false,

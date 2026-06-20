@@ -1,9 +1,15 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
 import com.waffiq.bazz_movies.core.models.GenresItem
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.ads
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.buy
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.flatrate
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.free
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.fullTvDetail
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.mediaKeywordsItems
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.rent
 import com.waffiq.bazz_movies.feature.detail.testutils.MapperHelperTest.stubToMediaDetail
+import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -21,6 +27,10 @@ class BasicTvDetailMapperTest {
     assertEquals(mediaKeywordsItems, validTvDetail.keywords)
     assertEquals("English", validTvDetail.language)
     assertEquals("Link Trailer", validTvDetail.trailer)
+    assertEquals(
+      WatchProvidersUiState.Success(ads, buy, flatrate, free, rent),
+      validTvDetail.watchProviders,
+    )
     assertEquals(listOf(1, 2), validTvDetail.genreId)
 
     // budget and revenue always return null for tv media type
@@ -46,6 +56,8 @@ class BasicTvDetailMapperTest {
       numberOfEpisodes = null,
       firstAirDate = null,
       popularity = null,
+      videos = null,
+      watchProviders = null,
       externalIds = null,
     ).stubToMediaDetail()
 
@@ -62,6 +74,11 @@ class BasicTvDetailMapperTest {
     assertEquals("", result.releaseDate)
     assertEquals(9.0f, validTvDetail.popularity)
     assertEquals(0f, result.popularity)
+    assertNull(result.trailer)
+    assertEquals(
+      WatchProvidersUiState.Error("No watch providers available"),
+      result.watchProviders,
+    )
   }
 
   @Test

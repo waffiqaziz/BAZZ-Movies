@@ -52,7 +52,6 @@ class DetailDataManager(
   private fun loadMovieData() {
     detailViewModel.getMovieCredits(dataExtra.id)
     detailViewModel.getMovieDetail(dataExtra.id)
-    detailViewModel.getMovieWatchProviders(dataExtra.id)
   }
 
   /**
@@ -67,6 +66,5 @@ class DetailDataManager(
   private fun loadTvData() {
     detailViewModel.getTvCredits(dataExtra.id)
     detailViewModel.getTvDetail(dataExtra.id)
-    detailViewModel.getTvWatchProviders(dataExtra.id)
   }
 }

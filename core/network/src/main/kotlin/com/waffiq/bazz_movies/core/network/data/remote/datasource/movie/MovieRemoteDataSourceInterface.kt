@@ -4,7 +4,6 @@ import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.MediaStateResponse
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
@@ -22,7 +21,6 @@ interface MovieRemoteDataSourceInterface {
   // DETAIL PAGE
   fun getMovieDetail(id: Int): Flow<NetworkResult<DetailMovieResponse>>
   fun getMovieState(sessionId: String, id: Int): Flow<NetworkResult<MediaStateResponse>>
-  fun getMovieWatchProviders(id: Int): Flow<NetworkResult<WatchProvidersResponse>>
   fun getMovieCredits(movieId: Int): Flow<NetworkResult<MediaCreditsResponse>>
 
   // POST

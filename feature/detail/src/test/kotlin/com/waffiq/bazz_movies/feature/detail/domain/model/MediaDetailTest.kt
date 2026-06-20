@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.domain.model
 
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
+import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -100,5 +101,6 @@ class MediaDetailTest {
     assertNull(detail.totalEpisodes)
     assertNull(detail.totalSeasons)
     assertEquals(releaseDateRegion, detail.releaseDateRegion)
+    assertEquals(WatchProvidersUiState.Loading, detail.watchProviders)
   }
 }

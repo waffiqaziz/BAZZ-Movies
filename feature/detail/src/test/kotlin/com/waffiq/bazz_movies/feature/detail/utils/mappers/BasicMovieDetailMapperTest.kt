@@ -1,9 +1,15 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
 import com.waffiq.bazz_movies.core.models.GenresItem
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.ads
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.buy
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.flatrate
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.free
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.fullMovieDetail
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.mediaKeywordsItems
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.rent
 import com.waffiq.bazz_movies.feature.detail.testutils.MapperHelperTest.stubToMediaDetail
+import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
@@ -25,6 +31,10 @@ class BasicMovieDetailMapperTest {
     assertEquals("superhero", validMovieDetail.keywords?.get(0)?.name)
     assertEquals("English", validMovieDetail.language)
     assertEquals("Link Trailer", validMovieDetail.trailer)
+    assertEquals(
+      WatchProvidersUiState.Success(ads, buy, flatrate, free, rent),
+      validMovieDetail.watchProviders,
+    )
     assertEquals(listOf(1, 2), validMovieDetail.genreId)
     assertEquals("tt9999999", validMovieDetail.imdbId)
     assertEquals("Released", validMovieDetail.status)
@@ -48,6 +58,8 @@ class BasicMovieDetailMapperTest {
       imdbId = null,
       status = null,
       popularity = null,
+      videos = null,
+      watchProviders = null,
       releaseDate = null,
     ).stubToMediaDetail()
 
@@ -63,6 +75,11 @@ class BasicMovieDetailMapperTest {
     assertNull(result.imdbId)
     assertNull(result.status)
     assertEquals(0f, result.popularity)
+    assertNull(result.trailer)
+    assertEquals(
+      WatchProvidersUiState.Error("No watch providers available"),
+      result.watchProviders,
+    )
     assertEquals("", result.releaseDate)
   }
 

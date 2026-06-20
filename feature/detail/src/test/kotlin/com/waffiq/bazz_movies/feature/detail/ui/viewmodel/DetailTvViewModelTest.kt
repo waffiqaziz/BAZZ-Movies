@@ -3,12 +3,10 @@ package com.waffiq.bazz_movies.feature.detail.ui.viewmodel
 import androidx.paging.PagingData
 import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailViewModelTest
-import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
@@ -170,41 +168,6 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
         stateSelector = { it.itemState },
         verifyBlock = { coVerify { mockMediaStateUseCase.getTvStateWithUser(tvId) } },
       )
-    }
-
-  @Test
-  fun getTvWatchProviders_withNullFields_triggersOrEmptyBranches() =
-    runTest {
-      coEvery { mockGetMediaDetailUseCase.getTvWatchProvidersWithUserRegion(tvId) } returns
-        successFlow(nullProvider)
-
-      viewModel.getTvWatchProviders(tvId)
-      advanceUntilIdle()
-
-      assertThat(viewModel.uiState.value.watchProviders).isEqualTo(
-        WatchProvidersUiState
-          .Success(
-            emptyList(),
-            emptyList(),
-            emptyList(),
-            emptyList(),
-            emptyList(),
-          ),
-      )
-    }
-
-  @Test
-  fun getTvWatchProviders_withNonNullFields_skipsOrEmptyBranches() =
-    runTest {
-      coEvery {
-        mockGetMediaDetailUseCase.getTvWatchProvidersWithUserRegion(tvId)
-      } returns successFlow(mockWatchProvider)
-
-      viewModel.getTvWatchProviders(tvId)
-      advanceUntilIdle()
-
-      assertThat(viewModel.uiState.value.watchProviders)
-        .isInstanceOf(WatchProvidersUiState.Success::class.java)
     }
 
   @Test

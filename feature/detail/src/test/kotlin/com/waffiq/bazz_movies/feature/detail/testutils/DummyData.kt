@@ -51,6 +51,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.tv.LastEpisodeToAir
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.NetworksItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.SeasonsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
+import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.Provider
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAgeRating
@@ -371,6 +372,64 @@ object DummyData {
     GenresItem(id = 2, name = "Comedy"),
   )
 
+  val ads = listOf(
+    Provider(
+      logoPath = "/ads.png",
+      providerId = 1,
+      providerName = "Ads Provider",
+      displayPriority = 1,
+    ),
+  )
+
+  val buy = listOf(
+    Provider(
+      logoPath = "/buy.png",
+      providerId = 2,
+      providerName = "Buy Provider",
+      displayPriority = 2,
+    ),
+  )
+
+  val flatrate = listOf(
+    Provider(
+      logoPath = "/stream.png",
+      providerId = 3,
+      providerName = "Streaming Provider",
+      displayPriority = 3,
+    ),
+  )
+
+  val free = listOf(
+    Provider(
+      logoPath = "/free.png",
+      providerId = 4,
+      providerName = "Free Provider",
+      displayPriority = 4,
+    ),
+  )
+
+  val rent = listOf(
+    Provider(
+      logoPath = "/rent.png",
+      providerId = 5,
+      providerName = "Rent Provider",
+      displayPriority = 5,
+    ),
+  )
+
+  val watchProvidersItem = WatchProvidersItem(
+    link = "https://some-provider.com",
+    ads = ads,
+    buy = buy,
+    flatrate = flatrate,
+    free = free,
+    rent = rent,
+  )
+
+  val watchProviders = WatchProviders(
+    results = mapOf("US" to watchProvidersItem),
+  )
+
   // region MOVIE
   const val MOVIE_ID = 1001
   val detailMovie = MovieDetail(
@@ -437,6 +496,7 @@ object DummyData {
     revenue = 5000000L,
     popularity = 4444.0,
     videos = video,
+    watchProviders = watchProviders,
   )
   // endregion MOVIE
 
@@ -486,22 +546,10 @@ object DummyData {
     popularity = 9.0,
     externalIds = tvExternalIds,
     videos = video,
+    watchProviders = watchProviders,
   )
 
   // endregion TV
-  val watchProviders = WatchProviders(
-    results = mapOf(
-      "US" to WatchProvidersItem(
-        link = "https://some-provider.com",
-        ads = null,
-        buy = null,
-        flatrate = null,
-        free = null,
-        rent = null,
-      ),
-    ),
-    id = 1234,
-  )
 
   val omdbDetails = OMDbDetails(
     imdbID = IMDB_ID,

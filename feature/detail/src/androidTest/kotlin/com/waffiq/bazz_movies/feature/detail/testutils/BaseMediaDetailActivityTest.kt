@@ -65,12 +65,10 @@ abstract class BaseMediaDetailActivityTest {
     every { mockMediaDetailViewModel.getMovieCredits(any()) } just Runs
     every { mockMediaDetailViewModel.getMovieRecommendation(any()) } just Runs
     every { mockMediaDetailViewModel.getMovieState(any()) } just Runs
-    every { mockMediaDetailViewModel.getMovieWatchProviders(any()) } just Runs
     every { mockMediaDetailViewModel.getTvDetail(any()) } just Runs
     every { mockMediaDetailViewModel.getTvCredits(any()) } just Runs
     every { mockMediaDetailViewModel.getTvRecommendation(any()) } just Runs
     every { mockMediaDetailViewModel.getTvState(any()) } just Runs
-    every { mockMediaDetailViewModel.getTvWatchProviders(any()) } just Runs
     every { mockMediaDetailViewModel.getOMDbDetails(any()) } just Runs
     every { mockMediaDetailViewModel.handleBtnFavorite(any()) } just Runs
     every { mockMediaDetailViewModel.handleBtnWatchlist(any()) } just Runs

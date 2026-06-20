@@ -4,7 +4,6 @@ import androidx.paging.PagingData
 import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailViewModelTest
-import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -191,60 +190,6 @@ class DetailMovieViewModelTest : BaseMediaDetailViewModelTest() {
     }
 
   @Test
-  fun getMovieWatchProviders_whenSuccessful_emitsSuccess() =
-    runTest {
-      coEvery {
-        mockGetMediaDetailUseCase.getMovieWatchProvidersWithUserRegion(movieId)
-      } returns successFlow(mockWatchProvider)
-
-      testViewModelState(
-        runBlock = { viewModel.getMovieWatchProviders(movieId) },
-        stateSelector = { it.watchProviders },
-        expectedStates = listOf(WatchProvidersUiState.Loading, mockWatchProviderState),
-        verifyBlock = {
-          coVerify { mockGetMediaDetailUseCase.getMovieWatchProvidersWithUserRegion(movieId) }
-        },
-      )
-    }
-
-  @Test
-  fun getMovieWatchProviders_whenUnsuccessful_emitsError() =
-    runTest {
-      coEvery {
-        mockGetMediaDetailUseCase.getMovieWatchProvidersWithUserRegion(movieId)
-      } returns errorFlow
-
-      testViewModelState(
-        runBlock = { viewModel.getMovieWatchProviders(movieId) },
-        stateSelector = { it.watchProviders },
-        expectedStates = listOf(
-          WatchProvidersUiState.Loading,
-          WatchProvidersUiState.Error(errorMessage),
-        ),
-        verifyBlock = {
-          coVerify { mockGetMediaDetailUseCase.getMovieWatchProvidersWithUserRegion(movieId) }
-        },
-      )
-    }
-
-  @Test
-  fun getMovieWatchProviders_whenLoading_emitsLoading() =
-    runTest {
-      coEvery {
-        mockGetMediaDetailUseCase.getMovieWatchProvidersWithUserRegion(movieId)
-      } returns loadingFlow
-
-      testViewModelState(
-        runBlock = { viewModel.getMovieWatchProviders(movieId) },
-        stateSelector = { it.watchProviders },
-        expectedStates = listOf(WatchProvidersUiState.Loading),
-        verifyBlock = {
-          coVerify { mockGetMediaDetailUseCase.getMovieWatchProvidersWithUserRegion(movieId) }
-        },
-      )
-    }
-
-  @Test
   fun getMovieRecommendation_whenSuccessful_emitsPagingData() {
     coEvery { mockGetListMoviesUseCase.getMovieRecommendation(movieId) } returns
       flowOf(PagingData.from(listOf(mockMediaItem)))
@@ -257,42 +202,6 @@ class DetailMovieViewModelTest : BaseMediaDetailViewModelTest() {
       },
     )
   }
-
-  @Test
-  fun getMovieWatchProviders_withNullFields_triggersOrEmptyBranches() =
-    runTest {
-      coEvery {
-        mockGetMediaDetailUseCase.getMovieWatchProvidersWithUserRegion(movieId)
-      } returns successFlow(nullProvider)
-
-      viewModel.getMovieWatchProviders(movieId)
-      advanceUntilIdle()
-
-      assertThat(viewModel.uiState.value.watchProviders).isEqualTo(
-        WatchProvidersUiState
-          .Success(
-            emptyList(),
-            emptyList(),
-            emptyList(),
-            emptyList(),
-            emptyList(),
-          ),
-      )
-    }
-
-  @Test
-  fun getMovieWatchProviders_withNonNullFields_skipsOrEmptyBranches() =
-    runTest {
-      coEvery {
-        mockGetMediaDetailUseCase.getMovieWatchProvidersWithUserRegion(movieId)
-      } returns successFlow(mockWatchProvider)
-
-      viewModel.getMovieWatchProviders(movieId)
-      advanceUntilIdle()
-
-      assertThat(viewModel.uiState.value.watchProviders)
-        .isInstanceOf(WatchProvidersUiState.Success::class.java)
-    }
 
   @Test
   fun executeUseCase_defaultOnSuccess_shouldDoNothing() =

@@ -4,7 +4,6 @@ import com.waffiq.bazz_movies.core.network.data.remote.models.RatingRequest
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.MediaStateResponse
 import retrofit2.Response
@@ -55,7 +54,7 @@ interface MovieApiService {
     @Query("language") language: String = "en-US",
   ): Response<MediaCreditsResponse>
 
-  @GET("3/movie/{movieId}?append_to_response=keywords,release_dates,videos")
+  @GET("3/movie/{movieId}?append_to_response=keywords,release_dates,videos,watch/providers")
   suspend fun getMovieDetail(
     @Path("movieId") movieId: Int,
     @Query("language") language: String = "en-US",
@@ -74,7 +73,4 @@ interface MovieApiService {
     @Query("session_id") sessionId: String,
     @Body data: RatingRequest,
   ): Response<PostResponse>
-
-  @GET("3/movie/{id}/watch/providers")
-  suspend fun getMovieWatchProviders(@Path("id") id: Int): Response<WatchProvidersResponse>
 }

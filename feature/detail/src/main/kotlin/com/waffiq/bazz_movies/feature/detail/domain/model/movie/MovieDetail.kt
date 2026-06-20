@@ -8,6 +8,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDates
 import com.waffiq.bazz_movies.feature.detail.domain.model.video.Videos
+import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 
 data class MovieDetail(
   val originalLanguage: String? = null,
@@ -38,4 +39,5 @@ data class MovieDetail(
   val homepage: String? = null,
   val status: String? = null,
   val videos: Videos? = null,
+  val watchProviders: WatchProviders? = null,
 )

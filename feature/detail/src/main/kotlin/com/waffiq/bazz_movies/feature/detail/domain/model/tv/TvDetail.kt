@@ -6,6 +6,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesIte
 import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.domain.model.video.Videos
+import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 
 data class TvDetail(
   val originalLanguage: String? = null,
@@ -44,4 +45,5 @@ data class TvDetail(
   val status: String? = null,
   val externalIds: TvExternalIds? = null,
   val videos: Videos? = null,
+  val watchProviders: WatchProviders? = null,
 )

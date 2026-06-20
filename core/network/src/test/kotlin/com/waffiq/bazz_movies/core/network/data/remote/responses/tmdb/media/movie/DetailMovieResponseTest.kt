@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie
 
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.detailMovieResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.watchProvidersResultsMap
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNull
 import junit.framework.TestCase.assertTrue
@@ -24,6 +25,7 @@ class DetailMovieResponseTest {
     )
     assertEquals(false, detailMovieResponse.adult)
     assertEquals("66187a326f31af01639a3ff5", detailMovieResponse.videos?.results[0]?.id)
+    assertEquals(watchProvidersResultsMap, detailMovieResponse.watchProviders?.results)
   }
 
   @Test
@@ -111,6 +113,7 @@ class DetailMovieResponseTest {
     assertNull(detailMovieResponse.homepage)
     assertNull(detailMovieResponse.status)
     assertNull(detailMovieResponse.videos)
+    assertNull(detailMovieResponse.watchProviders)
   }
 
   @Test

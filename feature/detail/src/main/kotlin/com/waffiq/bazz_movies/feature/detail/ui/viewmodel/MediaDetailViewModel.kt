@@ -21,13 +21,11 @@ import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.core.models.Rated
 import com.waffiq.bazz_movies.core.models.WatchlistParams
 import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
-import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostRateUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.RefreshMediaMetadataUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail.GetOMDbDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
-import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.BasicMediaDetailMapper.refreshWith
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -85,9 +83,7 @@ class MediaDetailViewModel @Inject constructor(
       flowProvider = { getMediaDetailUseCase.getMovieDetailWithUserRegion(movieId) },
       onSuccess = {
         updateState { copy(detail = it) }
-        if (!it.imdbId.isNullOrEmpty()) {
-          getOMDbDetails(it.imdbId)
-        }
+        if (!it.imdbId.isNullOrEmpty()) getOMDbDetails(it.imdbId)
       },
     )
   }
@@ -119,14 +115,6 @@ class MediaDetailViewModel @Inject constructor(
       },
     )
   }
-
-  fun getMovieWatchProviders(movieId: Int) {
-    viewModelScope.launch {
-      collectWatchProviders(
-        getMediaDetailUseCase.getMovieWatchProvidersWithUserRegion(movieId),
-      )
-    }
-  }
   // endregion MOVIE
 
   // region TV-SERIES
@@ -135,9 +123,7 @@ class MediaDetailViewModel @Inject constructor(
       flowProvider = { getMediaDetailUseCase.getTvDetailWithUserRegion(tvId) },
       onSuccess = {
         updateState { copy(detail = it) }
-        if (!it.imdbId.isNullOrEmpty()) {
-          getOMDbDetails(it.imdbId)
-        }
+        if (!it.imdbId.isNullOrEmpty()) getOMDbDetails(it.imdbId)
       },
     )
   }
@@ -169,50 +155,7 @@ class MediaDetailViewModel @Inject constructor(
       },
     )
   }
-
-  fun getTvWatchProviders(tvId: Int) {
-    viewModelScope.launch {
-      collectWatchProviders(
-        getMediaDetailUseCase.getTvWatchProvidersWithUserRegion(tvId),
-      )
-    }
-  }
   // endregion TV-SERIES
-
-  private fun collectWatchProviders(flow: Flow<Outcome<WatchProvidersItem>>) {
-    viewModelScope.launch {
-      flow.collect { outcome ->
-        when (outcome) {
-          is Outcome.Success -> {
-            updateState {
-              copy(
-                watchProviders =
-                WatchProvidersUiState.Success(
-                  ads = outcome.data.ads.orEmpty(),
-                  buy = outcome.data.buy.orEmpty(),
-                  flatrate = outcome.data.flatrate.orEmpty(),
-                  free = outcome.data.free.orEmpty(),
-                  rent = outcome.data.rent.orEmpty(),
-                ),
-              )
-            }
-          }
-
-          is Outcome.Loading -> {
-            updateState {
-              copy(watchProviders = WatchProvidersUiState.Loading)
-            }
-          }
-
-          is Outcome.Error -> {
-            updateState {
-              copy(watchProviders = WatchProvidersUiState.Error(outcome.message))
-            }
-          }
-        }
-      }
-    }
-  }
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
   fun getOMDbDetails(imdbId: String) {

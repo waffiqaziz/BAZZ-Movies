@@ -4,7 +4,6 @@ import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
-import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.BasicMediaDetailMapper.toMediaDetail
@@ -36,28 +35,6 @@ class GetMediaDetailInteractor @Inject constructor(
       }
     }
 
-  override fun getMovieWatchProvidersWithUserRegion(
-    movieId: Int,
-  ): Flow<Outcome<WatchProvidersItem>> =
-    getRegion().flatMapConcat { region ->
-      detailRepository.getMovieWatchProviders(movieId).map { outcome ->
-        when (outcome) {
-          is Outcome.Success -> {
-            val countryProvider = outcome.data.results?.get(region.uppercase())
-            if (countryProvider != null) {
-              Outcome.Success(countryProvider)
-            } else {
-              Outcome.Error("No watch provider found for country code: $region")
-            }
-          }
-
-          is Outcome.Error -> Outcome.Error(outcome.message)
-
-          is Outcome.Loading -> Outcome.Loading
-        }
-      }
-    }
-
   override fun getMovieCredits(movieId: Int): Flow<Outcome<MediaCredits>> =
     detailRepository.getMovieCredits(movieId)
 
@@ -71,26 +48,6 @@ class GetMediaDetailInteractor @Inject constructor(
           is Outcome.Success -> Outcome.Success(
             outcome.data.toMediaDetail(userRegion = region),
           )
-
-          is Outcome.Error -> Outcome.Error(outcome.message)
-
-          is Outcome.Loading -> Outcome.Loading
-        }
-      }
-    }
-
-  override fun getTvWatchProvidersWithUserRegion(tvId: Int): Flow<Outcome<WatchProvidersItem>> =
-    getRegion().flatMapConcat { region ->
-      detailRepository.getTvWatchProviders(tvId).map { outcome ->
-        when (outcome) {
-          is Outcome.Success -> {
-            val countryProvider = outcome.data.results?.get(region)
-            if (countryProvider != null) {
-              Outcome.Success(countryProvider)
-            } else {
-              Outcome.Error("No watch provider found for country code: $region")
-            }
-          }
 
           is Outcome.Error -> Outcome.Error(outcome.message)
 

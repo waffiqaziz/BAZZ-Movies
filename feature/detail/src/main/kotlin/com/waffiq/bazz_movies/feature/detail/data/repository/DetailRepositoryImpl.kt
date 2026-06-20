@@ -9,13 +9,11 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
-import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toMediaCredits
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toDetailMovie
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.OMDbMapper.toOMDbDetails
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toTvDetail
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.WatchProvidersMapper.toWatchProviders
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -34,15 +32,9 @@ class DetailRepositoryImpl @Inject constructor(
   override fun getMovieCredits(movieId: Int): Flow<Outcome<MediaCredits>> =
     movieDataSource.getMovieCredits(movieId).toOutcome { it.toMediaCredits() }
 
-  override fun getMovieWatchProviders(id: Int): Flow<Outcome<WatchProviders>> =
-    movieDataSource.getMovieWatchProviders(id).toOutcome { it.toWatchProviders() }
-
   override fun getTvDetail(tvId: Int): Flow<Outcome<TvDetail>> =
     tvRemoteDataSource.getTvDetail(tvId).toOutcome { it.toTvDetail() }
 
   override fun getTvCredits(tvId: Int): Flow<Outcome<MediaCredits>> =
     tvRemoteDataSource.getTvCredits(tvId).toOutcome { it.toMediaCredits() }
-
-  override fun getTvWatchProviders(id: Int): Flow<Outcome<WatchProviders>> =
-    tvRemoteDataSource.getTvWatchProviders(id).toOutcome { it.toWatchProviders() }
 }

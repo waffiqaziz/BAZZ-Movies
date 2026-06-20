@@ -24,6 +24,7 @@ import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toP
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toSpokenLanguagesItem
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toVideo
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaKeywordsMapper.toMediaKeywords
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.WatchProvidersMapper.toWatchProviders
 
 object TvMapper {
 
@@ -67,6 +68,7 @@ object TvMapper {
       status = status,
       externalIds = externalIds?.toExternalTvID(),
       videos = videos?.toVideo(),
+      watchProviders = watchProviders?.toWatchProviders(),
     )
 
   private fun ContentRatingsResponse.toContentRatings() =

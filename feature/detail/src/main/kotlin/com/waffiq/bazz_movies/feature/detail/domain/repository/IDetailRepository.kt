@@ -5,15 +5,12 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
-import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import kotlinx.coroutines.flow.Flow
 
 interface IDetailRepository {
   fun getOMDbDetails(imdbId: String): Flow<Outcome<OMDbDetails>>
   fun getMovieDetail(movieId: Int): Flow<Outcome<MovieDetail>>
   fun getMovieCredits(movieId: Int): Flow<Outcome<MediaCredits>>
-  fun getMovieWatchProviders(id: Int): Flow<Outcome<WatchProviders>>
   fun getTvDetail(tvId: Int): Flow<Outcome<TvDetail>>
   fun getTvCredits(tvId: Int): Flow<Outcome<MediaCredits>>
-  fun getTvWatchProviders(id: Int): Flow<Outcome<WatchProviders>>
 }
