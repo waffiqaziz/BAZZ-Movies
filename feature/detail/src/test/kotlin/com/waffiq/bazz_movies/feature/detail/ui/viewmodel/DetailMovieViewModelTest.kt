@@ -119,42 +119,6 @@ class DetailMovieViewModelTest : BaseMediaDetailViewModelTest() {
   }
 
   @Test
-  fun getMovieVideoLinks_whenSuccessful_emitsSuccess() {
-    coEvery { mockGetMediaDetailUseCase.getMovieVideoLinks(movieId) } returns
-      successFlow(mockVideoLink)
-
-    testViewModelState(
-      runBlock = { viewModel.getMovieVideoLink(movieId) },
-      stateSelector = { it.videoLink },
-      expectedStates = listOf(mockVideoLink),
-      verifyBlock = { coVerify { mockGetMediaDetailUseCase.getMovieVideoLinks(movieId) } },
-    )
-  }
-
-  @Test
-  fun getMovieVideoLinks_whenUnsuccessful_emitsError() {
-    coEvery { mockGetMediaDetailUseCase.getMovieVideoLinks(movieId) } returns errorFlow
-
-    testViewModelState(
-      runBlock = { viewModel.getMovieVideoLink(movieId) },
-      stateSelector = { it.videoLink },
-      expectedErrors = listOf(errorMessage),
-      verifyBlock = { coVerify { mockGetMediaDetailUseCase.getMovieVideoLinks(movieId) } },
-    )
-  }
-
-  @Test
-  fun getMovieVideoLinks_whenLoading_doesNothing() {
-    coEvery { mockGetMediaDetailUseCase.getMovieVideoLinks(movieId) } returns loadingFlow
-
-    testViewModelState(
-      runBlock = { viewModel.getMovieVideoLink(movieId) },
-      stateSelector = { it.videoLink },
-      verifyBlock = { coVerify { mockGetMediaDetailUseCase.getMovieVideoLinks(movieId) } },
-    )
-  }
-
-  @Test
   fun getMovieCredits_whenSuccessful_emitsSuccess() {
     coEvery { mockGetMediaDetailUseCase.getMovieCredits(movieId) } returns
       successFlow(mockMediaCredits)

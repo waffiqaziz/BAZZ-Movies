@@ -22,6 +22,7 @@ class DetailMovieResponseTest {
       detailMovieResponse.homepage,
     )
     assertEquals(false, detailMovieResponse.adult)
+    assertEquals("66187a326f31af01639a3ff5", detailMovieResponse.videos?.results[0]?.id)
   }
 
   @Test
@@ -107,6 +108,7 @@ class DetailMovieResponseTest {
     assertNull(detailMovieResponse.adult)
     assertNull(detailMovieResponse.homepage)
     assertNull(detailMovieResponse.status)
+    assertNull(detailMovieResponse.videos)
   }
 
   @Test

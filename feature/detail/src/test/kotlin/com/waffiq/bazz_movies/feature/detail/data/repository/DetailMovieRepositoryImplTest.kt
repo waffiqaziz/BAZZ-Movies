@@ -3,13 +3,11 @@ package com.waffiq.bazz_movies.feature.detail.data.repository
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.MovieKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
 import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testLoadingState
 import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testSuccessfulCall
 import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testUnsuccessfulCall
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseDetailRepositoryImplTest
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toMediaCredits
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toVideo
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaKeywordsMapper.toMediaKeywords
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toDetailMovie
 import io.mockk.coVerify
@@ -49,39 +47,6 @@ class DetailMovieRepositoryImplTest : BaseDetailRepositoryImplTest() {
         dataSourceCall = { mockMovieDataSource.getMovieDetail(id) },
         repositoryCall = { repository.getMovieDetail(id) },
         verifyDataSourceCall = { coVerify { mockMovieDataSource.getMovieDetail(id) } },
-      )
-    }
-
-  @Test
-  fun getMovieTrailerLink_whenSuccessful_returnsSuccessResult() =
-    runTest {
-      val mockResponse = mockk<VideoResponse>(relaxed = true)
-      testSuccessfulCall(
-        mockResponse = mockResponse,
-        dataSourceCall = { mockMovieDataSource.getMovieVideo(id) },
-        repositoryCall = { repository.getMovieTrailerLink(id) },
-        expectedData = mockResponse.toVideo(),
-        verifyDataSourceCall = { coVerify(atLeast = 1) { mockMovieDataSource.getMovieVideo(id) } },
-      )
-    }
-
-  @Test
-  fun getMovieTrailerLink_whenUnsuccessful_returnsErrorResult() =
-    runTest {
-      testUnsuccessfulCall(
-        dataSourceCall = { mockMovieDataSource.getMovieVideo(id) },
-        repositoryCall = { repository.getMovieTrailerLink(id) },
-        verifyDataSourceCall = { coVerify { mockMovieDataSource.getMovieVideo(id) } },
-      )
-    }
-
-  @Test
-  fun getMovieTrailerLink_whenLoadingEmitted_returnsLoadingOutcome() =
-    runTest {
-      testLoadingState(
-        dataSourceCall = { mockMovieDataSource.getMovieVideo(id) },
-        repositoryCall = { repository.getMovieTrailerLink(id) },
-        verifyDataSourceCall = { coVerify { mockMovieDataSource.getMovieVideo(id) } },
       )
     }
 

@@ -16,6 +16,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.RatingsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.Provider
+import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 
 object DataDumb {
@@ -109,6 +110,7 @@ object DataDumb {
     ageRating = "G",
     tmdbScore = "100",
     status = "released",
+    trailer = "video trailer",
     releaseDateRegion = ReleaseDateRegion(
       regionRelease = "ID",
       releaseDate = "Jul 23, 2025",
@@ -162,5 +164,26 @@ object DataDumb {
     flatrate = listOf(testProvider),
     free = listOf(testProvider),
     rent = listOf(testProvider),
+  )
+
+  val mediaDetailUiState = MediaDetailUiState(
+    detail = testMediaDetail,
+    credits = MediaCredits(
+      cast = listOf(MediaCastItem()),
+      id = 90,
+      crew = listOf(MediaCrewItem()),
+    ),
+    omdbDetails = OMDbDetails(),
+    watchProviders = testWatchProvidersUiState,
+    itemState = MediaState(
+      id = 90,
+      favorite = false,
+      rated = Rated.Value(90.0),
+      watchlist = false,
+    ),
+    isFavorite = false,
+    isWatchlist = false,
+    mediaStateResult = null, // it should only initiate when add to watchlist/favorite
+    isLoading = false,
   )
 }

@@ -647,7 +647,6 @@ object DataDumpManager {
   )
 
   val videoMovieResponseDump = VideoResponse(
-    id = 872585,
     results = listOf(
       videoItemMovieResponseDump1,
       videoItemMovieResponseDump2,
@@ -765,7 +764,6 @@ object DataDumpManager {
   )
 
   val videoTvResponseDump = VideoResponse(
-    id = 95479,
     results = listOf(videoItemTvResponseDump1, videoItemTvResponseDump2, videoItemTvResponseDump3),
   )
 
@@ -849,6 +847,7 @@ object DataDumpManager {
     adult = false,
     homepage = "https://www.marvel.com/movies/deadpool-and-wolverine",
     status = "Released",
+    videos = videoMovieResponseDump,
   )
 
   val lastEpisodeToAirResponse1 = LastEpisodeToAirResponse(
@@ -978,6 +977,7 @@ object DataDumpManager {
     lastAirDate = "2025-01-04",
     homepage = "https://program.imbc.com/WhenThePhoneRings",
     status = "Ended",
+    videos = videoTvResponseDump,
   )
 
   val externalIdResponseDump = ExternalIdResponse(

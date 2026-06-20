@@ -14,7 +14,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.video.Video
+import com.waffiq.bazz_movies.feature.detail.domain.model.video.Videos
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toGenresItem
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toMediaCredits
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toProductionCompaniesItem
@@ -44,12 +44,10 @@ class MediaDetailMapperTest {
     )
 
     val videoResponse = VideoResponse(
-      id = 12345678,
       results = listOf(videoItemResponse),
     )
 
-    val video: Video = videoResponse.toVideo()
-    assertEquals(12345678, video.id)
+    val video: Videos = videoResponse.toVideo()
     assertEquals(1, video.results.size)
     assertEquals("YouTube", video.results[0].site)
     assertEquals(1080, video.results[0].size)
@@ -66,12 +64,10 @@ class MediaDetailMapperTest {
   @Test
   fun toVideo_withEmptyResults_returnsVideoWithEmptyResults() {
     val videoResponse = VideoResponse(
-      id = 12345678,
       results = emptyList(),
     )
 
-    val video: Video = videoResponse.toVideo()
-    assertEquals(12345678, video.id)
+    val video: Videos = videoResponse.toVideo()
     assertEquals(0, video.results.size)
   }
 

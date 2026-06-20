@@ -84,7 +84,6 @@ class DetailMovieDataManagerTest {
   private fun verifyMovieCalls(exactly: Int = 1) {
     verify(exactly = exactly) { detailViewModel.getMovieRecommendation(any()) }
     verify(exactly = exactly) { detailViewModel.getMovieCredits(any()) }
-    verify(exactly = exactly) { detailViewModel.getMovieVideoLink(any()) }
     verify(exactly = exactly) { detailViewModel.getMovieDetail(any()) }
     verify(exactly = exactly) { detailViewModel.getMovieWatchProviders(any()) }
   }
@@ -92,7 +91,6 @@ class DetailMovieDataManagerTest {
   private fun verifyTvCalls(exactly: Int = 1) {
     verify(exactly = exactly) { detailViewModel.getTvRecommendation(any()) }
     verify(exactly = exactly) { detailViewModel.getTvCredits(any()) }
-    verify(exactly = exactly) { detailViewModel.getTvTrailerLink(any()) }
     verify(exactly = exactly) { detailViewModel.getTvDetail(any()) }
     verify(exactly = exactly) { detailViewModel.getTvWatchProviders(any()) }
   }

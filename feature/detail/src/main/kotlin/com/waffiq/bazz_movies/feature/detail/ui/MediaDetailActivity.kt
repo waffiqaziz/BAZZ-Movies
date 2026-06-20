@@ -163,7 +163,6 @@ class MediaDetailActivity : AppCompatActivity() {
     watchProvidersManager.handleWatchProvidersState(state.watchProviders)
     state.credits?.let { uiManager.updateCreditsUI(it) }
     state.omdbDetails?.let { uiManager.updateOMDbScores(it) }
-    uiManager.setupTrailerButton(state.videoLink)
 
     userInteractionHandler.renderState(state)
   }

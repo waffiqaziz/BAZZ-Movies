@@ -14,6 +14,7 @@ import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toG
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toProductionCountriesItem
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toSpokenLanguagesItem
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toVideo
 
 object MovieMapper {
 
@@ -50,6 +51,7 @@ object MovieMapper {
       adult = adult,
       homepage = homepage,
       status = status,
+      videos = videos?.toVideo(),
     )
 
   private fun ReleaseDatesResponse.toReleaseDates() =

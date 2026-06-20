@@ -30,6 +30,10 @@ class DetailTvResponseTest {
     assertEquals("https://program.imbc.com/WhenThePhoneRings", detailTvResponse.homepage)
     assertEquals("Kim Ji-woon", detailTvResponse.createdByResponse?.get(0)?.name)
     assertTrue(detailTvResponse.adult == false)
+    assertEquals(
+      "JUJUTSU KAISEN Opening | Kaikai Kitan by Eve",
+      detailTvResponse.videos?.results[0]?.name,
+    )
   }
 
   @Test
@@ -121,6 +125,7 @@ class DetailTvResponseTest {
     assertNull(detailTvResponse.lastAirDate)
     assertNull(detailTvResponse.homepage)
     assertNull(detailTvResponse.status)
+    assertNull(detailTvResponse.videos)
   }
 
   @Test

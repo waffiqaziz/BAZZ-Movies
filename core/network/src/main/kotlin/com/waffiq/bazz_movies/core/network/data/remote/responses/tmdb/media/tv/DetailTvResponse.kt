@@ -4,6 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.GenresResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.ProductionCountriesResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
 
 @JsonClass(generateAdapter = true)
 data class DetailTvResponse(
@@ -106,4 +107,7 @@ data class DetailTvResponse(
 
   @Json(name = "status")
   val status: String? = null,
+
+  @Json(name = "videos")
+  val videos: VideoResponse? = null,
 )

@@ -47,6 +47,7 @@ class MovieMapperTest {
     assertEquals(false, detailMovie.adult)
     assertEquals("https://testmovie.com", detailMovie.homepage)
     assertEquals("Released", detailMovie.status)
+    assertEquals("Link Trailer", detailMovie.videos?.results[0]?.key)
   }
 
   @Test
@@ -71,6 +72,7 @@ class MovieMapperTest {
     assertEquals(null, detailMovie.listGenres)
     assertEquals(null, detailMovie.releaseDates)
     assertEquals(null, detailMovie.belongsToCollection)
+    assertEquals(null, detailMovie.videos)
   }
 
   @Test

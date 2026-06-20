@@ -8,7 +8,6 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.cast
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.TvKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.MediaStateResponse
@@ -58,12 +57,6 @@ class TvRemoteDataSource @Inject constructor(
   override fun getTvCredits(tvId: Int): Flow<NetworkResult<MediaCreditsResponse>> =
     executeApiCall(
       apiCall = { tvApiService.getTvCredits(tvId) },
-      ioDispatcher = ioDispatcher,
-    )
-
-  override fun getTvVideo(tvId: Int): Flow<NetworkResult<VideoResponse>> =
-    executeApiCall(
-      apiCall = { tvApiService.getTvVideo(tvId) },
       ioDispatcher = ioDispatcher,
     )
 

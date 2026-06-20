@@ -15,6 +15,7 @@ data class MediaDetail(
   val status: String? = null,
   val language: String? = null,
   val keywords: List<MediaKeywordsItem?>? = null,
+  val trailer: String? = null,
 
   // movie
   val budget: String? = null,

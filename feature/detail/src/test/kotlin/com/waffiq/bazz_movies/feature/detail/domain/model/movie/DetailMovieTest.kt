@@ -6,6 +6,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesIte
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDates
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.video
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -46,6 +47,7 @@ class DetailMovieTest {
     adult = false,
     homepage = "https://example.com",
     status = "Released",
+    videos = video,
   )
 
   @Test
@@ -78,6 +80,7 @@ class DetailMovieTest {
     assertNull(item.adult)
     assertNull(item.homepage)
     assertNull(item.status)
+    assertNull(item.videos)
   }
 
   @Test
@@ -108,5 +111,6 @@ class DetailMovieTest {
     assertEquals(false, item.adult)
     assertEquals("https://example.com", item.homepage)
     assertEquals("Released", item.status)
+    assertEquals("Trailer", item.videos?.results[0]?.name)
   }
 }

@@ -24,6 +24,8 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.L
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.NetworksItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.NextEpisodeToAirResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SeasonsItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponseItem
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinString
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
@@ -49,14 +51,13 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.tv.NetworksItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.SeasonsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
-import com.waffiq.bazz_movies.feature.detail.domain.model.video.Video
-import com.waffiq.bazz_movies.feature.detail.domain.model.video.VideoItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAgeRating
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformDuration
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformTMDBScore
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toVideo
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toNextEpisodeToAir
 
 // Used as data dumb testing
@@ -102,6 +103,12 @@ object DummyData {
     posterPath = "/poster.jpg",
   )
 
+  val videoResponse = VideoResponse(
+    results = listOf(VideoResponseItem(name = "Trailer", type = "Trailer", key = "Link Trailer")),
+  )
+
+  val video = videoResponse.toVideo()
+
   val detailMovieResponse = DetailMovieResponse(
     originalLanguage = "en",
     imdbId = "tt1234567",
@@ -129,6 +136,7 @@ object DummyData {
     adult = false,
     homepage = "https://testmovie.com",
     status = "Released",
+    videos = videoResponse,
   )
 
   val ratingsItem = listOf(RatingsItem())
@@ -254,6 +262,7 @@ object DummyData {
     lastAirDate = "2024-01-15",
     homepage = "https://testtv.com",
     status = "Returning Series",
+    videos = videoResponse,
   )
 
   val tvDetailFull = TvDetail(
@@ -290,6 +299,7 @@ object DummyData {
     lastAirDate = "2013-09-29",
     homepage = "http://www.amc.com/shows/breaking-bad",
     status = "Ended",
+    videos = video,
   )
 
   private val ratingsItemResponse = RatingsItemResponse(
@@ -393,6 +403,7 @@ object DummyData {
     budget = 1000000,
     revenue = 5000000L,
     popularity = 4444.0,
+    videos = video,
   )
   // endregion MOVIE
 
@@ -449,14 +460,10 @@ object DummyData {
     numberOfSeasons = 4,
     numberOfEpisodes = 96,
     popularity = 9.0,
+    videos = video,
   )
+
   // endregion TV
-
-  val video = Video(
-    1234,
-    results = listOf(VideoItem(name = "Trailer", type = "Trailer", key = "Link Trailer")),
-  )
-
   val watchProviders = WatchProviders(
     results = mapOf(
       "US" to WatchProvidersItem(

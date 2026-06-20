@@ -32,12 +32,11 @@ import com.waffiq.bazz_movies.feature.detail.R.id.score_section
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_your_score
 import com.waffiq.bazz_movies.feature.detail.R.id.your_score_viewGroup
 import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
+import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailActivityTest
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaCredits
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaItem
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaState
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaStateRated
-import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestHelper
-import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestSetup
 import com.waffiq.bazz_movies.feature.detail.testutils.SetRatingAction
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
@@ -64,8 +63,7 @@ import org.junit.Test
  * This test checks various user interactions and UI responses in the media detail screen.
  */
 @HiltAndroidTest
-class MediaDetailActivityInteractionTest :
-  MediaDetailActivityTestSetup by MediaDetailActivityTestHelper() {
+class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)

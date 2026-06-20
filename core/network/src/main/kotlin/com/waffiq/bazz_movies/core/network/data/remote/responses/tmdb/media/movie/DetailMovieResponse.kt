@@ -7,6 +7,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.Prod
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.releasedates.ReleaseDatesResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ProductionCompaniesResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SpokenLanguagesResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
 
 @JsonClass(generateAdapter = true)
 data class DetailMovieResponse(
@@ -88,4 +89,7 @@ data class DetailMovieResponse(
 
   @Json(name = "status")
   val status: String? = null,
+
+  @Json(name = "videos")
+  val videos: VideoResponse? = null,
 )

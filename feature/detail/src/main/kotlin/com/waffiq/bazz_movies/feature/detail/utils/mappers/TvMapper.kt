@@ -22,6 +22,7 @@ import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toG
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toProductionCountriesItem
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toSpokenLanguagesItem
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toVideo
 
 object TvMapper {
 
@@ -62,6 +63,7 @@ object TvMapper {
       lastAirDate = lastAirDate,
       homepage = homepage,
       status = status,
+      videos = videos?.toVideo(),
     )
 
   private fun ContentRatingsResponse.toContentRatings() =

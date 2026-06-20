@@ -273,7 +273,7 @@ class DetailUIManager(
     }
 
     updateSideSheetInfo(details, isMovie)
-
+    setupTrailerButton(details.trailer)
     updateAgeRating(details.ageRating)
     updateReleaseInfo(details.releaseDateRegion)
     showLoadingDim(false)

@@ -16,6 +16,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAgeRating
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformDuration
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformTMDBScore
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.toLink
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
 
 object BasicMediaDetailMapper {
@@ -34,6 +35,7 @@ object BasicMediaDetailMapper {
       tmdbScore = getTransformTMDBScore(voteAverage),
       releaseDateRegion = getReleaseDateRegion(this),
       status = status,
+      trailer = videos?.toLink(),
       language = getLanguageName(originalLanguage),
       keywords = mediaKeywords?.keywords,
       totalEpisodes = numberOfEpisodes,
@@ -62,6 +64,7 @@ object BasicMediaDetailMapper {
       tmdbScore = getTransformTMDBScore(voteAverage),
       releaseDateRegion = releaseDateRegion,
       status = status,
+      trailer = videos?.toLink(),
       budget = toUsd(budget),
       revenue = toUsd(revenue),
       language = getLanguageName(originalLanguage),

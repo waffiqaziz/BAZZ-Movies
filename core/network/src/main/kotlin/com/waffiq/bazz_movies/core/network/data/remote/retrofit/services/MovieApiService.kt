@@ -5,7 +5,6 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaRespo
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.MovieKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.MediaStateResponse
@@ -57,17 +56,11 @@ interface MovieApiService {
     @Query("language") language: String = "en-US",
   ): Response<MediaCreditsResponse>
 
-  @GET("3/movie/{movieId}?append_to_response=release_dates")
+  @GET("3/movie/{movieId}?append_to_response=release_dates,videos")
   suspend fun getMovieDetail(
     @Path("movieId") movieId: Int,
     @Query("language") language: String = "en-US",
   ): Response<DetailMovieResponse>
-
-  @GET("3/movie/{id}/videos")
-  suspend fun getMovieVideo(
-    @Path("id") id: Int,
-    @Query("language") language: String = "en-US",
-  ): Response<VideoResponse>
 
   @GET("3/movie/{movieId}/recommendations")
   suspend fun getMovieRecommendations(

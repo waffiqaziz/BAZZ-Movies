@@ -26,6 +26,7 @@ class BasicMovieDetailMapperTest {
     assertEquals("8.0", validMovieDetail.tmdbScore)
     assertEquals("Action, Comedy", validMovieDetail.genre)
     assertEquals("English", validMovieDetail.language)
+    assertEquals("Link Trailer", validMovieDetail.trailer)
     assertEquals(listOf(1, 2), validMovieDetail.genreId)
     assertEquals("tt9999999", validMovieDetail.imdbId)
     assertEquals("Released", validMovieDetail.status)

@@ -80,13 +80,6 @@ class MediaDetailViewModel @Inject constructor(
   // endregion OBSERVABLES
 
   // region MOVIE
-  fun getMovieVideoLink(movieId: Int) {
-    singleExecuteUseCase(
-      flowProvider = { getMediaDetailUseCase.getMovieVideoLinks(movieId) },
-      onSuccess = { copy(videoLink = it) },
-    )
-  }
-
   fun getMovieDetail(movieId: Int) {
     executeUseCase(
       flowProvider = { getMediaDetailUseCase.getMovieDetailWithUserRegion(movieId) },
@@ -137,13 +130,6 @@ class MediaDetailViewModel @Inject constructor(
   // endregion MOVIE
 
   // region TV-SERIES
-  fun getTvTrailerLink(tvId: Int) {
-    singleExecuteUseCase(
-      flowProvider = { getMediaDetailUseCase.getTvTrailerLink(tvId) },
-      onSuccess = { copy(videoLink = it) },
-    )
-  }
-
   fun getTvDetail(tvId: Int) {
     singleExecuteUseCase(
       flowProvider = { getMediaDetailUseCase.getTvDetailWithUserRegion(tvId) },

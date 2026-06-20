@@ -4,6 +4,7 @@ import com.waffiq.bazz_movies.core.models.GenresItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.video.Videos
 
 data class TvDetail(
   val originalLanguage: String? = null,
@@ -39,4 +40,5 @@ data class TvDetail(
   val lastAirDate: String? = null,
   val homepage: String? = null,
   val status: String? = null,
+  val videos: Videos? = null,
 )

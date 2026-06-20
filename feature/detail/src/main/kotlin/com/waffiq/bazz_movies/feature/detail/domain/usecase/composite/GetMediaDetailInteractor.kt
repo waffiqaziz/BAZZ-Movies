@@ -6,7 +6,6 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.toLink
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.BasicMediaDetailMapper.toMediaDetail
 import kotlinx.coroutines.flow.Flow
@@ -64,26 +63,8 @@ class GetMediaDetailInteractor @Inject constructor(
       }
     }
 
-  override fun getMovieVideoLinks(movieId: Int): Flow<Outcome<String>> =
-    detailRepository.getMovieTrailerLink(movieId).map { outcome ->
-      when (outcome) {
-        is Outcome.Success -> Outcome.Success(outcome.data.toLink())
-        is Outcome.Error -> Outcome.Error(outcome.message)
-        is Outcome.Loading -> Outcome.Loading
-      }
-    }
-
   override fun getMovieCredits(movieId: Int): Flow<Outcome<MediaCredits>> =
     detailRepository.getMovieCredits(movieId)
-
-  override fun getTvTrailerLink(tvId: Int): Flow<Outcome<String>> =
-    detailRepository.getTvTrailerLink(tvId).map { outcome ->
-      when (outcome) {
-        is Outcome.Success -> Outcome.Success(outcome.data.toLink())
-        is Outcome.Error -> Outcome.Error(outcome.message)
-        is Outcome.Loading -> Outcome.Loading
-      }
-    }
 
   override fun getTvCredits(tvId: Int): Flow<Outcome<MediaCredits>> =
     detailRepository.getTvCredits(tvId)

@@ -24,6 +24,7 @@ class BasicTvDetailMapperTest {
     assertEquals("7.5", validTvDetail.tmdbScore)
     assertEquals("Action, Comedy", validTvDetail.genre)
     assertEquals("English", validTvDetail.language)
+    assertEquals("Link Trailer", validTvDetail.trailer)
     assertEquals(listOf(1, 2), validTvDetail.genreId)
 
     // budget and revenue always return null for tv media type

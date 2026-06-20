@@ -21,11 +21,10 @@ import com.waffiq.bazz_movies.feature.detail.R.id.tv_duration
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_tmdb
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_year_released
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
+import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailActivityTest
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaCredits
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaDetail
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaItem
-import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestHelper
-import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestSetup
 import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
@@ -50,7 +49,7 @@ import org.junit.Test
  * and the correct display of media details based on various conditions.
  */
 @HiltAndroidTest
-class MediaDetailActivityTest : MediaDetailActivityTestSetup by MediaDetailActivityTestHelper() {
+class MediaDetailActivityTest : BaseMediaDetailActivityTest() {
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)

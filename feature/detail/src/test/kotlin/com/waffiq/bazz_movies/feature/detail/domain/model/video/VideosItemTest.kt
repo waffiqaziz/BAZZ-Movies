@@ -4,7 +4,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 
-class VideoItemTest {
+class VideosItemTest {
 
   @Test
   fun createVideoItem_withOnlyRequiredName_createsInstanceSuccessfully() {

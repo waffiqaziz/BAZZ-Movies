@@ -61,45 +61,6 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
     }
 
   @Test
-  fun getTvTrailerLink_whenSuccessful_emitsSuccess() =
-    runTest {
-      coEvery { mockGetMediaDetailUseCase.getTvTrailerLink(tvId) } returns
-        successFlow(mockVideoLink)
-
-      testViewModelState(
-        runBlock = { viewModel.getTvTrailerLink(tvId) },
-        stateSelector = { it.videoLink },
-        expectedStates = listOf(mockVideoLink),
-        verifyBlock = { coVerify { mockGetMediaDetailUseCase.getTvTrailerLink(tvId) } },
-      )
-    }
-
-  @Test
-  fun getTvTrailerLink_whenUnsuccessful_emitsError() =
-    runTest {
-      coEvery { mockGetMediaDetailUseCase.getTvTrailerLink(tvId) } returns errorFlow
-
-      testViewModelState(
-        runBlock = { viewModel.getTvTrailerLink(tvId) },
-        stateSelector = { it.videoLink },
-        expectedErrors = listOf(errorMessage),
-        verifyBlock = { coVerify { mockGetMediaDetailUseCase.getTvTrailerLink(tvId) } },
-      )
-    }
-
-  @Test
-  fun getTvTrailerLink_whenLoading_doesNothing() =
-    runTest {
-      coEvery { mockGetMediaDetailUseCase.getTvTrailerLink(tvId) } returns loadingFlow
-
-      testViewModelState(
-        runBlock = { viewModel.getTvTrailerLink(tvId) },
-        stateSelector = { it.videoLink },
-        verifyBlock = { coVerify { mockGetMediaDetailUseCase.getTvTrailerLink(tvId) } },
-      )
-    }
-
-  @Test
   fun getTvCredits_whenSuccessful_emitsSuccess() =
     runTest {
       coEvery { mockGetMediaDetailUseCase.getTvCredits(tvId) } returns

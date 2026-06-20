@@ -6,7 +6,6 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.cast
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.TvKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.MediaStateResponse
@@ -67,19 +66,13 @@ interface TvApiService {
     @Query("session_id") sessionId: String,
   ): Response<MediaStateResponse>
 
-  @GET("3/tv/{id}/videos")
-  suspend fun getTvVideo(
-    @Path("id") id: Int,
-    @Query("language") language: String = "en-US",
-  ): Response<VideoResponse>
-
   @GET("3/tv/{tvId}/external_ids")
   suspend fun getTvExternalIds(
     @Path("tvId") tvId: Int,
     @Query("language") language: String = "en-US",
   ): Response<ExternalIdResponse>
 
-  @GET("3/tv/{tvId}?append_to_response=content_ratings")
+  @GET("3/tv/{tvId}?append_to_response=content_ratings,videos")
   suspend fun getTvDetail(
     @Path("tvId") tvId: Int,
     @Query("language") language: String = "en-US",

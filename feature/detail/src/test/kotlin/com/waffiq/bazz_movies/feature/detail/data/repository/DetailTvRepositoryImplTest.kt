@@ -4,10 +4,8 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.cast
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.TvKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseDetailRepositoryImplTest
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toMediaCredits
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toVideo
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaKeywordsMapper.toMediaKeywords
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toExternalTvID
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toTvDetail
@@ -79,16 +77,6 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
           mockTvRemoteDataSource.getTvExternalIds(id)
         }
       },
-    )
-
-  @Test
-  fun getTvTrailerLink_whenSuccessful_returnsSuccessResult() =
-    runSuccessTest(
-      mockResponse = mockk<VideoResponse>(relaxed = true),
-      dataSourceCall = { mockTvRemoteDataSource.getTvVideo(id) },
-      repositoryCall = { repository.getTvTrailerLink(id) },
-      expectedData = { it.toVideo() },
-      verifyCall = { coVerify(atLeast = 1) { mockTvRemoteDataSource.getTvVideo(id) } },
     )
 
   @Test

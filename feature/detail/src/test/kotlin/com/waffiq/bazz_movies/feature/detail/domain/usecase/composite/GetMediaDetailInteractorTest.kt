@@ -17,7 +17,6 @@ import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.mediaKeywords
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.movieCredits
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.tvCredits
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.tvExternalIds
-import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.video
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.watchProviders
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -166,36 +165,6 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
     }
 
   @Test
-  fun getMovieVideoLinks_whenSuccessful_emitsSuccess() =
-    runTest {
-      testSuccessScenario(
-        mockCall = { mockDetailRepository.getMovieTrailerLink(MOVIE_ID) },
-        mockResponse = video,
-        interactorCall = { interactor.getMovieVideoLinks(MOVIE_ID) },
-      ) { emission ->
-        assertEquals("Link Trailer", emission.data)
-      }
-    }
-
-  @Test
-  fun getMovieVideoLinks_whenUnsuccessful_emitsError() =
-    runTest {
-      testErrorScenario(
-        mockCall = { mockDetailRepository.getMovieTrailerLink(MOVIE_ID) },
-        interactorCall = { interactor.getMovieVideoLinks(MOVIE_ID) },
-      )
-    }
-
-  @Test
-  fun getMovieVideoLinks_whenLoading_emitsLoading() =
-    runTest {
-      testLoadingScenario(
-        mockCall = { mockDetailRepository.getMovieTrailerLink(MOVIE_ID) },
-        interactorCall = { interactor.getMovieVideoLinks(MOVIE_ID) },
-      )
-    }
-
-  @Test
   fun getMovieCredits_whenSuccessful_emitsSuccess() =
     runTest {
       testSuccessScenario(
@@ -213,36 +182,6 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
       testErrorScenario(
         mockCall = { mockDetailRepository.getMovieCredits(MOVIE_ID) },
         interactorCall = { interactor.getMovieCredits(MOVIE_ID) },
-      )
-    }
-
-  @Test
-  fun getTvTrailerLink_whenSuccessful_emitsSuccess() =
-    runTest {
-      testSuccessScenario(
-        mockCall = { mockDetailRepository.getTvTrailerLink(TV_ID) },
-        mockResponse = video,
-        interactorCall = { interactor.getTvTrailerLink(TV_ID) },
-      ) { emission ->
-        assertEquals("Link Trailer", emission.data)
-      }
-    }
-
-  @Test
-  fun getTvTrailerLink_whenUnsuccessful_emitsError() =
-    runTest {
-      testErrorScenario(
-        mockCall = { mockDetailRepository.getTvTrailerLink(TV_ID) },
-        interactorCall = { interactor.getTvTrailerLink(TV_ID) },
-      )
-    }
-
-  @Test
-  fun getTvTrailerLink_whenLoading_emitsLoading() =
-    runTest {
-      testLoadingScenario(
-        mockCall = { mockDetailRepository.getTvTrailerLink(TV_ID) },
-        interactorCall = { interactor.getTvTrailerLink(TV_ID) },
       )
     }
 
