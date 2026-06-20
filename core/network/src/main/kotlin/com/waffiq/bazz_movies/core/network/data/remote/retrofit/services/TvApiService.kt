@@ -3,7 +3,6 @@ package com.waffiq.bazz_movies.core.network.data.remote.retrofit.services
 import com.waffiq.bazz_movies.core.network.data.remote.models.RatingRequest
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.TvKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
@@ -65,7 +64,7 @@ interface TvApiService {
     @Query("session_id") sessionId: String,
   ): Response<MediaStateResponse>
 
-  @GET("3/tv/{tvId}?append_to_response=content_ratings,external_ids,videos")
+  @GET("3/tv/{tvId}?append_to_response=content_ratings,external_ids,keywords,videos")
   suspend fun getTvDetail(
     @Path("tvId") tvId: Int,
     @Query("language") language: String = "en-US",
@@ -76,9 +75,6 @@ interface TvApiService {
     @Path("tvId") tvId: Int,
     @Query("language") language: String = "en-US",
   ): Response<MediaCreditsResponse>
-
-  @GET("3/tv/{tvId}/keywords")
-  suspend fun getTvKeywords(@Path("tvId") tvId: String): Response<TvKeywordsResponse>
 
   @Headers("Content-Type: application/json;charset=utf-8")
   @POST("3/tv/{tvId}/rating")

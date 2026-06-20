@@ -4,6 +4,7 @@ import com.waffiq.bazz_movies.core.models.GenresItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.domain.model.video.Videos
 
 data class TvDetail(
@@ -13,6 +14,7 @@ data class TvDetail(
   val type: String? = null,
   val backdropPath: String? = null,
   val listGenres: List<GenresItem?>? = null,
+  val keywords: MediaKeywords? = null,
   val popularity: Double? = null,
   val listProductionCountriesItem: List<ProductionCountriesItem?>? = null,
   val id: Int? = null,

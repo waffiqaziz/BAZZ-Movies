@@ -3,7 +3,6 @@ package com.waffiq.bazz_movies.core.network.data.remote.datasource.tv
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.TvKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
@@ -27,7 +26,6 @@ interface TvRemoteDataSourceInterface {
   fun getTvDetail(id: Int): Flow<NetworkResult<DetailTvResponse>>
   fun getTvState(sessionId: String, id: Int): Flow<NetworkResult<MediaStateResponse>>
   fun getTvWatchProviders(id: Int): Flow<NetworkResult<WatchProvidersResponse>>
-  fun getTvKeywords(tvId: String): Flow<NetworkResult<TvKeywordsResponse>>
 
   fun postTvRate(
     sessionId: String,

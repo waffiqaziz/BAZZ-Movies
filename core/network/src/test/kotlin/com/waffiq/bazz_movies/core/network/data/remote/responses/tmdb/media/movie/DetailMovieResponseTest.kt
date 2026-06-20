@@ -17,6 +17,7 @@ class DetailMovieResponseTest {
     assertEquals("English", detailMovieResponse.listSpokenLanguagesItemResponse?.get(0)?.name)
     assertEquals("en", detailMovieResponse.originalLanguage)
     assertEquals("Action", detailMovieResponse.listGenresItemResponse?.get(0)?.name)
+    assertEquals("family", detailMovieResponse.keywords?.keywords?.get(0)?.name)
     assertEquals(
       "https://www.marvel.com/movies/deadpool-and-wolverine",
       detailMovieResponse.homepage,
@@ -89,6 +90,7 @@ class DetailMovieResponseTest {
     assertNull(detailMovieResponse.backdropPath)
     assertNull(detailMovieResponse.revenue)
     assertNull(detailMovieResponse.listGenresItemResponse)
+    assertNull(detailMovieResponse.keywords)
     assertNull(detailMovieResponse.popularity)
     assertNull(detailMovieResponse.releaseDatesResponse)
     assertNull(detailMovieResponse.listProductionCountriesItemResponse)

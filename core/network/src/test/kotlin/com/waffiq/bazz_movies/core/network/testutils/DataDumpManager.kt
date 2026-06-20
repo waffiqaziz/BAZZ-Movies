@@ -781,6 +781,19 @@ object DataDumpManager {
     originCountry = "US",
   )
 
+  val mediaKeywordsResponseItem = MediaKeywordsResponseItem(
+    id = 4444,
+    name = "family",
+  )
+
+  val movieKeywordsResponse = MovieKeywordsResponse(
+    keywords = listOf(mediaKeywordsResponseItem),
+  )
+
+  val tvKeywordsResponse = TvKeywordsResponse(
+    keywords = listOf(mediaKeywordsResponseItem),
+  )
+
   val detailMovieResponseDump = DetailMovieResponse(
     originalLanguage = "en",
     imdbId = "tt6263850",
@@ -793,6 +806,7 @@ object DataDumpManager {
       GenresResponseItem(id = 35, name = "Comedy"),
       GenresResponseItem(id = 878, name = "Science Fiction"),
     ),
+    keywords = movieKeywordsResponse,
     popularity = 856.096,
     releaseDatesResponse = ReleaseDatesResponse(
       listReleaseDatesResponseItem = listOf(
@@ -941,6 +955,7 @@ object DataDumpManager {
       GenresResponseItem(name = "Drama", id = 18),
       GenresResponseItem(name = "Mystery", id = 9648),
     ),
+    keywords = tvKeywordsResponse,
     popularity = 394.215,
     productionCountriesResponse = listOf(
       ProductionCountriesResponseItem(
@@ -1339,21 +1354,6 @@ object DataDumpManager {
   val watchProvidersResponse = WatchProvidersResponse(
     id = 456,
     results = watchProvidersResultsMap,
-  )
-
-  val mediaKeywordsResponseItem = MediaKeywordsResponseItem(
-    id = 4444,
-    name = "family",
-  )
-
-  val movieKeywordsResponse = MovieKeywordsResponse(
-    id = 12345,
-    keywords = listOf(mediaKeywordsResponseItem),
-  )
-
-  val tvKeywordsResponse = TvKeywordsResponse(
-    id = 1222,
-    keywords = listOf(mediaKeywordsResponseItem),
   )
 
   val nextEpisodeToAirResponse = NextEpisodeToAirResponse(

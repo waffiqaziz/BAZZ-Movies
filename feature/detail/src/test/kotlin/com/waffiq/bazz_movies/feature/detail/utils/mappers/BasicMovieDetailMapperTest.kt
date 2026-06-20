@@ -1,12 +1,9 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
 import com.waffiq.bazz_movies.core.models.GenresItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.fullMovieDetail
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.mediaKeywordsItems
-import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.releaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.testutils.MapperHelperTest.stubToMediaDetail
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.BasicMediaDetailMapper.toMediaDetail
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
@@ -25,6 +22,7 @@ class BasicMovieDetailMapperTest {
     assertEquals("$5,000,000.00", validMovieDetail.revenue)
     assertEquals("8.0", validMovieDetail.tmdbScore)
     assertEquals("Action, Comedy", validMovieDetail.genre)
+    assertEquals("superhero", validMovieDetail.keywords?.get(0)?.name)
     assertEquals("English", validMovieDetail.language)
     assertEquals("Link Trailer", validMovieDetail.trailer)
     assertEquals(listOf(1, 2), validMovieDetail.genreId)
@@ -45,6 +43,7 @@ class BasicMovieDetailMapperTest {
       revenue = null,
       voteAverage = null,
       listGenres = null,
+      keywords = null,
       originalLanguage = null,
       imdbId = null,
       status = null,
@@ -58,25 +57,13 @@ class BasicMovieDetailMapperTest {
     assertEquals("-", result.revenue)
     assertNull(result.tmdbScore)
     assertNull(result.genre)
+    assertNull(result.keywords)
     assertNull(result.genreId)
     assertEquals("", result.language)
     assertNull(result.imdbId)
     assertNull(result.status)
     assertEquals(0f, result.popularity)
     assertEquals("", result.releaseDate)
-  }
-
-  @Test
-  fun movieDetail_mediaKeywordsNull_returnsNullKeywords() {
-    val result = fullMovieDetail.toMediaDetail(releaseDateRegion, mediaKeywords = null)
-    assertNull(result.keywords)
-  }
-
-  @Test
-  fun movieDetail_mediaKeywordsWithNullKeywordsList_returnsNull() {
-    val keywordsWithNullList = MediaKeywords(id = 100, keywords = null)
-    val result = fullMovieDetail.toMediaDetail(releaseDateRegion, keywordsWithNullList)
-    assertNull(result.keywords)
   }
 
   @Test

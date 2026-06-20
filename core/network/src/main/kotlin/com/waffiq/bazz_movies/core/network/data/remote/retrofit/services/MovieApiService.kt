@@ -3,7 +3,6 @@ package com.waffiq.bazz_movies.core.network.data.remote.retrofit.services
 import com.waffiq.bazz_movies.core.network.data.remote.models.RatingRequest
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.MovieKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
@@ -56,7 +55,7 @@ interface MovieApiService {
     @Query("language") language: String = "en-US",
   ): Response<MediaCreditsResponse>
 
-  @GET("3/movie/{movieId}?append_to_response=release_dates,videos")
+  @GET("3/movie/{movieId}?append_to_response=keywords,release_dates,videos")
   suspend fun getMovieDetail(
     @Path("movieId") movieId: Int,
     @Query("language") language: String = "en-US",
@@ -67,9 +66,6 @@ interface MovieApiService {
     @Path("movieId") movieId: Int,
     @Query("page") page: Int,
   ): MediaResponse
-
-  @GET("3/movie/{movieId}/keywords")
-  suspend fun getMovieKeywords(@Path("movieId") movieId: String): Response<MovieKeywordsResponse>
 
   @Headers("Content-Type: application/json;charset=utf-8")
   @POST("3/movie/{movieId}/rating")

@@ -1,11 +1,9 @@
 package com.waffiq.bazz_movies.feature.detail.data.repository
 
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.TvKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseDetailRepositoryImplTest
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toMediaCredits
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaKeywordsMapper.toMediaKeywords
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toTvDetail
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -47,19 +45,5 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
       repositoryCall = { repository.getTvCredits(id) },
       expectedData = { it.toMediaCredits() },
       verifyCall = { coVerify(atLeast = 1) { mockTvRemoteDataSource.getTvCredits(id) } },
-    )
-
-  @Test
-  fun getTvKeywords_whenSuccessful_returnsSuccessResult() =
-    runSuccessTest(
-      mockResponse = mockk<TvKeywordsResponse>(relaxed = true),
-      dataSourceCall = { mockTvRemoteDataSource.getTvKeywords(id.toString()) },
-      repositoryCall = { repository.getTvKeywords(id.toString()) },
-      expectedData = { it.toMediaKeywords() },
-      verifyCall = {
-        coVerify(atLeast = 1) {
-          mockTvRemoteDataSource.getTvKeywords(id.toString())
-        }
-      },
     )
 }

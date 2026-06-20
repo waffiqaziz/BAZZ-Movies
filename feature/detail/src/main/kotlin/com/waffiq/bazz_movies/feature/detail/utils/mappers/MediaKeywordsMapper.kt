@@ -10,7 +10,6 @@ object MediaKeywordsMapper {
 
   fun KeywordsResponse.toMediaKeywords(): MediaKeywords =
     MediaKeywords(
-      id = id,
       keywords = keywords?.map { it?.toMediaKeywordsItem() },
     )
 

@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.feature.detail.domain.repository
 
 import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
-import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
@@ -14,9 +13,7 @@ interface IDetailRepository {
   fun getMovieDetail(movieId: Int): Flow<Outcome<MovieDetail>>
   fun getMovieCredits(movieId: Int): Flow<Outcome<MediaCredits>>
   fun getMovieWatchProviders(id: Int): Flow<Outcome<WatchProviders>>
-  fun getMovieKeywords(movieId: String): Flow<Outcome<MediaKeywords>>
   fun getTvDetail(tvId: Int): Flow<Outcome<TvDetail>>
   fun getTvCredits(tvId: Int): Flow<Outcome<MediaCredits>>
   fun getTvWatchProviders(id: Int): Flow<Outcome<WatchProviders>>
-  fun getTvKeywords(tvId: String): Flow<Outcome<MediaKeywords>>
 }

@@ -8,7 +8,6 @@ import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinStr
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
 import com.waffiq.bazz_movies.core.utils.LanguageHelper.getLanguageName
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
-import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
@@ -20,7 +19,7 @@ import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.get
 
 object BasicMediaDetailMapper {
 
-  fun TvDetail.toMediaDetail(userRegion: String, mediaKeywords: MediaKeywords?): MediaDetail =
+  fun TvDetail.toMediaDetail(userRegion: String): MediaDetail =
     MediaDetail(
       id = id ?: 0,
       genre = transformListGenreToJoinString(listGenres),
@@ -32,7 +31,7 @@ object BasicMediaDetailMapper {
       status = status,
       trailer = videos?.toLink(),
       language = getLanguageName(originalLanguage),
-      keywords = mediaKeywords?.keywords,
+      keywords = keywords?.keywords,
       totalEpisodes = numberOfEpisodes,
       totalSeasons = numberOfSeasons,
 
@@ -45,10 +44,7 @@ object BasicMediaDetailMapper {
       releaseDate = firstAirDate.orEmpty(),
     )
 
-  fun MovieDetail.toMediaDetail(
-    releaseDateRegion: ReleaseDateRegion,
-    mediaKeywords: MediaKeywords?,
-  ): MediaDetail =
+  fun MovieDetail.toMediaDetail(releaseDateRegion: ReleaseDateRegion): MediaDetail =
     MediaDetail(
       id = id ?: 0,
       genre = transformListGenreToJoinString(listGenres), // for view
@@ -63,7 +59,7 @@ object BasicMediaDetailMapper {
       budget = toUsd(budget),
       revenue = toUsd(revenue),
       language = getLanguageName(originalLanguage),
-      keywords = mediaKeywords?.keywords,
+      keywords = keywords?.keywords,
 
       // updated data
       title = titleHandler(title, originalTitle),

@@ -74,6 +74,18 @@ object DummyData {
     name = "crime",
   )
 
+  val tvKeywordsResponse = TvKeywordsResponse(keywords = listOf(mediaKeywordsResponseItem))
+
+  val movieKeywordsResponse = MovieKeywordsResponse(keywords = listOf(mediaKeywordsResponseItem))
+
+  val mediaKeywordsItem1 = MediaKeywordsItem(id = 10, name = "superhero")
+
+  val mediaKeywordsItem2 = MediaKeywordsItem(id = 20, name = "adventure")
+
+  val mediaKeywordsItems = listOf(mediaKeywordsItem1, mediaKeywordsItem2)
+
+  val mediaKeywords = MediaKeywords(keywords = mediaKeywordsItems)
+
   val genresItemResponse = GenresResponseItem(
     id = 1,
     name = "Action",
@@ -132,6 +144,7 @@ object DummyData {
     backdropPath = "/backdrop.jpg",
     revenue = 1000000,
     listGenresItemResponse = listOf(genresItemResponse),
+    keywords = movieKeywordsResponse,
     popularity = 8.5,
     releaseDatesResponse = releaseDatesResponse,
     listProductionCountriesItemResponse = listOf(),
@@ -250,6 +263,7 @@ object DummyData {
     type = "Scripted",
     backdropPath = "/backdrop.jpg",
     genres = listOf(genresItemResponse),
+    keywords = tvKeywordsResponse,
     popularity = 8.5,
     productionCountriesResponse = listOf(),
     id = 1,
@@ -365,6 +379,7 @@ object DummyData {
     imdbId = IMDB_ID,
     voteAverage = 7.5,
     listGenres = listOf(GenresItem(id = 28, name = "Action")),
+    keywords = mediaKeywords,
     releaseDates = ReleaseDates(
       listReleaseDatesItem = listOf(
         ReleaseDatesItem(
@@ -412,6 +427,7 @@ object DummyData {
     id = 1,
     originalLanguage = "en",
     listGenres = genresItems,
+    keywords = mediaKeywords,
     voteAverage = 8.0,
     status = "Released",
     releaseDate = "2025-07-01",
@@ -455,15 +471,11 @@ object DummyData {
     releaseDateRegion = getReleaseDateRegion(tvDetailFull),
   )
 
-  val tvKeywordsResponse = TvKeywordsResponse(
-    id = 66666,
-    keywords = listOf(mediaKeywordsResponseItem),
-  )
-
   val fullTvDetail = TvDetail(
     id = 1,
     originalLanguage = "en",
     listGenres = genresItems,
+    keywords = mediaKeywords,
     voteAverage = 7.5,
     status = "Returning Series",
     listOriginCountry = listOf("US"),
@@ -560,22 +572,6 @@ object DummyData {
       isDelete = true,
       isFavorite = false,
     )
-
-  val movieKeywordsResponse = MovieKeywordsResponse(
-    id = 44444,
-    keywords = listOf(mediaKeywordsResponseItem),
-  )
-
-  val mediaKeywordsItem1 = MediaKeywordsItem(id = 10, name = "superhero")
-
-  val mediaKeywordsItem2 = MediaKeywordsItem(id = 20, name = "adventure")
-
-  val mediaKeywordsItems = listOf(mediaKeywordsItem1, mediaKeywordsItem2)
-
-  val mediaKeywords = MediaKeywords(
-    id = 100,
-    keywords = mediaKeywordsItems,
-  )
 
   val releaseDateRegion = ReleaseDateRegion(
     regionRelease = "US",

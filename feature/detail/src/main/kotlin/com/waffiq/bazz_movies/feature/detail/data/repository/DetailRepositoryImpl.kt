@@ -6,14 +6,12 @@ import com.waffiq.bazz_movies.core.network.data.remote.datasource.movie.MovieRem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.omdb.OmdbRemoteDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.tv.TvRemoteDataSource
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
-import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toMediaCredits
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaKeywordsMapper.toMediaKeywords
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toDetailMovie
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.OMDbMapper.toOMDbDetails
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toTvDetail
@@ -39,9 +37,6 @@ class DetailRepositoryImpl @Inject constructor(
   override fun getMovieWatchProviders(id: Int): Flow<Outcome<WatchProviders>> =
     movieDataSource.getMovieWatchProviders(id).toOutcome { it.toWatchProviders() }
 
-  override fun getMovieKeywords(movieId: String): Flow<Outcome<MediaKeywords>> =
-    movieDataSource.getMovieKeywords(movieId).toOutcome { it.toMediaKeywords() }
-
   override fun getTvDetail(tvId: Int): Flow<Outcome<TvDetail>> =
     tvRemoteDataSource.getTvDetail(tvId).toOutcome { it.toTvDetail() }
 
@@ -50,7 +45,4 @@ class DetailRepositoryImpl @Inject constructor(
 
   override fun getTvWatchProviders(id: Int): Flow<Outcome<WatchProviders>> =
     tvRemoteDataSource.getTvWatchProviders(id).toOutcome { it.toWatchProviders() }
-
-  override fun getTvKeywords(tvId: String): Flow<Outcome<MediaKeywords>> =
-    tvRemoteDataSource.getTvKeywords(tvId).toOutcome { it.toMediaKeywords() }
 }
