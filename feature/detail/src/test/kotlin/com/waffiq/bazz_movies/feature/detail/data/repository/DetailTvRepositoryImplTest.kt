@@ -1,15 +1,9 @@
 package com.waffiq.bazz_movies.feature.detail.data.repository
 
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.TvKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseDetailRepositoryImplTest
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toMediaCredits
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toVideo
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaKeywordsMapper.toMediaKeywords
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toExternalTvID
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toTvDetail
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -44,54 +38,6 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
     )
 
   @Test
-  fun getTvExternalIds_whenSuccessful_returnsSuccessResult() =
-    runSuccessTest(
-      mockResponse = mockk<ExternalIdResponse>(relaxed = true),
-      dataSourceCall = { mockTvRemoteDataSource.getTvExternalIds(id) },
-      repositoryCall = { repository.getTvExternalIds(id) },
-      expectedData = { it.toExternalTvID() },
-      verifyCall = {
-        coVerify(atLeast = 1) {
-          mockTvRemoteDataSource.getTvExternalIds(id)
-        }
-      },
-    )
-
-  @Test
-  fun getTvExternalIds_whenUnsuccessful_returnsErrorResult() =
-    runErrorTest(
-      dataSourceCall = { mockTvRemoteDataSource.getTvExternalIds(id) },
-      repositoryCall = { repository.getTvExternalIds(id) },
-      verifyCall = {
-        coVerify {
-          mockTvRemoteDataSource.getTvExternalIds(id)
-        }
-      },
-    )
-
-  @Test
-  fun getTvExternalIds_whenLoadingEmitted_returnsLoadingOutcome() =
-    runLoadingTest(
-      dataSourceCall = { mockTvRemoteDataSource.getTvExternalIds(id) },
-      repositoryCall = { repository.getTvExternalIds(id) },
-      verifyCall = {
-        coVerify {
-          mockTvRemoteDataSource.getTvExternalIds(id)
-        }
-      },
-    )
-
-  @Test
-  fun getTvTrailerLink_whenSuccessful_returnsSuccessResult() =
-    runSuccessTest(
-      mockResponse = mockk<VideoResponse>(relaxed = true),
-      dataSourceCall = { mockTvRemoteDataSource.getTvVideo(id) },
-      repositoryCall = { repository.getTvTrailerLink(id) },
-      expectedData = { it.toVideo() },
-      verifyCall = { coVerify(atLeast = 1) { mockTvRemoteDataSource.getTvVideo(id) } },
-    )
-
-  @Test
   fun getTvCredits_whenSuccessful_returnsSuccessResult() =
     runSuccessTest(
       mockResponse = mockk<MediaCreditsResponse>(relaxed = true),
@@ -99,19 +45,5 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
       repositoryCall = { repository.getTvCredits(id) },
       expectedData = { it.toMediaCredits() },
       verifyCall = { coVerify(atLeast = 1) { mockTvRemoteDataSource.getTvCredits(id) } },
-    )
-
-  @Test
-  fun getTvKeywords_whenSuccessful_returnsSuccessResult() =
-    runSuccessTest(
-      mockResponse = mockk<TvKeywordsResponse>(relaxed = true),
-      dataSourceCall = { mockTvRemoteDataSource.getTvKeywords(id.toString()) },
-      repositoryCall = { repository.getTvKeywords(id.toString()) },
-      expectedData = { it.toMediaKeywords() },
-      verifyCall = {
-        coVerify(atLeast = 1) {
-          mockTvRemoteDataSource.getTvKeywords(id.toString())
-        }
-      },
     )
 }

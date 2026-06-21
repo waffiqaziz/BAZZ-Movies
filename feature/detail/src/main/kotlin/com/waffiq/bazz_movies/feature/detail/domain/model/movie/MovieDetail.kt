@@ -5,7 +5,10 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.BelongsToCollection
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDates
+import com.waffiq.bazz_movies.feature.detail.domain.model.video.Videos
+import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 
 data class MovieDetail(
   val originalLanguage: String? = null,
@@ -15,6 +18,7 @@ data class MovieDetail(
   val backdropPath: String? = null,
   val revenue: Long? = null,
   val listGenres: List<GenresItem?>? = null,
+  val keywords: MediaKeywords? = null,
   val popularity: Double? = null,
   val releaseDates: ReleaseDates? = null,
   val listProductionCountriesItem: List<ProductionCountriesItem?>? = null,
@@ -34,4 +38,6 @@ data class MovieDetail(
   val adult: Boolean? = null,
   val homepage: String? = null,
   val status: String? = null,
+  val videos: Videos? = null,
+  val watchProviders: WatchProviders? = null,
 )

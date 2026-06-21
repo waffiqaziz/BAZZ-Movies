@@ -8,23 +8,20 @@ import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinStr
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
 import com.waffiq.bazz_movies.core.utils.LanguageHelper.getLanguageName
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
-import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
-import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
+import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAgeRating
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformDuration
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformTMDBScore
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.toLink
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.WatchProvidersMapper.toWatchProvidersState
 
 object BasicMediaDetailMapper {
 
-  fun TvDetail.toMediaDetail(
-    userRegion: String,
-    mediaKeywords: MediaKeywords?,
-    externalIds: TvExternalIds?,
-  ): MediaDetail =
+  fun TvDetail.toMediaDetail(userRegion: String): MediaDetail =
     MediaDetail(
       id = id ?: 0,
       genre = transformListGenreToJoinString(listGenres),
@@ -34,8 +31,11 @@ object BasicMediaDetailMapper {
       tmdbScore = getTransformTMDBScore(voteAverage),
       releaseDateRegion = getReleaseDateRegion(this),
       status = status,
+      trailer = videos?.toLink(),
+      watchProviders = watchProviders?.toWatchProvidersState(userRegion)
+        ?: WatchProvidersUiState.Error("No watch providers available"),
       language = getLanguageName(originalLanguage),
-      keywords = mediaKeywords?.keywords,
+      keywords = keywords?.keywords,
       totalEpisodes = numberOfEpisodes,
       totalSeasons = numberOfSeasons,
 
@@ -48,10 +48,7 @@ object BasicMediaDetailMapper {
       releaseDate = firstAirDate.orEmpty(),
     )
 
-  fun MovieDetail.toMediaDetail(
-    releaseDateRegion: ReleaseDateRegion,
-    mediaKeywords: MediaKeywords?,
-  ): MediaDetail =
+  fun MovieDetail.toMediaDetail(releaseDateRegion: ReleaseDateRegion): MediaDetail =
     MediaDetail(
       id = id ?: 0,
       genre = transformListGenreToJoinString(listGenres), // for view
@@ -62,10 +59,13 @@ object BasicMediaDetailMapper {
       tmdbScore = getTransformTMDBScore(voteAverage),
       releaseDateRegion = releaseDateRegion,
       status = status,
+      trailer = videos?.toLink(),
+      watchProviders = watchProviders?.toWatchProvidersState(releaseDateRegion.regionRelease)
+        ?: WatchProvidersUiState.Error("No watch providers available"),
       budget = toUsd(budget),
       revenue = toUsd(revenue),
       language = getLanguageName(originalLanguage),
-      keywords = mediaKeywords?.keywords,
+      keywords = keywords?.keywords,
 
       // updated data
       title = titleHandler(title, originalTitle),

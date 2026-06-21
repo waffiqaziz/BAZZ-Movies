@@ -9,10 +9,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.models.RatingRequest
 import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.GenericPagingSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.MovieKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.MediaStateResponse
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.MovieApiService
@@ -73,12 +70,6 @@ class MovieRemoteDataSource @Inject constructor(
       ioDispatcher = ioDispatcher,
     )
 
-  override fun getMovieVideo(movieId: Int): Flow<NetworkResult<VideoResponse>> =
-    executeApiCall(
-      apiCall = { movieApiService.getMovieVideo(movieId) },
-      ioDispatcher = ioDispatcher,
-    )
-
   override fun getMovieDetail(id: Int): Flow<NetworkResult<DetailMovieResponse>> =
     executeApiCall(
       apiCall = { movieApiService.getMovieDetail(id) },
@@ -88,18 +79,6 @@ class MovieRemoteDataSource @Inject constructor(
   override fun getMovieState(sessionId: String, id: Int): Flow<NetworkResult<MediaStateResponse>> =
     executeApiCall(
       apiCall = { movieApiService.getMovieState(id, sessionId) },
-      ioDispatcher = ioDispatcher,
-    )
-
-  override fun getMovieWatchProviders(id: Int): Flow<NetworkResult<WatchProvidersResponse>> =
-    executeApiCall(
-      apiCall = { movieApiService.getMovieWatchProviders(id) },
-      ioDispatcher = ioDispatcher,
-    )
-
-  override fun getMovieKeywords(movieId: String): Flow<NetworkResult<MovieKeywordsResponse>> =
-    executeApiCall(
-      apiCall = { movieApiService.getMovieKeywords(movieId) },
       ioDispatcher = ioDispatcher,
     )
 

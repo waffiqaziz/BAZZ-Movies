@@ -43,6 +43,7 @@ class DetailTvTest {
     assertEquals("2013-09-29", tvDetail.lastAirDate)
     assertEquals("http://www.amc.com/shows/breaking-bad", tvDetail.homepage)
     assertEquals("Ended", tvDetail.status)
+    assertEquals("Link Trailer", tvDetail.videos?.results[0]?.key)
   }
 
   @Test
@@ -82,6 +83,7 @@ class DetailTvTest {
     assertNull(detailTv.lastAirDate)
     assertNull(detailTv.homepage)
     assertNull(detailTv.status)
+    assertNull(detailTv.videos)
   }
 
   @Test

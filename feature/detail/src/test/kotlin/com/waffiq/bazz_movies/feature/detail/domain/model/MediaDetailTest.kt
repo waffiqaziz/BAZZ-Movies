@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.domain.model
 
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
+import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -24,6 +25,11 @@ class MediaDetailTest {
     assertNull(detail.imdbId)
     assertNull(detail.ageRating)
     assertNull(detail.tmdbScore)
+    assertNull(detail.trailer)
+    assertNull(detail.status)
+    assertNull(detail.language)
+    assertNull(detail.budget)
+    assertNull(detail.revenue)
     assertEquals(releaseDateRegion, detail.releaseDateRegion)
   }
 
@@ -38,6 +44,7 @@ class MediaDetailTest {
       imdbId = "tt1234567",
       ageRating = "PG-13",
       tmdbScore = "8.5",
+      trailer = "trailer link",
       totalSeasons = 2,
       totalEpisodes = 24,
       releaseDateRegion = releaseDateRegion,
@@ -50,6 +57,7 @@ class MediaDetailTest {
     assertEquals("tt1234567", detail.imdbId)
     assertEquals("PG-13", detail.ageRating)
     assertEquals("8.5", detail.tmdbScore)
+    assertEquals("trailer link", detail.trailer)
     assertEquals(24, detail.totalEpisodes)
     assertEquals(2, detail.totalSeasons)
     assertEquals(releaseDateRegion, detail.releaseDateRegion)
@@ -93,5 +101,6 @@ class MediaDetailTest {
     assertNull(detail.totalEpisodes)
     assertNull(detail.totalSeasons)
     assertEquals(releaseDateRegion, detail.releaseDateRegion)
+    assertEquals(WatchProvidersUiState.Loading, detail.watchProviders)
   }
 }

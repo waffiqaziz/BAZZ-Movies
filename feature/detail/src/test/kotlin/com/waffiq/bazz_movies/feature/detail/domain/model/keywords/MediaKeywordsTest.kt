@@ -6,9 +6,8 @@ import org.junit.Test
 class MediaKeywordsTest {
 
   @Test
-  fun createMediaKeywords_withDefaultValues_shouldCreateInstance() {
+  fun createMediaKeywords_withDefaultValues_shouldUseNull() {
     val item = MediaKeywords()
-    assertNull(item.id)
     assertNull(item.keywords)
   }
 }

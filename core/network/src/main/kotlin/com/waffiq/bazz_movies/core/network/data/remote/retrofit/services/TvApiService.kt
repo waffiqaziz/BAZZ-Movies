@@ -3,11 +3,7 @@ package com.waffiq.bazz_movies.core.network.data.remote.retrofit.services
 import com.waffiq.bazz_movies.core.network.data.remote.models.RatingRequest
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.TvKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.MediaStateResponse
 import retrofit2.Response
@@ -67,19 +63,10 @@ interface TvApiService {
     @Query("session_id") sessionId: String,
   ): Response<MediaStateResponse>
 
-  @GET("3/tv/{id}/videos")
-  suspend fun getTvVideo(
-    @Path("id") id: Int,
-    @Query("language") language: String = "en-US",
-  ): Response<VideoResponse>
-
-  @GET("3/tv/{tvId}/external_ids")
-  suspend fun getTvExternalIds(
-    @Path("tvId") tvId: Int,
-    @Query("language") language: String = "en-US",
-  ): Response<ExternalIdResponse>
-
-  @GET("3/tv/{tvId}?append_to_response=content_ratings")
+  @GET(
+    "3/tv/{tvId}?" +
+      "append_to_response=content_ratings,external_ids,keywords,videos,watch/providers",
+  )
   suspend fun getTvDetail(
     @Path("tvId") tvId: Int,
     @Query("language") language: String = "en-US",
@@ -91,9 +78,6 @@ interface TvApiService {
     @Query("language") language: String = "en-US",
   ): Response<MediaCreditsResponse>
 
-  @GET("3/tv/{tvId}/keywords")
-  suspend fun getTvKeywords(@Path("tvId") tvId: String): Response<TvKeywordsResponse>
-
   @Headers("Content-Type: application/json;charset=utf-8")
   @POST("3/tv/{tvId}/rating")
   suspend fun postTvRate(
@@ -101,7 +85,4 @@ interface TvApiService {
     @Query("session_id") sessionId: String,
     @Body data: RatingRequest,
   ): Response<PostResponse>
-
-  @GET("3/tv/{id}/watch/providers")
-  suspend fun getTvWatchProviders(@Path("id") id: Int): Response<WatchProvidersResponse>
 }

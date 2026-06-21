@@ -33,6 +33,7 @@ class MovieMapperTest {
     assertEquals("/backdrop.jpg", detailMovie.backdropPath)
     assertEquals(1000000L, detailMovie.revenue)
     assertEquals(1, detailMovie.listGenres?.size)
+    assertEquals(333, detailMovie.keywords?.keywords?.get(0)?.id)
     assertEquals(8.5, detailMovie.popularity)
     assertEquals(1, detailMovie.id)
     assertEquals(100, detailMovie.voteCount)
@@ -47,6 +48,7 @@ class MovieMapperTest {
     assertEquals(false, detailMovie.adult)
     assertEquals("https://testmovie.com", detailMovie.homepage)
     assertEquals("Released", detailMovie.status)
+    assertEquals("Link Trailer", detailMovie.videos?.results[0]?.key)
   }
 
   @Test
@@ -69,8 +71,10 @@ class MovieMapperTest {
     assertEquals(null, detailMovie.imdbId)
     assertEquals(null, detailMovie.backdropPath)
     assertEquals(null, detailMovie.listGenres)
+    assertEquals(null, detailMovie.keywords)
     assertEquals(null, detailMovie.releaseDates)
     assertEquals(null, detailMovie.belongsToCollection)
+    assertEquals(null, detailMovie.videos)
   }
 
   @Test

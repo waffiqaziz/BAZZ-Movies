@@ -5,11 +5,7 @@ import com.waffiq.bazz_movies.core.coroutines.IoDispatcher
 import com.waffiq.bazz_movies.core.network.data.remote.models.RatingRequest
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.TvKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.MediaStateResponse
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.TvApiService
@@ -61,39 +57,15 @@ class TvRemoteDataSource @Inject constructor(
       ioDispatcher = ioDispatcher,
     )
 
-  override fun getTvVideo(tvId: Int): Flow<NetworkResult<VideoResponse>> =
-    executeApiCall(
-      apiCall = { tvApiService.getTvVideo(tvId) },
-      ioDispatcher = ioDispatcher,
-    )
-
   override fun getTvDetail(id: Int): Flow<NetworkResult<DetailTvResponse>> =
     executeApiCall(
       apiCall = { tvApiService.getTvDetail(id) },
       ioDispatcher = ioDispatcher,
     )
 
-  override fun getTvExternalIds(id: Int): Flow<NetworkResult<ExternalIdResponse>> =
-    executeApiCall(
-      apiCall = { tvApiService.getTvExternalIds(id) },
-      ioDispatcher = ioDispatcher,
-    )
-
   override fun getTvState(sessionId: String, id: Int): Flow<NetworkResult<MediaStateResponse>> =
     executeApiCall(
       apiCall = { tvApiService.getTvState(id, sessionId) },
-      ioDispatcher = ioDispatcher,
-    )
-
-  override fun getTvWatchProviders(id: Int): Flow<NetworkResult<WatchProvidersResponse>> =
-    executeApiCall(
-      apiCall = { tvApiService.getTvWatchProviders(id) },
-      ioDispatcher = ioDispatcher,
-    )
-
-  override fun getTvKeywords(tvId: String): Flow<NetworkResult<TvKeywordsResponse>> =
-    executeApiCall(
-      apiCall = { tvApiService.getTvKeywords(tvId) },
       ioDispatcher = ioDispatcher,
     )
 

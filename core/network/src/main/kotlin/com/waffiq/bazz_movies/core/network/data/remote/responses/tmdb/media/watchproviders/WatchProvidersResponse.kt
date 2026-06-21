@@ -6,9 +6,6 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class WatchProvidersResponse(
 
-  @Json(name = "id")
-  val id: Int?,
-
   @Json(name = "results")
   val results: Map<String, WatchProvidersResponseItem>?,
 )

@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.utils.helpers
 
-import com.waffiq.bazz_movies.feature.detail.domain.model.video.Video
 import com.waffiq.bazz_movies.feature.detail.domain.model.video.VideoItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.video.Videos
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.toLink
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -20,7 +20,7 @@ class ToLinkTest {
     key = key,
   )
 
-  private fun video(vararg items: VideoItem) = Video(results = items.toList())
+  private fun video(vararg items: VideoItem) = Videos(results = items.toList())
 
   @Test
   fun toLink_multipleCase_shouldReturnCorrectly() {

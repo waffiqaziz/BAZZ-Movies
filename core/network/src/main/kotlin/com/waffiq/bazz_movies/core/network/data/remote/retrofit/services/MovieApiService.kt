@@ -3,10 +3,7 @@ package com.waffiq.bazz_movies.core.network.data.remote.retrofit.services
 import com.waffiq.bazz_movies.core.network.data.remote.models.RatingRequest
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.MovieKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.MediaStateResponse
 import retrofit2.Response
@@ -57,26 +54,17 @@ interface MovieApiService {
     @Query("language") language: String = "en-US",
   ): Response<MediaCreditsResponse>
 
-  @GET("3/movie/{movieId}?append_to_response=release_dates")
+  @GET("3/movie/{movieId}?append_to_response=keywords,release_dates,videos,watch/providers")
   suspend fun getMovieDetail(
     @Path("movieId") movieId: Int,
     @Query("language") language: String = "en-US",
   ): Response<DetailMovieResponse>
-
-  @GET("3/movie/{id}/videos")
-  suspend fun getMovieVideo(
-    @Path("id") id: Int,
-    @Query("language") language: String = "en-US",
-  ): Response<VideoResponse>
 
   @GET("3/movie/{movieId}/recommendations")
   suspend fun getMovieRecommendations(
     @Path("movieId") movieId: Int,
     @Query("page") page: Int,
   ): MediaResponse
-
-  @GET("3/movie/{movieId}/keywords")
-  suspend fun getMovieKeywords(@Path("movieId") movieId: String): Response<MovieKeywordsResponse>
 
   @Headers("Content-Type: application/json;charset=utf-8")
   @POST("3/movie/{movieId}/rating")
@@ -85,7 +73,4 @@ interface MovieApiService {
     @Query("session_id") sessionId: String,
     @Body data: RatingRequest,
   ): Response<PostResponse>
-
-  @GET("3/movie/{id}/watch/providers")
-  suspend fun getMovieWatchProviders(@Path("id") id: Int): Response<WatchProvidersResponse>
 }

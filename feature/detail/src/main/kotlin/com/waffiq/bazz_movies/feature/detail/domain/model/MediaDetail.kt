@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.feature.detail.domain.model
 
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
+import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 
 data class MediaDetail(
   val id: Int,
@@ -15,6 +16,8 @@ data class MediaDetail(
   val status: String? = null,
   val language: String? = null,
   val keywords: List<MediaKeywordsItem?>? = null,
+  val trailer: String? = null,
+  val watchProviders: WatchProvidersUiState = WatchProvidersUiState.Loading,
 
   // movie
   val budget: String? = null,

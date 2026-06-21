@@ -8,9 +8,8 @@ import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_imdb
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_rotten_tomatoes
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.RatingsItem
+import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailActivityTest
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testOMDbDetails
-import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestHelper
-import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestSetup
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
@@ -29,8 +28,7 @@ import org.junit.Test
  * This test verifies that the OMDb scores are displayed correctly based on various conditions.
  */
 @HiltAndroidTest
-class MediaDetailActivityOMDbScoreTest :
-  MediaDetailActivityTestSetup by MediaDetailActivityTestHelper() {
+class MediaDetailActivityOMDbScoreTest : BaseMediaDetailActivityTest() {
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)

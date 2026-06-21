@@ -52,19 +52,14 @@ class WatchProvidersResponseTest {
 
   @Test
   fun watchProvidersResponse_whenCreated_shouldHaveCorrectProperties() {
-    assertEquals(456, watchProvidersResponse.id)
     assertEquals(1, watchProvidersResponse.results?.size)
     assertTrue(watchProvidersResponse.results?.containsKey("US") == true)
   }
 
   @Test
   fun watchProvidersResponse_whenResultsEmpty_shouldHaveEmptyMap() {
-    val response = WatchProvidersResponse(
-      id = 789,
-      results = emptyMap(),
-    )
+    val response = WatchProvidersResponse(results = emptyMap())
 
-    assertEquals(789, response.id)
     assertNotNull(response.results)
     assertTrue(response.results?.isEmpty() == true)
   }

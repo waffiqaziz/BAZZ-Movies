@@ -16,6 +16,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.RatingsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.Provider
+import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 
 object DataDumb {
@@ -100,6 +101,21 @@ object DataDumb {
     isFavorite = true,
   )
 
+  val testProvider = Provider(
+    logoPath = "logo path",
+    providerId = 123,
+    providerName = "provider name",
+    displayPriority = 1,
+  )
+
+  val testWatchProvidersUiState = WatchProvidersUiState.Success(
+    ads = listOf(testProvider),
+    buy = listOf(testProvider),
+    flatrate = listOf(testProvider),
+    free = listOf(testProvider),
+    rent = listOf(testProvider),
+  )
+
   val testMediaDetail = MediaDetail(
     id = 12345678,
     genre = "Action",
@@ -109,6 +125,8 @@ object DataDumb {
     ageRating = "G",
     tmdbScore = "100",
     status = "released",
+    trailer = "video trailer",
+    watchProviders = testWatchProvidersUiState,
     releaseDateRegion = ReleaseDateRegion(
       regionRelease = "ID",
       releaseDate = "Jul 23, 2025",
@@ -149,18 +167,23 @@ object DataDumb {
     originCountry = null,
   )
 
-  val testProvider = Provider(
-    logoPath = "logo path",
-    providerId = 123,
-    providerName = "provider name",
-    displayPriority = 1,
-  )
-
-  val testWatchProvidersUiState = WatchProvidersUiState.Success(
-    ads = listOf(testProvider),
-    buy = listOf(testProvider),
-    flatrate = listOf(testProvider),
-    free = listOf(testProvider),
-    rent = listOf(testProvider),
+  val mediaDetailUiState = MediaDetailUiState(
+    detail = testMediaDetail,
+    credits = MediaCredits(
+      cast = listOf(MediaCastItem()),
+      id = 90,
+      crew = listOf(MediaCrewItem()),
+    ),
+    omdbDetails = OMDbDetails(),
+    itemState = MediaState(
+      id = 90,
+      favorite = false,
+      rated = Rated.Value(90.0),
+      watchlist = false,
+    ),
+    isFavorite = false,
+    isWatchlist = false,
+    mediaStateResult = null, // it should only initiate when add to watchlist/favorite
+    isLoading = false,
   )
 }

@@ -22,6 +22,9 @@ import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toG
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toProductionCountriesItem
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toSpokenLanguagesItem
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toVideo
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaKeywordsMapper.toMediaKeywords
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.WatchProvidersMapper.toWatchProviders
 
 object TvMapper {
 
@@ -33,6 +36,7 @@ object TvMapper {
       type = type,
       backdropPath = backdropPath,
       listGenres = genres?.map { it?.toGenresItem() },
+      keywords = keywords?.toMediaKeywords(),
       popularity = popularity,
       listProductionCountriesItem =
       productionCountriesResponse?.map { it?.toProductionCountriesItem() },
@@ -62,6 +66,9 @@ object TvMapper {
       lastAirDate = lastAirDate,
       homepage = homepage,
       status = status,
+      externalIds = externalIds?.toExternalTvID(),
+      videos = videos?.toVideo(),
+      watchProviders = watchProviders?.toWatchProviders(),
     )
 
   private fun ContentRatingsResponse.toContentRatings() =

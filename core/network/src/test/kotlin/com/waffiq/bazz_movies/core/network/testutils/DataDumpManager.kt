@@ -647,7 +647,6 @@ object DataDumpManager {
   )
 
   val videoMovieResponseDump = VideoResponse(
-    id = 872585,
     results = listOf(
       videoItemMovieResponseDump1,
       videoItemMovieResponseDump2,
@@ -694,78 +693,7 @@ object DataDumpManager {
     key = "pkKu9hLT-t8",
   )
 
-  val watchProviderResponseDump = WatchProvidersResponse(
-    id = 1234567890,
-    results = mapOf(
-      "US" to WatchProvidersResponseItem(
-        link = "https://www.link.com/us/movie/example-movie",
-        ads = listOf(
-          ProviderResponse(
-            logoPath = "/logo6.png",
-            providerId = 6,
-            providerName = "WeTV",
-            displayPriority = 3,
-          ),
-        ),
-        flatrate = listOf(
-          ProviderResponse(
-            logoPath = "/logo1.png",
-            providerId = 1,
-            providerName = "Netflix",
-            displayPriority = 10,
-          ),
-          ProviderResponse(
-            logoPath = "/logo2.png",
-            providerId = 2,
-            providerName = "Disney+",
-            displayPriority = 20,
-          ),
-        ),
-        rent = listOf(
-          ProviderResponse(
-            logoPath = "/logo3.png",
-            providerId = 3,
-            providerName = "Amazon Prime",
-            displayPriority = 15,
-          ),
-        ),
-        buy = listOf(
-          ProviderResponse(
-            logoPath = "/logo4.png",
-            providerId = 4,
-            providerName = "Google Play",
-            displayPriority = 5,
-          ),
-        ),
-        free = null,
-      ),
-      "ID" to WatchProvidersResponseItem(
-        link = "https://www.link.com/id/movie/example-movie",
-        ads = null,
-        buy = listOf(
-          ProviderResponse(
-            logoPath = "/logo5.png",
-            providerId = 5,
-            providerName = "Vidio",
-            displayPriority = 8,
-          ),
-        ),
-        flatrate = null,
-        rent = null,
-        free = listOf(
-          ProviderResponse(
-            logoPath = "/logo6.png",
-            providerId = 6,
-            providerName = "WeTV",
-            displayPriority = 12,
-          ),
-        ),
-      ),
-    ),
-  )
-
   val videoTvResponseDump = VideoResponse(
-    id = 95479,
     results = listOf(videoItemTvResponseDump1, videoItemTvResponseDump2, videoItemTvResponseDump3),
   )
 
@@ -783,6 +711,47 @@ object DataDumpManager {
     originCountry = "US",
   )
 
+  val mediaKeywordsResponseItem = MediaKeywordsResponseItem(
+    id = 4444,
+    name = "family",
+  )
+
+  val movieKeywordsResponse = MovieKeywordsResponse(
+    keywords = listOf(mediaKeywordsResponseItem),
+  )
+
+  val tvKeywordsResponse = TvKeywordsResponse(
+    keywords = listOf(mediaKeywordsResponseItem),
+  )
+
+  val providerResponse = ProviderResponse(
+    logoPath = "/logo.jpg",
+    providerId = 123,
+    providerName = "Netflix",
+    displayPriority = 1,
+  )
+
+  val providerResponseItem = WatchProvidersResponseItem(
+    link = "https://example.com",
+    ads = listOf(providerResponse),
+    buy = listOf(providerResponse),
+    flatrate = listOf(providerResponse, providerResponse),
+    free = listOf(providerResponse),
+    rent = listOf(providerResponse),
+  )
+
+  val watchProvidersResultsMap = mapOf(
+    "US" to providerResponseItem,
+  )
+
+  val watchProvidersResponse = WatchProvidersResponse(results = watchProvidersResultsMap)
+
+  val nextEpisodeToAirResponse = NextEpisodeToAirResponse(
+    id = 67884,
+    name = "name episode",
+    airDate = "2026-06-20",
+  )
+
   val detailMovieResponseDump = DetailMovieResponse(
     originalLanguage = "en",
     imdbId = "tt6263850",
@@ -795,6 +764,7 @@ object DataDumpManager {
       GenresResponseItem(id = 35, name = "Comedy"),
       GenresResponseItem(id = 878, name = "Science Fiction"),
     ),
+    keywords = movieKeywordsResponse,
     popularity = 856.096,
     releaseDatesResponse = ReleaseDatesResponse(
       listReleaseDatesResponseItem = listOf(
@@ -849,6 +819,8 @@ object DataDumpManager {
     adult = false,
     homepage = "https://www.marvel.com/movies/deadpool-and-wolverine",
     status = "Released",
+    videos = videoMovieResponseDump,
+    watchProviders = watchProvidersResponse,
   )
 
   val lastEpisodeToAirResponse1 = LastEpisodeToAirResponse(
@@ -920,6 +892,18 @@ object DataDumpManager {
     ),
   )
 
+  val externalIdResponseDump = ExternalIdResponse(
+    imdbId = "tt0417299",
+    freebaseMid = "/m/05h95s",
+    tvdbId = 74852,
+    freebaseId = "/en/avatar_the_last_airbender",
+    id = 246,
+    twitterId = null,
+    tvrageId = 2680,
+    facebookId = "avatarthelastairbender",
+    instagramId = "avatarthelastairbender",
+  )
+
   val detailTvResponseDump = DetailTvResponse(
     originalLanguage = "ko",
     numberOfEpisodes = 12,
@@ -930,6 +914,7 @@ object DataDumpManager {
       GenresResponseItem(name = "Drama", id = 18),
       GenresResponseItem(name = "Mystery", id = 9648),
     ),
+    keywords = tvKeywordsResponse,
     popularity = 394.215,
     productionCountriesResponse = listOf(
       ProductionCountriesResponseItem(
@@ -978,18 +963,9 @@ object DataDumpManager {
     lastAirDate = "2025-01-04",
     homepage = "https://program.imbc.com/WhenThePhoneRings",
     status = "Ended",
-  )
-
-  val externalIdResponseDump = ExternalIdResponse(
-    imdbId = "tt0417299",
-    freebaseMid = "/m/05h95s",
-    tvdbId = 74852,
-    freebaseId = "/en/avatar_the_last_airbender",
-    id = 246,
-    twitterId = null,
-    tvrageId = 2680,
-    facebookId = "avatarthelastairbender",
-    instagramId = "avatarthelastairbender",
+    externalIds = externalIdResponseDump,
+    videos = videoTvResponseDump,
+    watchProviders = watchProvidersResponse,
   )
 
   val statedResponseDump1 = MediaStateResponse(
@@ -1313,51 +1289,5 @@ object DataDumpManager {
     favorite = true,
     ratedResponse = ratedResponse,
     watchlist = true,
-  )
-
-  val providerResponse = ProviderResponse(
-    logoPath = "/logo.jpg",
-    providerId = 123,
-    providerName = "Netflix",
-    displayPriority = 1,
-  )
-
-  val providerResponseItem = WatchProvidersResponseItem(
-    link = "https://example.com",
-    ads = listOf(providerResponse),
-    buy = listOf(providerResponse),
-    flatrate = listOf(providerResponse, providerResponse),
-    free = listOf(providerResponse),
-    rent = listOf(providerResponse),
-  )
-
-  val watchProvidersResultsMap = mapOf(
-    "US" to providerResponseItem,
-  )
-
-  val watchProvidersResponse = WatchProvidersResponse(
-    id = 456,
-    results = watchProvidersResultsMap,
-  )
-
-  val mediaKeywordsResponseItem = MediaKeywordsResponseItem(
-    id = 4444,
-    name = "family",
-  )
-
-  val movieKeywordsResponse = MovieKeywordsResponse(
-    id = 12345,
-    keywords = listOf(mediaKeywordsResponseItem),
-  )
-
-  val tvKeywordsResponse = TvKeywordsResponse(
-    id = 1222,
-    keywords = listOf(mediaKeywordsResponseItem),
-  )
-
-  val nextEpisodeToAirResponse = NextEpisodeToAirResponse(
-    id = 67884,
-    name = "name episode",
-    airDate = "2026-06-20",
   )
 }

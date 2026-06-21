@@ -11,8 +11,6 @@ data class MediaDetailUiState(
   val detail: MediaDetail? = null,
   val credits: MediaCredits? = null,
   val omdbDetails: OMDbDetails? = null,
-  val videoLink: String? = null,
-  val watchProviders: WatchProvidersUiState = WatchProvidersUiState.Loading,
   val itemState: MediaState? = null,
 
   // state

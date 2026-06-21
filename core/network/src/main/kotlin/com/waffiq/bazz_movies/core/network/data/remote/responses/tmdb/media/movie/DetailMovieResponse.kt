@@ -4,9 +4,12 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.GenresResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.ProductionCountriesResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.MovieKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.releasedates.ReleaseDatesResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ProductionCompaniesResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SpokenLanguagesResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
 
 @JsonClass(generateAdapter = true)
 data class DetailMovieResponse(
@@ -31,6 +34,9 @@ data class DetailMovieResponse(
 
   @Json(name = "genres")
   val listGenresItemResponse: List<GenresResponseItem?>? = null,
+
+  @Json(name = "keywords")
+  val keywords: MovieKeywordsResponse? = null,
 
   @Json(name = "popularity")
   val popularity: Double? = null,
@@ -88,4 +94,10 @@ data class DetailMovieResponse(
 
   @Json(name = "status")
   val status: String? = null,
+
+  @Json(name = "videos")
+  val videos: VideoResponse? = null,
+
+  @Json(name = "watch/providers")
+  val watchProviders: WatchProvidersResponse? = null,
 )

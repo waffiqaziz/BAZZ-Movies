@@ -6,7 +6,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.plurals
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_overview
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.video.Video
+import com.waffiq.bazz_movies.feature.detail.domain.model.video.Videos
 import kotlin.math.roundToInt
 
 /**
@@ -48,7 +48,7 @@ object MediaHelper {
     }.unzip() // Split pairs into two separate lists: [displayNames], [joinedNames]
   }
 
-  fun Video.toLink(): String {
+  fun Videos.toLink(): String {
     val preferred = results
       .filter {
         it.official == true && it.type.equals(

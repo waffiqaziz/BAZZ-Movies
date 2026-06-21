@@ -12,18 +12,11 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
 import androidx.test.platform.app.InstrumentationRegistry
 import com.bumptech.glide.Glide
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
-import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.core.models.MediaItem
-import com.waffiq.bazz_movies.core.models.MediaState
-import com.waffiq.bazz_movies.core.models.Rated
 import com.waffiq.bazz_movies.core.models.UserModel
-import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
-import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaDetail
+import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.mediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaItem
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testUserModel
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testWatchProvidersUiState
 import com.waffiq.bazz_movies.feature.detail.ui.MediaDetailActivity
 import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
@@ -36,71 +29,46 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 /**
  * Test helper for [MediaDetailActivity] that provides mock implementations
- * of [MediaDetailActivityTestSetup] and sets up necessary LiveData and ViewModel mocks
  */
-class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
+abstract class BaseMediaDetailActivityTest {
 
-  override val recommendations = MutableStateFlow(
+  protected val recommendations = MutableStateFlow(
     value = PagingData.from(listOf(testMediaItem)),
   )
-  override val errorEvent = MutableSharedFlow<String>(extraBufferCapacity = 1)
-  override val toastEvent = MutableSharedFlow<Int>(extraBufferCapacity = 1)
-  override val uiState = MutableStateFlow(MediaDetailUiState())
-  override lateinit var context: Context
+  protected val errorEvent = MutableSharedFlow<String>(extraBufferCapacity = 1)
+  protected val toastEvent = MutableSharedFlow<Int>(extraBufferCapacity = 1)
+  protected val uiState = MutableStateFlow(MediaDetailUiState())
+  protected lateinit var context: Context
 
-  override val token = MutableLiveData<String>()
-  override val region = MutableLiveData<String>()
-  override val userModel = MutableLiveData<UserModel>()
+  protected val token = MutableLiveData<String>()
+  protected val region = MutableLiveData<String>()
+  protected val userModel = MutableLiveData<UserModel>()
 
   val sRecommendations = recommendations.asStateFlow()
   val sErrorEvent = errorEvent.asSharedFlow()
   val sToastEvent = toastEvent.asSharedFlow()
   val sUiState = uiState.asStateFlow()
 
-  override fun setupBaseMocks() {
-    uiState.value = MediaDetailUiState(
-      detail = testMediaDetail,
-      credits = MediaCredits(
-        cast = listOf(MediaCastItem()),
-        id = 90,
-        crew = listOf(MediaCrewItem()),
-      ),
-      omdbDetails = OMDbDetails(),
-      videoLink = "link",
-      watchProviders = testWatchProvidersUiState,
-      itemState = MediaState(
-        id = 90,
-        favorite = false,
-        rated = Rated.Value(90.0),
-        watchlist = false,
-      ),
-      isFavorite = false,
-      isWatchlist = false,
-      mediaStateResult = null, // it should only initiate when add to watchlist/favorite
-      isLoading = false,
-    )
-
+  protected fun setupBaseMocks() {
+    uiState.value = mediaDetailUiState
     token.postValue("NaN")
     region.postValue("id")
     userModel.postValue(testUserModel)
   }
 
-  override fun setupMediaDetailViewModelMocks(mockMediaDetailViewModel: MediaDetailViewModel) {
-    every { mockMediaDetailViewModel.getMovieVideoLink(any()) } just Runs
+  protected fun setupMediaDetailViewModelMocks(mockMediaDetailViewModel: MediaDetailViewModel) {
     every { mockMediaDetailViewModel.getMovieDetail(any()) } just Runs
     every { mockMediaDetailViewModel.getMovieCredits(any()) } just Runs
     every { mockMediaDetailViewModel.getMovieRecommendation(any()) } just Runs
     every { mockMediaDetailViewModel.getMovieState(any()) } just Runs
-    every { mockMediaDetailViewModel.getMovieWatchProviders(any()) } just Runs
-    every { mockMediaDetailViewModel.getTvTrailerLink(any()) } just Runs
     every { mockMediaDetailViewModel.getTvDetail(any()) } just Runs
     every { mockMediaDetailViewModel.getTvCredits(any()) } just Runs
     every { mockMediaDetailViewModel.getTvRecommendation(any()) } just Runs
     every { mockMediaDetailViewModel.getTvState(any()) } just Runs
-    every { mockMediaDetailViewModel.getTvWatchProviders(any()) } just Runs
     every { mockMediaDetailViewModel.getOMDbDetails(any()) } just Runs
     every { mockMediaDetailViewModel.handleBtnFavorite(any()) } just Runs
     every { mockMediaDetailViewModel.handleBtnWatchlist(any()) } just Runs
@@ -111,37 +79,37 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
     every { mockMediaDetailViewModel.postTvRate(any(), any()) } just Runs
   }
 
-  override fun setupPreferencesViewModelMocks(mockPrefViewModel: DetailUserPrefViewModel) {
+  protected fun setupPreferencesViewModelMocks(mockPrefViewModel: DetailUserPrefViewModel) {
     every { mockPrefViewModel.getUserToken() } returns token
   }
 
-  override fun setupObservables(mockMediaDetailViewModel: MediaDetailViewModel) {
+  protected fun setupObservables(mockMediaDetailViewModel: MediaDetailViewModel) {
     every { mockMediaDetailViewModel.uiState } returns sUiState
     every { mockMediaDetailViewModel.errorEvent } returns sErrorEvent
     every { mockMediaDetailViewModel.toastEvent } returns sToastEvent
     every { mockMediaDetailViewModel.recommendations } returns sRecommendations
   }
 
-  override fun setupNavigatorMocks(mockNavigator: INavigator) {
+  protected fun setupNavigatorMocks(mockNavigator: INavigator) {
     every { mockNavigator.openDetails(any(), any()) } just Runs
     every { mockNavigator.openPersonDetails(any(), any()) } just Runs
     every { mockNavigator.openList(any(), any()) } just Runs
   }
 
-  override fun initializeTest(context: Context) {
+  protected fun initializeTest(context: Context) {
     this.context = context
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       Glide.get(context).clearMemory()
     }
   }
 
-  override fun Context.launchMediaDetailActivity(
+  protected fun Context.launchMediaDetailActivity(
     block: (ActivityScenario<MediaDetailActivity>) -> Unit,
   ) {
     this.launchMediaDetailActivity(testMediaItem) { block(it) }
   }
 
-  override fun Context.launchMediaDetailActivity(
+  protected fun Context.launchMediaDetailActivity(
     data: MediaItem,
     block: (ActivityScenario<MediaDetailActivity>) -> Unit,
   ) {
@@ -156,7 +124,7 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
     }
   }
 
-  override fun Context.launchNullMediaDetailActivity(
+  protected fun Context.launchNullMediaDetailActivity(
     data: MediaItem?,
     block: (ActivityScenario<MediaDetailActivity>) -> Unit,
   ) {
@@ -171,8 +139,11 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
     }
   }
 
-  override fun checkIntentData(link: String) {
+  protected fun checkIntentData(link: String) {
     intended(hasAction(Intent.ACTION_VIEW))
     intended(hasData(link.toUri()))
   }
+
+  protected fun updateState(block: MediaDetailUiState.() -> MediaDetailUiState) =
+    uiState.update { it.block() }
 }

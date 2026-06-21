@@ -20,10 +20,13 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.C
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ContentRatingsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.CreatedByItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.LastEpisodeToAirResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.NetworksItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.NextEpisodeToAirResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SeasonsItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponseItem
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinString
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
@@ -48,15 +51,15 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.tv.LastEpisodeToAir
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.NetworksItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.SeasonsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
-import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
-import com.waffiq.bazz_movies.feature.detail.domain.model.video.Video
-import com.waffiq.bazz_movies.feature.detail.domain.model.video.VideoItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.Provider
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAgeRating
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformDuration
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformTMDBScore
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toVideo
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toExternalTvID
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toNextEpisodeToAir
 
 // Used as data dumb testing
@@ -71,6 +74,18 @@ object DummyData {
     id = 333,
     name = "crime",
   )
+
+  val tvKeywordsResponse = TvKeywordsResponse(keywords = listOf(mediaKeywordsResponseItem))
+
+  val movieKeywordsResponse = MovieKeywordsResponse(keywords = listOf(mediaKeywordsResponseItem))
+
+  val mediaKeywordsItem1 = MediaKeywordsItem(id = 10, name = "superhero")
+
+  val mediaKeywordsItem2 = MediaKeywordsItem(id = 20, name = "adventure")
+
+  val mediaKeywordsItems = listOf(mediaKeywordsItem1, mediaKeywordsItem2)
+
+  val mediaKeywords = MediaKeywords(keywords = mediaKeywordsItems)
 
   val genresItemResponse = GenresResponseItem(
     id = 1,
@@ -102,6 +117,26 @@ object DummyData {
     posterPath = "/poster.jpg",
   )
 
+  val externalIdResponse = ExternalIdResponse(
+    imdbId = "tt1234567",
+    id = 999,
+    freebaseMid = "freebase mid",
+    tvdbId = 4312,
+    freebaseId = "freebase id",
+    twitterId = "twitter id",
+    tvrageId = 431342,
+    facebookId = "facebook id",
+    instagramId = "instagram id",
+  )
+
+  val tvExternalIds = externalIdResponse.toExternalTvID()
+
+  val videoResponse = VideoResponse(
+    results = listOf(VideoResponseItem(name = "Trailer", type = "Trailer", key = "Link Trailer")),
+  )
+
+  val video = videoResponse.toVideo()
+
   val detailMovieResponse = DetailMovieResponse(
     originalLanguage = "en",
     imdbId = "tt1234567",
@@ -110,6 +145,7 @@ object DummyData {
     backdropPath = "/backdrop.jpg",
     revenue = 1000000,
     listGenresItemResponse = listOf(genresItemResponse),
+    keywords = movieKeywordsResponse,
     popularity = 8.5,
     releaseDatesResponse = releaseDatesResponse,
     listProductionCountriesItemResponse = listOf(),
@@ -129,6 +165,7 @@ object DummyData {
     adult = false,
     homepage = "https://testmovie.com",
     status = "Released",
+    videos = videoResponse,
   )
 
   val ratingsItem = listOf(RatingsItem())
@@ -227,6 +264,7 @@ object DummyData {
     type = "Scripted",
     backdropPath = "/backdrop.jpg",
     genres = listOf(genresItemResponse),
+    keywords = tvKeywordsResponse,
     popularity = 8.5,
     productionCountriesResponse = listOf(),
     id = 1,
@@ -254,6 +292,8 @@ object DummyData {
     lastAirDate = "2024-01-15",
     homepage = "https://testtv.com",
     status = "Returning Series",
+    externalIds = externalIdResponse,
+    videos = videoResponse,
   )
 
   val tvDetailFull = TvDetail(
@@ -290,6 +330,8 @@ object DummyData {
     lastAirDate = "2013-09-29",
     homepage = "http://www.amc.com/shows/breaking-bad",
     status = "Ended",
+    externalIds = tvExternalIds,
+    videos = video,
   )
 
   private val ratingsItemResponse = RatingsItemResponse(
@@ -330,6 +372,64 @@ object DummyData {
     GenresItem(id = 2, name = "Comedy"),
   )
 
+  val ads = listOf(
+    Provider(
+      logoPath = "/ads.png",
+      providerId = 1,
+      providerName = "Ads Provider",
+      displayPriority = 1,
+    ),
+  )
+
+  val buy = listOf(
+    Provider(
+      logoPath = "/buy.png",
+      providerId = 2,
+      providerName = "Buy Provider",
+      displayPriority = 2,
+    ),
+  )
+
+  val flatrate = listOf(
+    Provider(
+      logoPath = "/stream.png",
+      providerId = 3,
+      providerName = "Streaming Provider",
+      displayPriority = 3,
+    ),
+  )
+
+  val free = listOf(
+    Provider(
+      logoPath = "/free.png",
+      providerId = 4,
+      providerName = "Free Provider",
+      displayPriority = 4,
+    ),
+  )
+
+  val rent = listOf(
+    Provider(
+      logoPath = "/rent.png",
+      providerId = 5,
+      providerName = "Rent Provider",
+      displayPriority = 5,
+    ),
+  )
+
+  val watchProvidersItem = WatchProvidersItem(
+    link = "https://some-provider.com",
+    ads = ads,
+    buy = buy,
+    flatrate = flatrate,
+    free = free,
+    rent = rent,
+  )
+
+  val watchProviders = WatchProviders(
+    results = mapOf("US" to watchProvidersItem),
+  )
+
   // region MOVIE
   const val MOVIE_ID = 1001
   val detailMovie = MovieDetail(
@@ -338,6 +438,7 @@ object DummyData {
     imdbId = IMDB_ID,
     voteAverage = 7.5,
     listGenres = listOf(GenresItem(id = 28, name = "Action")),
+    keywords = mediaKeywords,
     releaseDates = ReleaseDates(
       listReleaseDatesItem = listOf(
         ReleaseDatesItem(
@@ -385,6 +486,7 @@ object DummyData {
     id = 1,
     originalLanguage = "en",
     listGenres = genresItems,
+    keywords = mediaKeywords,
     voteAverage = 8.0,
     status = "Released",
     releaseDate = "2025-07-01",
@@ -393,6 +495,8 @@ object DummyData {
     budget = 1000000,
     revenue = 5000000L,
     popularity = 4444.0,
+    videos = video,
+    watchProviders = watchProviders,
   )
   // endregion MOVIE
 
@@ -427,20 +531,11 @@ object DummyData {
     releaseDateRegion = getReleaseDateRegion(tvDetailFull),
   )
 
-  val tvKeywordsResponse = TvKeywordsResponse(
-    id = 66666,
-    keywords = listOf(mediaKeywordsResponseItem),
-  )
-
-  val tvExternalIds = TvExternalIds(
-    imdbId = "tt1234567",
-    id = 999,
-  )
-
   val fullTvDetail = TvDetail(
     id = 1,
     originalLanguage = "en",
     listGenres = genresItems,
+    keywords = mediaKeywords,
     voteAverage = 7.5,
     status = "Returning Series",
     listOriginCountry = listOf("US"),
@@ -449,27 +544,12 @@ object DummyData {
     numberOfSeasons = 4,
     numberOfEpisodes = 96,
     popularity = 9.0,
+    externalIds = tvExternalIds,
+    videos = video,
+    watchProviders = watchProviders,
   )
+
   // endregion TV
-
-  val video = Video(
-    1234,
-    results = listOf(VideoItem(name = "Trailer", type = "Trailer", key = "Link Trailer")),
-  )
-
-  val watchProviders = WatchProviders(
-    results = mapOf(
-      "US" to WatchProvidersItem(
-        link = "https://some-provider.com",
-        ads = null,
-        buy = null,
-        flatrate = null,
-        free = null,
-        rent = null,
-      ),
-    ),
-    id = 1234,
-  )
 
   val omdbDetails = OMDbDetails(
     imdbID = IMDB_ID,
@@ -540,22 +620,6 @@ object DummyData {
       isDelete = true,
       isFavorite = false,
     )
-
-  val movieKeywordsResponse = MovieKeywordsResponse(
-    id = 44444,
-    keywords = listOf(mediaKeywordsResponseItem),
-  )
-
-  val mediaKeywordsItem1 = MediaKeywordsItem(id = 10, name = "superhero")
-
-  val mediaKeywordsItem2 = MediaKeywordsItem(id = 20, name = "adventure")
-
-  val mediaKeywordsItems = listOf(mediaKeywordsItem1, mediaKeywordsItem2)
-
-  val mediaKeywords = MediaKeywords(
-    id = 100,
-    keywords = mediaKeywordsItems,
-  )
 
   val releaseDateRegion = ReleaseDateRegion(
     regionRelease = "US",

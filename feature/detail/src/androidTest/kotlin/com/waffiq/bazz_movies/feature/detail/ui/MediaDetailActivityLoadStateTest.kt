@@ -14,9 +14,8 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisp
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_recommendation
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_recommendation_header
+import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailActivityTest
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaItem
-import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestHelper
-import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestSetup
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.RecommendationAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
@@ -35,8 +34,7 @@ import java.util.concurrent.CopyOnWriteArrayList
  * Instrumented test for [MediaDetailActivity] that checks state for recommendation list.
  */
 @HiltAndroidTest
-class MediaDetailActivityLoadStateTest :
-  MediaDetailActivityTestSetup by MediaDetailActivityTestHelper() {
+class MediaDetailActivityLoadStateTest : BaseMediaDetailActivityTest() {
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)

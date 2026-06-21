@@ -159,11 +159,10 @@ class MediaDetailActivity : AppCompatActivity() {
       uiManager.showGeneralInfo(dataExtra)
 
       uiManager.updateDetailUI(detail, isMovie = dataExtra.mediaType == MOVIE_MEDIA_TYPE)
+      watchProvidersManager.handleWatchProvidersState(detail.watchProviders)
     }
-    watchProvidersManager.handleWatchProvidersState(state.watchProviders)
     state.credits?.let { uiManager.updateCreditsUI(it) }
     state.omdbDetails?.let { uiManager.updateOMDbScores(it) }
-    uiManager.setupTrailerButton(state.videoLink)
 
     userInteractionHandler.renderState(state)
   }

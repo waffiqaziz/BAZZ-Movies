@@ -22,8 +22,7 @@ import com.waffiq.bazz_movies.feature.detail.R.id.rv_streaming
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_summary_header
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_toggle_watch_providers
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_watch_providers_message
-import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestHelper
-import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestSetup
+import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailActivityTest
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
@@ -39,8 +38,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class MediaDetailActivityWatchProvidersTest :
-  MediaDetailActivityTestSetup by MediaDetailActivityTestHelper() {
+class MediaDetailActivityWatchProvidersTest : BaseMediaDetailActivityTest() {
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)
@@ -135,14 +133,16 @@ class MediaDetailActivityWatchProvidersTest :
   fun watchProviderState_whenSuccessfulButEmptyData_hidesTheLayout() {
     context.launchMediaDetailActivity {
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        uiState.update { s ->
-          s.copy(
-            watchProviders = WatchProvidersUiState.Success(
-              emptyList(),
-              emptyList(),
-              emptyList(),
-              emptyList(),
-              emptyList(),
+        uiState.update { state ->
+          state.copy(
+            detail = state.detail?.copy(
+              watchProviders = WatchProvidersUiState.Success(
+                emptyList(),
+                emptyList(),
+                emptyList(),
+                emptyList(),
+                emptyList(),
+              ),
             ),
           )
         }
@@ -163,8 +163,12 @@ class MediaDetailActivityWatchProvidersTest :
   fun watchProviderState_whenErrorOccurs_showsError() {
     context.launchMediaDetailActivity {
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        uiState.update { s ->
-          s.copy(watchProviders = WatchProvidersUiState.Error("Error fetching watch providers"))
+        uiState.update { state ->
+          state.copy(
+            detail = state.detail?.copy(
+              watchProviders = WatchProvidersUiState.Error("Error fetching watch providers"),
+            ),
+          )
         }
       }
       performClickWatchProvidersButton()
@@ -185,7 +189,11 @@ class MediaDetailActivityWatchProvidersTest :
   fun watchProviderState_whenLoading_showsProgressBar() {
     context.launchMediaDetailActivity {
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        uiState.update { s -> s.copy(watchProviders = WatchProvidersUiState.Loading) }
+        uiState.update { state ->
+          state.copy(
+            detail = state.detail?.copy(watchProviders = WatchProvidersUiState.Loading),
+          )
+        }
       }
       shortDelay()
       progress_bar.isDisplayed()

@@ -9,8 +9,8 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.perform
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.textIsDisplayed
 import com.waffiq.bazz_movies.feature.detail.R.id.ib_play
-import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestHelper
-import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestSetup
+import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailActivityTest
+import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaDetail
 import com.waffiq.bazz_movies.feature.detail.ui.launcher.DefaultTrailerLauncher
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
@@ -32,8 +32,7 @@ import org.junit.Test
  * This test checks the behavior of the trailer link when different values are posted to it.
  */
 @HiltAndroidTest
-class MediaDetailActivityTrailerLinkTest :
-  MediaDetailActivityTestSetup by MediaDetailActivityTestHelper() {
+class MediaDetailActivityTrailerLinkTest : BaseMediaDetailActivityTest() {
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)
@@ -74,15 +73,15 @@ class MediaDetailActivityTrailerLinkTest :
   @Test
   fun trailerLink_withMixedValue_showsTrailerCorrectly() {
     context.launchMediaDetailActivity {
-      uiState.update { s -> s.copy(videoLink = null) }
+      uiState.update { s -> s.copy(detail = testMediaDetail.copy(trailer = null)) }
       ib_play.isNotDisplayed()
-      uiState.update { s -> s.copy(videoLink = "") }
+      uiState.update { s -> s.copy(detail = testMediaDetail.copy(trailer = "")) }
       ib_play.isNotDisplayed()
-      uiState.update { s -> s.copy(videoLink = " ") }
+      uiState.update { s -> s.copy(detail = testMediaDetail.copy(trailer = " ")) }
       ib_play.isNotDisplayed()
-      uiState.update { s -> s.copy(videoLink = "OIuG1bBkfs0") }
+      uiState.update { s -> s.copy(detail = testMediaDetail) }
       ib_play.performClick()
-      checkIntentData("${YOUTUBE_LINK_VIDEO}OIuG1bBkfs0")
+      checkIntentData("${YOUTUBE_LINK_VIDEO}video trailer")
     }
   }
 
@@ -98,11 +97,10 @@ class MediaDetailActivityTrailerLinkTest :
         activity.uiManager.trailerLauncher = mockTrailerLauncher
       }
 
-      uiState.update { s -> s.copy(videoLink = "test_video_id") }
       ib_play.performClick()
       yt_not_installed.textIsDisplayed()
 
-      verify { mockTrailerLauncher.launch(any(), "test_video_id") }
+      verify { mockTrailerLauncher.launch(any(), "video trailer") }
     }
   }
 }

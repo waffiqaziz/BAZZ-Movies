@@ -8,7 +8,4 @@ data class MovieKeywordsResponse(
 
   @Json(name = "keywords")
   override val keywords: List<MediaKeywordsResponseItem?>? = null,
-
-  @Json(name = "id")
-  override val id: Int? = null,
 ) : KeywordsResponse

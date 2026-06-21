@@ -4,6 +4,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.Genr
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.ProductionCountriesResponseItem
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.detailTvResponseDump
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.nextEpisodeToAirResponse
+import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.watchProvidersResultsMap
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNull
 import junit.framework.TestCase.assertTrue
@@ -19,6 +20,7 @@ class DetailTvResponseTest {
     assertEquals("Miniseries", detailTvResponse.type)
     assertEquals("When the Phone Rings", detailTvResponse.name)
     assertEquals("Drama", detailTvResponse.genres?.get(0)?.name)
+    assertEquals("family", detailTvResponse.keywords?.keywords?.get(0)?.name)
     assertEquals(394.215, detailTvResponse.popularity)
     assertEquals(8.4, detailTvResponse.voteAverage)
     assertEquals(141, detailTvResponse.voteCount)
@@ -30,6 +32,12 @@ class DetailTvResponseTest {
     assertEquals("https://program.imbc.com/WhenThePhoneRings", detailTvResponse.homepage)
     assertEquals("Kim Ji-woon", detailTvResponse.createdByResponse?.get(0)?.name)
     assertTrue(detailTvResponse.adult == false)
+    assertEquals("avatarthelastairbender", detailTvResponse.externalIds?.facebookId)
+    assertEquals(
+      "JUJUTSU KAISEN Opening | Kaikai Kitan by Eve",
+      detailTvResponse.videos?.results[0]?.name,
+    )
+    assertEquals(watchProvidersResultsMap, detailTvResponse.watchProviders?.results)
   }
 
   @Test
@@ -94,6 +102,7 @@ class DetailTvResponseTest {
     assertNull(detailTvResponse.type)
     assertNull(detailTvResponse.backdropPath)
     assertNull(detailTvResponse.genres)
+    assertNull(detailTvResponse.keywords)
     assertNull(detailTvResponse.popularity)
     assertNull(detailTvResponse.productionCountriesResponse)
     assertNull(detailTvResponse.id)
@@ -121,6 +130,9 @@ class DetailTvResponseTest {
     assertNull(detailTvResponse.lastAirDate)
     assertNull(detailTvResponse.homepage)
     assertNull(detailTvResponse.status)
+    assertNull(detailTvResponse.externalIds)
+    assertNull(detailTvResponse.videos)
+    assertNull(detailTvResponse.watchProviders)
   }
 
   @Test

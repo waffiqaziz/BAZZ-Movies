@@ -6,12 +6,12 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watc
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.Provider
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
+import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 
 object WatchProvidersMapper {
 
   fun WatchProvidersResponse.toWatchProviders(): WatchProviders =
     WatchProviders(
-      id = id,
       results = results?.mapValues { (_, countryData) ->
         countryData.toWatchProviders()
       },
@@ -34,4 +34,15 @@ object WatchProvidersMapper {
       providerName = providerName,
       displayPriority = displayPriority,
     )
+
+  fun WatchProviders?.toWatchProvidersState(region: String): WatchProvidersUiState =
+    this?.results?.get(region.uppercase())?.let { provider ->
+      WatchProvidersUiState.Success(
+        ads = provider.ads.orEmpty(),
+        buy = provider.buy.orEmpty(),
+        flatrate = provider.flatrate.orEmpty(),
+        free = provider.free.orEmpty(),
+        rent = provider.rent.orEmpty(),
+      )
+    } ?: WatchProvidersUiState.Error("No watch providers available")
 }
