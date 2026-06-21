@@ -6,12 +6,13 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesIte
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDates
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.mediaCredits
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.video
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 
-class DetailMovieTest {
+class MovieDetailTest {
 
   private val listGenres = listOf(GenresItem())
   private val releaseDates = ReleaseDates()
@@ -26,6 +27,7 @@ class DetailMovieTest {
     video = true,
     title = "Movie Title",
     backdropPath = "/backdrop.jpg",
+    credits = mediaCredits,
     revenue = 1000000L,
     listGenres = listGenres,
     popularity = 8.5,
@@ -59,6 +61,7 @@ class DetailMovieTest {
     assertNull(item.video)
     assertNull(item.title)
     assertNull(item.backdropPath)
+    assertNull(item.credits)
     assertNull(item.revenue)
     assertNull(item.listGenres)
     assertNull(item.popularity)
@@ -90,6 +93,7 @@ class DetailMovieTest {
     assertEquals(true, item.video)
     assertEquals("Movie Title", item.title)
     assertEquals("/backdrop.jpg", item.backdropPath)
+    assertEquals("full name", item.credits?.cast?.get(0)?.name)
     assertEquals(1000000L, item.revenue)
     assertEquals(listGenres, item.listGenres)
     assertEquals(8.5, item.popularity)

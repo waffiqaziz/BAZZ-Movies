@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.feature.detail.domain.model.movie
 
 import com.waffiq.bazz_movies.core.models.GenresItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.BelongsToCollection
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem
@@ -16,6 +17,7 @@ data class MovieDetail(
   val video: Boolean? = null,
   val title: String? = null,
   val backdropPath: String? = null,
+  val credits: MediaCredits? = null,
   val revenue: Long? = null,
   val listGenres: List<GenresItem?>? = null,
   val keywords: MediaKeywords? = null,

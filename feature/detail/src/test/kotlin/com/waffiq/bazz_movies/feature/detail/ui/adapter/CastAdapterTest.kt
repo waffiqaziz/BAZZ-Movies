@@ -8,7 +8,7 @@ import com.waffiq.bazz_movies.core.designsystem.databinding.ItemCastBinding
 import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.feature.detail.databinding.ItemCreditsPersonBinding
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseAdapterTest
-import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.testMediaCastItem
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.mediaCastItem
 import io.mockk.slot
 import io.mockk.verify
 import org.junit.Assert.assertEquals
@@ -137,7 +137,7 @@ class CastAdapterTest : BaseAdapterTest() {
     val binding = ItemCastBinding.inflate(inflater, FrameLayout(inflater.context), false)
     val viewHolder = adapter.HorizontalViewHolder(binding)
 
-    adapter.submitList(listOf(testMediaCastItem))
+    adapter.submitList(listOf(mediaCastItem))
     adapter.onBindViewHolder(viewHolder, 0)
 
     // use slot to capture MediaCastItem
@@ -152,8 +152,8 @@ class CastAdapterTest : BaseAdapterTest() {
 
     // expect captured MediaCastItem matches expected values
     val capturedResult = resultSlot.captured
-    assertEquals(testMediaCastItem.id, capturedResult.id)
-    assertEquals(testMediaCastItem.name, capturedResult.name)
+    assertEquals(mediaCastItem.id, capturedResult.id)
+    assertEquals(mediaCastItem.name, capturedResult.name)
   }
 
   @Test

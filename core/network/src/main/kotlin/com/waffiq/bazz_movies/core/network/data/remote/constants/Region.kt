@@ -11,11 +11,6 @@ enum class Region(val codeCountry: String) {
   ;
 
     companion object {
-
-    // fun fromId(id: String): Region? {
-    //   return entries.find { it.codeCountry == id }
-    // }
-
     fun List<Region>.toRegionQuery() = joinToString("|") { it.codeCountry }
   }
 }

@@ -4,7 +4,6 @@ import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.coroutines.IoDispatcher
 import com.waffiq.bazz_movies.core.network.data.remote.models.RatingRequest
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.MediaStateResponse
@@ -50,12 +49,6 @@ class TvRemoteDataSource @Inject constructor(
     createPager { page ->
       tvApiService.getTopRatedTv(page).results
     }.flow.flowOn(ioDispatcher)
-
-  override fun getTvCredits(tvId: Int): Flow<NetworkResult<MediaCreditsResponse>> =
-    executeApiCall(
-      apiCall = { tvApiService.getTvCredits(tvId) },
-      ioDispatcher = ioDispatcher,
-    )
 
   override fun getTvDetail(id: Int): Flow<NetworkResult<DetailTvResponse>> =
     executeApiCall(

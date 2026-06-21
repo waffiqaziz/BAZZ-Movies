@@ -7,8 +7,6 @@ import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.TV_ID
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.USER_REGION
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.detailMovie
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.detailTv
-import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.movieCredits
-import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.tvCredits
 import io.mockk.every
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -62,48 +60,6 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
       testLoadingScenario(
         mockCall = { mockDetailRepository.getMovieDetail(MOVIE_ID) },
         interactorCall = { interactor.getMovieDetailWithUserRegion(MOVIE_ID) },
-      )
-    }
-
-  @Test
-  fun getMovieCredits_whenSuccessful_emitsSuccess() =
-    runTest {
-      testSuccessScenario(
-        mockCall = { mockDetailRepository.getMovieCredits(MOVIE_ID) },
-        mockResponse = movieCredits,
-        interactorCall = { interactor.getMovieCredits(MOVIE_ID) },
-      ) { emission ->
-        assertEquals(movieCredits, emission.data)
-      }
-    }
-
-  @Test
-  fun getMovieCredits_whenUnsuccessful_emitsError() =
-    runTest {
-      testErrorScenario(
-        mockCall = { mockDetailRepository.getMovieCredits(MOVIE_ID) },
-        interactorCall = { interactor.getMovieCredits(MOVIE_ID) },
-      )
-    }
-
-  @Test
-  fun getTvCredits_whenSuccessful_emitsSuccess() =
-    runTest {
-      testSuccessScenario(
-        mockCall = { mockDetailRepository.getTvCredits(TV_ID) },
-        mockResponse = tvCredits,
-        interactorCall = { interactor.getTvCredits(TV_ID) },
-      ) { emission ->
-        assertEquals(tvCredits, emission.data)
-      }
-    }
-
-  @Test
-  fun getTvCredits_whenUnsuccessful_emitsError() =
-    runTest {
-      testErrorScenario(
-        mockCall = { mockDetailRepository.getTvCredits(TV_ID) },
-        interactorCall = { interactor.getTvCredits(TV_ID) },
       )
     }
 

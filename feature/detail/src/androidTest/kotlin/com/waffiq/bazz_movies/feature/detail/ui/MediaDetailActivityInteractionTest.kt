@@ -385,7 +385,11 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
   @Test
   fun showBottomSheet_whenButtonClicked_showsTheView() {
     context.launchMediaDetailActivity {
-      uiState.update { s -> s.copy(credits = testMediaCredits) }
+      uiState.update { state ->
+        state.copy(
+          detail = state.detail?.copy(credits = testMediaCredits),
+        )
+      }
       performOpenBottomSheet()
 
       // test cast value
@@ -405,7 +409,11 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
   @Test
   fun showBottomSheet_whenCreditsIsNull_showsNothing() {
     context.launchMediaDetailActivity {
-      uiState.update { s -> s.copy(credits = null) }
+      uiState.update { state ->
+        state.copy(
+          detail = state.detail?.copy(credits = null),
+        )
+      }
       performOpenBottomSheet()
 
       "Cast".doesNotExist()

@@ -1,9 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.data.repository
 
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseDetailRepositoryImplTest
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toMediaCredits
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toTvDetail
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -35,15 +33,5 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
       dataSourceCall = { mockTvRemoteDataSource.getTvDetail(id) },
       repositoryCall = { repository.getTvDetail(id) },
       verifyCall = { coVerify { mockTvRemoteDataSource.getTvDetail(id) } },
-    )
-
-  @Test
-  fun getTvCredits_whenSuccessful_returnsSuccessResult() =
-    runSuccessTest(
-      mockResponse = mockk<MediaCreditsResponse>(relaxed = true),
-      dataSourceCall = { mockTvRemoteDataSource.getTvCredits(id) },
-      repositoryCall = { repository.getTvCredits(id) },
-      expectedData = { it.toMediaCredits() },
-      verifyCall = { coVerify(atLeast = 1) { mockTvRemoteDataSource.getTvCredits(id) } },
     )
 }

@@ -88,13 +88,6 @@ class MediaDetailViewModel @Inject constructor(
     )
   }
 
-  fun getMovieCredits(movieId: Int) {
-    singleExecuteUseCase(
-      flowProvider = { getMediaDetailUseCase.getMovieCredits(movieId) },
-      onSuccess = { copy(credits = it) },
-    )
-  }
-
   fun getMovieRecommendation(movieId: Int) {
     viewModelScope.launch {
       getListMoviesUseCase.getMovieRecommendation(movieId).collect {
@@ -125,13 +118,6 @@ class MediaDetailViewModel @Inject constructor(
         updateState { copy(detail = it) }
         if (!it.imdbId.isNullOrEmpty()) getOMDbDetails(it.imdbId)
       },
-    )
-  }
-
-  fun getTvCredits(tvId: Int) {
-    singleExecuteUseCase(
-      flowProvider = { getMediaDetailUseCase.getTvCredits(tvId) },
-      onSuccess = { copy(credits = it) },
     )
   }
 

@@ -6,16 +6,17 @@ import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 
 data class MediaDetail(
   val id: Int,
-  val genre: String? = null,
-  val genreId: List<Int>? = null,
-  val duration: String? = null,
   val imdbId: String? = null,
   val ageRating: String? = null,
-  val tmdbScore: String? = null,
+  val credits: MediaCredits? = null,
+  val duration: String? = null,
+  val genre: String? = null,
+  val genreId: List<Int>? = null,
+  val keywords: List<MediaKeywordsItem?>? = null,
+  val language: String? = null,
   val releaseDateRegion: ReleaseDateRegion,
   val status: String? = null,
-  val language: String? = null,
-  val keywords: List<MediaKeywordsItem?>? = null,
+  val tmdbScore: String? = null,
   val trailer: String? = null,
   val watchProviders: WatchProvidersUiState = WatchProvidersUiState.Loading,
 

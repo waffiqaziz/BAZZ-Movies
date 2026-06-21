@@ -82,13 +82,11 @@ class DetailMovieDataManagerTest {
 
   private fun verifyMovieCalls(exactly: Int = 1) {
     verify(exactly = exactly) { detailViewModel.getMovieRecommendation(any()) }
-    verify(exactly = exactly) { detailViewModel.getMovieCredits(any()) }
     verify(exactly = exactly) { detailViewModel.getMovieDetail(any()) }
   }
 
   private fun verifyTvCalls(exactly: Int = 1) {
     verify(exactly = exactly) { detailViewModel.getTvRecommendation(any()) }
-    verify(exactly = exactly) { detailViewModel.getTvCredits(any()) }
     verify(exactly = exactly) { detailViewModel.getTvDetail(any()) }
   }
 }

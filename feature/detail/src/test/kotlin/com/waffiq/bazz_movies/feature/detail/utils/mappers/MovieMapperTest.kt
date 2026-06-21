@@ -31,6 +31,7 @@ class MovieMapperTest {
     assertEquals(false, detailMovie.video)
     assertEquals("Test Movie", detailMovie.title)
     assertEquals("/backdrop.jpg", detailMovie.backdropPath)
+    assertEquals("actor 3", detailMovie.credits?.cast?.get(1)?.name)
     assertEquals(1000000L, detailMovie.revenue)
     assertEquals(1, detailMovie.listGenres?.size)
     assertEquals(333, detailMovie.keywords?.keywords?.get(0)?.id)
@@ -70,6 +71,7 @@ class MovieMapperTest {
 
     assertEquals(null, detailMovie.imdbId)
     assertEquals(null, detailMovie.backdropPath)
+    assertEquals(null, detailMovie.credits)
     assertEquals(null, detailMovie.listGenres)
     assertEquals(null, detailMovie.keywords)
     assertEquals(null, detailMovie.releaseDates)

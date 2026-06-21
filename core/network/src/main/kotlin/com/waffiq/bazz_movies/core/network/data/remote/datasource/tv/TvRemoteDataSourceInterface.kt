@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.core.network.data.remote.datasource.tv
 
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.MediaStateResponse
@@ -21,7 +20,6 @@ interface TvRemoteDataSourceInterface {
 
   fun getTvRecommendation(tvId: Int): Flow<PagingData<MediaResponseItem>>
   fun getTopRatedTv(): Flow<PagingData<MediaResponseItem>>
-  fun getTvCredits(tvId: Int): Flow<NetworkResult<MediaCreditsResponse>>
   fun getTvDetail(id: Int): Flow<NetworkResult<DetailTvResponse>>
   fun getTvState(sessionId: String, id: Int): Flow<NetworkResult<MediaStateResponse>>
 

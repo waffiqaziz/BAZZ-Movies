@@ -9,9 +9,6 @@ data class MediaCreditsResponse(
   @Json(name = "cast")
   val cast: List<MediaCastResponseItem>,
 
-  @Json(name = "id")
-  val id: Int? = null,
-
   @Json(name = "crew")
   val crew: List<MediaCrewResponseItem>,
 )

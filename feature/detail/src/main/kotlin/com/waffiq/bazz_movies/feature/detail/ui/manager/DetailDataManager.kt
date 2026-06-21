@@ -32,39 +32,26 @@ class DetailDataManager(
     when (dataExtra.mediaType) {
       MOVIE_MEDIA_TYPE -> {
         detailViewModel.getMovieRecommendation(dataExtra.id)
-        loadMovieData()
+
+        // Credits (cast and crew)
+        // OMDb score via IMDb ID
+        // Movie details
+        // Trailer
+        // Watch providers based on the user's region
+        detailViewModel.getMovieDetail(dataExtra.id)
       }
 
       TV_MEDIA_TYPE -> {
         detailViewModel.getTvRecommendation(dataExtra.id)
-        loadTvData()
+
+        // - TV details
+        // - External IMDb ID (not included by default in TV show results)
+        // - OMDb score via IMDb ID
+        // - Credits (cast and crew)
+        // - Trailer
+        // - Watch providers based on the user's region
+        detailViewModel.getTvDetail(dataExtra.id)
       }
     }
-  }
-
-  /**
-   * Loads detailed data specific to a movie, including:
-   * - Credits (cast and crew)
-   * - Movie details
-   * - Trailer
-   * - Watch providers based on the user's region
-   */
-  private fun loadMovieData() {
-    detailViewModel.getMovieCredits(dataExtra.id)
-    detailViewModel.getMovieDetail(dataExtra.id)
-  }
-
-  /**
-   * Loads detailed data specific to a TV-series, including:
-   * - External IMDb ID (not included by default in TV show results)
-   * - OMDb score via IMDb ID
-   * - Credits (cast and crew)
-   * - TV details
-   * - Trailer
-   * - Watch providers based on the user's region
-   */
-  private fun loadTvData() {
-    detailViewModel.getTvCredits(dataExtra.id)
-    detailViewModel.getTvDetail(dataExtra.id)
   }
 }

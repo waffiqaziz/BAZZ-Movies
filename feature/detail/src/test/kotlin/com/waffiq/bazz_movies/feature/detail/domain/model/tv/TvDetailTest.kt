@@ -7,7 +7,7 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class DetailTvTest {
+class TvDetailTest {
 
   @Test
   fun createDetailTv_withValidValues_setsPropertiesCorrectly() {
@@ -18,6 +18,7 @@ class DetailTvTest {
     assertEquals(1, tvDetail.listNetworksItem?.size)
     assertEquals("Scripted", tvDetail.type)
     assertEquals("/backdrop.jpg", tvDetail.backdropPath)
+    assertEquals("name crew", tvDetail.credits?.crew?.get(0)?.name)
     assertEquals(1, tvDetail.listGenres?.size)
     assertEquals(100.5, tvDetail.popularity)
     assertEquals(1396, tvDetail.id)
@@ -55,6 +56,7 @@ class DetailTvTest {
     assertNull(detailTv.listNetworksItem)
     assertNull(detailTv.type)
     assertNull(detailTv.backdropPath)
+    assertNull(detailTv.credits)
     assertNull(detailTv.listGenres)
     assertNull(detailTv.popularity)
     assertNull(detailTv.listProductionCountriesItem)

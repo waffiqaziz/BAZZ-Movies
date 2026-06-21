@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.feature.detail.domain.usecase.composite
 
 import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
-import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
@@ -34,12 +33,6 @@ class GetMediaDetailInteractor @Inject constructor(
         }
       }
     }
-
-  override fun getMovieCredits(movieId: Int): Flow<Outcome<MediaCredits>> =
-    detailRepository.getMovieCredits(movieId)
-
-  override fun getTvCredits(tvId: Int): Flow<Outcome<MediaCredits>> =
-    detailRepository.getTvCredits(tvId)
 
   override fun getTvDetailWithUserRegion(tvId: Int): Flow<Outcome<MediaDetail>> =
     getRegion().flatMapConcat { region ->

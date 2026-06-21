@@ -52,7 +52,7 @@ class CreditsBottomSheet : BottomSheetDialogFragment() {
 
     setupBottomSheetBehavior()
 
-    val credits = viewModel.uiState.value.credits ?: return
+    val credits = viewModel.uiState.value.detail?.credits ?: return
     setupRecyclerView(credits)
     setupTabs(credits)
   }

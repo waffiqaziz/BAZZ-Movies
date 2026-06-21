@@ -78,7 +78,6 @@ object DataDumb {
 
   val testMediaCredits = MediaCredits(
     cast = listOf(testMediaCastItem, testMediaCastItem.copy(id = 89, name = "actor 2")),
-    id = 1234,
     crew = listOf(testMediaCrewItem),
   )
 
@@ -169,11 +168,6 @@ object DataDumb {
 
   val mediaDetailUiState = MediaDetailUiState(
     detail = testMediaDetail,
-    credits = MediaCredits(
-      cast = listOf(MediaCastItem()),
-      id = 90,
-      crew = listOf(MediaCrewItem()),
-    ),
     omdbDetails = OMDbDetails(),
     itemState = MediaState(
       id = 90,
