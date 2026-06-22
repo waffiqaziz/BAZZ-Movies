@@ -47,4 +47,7 @@ data class DetailPersonResponse(
 
   @Json(name = "homepage")
   val homepage: String? = null,
+
+  @Json(name = "combined_credits")
+  val combinedCredits: CombinedCreditResponse? = null,
 )

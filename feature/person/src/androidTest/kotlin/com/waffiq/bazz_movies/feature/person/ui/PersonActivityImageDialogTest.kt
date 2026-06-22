@@ -12,9 +12,8 @@ import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.feature.person.R.id.btn_close_dialog
 import com.waffiq.bazz_movies.feature.person.R.id.rv_photos
 import com.waffiq.bazz_movies.feature.person.R.id.view_pager_dialog
-import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testProfileItem
-import com.waffiq.bazz_movies.feature.person.testutils.DefaultPersonActivityTestHelper
-import com.waffiq.bazz_movies.feature.person.testutils.PersonActivityTestHelper
+import com.waffiq.bazz_movies.feature.person.testutils.BasePersonActivityTest
+import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testProfileItem
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -26,8 +25,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class PersonActivityImageDialogTest :
-  PersonActivityTestHelper by DefaultPersonActivityTestHelper() {
+class PersonActivityImageDialogTest : BasePersonActivityTest() {
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)

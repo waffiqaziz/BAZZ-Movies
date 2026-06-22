@@ -151,8 +151,7 @@ class PersonActivity : AppCompatActivity() {
     showSocialMediaPerson()
 
     // show known for
-    dataExtra.id?.let { personViewModel.getKnownFor(it) }
-    personViewModel.knownFor.observe(this) {
+    personViewModel.castList.observe(this) {
       adapterKnownFor.setCast(it)
     }
 

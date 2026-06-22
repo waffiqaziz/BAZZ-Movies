@@ -60,33 +60,29 @@ class PersonViewModelTest : BasePersonViewModelTest() {
   }
 
   @Test
-  fun getKnownFor_whenSuccessful_emitsSuccess() {
-    coEvery { getDetailPersonUseCase.getKnownForPerson(personId) } returns
-      successFlow(listOf(mockCastItem))
-
-    testViewModel(
-      runBlock = { personViewModel.getKnownFor(personId) },
-      liveData = personViewModel.knownFor,
-      expectedSuccess = listOf(mockCastItem),
-      verifyBlock = {
-        coVerify { getDetailPersonUseCase.getKnownForPerson(personId) }
-      },
-    )
-  }
-
-  @Test
-  fun getKnownFor_whenUnsuccessful_emitsError() =
+  fun getDetailPerson_creditsNull_returnsNull() =
     runTest {
-      coEvery { getDetailPersonUseCase.getKnownForPerson(personId) } returns errorFlow
+      coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns
+        flowSuccessWithLoading(mockDetailPerson.copy(credits = null))
 
-      testViewModel(
-        runBlock = { personViewModel.getKnownFor(personId) },
-        liveData = personViewModel.knownFor,
-        expectError = errorMessage,
-        verifyBlock = {
-          coVerify { getDetailPersonUseCase.getKnownForPerson(personId) }
-        },
-      )
+      personViewModel.getDetailPerson(personId)
+      advanceUntilIdle()
+
+      assertNull(personViewModel.castList.value)
+
+      coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns
+        flowSuccessWithLoading(
+          mockDetailPerson.copy(
+            credits = mockCreditsPerson.copy(
+              cast = null,
+            ),
+          ),
+        )
+
+      personViewModel.getDetailPerson(personId)
+      advanceUntilIdle()
+
+      assertNull(personViewModel.castList.value)
     }
 
   @Test

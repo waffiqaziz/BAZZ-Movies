@@ -7,6 +7,8 @@ import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
+import com.waffiq.bazz_movies.feature.person.domain.model.CombinedCreditPerson
+import com.waffiq.bazz_movies.feature.person.domain.model.CrewItem
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ImagePerson
@@ -31,15 +33,25 @@ abstract class BasePersonViewModelTest {
   protected val personId = 1
   protected val errorMessage = "Network error"
 
-  protected val mockDetailPerson = DetailPerson(
-    id = personId,
-    name = "John Doe",
-    biography = "Sample biography",
-  )
   protected val mockCastItem = CastItem(
     name = "name_person",
     id = 45678,
     originalTitle = "original_title",
+  )
+  protected val mockCrewItem = CrewItem(
+    id = 4314,
+    department = "director",
+    title = "movie title",
+  )
+  protected val mockCreditsPerson = CombinedCreditPerson(
+    cast = listOf(mockCastItem),
+    crew = listOf(mockCrewItem),
+  )
+  protected val mockDetailPerson = DetailPerson(
+    id = personId,
+    name = "John Doe",
+    biography = "Sample biography",
+    credits = mockCreditsPerson,
   )
   protected val mockProfilesItem = ProfilesItem(
     aspectRatio = 0.667,

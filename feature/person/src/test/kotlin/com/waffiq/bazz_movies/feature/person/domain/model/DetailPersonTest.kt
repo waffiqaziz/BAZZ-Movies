@@ -27,6 +27,7 @@ class DetailPersonTest {
     assertNull(detailPerson.id)
     assertNull(detailPerson.adult)
     assertNull(detailPerson.homepage)
+    assertNull(detailPerson.credits)
   }
 
   @Test

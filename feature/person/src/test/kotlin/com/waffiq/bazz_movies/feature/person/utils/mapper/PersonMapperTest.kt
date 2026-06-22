@@ -27,14 +27,12 @@ class PersonMapperTest {
       CrewItemResponse(id = 1, job = "cameraman", title = "what"),
       CrewItemResponse(id = 2, job = "director", title = "why"),
     )
-    val response = CombinedCreditResponse(
-      id = 345,
+    val combinedCreditResponse = CombinedCreditResponse(
       cast = listOfCastItemResponse,
       crew = listOfCrewItemResponse,
     )
 
-    val combinedCredit = response.toCombinedCredit()
-    assertEquals(345, combinedCredit.id)
+    val combinedCredit = combinedCreditResponse.toCombinedCredit()
     assertEquals("John", combinedCredit.cast?.get(0)?.name)
     assertEquals(12345, combinedCredit.cast?.get(0)?.voteCount)
     assertEquals("Rex", combinedCredit.cast?.get(1)?.name)
@@ -47,14 +45,9 @@ class PersonMapperTest {
 
   @Test
   fun toCombinedCredit_withNullValue_returnsCombinedCredit() {
-    val response = CombinedCreditResponse(
-      id = 4376,
-      cast = null,
-      crew = null,
-    )
+    val response = CombinedCreditResponse(cast = null, crew = null)
 
     val combinedCredit = response.toCombinedCredit()
-    assertEquals(4376, combinedCredit.id)
     assertNull(combinedCredit.crew)
     assertNull(combinedCredit.cast)
   }
@@ -87,7 +80,6 @@ class PersonMapperTest {
       order = 3,
     )
     val combinedCreditResponse = CombinedCreditResponse(
-      id = 4376,
       cast = listOf(castItemResponse),
       crew = null,
     )

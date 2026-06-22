@@ -9,7 +9,6 @@ class CombinedCreditPersonTest {
   fun combinedCreditPerson_withNullValue_returnsDefaultValue() {
     val combinedCreditPerson = CombinedCreditPerson()
 
-    assertNull(combinedCreditPerson.id)
     assertNull(combinedCreditPerson.cast)
     assertNull(combinedCreditPerson.crew)
   }

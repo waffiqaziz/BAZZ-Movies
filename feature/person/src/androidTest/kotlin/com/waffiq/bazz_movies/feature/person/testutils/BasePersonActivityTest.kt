@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario
+import androidx.test.espresso.intent.Intents
 import androidx.test.platform.app.InstrumentationRegistry
 import com.bumptech.glide.Glide
 import com.waffiq.bazz_movies.core.common.utils.Event
@@ -12,69 +13,74 @@ import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ProfilesItem
-import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testDetailPerson
-import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testExternalIDPerson
-import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testImagesList
-import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testKnownForList
-import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testMediaCastItem
+import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testDetailPerson
+import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testExternalIDPerson
+import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testImagesList
+import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testKnownForList
+import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testMediaCastItem
 import com.waffiq.bazz_movies.feature.person.ui.PersonActivity
 import com.waffiq.bazz_movies.feature.person.ui.PersonViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
+import org.junit.After
+import org.junit.Before
 
-/**
- * Default implementation of [PersonActivityTestHelper] for testing purposes.
- *
- * This class provides default mock implementations for the [PersonViewModel] and [INavigator]
- * used in person-related tests. It initializes the necessary LiveData objects with test data.
- */
-class DefaultPersonActivityTestHelper : PersonActivityTestHelper {
+abstract class BasePersonActivityTest {
 
-  override val detailPersonLiveData = MutableLiveData<DetailPerson>()
-  override val knownForLiveData = MutableLiveData<List<CastItem>>()
-  override val imagePersonLiveData = MutableLiveData<List<ProfilesItem>>()
-  override val externalIdPersonLiveData = MutableLiveData<ExternalIDPerson>()
-  override val errorStateLiveData = MutableLiveData<Event<String>>()
-  override val loadingStateLiveData = MutableLiveData<Boolean>()
-  override lateinit var context: Context
+  protected val detailPersonLiveData = MutableLiveData<DetailPerson>()
+  protected val imagePersonLiveData = MutableLiveData<List<ProfilesItem>>()
+  protected val creditPersonLiveData = MutableLiveData<List<CastItem>>()
+  protected val externalIdPersonLiveData = MutableLiveData<ExternalIDPerson>()
+  protected val errorStateLiveData = MutableLiveData<Event<String>>()
+  protected val loadingStateLiveData = MutableLiveData<Boolean>()
+  protected lateinit var context: Context
 
-  override fun setupBaseMocks() {
+  @Before
+  open fun init() {
+    Intents.init()
+  }
+
+  @After
+  fun tearDown() {
+    Intents.release()
+  }
+
+  protected fun setupBaseMocks() {
     loadingStateLiveData.postValue(false)
+    creditPersonLiveData.postValue(testKnownForList)
     detailPersonLiveData.postValue(testDetailPerson)
-    knownForLiveData.postValue(testKnownForList)
     imagePersonLiveData.postValue(testImagesList)
     externalIdPersonLiveData.postValue(testExternalIDPerson)
   }
 
-  override fun setupViewModelMocks(mockPersonViewModel: PersonViewModel) {
+  protected fun setupViewModelMocks(mockPersonViewModel: PersonViewModel) {
     every { mockPersonViewModel.detailPerson } returns detailPersonLiveData
-    every { mockPersonViewModel.knownFor } returns knownForLiveData
+    every { mockPersonViewModel.castList } returns creditPersonLiveData
     every { mockPersonViewModel.imagePerson } returns imagePersonLiveData
     every { mockPersonViewModel.externalIdPerson } returns externalIdPersonLiveData
     every { mockPersonViewModel.errorState } returns errorStateLiveData
     every { mockPersonViewModel.loadingState } returns loadingStateLiveData
 
     every { mockPersonViewModel.getDetailPerson(any()) } just Runs
-    every { mockPersonViewModel.getKnownFor(any()) } just Runs
     every { mockPersonViewModel.getImagePerson(any()) } just Runs
     every { mockPersonViewModel.getExternalIDPerson(any()) } just Runs
   }
 
-  override fun setupNavigatorMocks(mockNavigator: INavigator) {
+  protected fun setupNavigatorMocks(mockNavigator: INavigator) {
     every { mockNavigator.openDetails(any(), any()) } just Runs
     every { mockNavigator.openPersonDetails(any(), any()) } just Runs
   }
 
-  override fun initializeTest(context: Context) {
+  protected fun initializeTest(context: Context) {
     this.context = context
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       Glide.get(context).clearMemory()
     }
   }
 
-  override fun Context.launchPersonActivity(
+  protected fun Context.launchPersonActivity(
     person: MediaCastItem,
     block: (ActivityScenario<PersonActivity>) -> Unit,
   ) {
@@ -87,12 +93,12 @@ class DefaultPersonActivityTestHelper : PersonActivityTestHelper {
     }
   }
 
-  override fun Context.launchPersonActivity(block: (ActivityScenario<PersonActivity>) -> Unit) {
+  protected fun Context.launchPersonActivity(block: (ActivityScenario<PersonActivity>) -> Unit) {
     this.launchPersonActivity(testMediaCastItem) { block(it) }
   }
 
-  override fun Context.launchNullPersonActivity(
-    person: MediaCastItem?,
+  protected fun Context.launchNullPersonActivity(
+    person: MediaCastItem? = null,
     block: (ActivityScenario<PersonActivity>) -> Unit,
   ) {
     val intent = Intent(this, PersonActivity::class.java).apply {
