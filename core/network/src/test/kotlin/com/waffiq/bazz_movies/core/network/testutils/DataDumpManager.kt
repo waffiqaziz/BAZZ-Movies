@@ -413,7 +413,6 @@ object DataDumpManager {
   )
 
   val mediaCreditsResponseDump1 = MediaCreditsResponse(
-    id = 1175842,
     cast = listOf(
       mediaCastItemResponseDump,
       MediaCastResponseItem(
@@ -477,7 +476,6 @@ object DataDumpManager {
   )
 
   val mediaCreditsResponseDump2 = MediaCreditsResponse(
-    id = 246,
     cast = listOf(
       MediaCastResponseItem(
         adult = false,
@@ -758,6 +756,7 @@ object DataDumpManager {
     video = false,
     title = "Deadpool & Wolverine",
     backdropPath = "/lD4mhKoiaXpKrtBEjACeWgz7w0O.jpg",
+    credits = mediaCreditsResponseDump1,
     revenue = 1338073645,
     listGenresItemResponse = listOf(
       GenresResponseItem(id = 28, name = "Action"),
@@ -910,6 +909,7 @@ object DataDumpManager {
     networksResponse = listOf(networksItemResponseDump),
     type = "Miniseries",
     backdropPath = "/2vtI9xzD6qpDzY9m8kV67QY0qfM.jpg",
+    credits = mediaCreditsResponseDump2,
     genres = listOf(
       GenresResponseItem(name = "Drama", id = 18),
       GenresResponseItem(name = "Mystery", id = 9648),

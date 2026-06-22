@@ -3,11 +3,13 @@ package com.waffiq.bazz_movies.feature.detail.testutils
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.models.Favorite
 import com.waffiq.bazz_movies.core.models.GenresItem
-import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.RatingsItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.GenresResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCastResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCrewResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.MediaKeywordsResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.MovieKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.TvKeywordsResponse
@@ -29,7 +31,6 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.vide
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponseItem
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinString
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
-import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem
@@ -58,6 +59,9 @@ import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAg
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformDuration
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformTMDBScore
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaCreditsMapper.toMediaCastItem
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaCreditsMapper.toMediaCrewItem
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toMediaCredits
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toVideo
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toExternalTvID
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toNextEpisodeToAir
@@ -69,6 +73,46 @@ object DummyData {
   const val USER_REGION = "US"
   const val ERROR_MESSAGE = "Network error"
   const val SESSION_ID = "session123"
+
+  val mediaCastResponseItem = MediaCastResponseItem(
+    castId = 1111,
+    character = "character",
+    gender = 1,
+    creditId = "1234",
+    knownForDepartment = "actor 2",
+    originalName = "original name",
+    popularity = 431.0,
+    name = "full name",
+    profilePath = "profile_path_cast.jpg",
+    id = 123456,
+    adult = false,
+    order = 12,
+  )
+
+  val mediaCrewResponseItem = MediaCrewResponseItem(
+    gender = 2,
+    creditId = "122333",
+    knownForDepartment = "director",
+    originalName = "original name crew",
+    popularity = 3333.0,
+    name = "name crew",
+    profilePath = "profile_path_crew.jpg",
+    id = 3333,
+    adult = false,
+    department = "director",
+    job = "director",
+  )
+
+  val mediaCastItem = mediaCastResponseItem.toMediaCastItem()
+
+  val mediaCrewItem = mediaCrewResponseItem.toMediaCrewItem()
+
+  val mediaCreditsResponse = MediaCreditsResponse(
+    cast = listOf(mediaCastResponseItem, mediaCastResponseItem.copy(id = 89, name = "actor 3")),
+    crew = listOf(mediaCrewResponseItem),
+  )
+
+  val mediaCredits = mediaCreditsResponse.toMediaCredits()
 
   val mediaKeywordsResponseItem = MediaKeywordsResponseItem(
     id = 333,
@@ -143,6 +187,7 @@ object DummyData {
     video = false,
     title = "Test Movie",
     backdropPath = "/backdrop.jpg",
+    credits = mediaCreditsResponse,
     revenue = 1000000,
     listGenresItemResponse = listOf(genresItemResponse),
     keywords = movieKeywordsResponse,
@@ -263,6 +308,7 @@ object DummyData {
     networksResponse = listOf(networksItemResponse),
     type = "Scripted",
     backdropPath = "/backdrop.jpg",
+    credits = mediaCreditsResponse,
     genres = listOf(genresItemResponse),
     keywords = tvKeywordsResponse,
     popularity = 8.5,
@@ -302,6 +348,7 @@ object DummyData {
     listNetworksItem = listOf(NetworksItem(name = "AMC")),
     type = "Scripted",
     backdropPath = "/backdrop.jpg",
+    credits = mediaCredits,
     listGenres = listOf(GenresItem()),
     popularity = 100.5,
     listProductionCountriesItem = listOf(ProductionCountriesItem()),
@@ -468,20 +515,6 @@ object DummyData {
     releaseDateRegion = getReleaseDateRegion(detailMovie, USER_REGION),
   )
 
-  val movieCredits = MediaCredits(
-    cast = listOf(),
-    crew = listOf(),
-    id = MOVIE_ID,
-  )
-
-  val movieMediaItem = MediaItem(
-    mediaType = MOVIE_MEDIA_TYPE,
-    title = "Transformers",
-    id = 99999,
-    adult = false,
-    voteCount = 8000,
-  )
-
   val fullMovieDetail = MovieDetail(
     id = 1,
     originalLanguage = "en",
@@ -513,22 +546,6 @@ object DummyData {
       ),
     ),
     firstAirDate = "2023-12-20T00:00:00.000Z",
-  )
-
-  val tvCredits = MediaCredits(cast = listOf(), crew = listOf(), id = TV_ID)
-
-  val tvMediaDetail = MediaDetail(
-    id = TV_ID,
-    genre = transformListGenreToJoinString(tvDetailFull.listGenres),
-    genreId = transformToGenreIDs(tvDetailFull.listGenres),
-    duration = tvDetailFull.status,
-    imdbId = "",
-    ageRating = getAgeRating(
-      tvDetailFull,
-      getReleaseDateRegion(tvDetailFull).regionRelease,
-    ),
-    tmdbScore = getTransformTMDBScore(tvDetailFull.voteAverage),
-    releaseDateRegion = getReleaseDateRegion(tvDetailFull),
   )
 
   val fullTvDetail = TvDetail(
@@ -624,21 +641,6 @@ object DummyData {
   val releaseDateRegion = ReleaseDateRegion(
     regionRelease = "US",
     releaseDate = "2023",
-  )
-
-  val testMediaCastItem = MediaCastItem(
-    castId = 1111,
-    character = "character",
-    gender = 1,
-    creditId = "22222",
-    knownForDepartment = "actor 1",
-    originalName = "original name",
-    popularity = 12345.0,
-    name = "name",
-    profilePath = "profile_path.jpg",
-    id = 123456,
-    adult = false,
-    order = 12,
   )
 
   val favoriteMovie = Favorite(

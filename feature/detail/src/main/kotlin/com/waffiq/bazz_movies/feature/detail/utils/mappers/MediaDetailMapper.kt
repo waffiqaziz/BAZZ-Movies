@@ -41,7 +41,6 @@ object MediaDetailMapper {
   fun MediaCreditsResponse.toMediaCredits() =
     MediaCredits(
       cast = cast.map { it.toMediaCastItem() },
-      id = id,
       crew = crew.map { it.toMediaCrewItem() },
     )
 

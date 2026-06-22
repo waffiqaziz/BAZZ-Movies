@@ -193,8 +193,8 @@ class MediaDetailActivityTest : BaseMediaDetailActivityTest() {
   fun releaseDateValue_withEmptyValue_showsReleaseDateCorrectly() {
     // release date empty
     context.launchMediaDetailActivity {
-      uiState.update { s ->
-        s.copy(
+      uiState.update { state ->
+        state.copy(
           detail = testMediaDetail.copy(
             releaseDateRegion = ReleaseDateRegion(regionRelease = "", releaseDate = ""),
           ),
@@ -207,8 +207,15 @@ class MediaDetailActivityTest : BaseMediaDetailActivityTest() {
   @Test
   fun creditsValue_withEmptyValue_showsReleaseDateCorrectly() {
     context.launchMediaDetailActivity {
-      uiState.update { s ->
-        s.copy(credits = testMediaCredits.copy(crew = emptyList(), cast = emptyList()))
+      uiState.update { state ->
+        state.copy(
+          detail = state.detail?.copy(
+            credits = testMediaCredits.copy(
+              crew = emptyList(),
+              cast = emptyList(),
+            ),
+          ),
+        )
       }
       rv_cast.isNotDisplayed()
     }

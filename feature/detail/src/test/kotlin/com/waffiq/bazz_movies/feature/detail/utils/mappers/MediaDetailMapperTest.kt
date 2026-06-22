@@ -96,12 +96,10 @@ class MediaDetailMapperTest {
 
     val creditsResponse = MediaCreditsResponse(
       cast = listOf(castItem),
-      id = 12345,
       crew = listOf(crewItem),
     )
 
     val credits: MediaCredits = creditsResponse.toMediaCredits()
-    assertEquals(12345, credits.id)
     assertEquals(1, credits.cast.size)
     assertEquals(1, credits.crew.size)
     assertEquals(1, credits.cast[0].castId)

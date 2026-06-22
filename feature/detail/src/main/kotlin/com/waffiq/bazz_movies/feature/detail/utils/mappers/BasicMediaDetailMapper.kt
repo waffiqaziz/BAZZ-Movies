@@ -24,18 +24,21 @@ object BasicMediaDetailMapper {
   fun TvDetail.toMediaDetail(userRegion: String): MediaDetail =
     MediaDetail(
       id = id ?: 0,
-      genre = transformListGenreToJoinString(listGenres),
-      genreId = transformToGenreIDs(listGenres),
       imdbId = externalIds?.imdbId.orEmpty(),
       ageRating = getAgeRating(this, userRegion),
-      tmdbScore = getTransformTMDBScore(voteAverage),
+      credits = credits,
+      genre = transformListGenreToJoinString(listGenres),
+      genreId = transformToGenreIDs(listGenres),
+      keywords = keywords?.keywords,
+      language = getLanguageName(originalLanguage),
       releaseDateRegion = getReleaseDateRegion(this),
       status = status,
+      tmdbScore = getTransformTMDBScore(voteAverage),
       trailer = videos?.toLink(),
       watchProviders = watchProviders?.toWatchProvidersState(userRegion)
         ?: WatchProvidersUiState.Error("No watch providers available"),
-      language = getLanguageName(originalLanguage),
-      keywords = keywords?.keywords,
+
+      // tv related
       totalEpisodes = numberOfEpisodes,
       totalSeasons = numberOfSeasons,
 
@@ -51,21 +54,24 @@ object BasicMediaDetailMapper {
   fun MovieDetail.toMediaDetail(releaseDateRegion: ReleaseDateRegion): MediaDetail =
     MediaDetail(
       id = id ?: 0,
-      genre = transformListGenreToJoinString(listGenres), // for view
-      genreId = transformToGenreIDs(listGenres),
-      duration = getTransformDuration(runtime),
       imdbId = imdbId,
       ageRating = getAgeRating(this, releaseDateRegion.regionRelease),
-      tmdbScore = getTransformTMDBScore(voteAverage),
+      credits = credits,
+      genre = transformListGenreToJoinString(listGenres), // for view
+      genreId = transformToGenreIDs(listGenres),
+      keywords = keywords?.keywords,
+      language = getLanguageName(originalLanguage),
       releaseDateRegion = releaseDateRegion,
       status = status,
+      tmdbScore = getTransformTMDBScore(voteAverage),
       trailer = videos?.toLink(),
       watchProviders = watchProviders?.toWatchProvidersState(releaseDateRegion.regionRelease)
         ?: WatchProvidersUiState.Error("No watch providers available"),
+
+      // movie related
       budget = toUsd(budget),
+      duration = getTransformDuration(runtime),
       revenue = toUsd(revenue),
-      language = getLanguageName(originalLanguage),
-      keywords = keywords?.keywords,
 
       // updated data
       title = titleHandler(title, originalTitle),

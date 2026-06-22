@@ -27,11 +27,6 @@ enum class Keyword(val id: String) {
   ;
 
     companion object {
-
-    // fun fromId(id: String): Keyword? {
-    //   return entries.find { it.id == id }
-    // }
-
     fun List<Keyword>.toKeywordQuery() = joinToString("|") { it.id }
   }
 }

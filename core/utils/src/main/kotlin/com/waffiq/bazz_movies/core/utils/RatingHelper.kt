@@ -9,7 +9,7 @@ object RatingHelper {
    * For example: 10/10 or 8.5/10
    */
   fun ratingHandler(rating: Float?): String =
-    DecimalFormat("#.#").format((rating ?: 0F)).toString() + "/10"
+    DecimalFormat("#.#").format(rating ?: 0F).toString() + "/10"
 
   /**
    * Handle rating bar to set the value

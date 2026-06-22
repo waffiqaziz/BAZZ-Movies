@@ -21,6 +21,7 @@ class MediaDetailTest {
     assertEquals(123, detail.id)
     assertNull(detail.genre)
     assertNull(detail.genreId)
+    assertNull(detail.credits)
     assertNull(detail.duration)
     assertNull(detail.imdbId)
     assertNull(detail.ageRating)

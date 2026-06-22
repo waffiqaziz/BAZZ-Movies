@@ -19,6 +19,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.tv.SeasonsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toGenresItem
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toMediaCredits
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toProductionCountriesItem
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toSpokenLanguagesItem
@@ -35,6 +36,7 @@ object TvMapper {
       listNetworksItem = networksResponse?.map { it?.toNetworksItem() },
       type = type,
       backdropPath = backdropPath,
+      credits = credits?.toMediaCredits(),
       listGenres = genres?.map { it?.toGenresItem() },
       keywords = keywords?.toMediaKeywords(),
       popularity = popularity,
