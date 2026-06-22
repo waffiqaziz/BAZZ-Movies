@@ -24,8 +24,8 @@ import com.waffiq.bazz_movies.feature.detail.R.id.btn_more_recommendation
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_view_all_cast
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_watchlist
 import com.waffiq.bazz_movies.feature.detail.R.id.iv_poster
+import com.waffiq.bazz_movies.feature.detail.R.id.layout_recommendation
 import com.waffiq.bazz_movies.feature.detail.R.id.rating_bar_action
-import com.waffiq.bazz_movies.feature.detail.R.id.rv_cast
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_genre
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_recommendation
 import com.waffiq.bazz_movies.feature.detail.R.id.score_section
@@ -277,7 +277,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-          UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = false),
+            UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = false),
         )
       }
 
@@ -286,7 +286,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-          UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = true),
+            UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = true),
         )
       }
 
@@ -297,7 +297,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-          UpdateMediaStateResult(isSuccess = false, isFavorite = false, isDelete = false),
+            UpdateMediaStateResult(isSuccess = false, isFavorite = false, isDelete = false),
         )
       }
 
@@ -306,7 +306,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-          UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = false),
+            UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = false),
         )
       }
 
@@ -315,7 +315,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-          UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = true),
+            UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = true),
         )
       }
 
@@ -324,7 +324,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-          UpdateMediaStateResult(isSuccess = false, isFavorite = true, isDelete = false),
+            UpdateMediaStateResult(isSuccess = false, isFavorite = true, isDelete = false),
         )
       }
 
@@ -423,7 +423,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
 
   private fun performOpenBottomSheet() {
     btn_view_all_cast.performScrollTo()
-    rv_cast.performScrollTo()
+    layout_recommendation.performScrollTo()
     btn_view_all_cast.performClick()
   }
 
