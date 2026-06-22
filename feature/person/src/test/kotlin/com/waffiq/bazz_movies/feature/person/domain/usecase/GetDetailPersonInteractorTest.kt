@@ -3,8 +3,6 @@ package com.waffiq.bazz_movies.feature.person.domain.usecase
 import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.models.Outcome
-import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
-import com.waffiq.bazz_movies.feature.person.domain.model.CombinedCreditPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ImagePerson
@@ -40,36 +38,6 @@ class GetDetailPersonInteractorTest {
   )
   private val personId = 12345
   private val errorMessage = "Network error"
-
-  private val castItem = CastItem(
-    firstAirDate = "2014-02-17",
-    overview = "lorem_ipsum",
-    originalLanguage = "en",
-    episodeCount = 1,
-    listGenreIds = listOf(80, 28, 53),
-    posterPath = "/poser_path.jpg",
-    listOriginCountry = listOf("origin_country"),
-    backdropPath = "/backdrop_path.jpg",
-    character = "character_name",
-    creditId = "credit_id",
-    mediaType = "movie",
-    originalName = "original_name",
-    popularity = 63992.0,
-    voteAverage = 9f,
-    name = "name",
-    id = 12345,
-    adult = false,
-    voteCount = 500,
-    originalTitle = "original_title",
-    video = true,
-    title = "title",
-    releaseDate = "2003-01-26",
-    order = 3,
-  )
-  private val combinedCreditPerson = CombinedCreditPerson(
-    cast = listOf(castItem),
-    crew = null,
-  )
 
   private val profilesItem = ProfilesItem(
     aspectRatio = 0.667,
@@ -133,6 +101,18 @@ class GetDetailPersonInteractorTest {
       getDetailPersonInteractor.getDetailPerson(personId).test {
         assertEquals(errorMessage, awaitOutcomeError())
         awaitComplete()
+      }
+
+      coVerify(exactly = 1) { mockRepository.getDetailPerson(personId) }
+    }
+
+  @Test
+  fun getDetailPerson_whenLoading_emitsLoading() =
+    runTest {
+      coEvery { mockRepository.getDetailPerson(personId) } returns flowLoading
+
+      getDetailPersonInteractor.getDetailPerson(personId).test {
+        awaitOutcomeLoading()
       }
 
       coVerify(exactly = 1) { mockRepository.getDetailPerson(personId) }
@@ -228,6 +208,7 @@ class GetDetailPersonInteractorTest {
   private suspend fun <T> ReceiveTurbine<Outcome<T>>.awaitOutcomeLoading() {
     val emission = awaitItem()
     assertTrue(emission is Outcome.Loading)
+    awaitComplete()
   }
 
   private fun <T> flowSuccess(data: T) = flowOf(Outcome.Success(data))
