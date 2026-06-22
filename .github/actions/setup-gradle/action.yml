@@ -25,7 +25,10 @@ runs:
 
     - name: Get local.properties from secrets
       shell: bash
-      run: echo "${{ inputs.local_properties }}" > $GITHUB_WORKSPACE/local.properties
+      env:
+        LOCAL_PROPERTIES: ${{ inputs.local_properties }}
+      run: |
+        printf '%s' "$LOCAL_PROPERTIES" > "$GITHUB_WORKSPACE/local.properties"
 
     - name: Copy CI gradle.properties
       shell: bash

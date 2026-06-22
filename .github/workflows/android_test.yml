@@ -756,8 +756,13 @@ jobs:
           token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
 
+      - name: Download DeepSource CLI
+        run: |
+          curl -fsSL https://deepsource.io/cli -o deepsource-install.sh
+          cat deepsource-install.sh
+
       - name: Install DeepSource CLI
-        run: curl https://deepsource.io/cli | sh
+        run: sh deepsource-install.sh
 
       - name: Upload coverage reports to DeepSource
         run: |
