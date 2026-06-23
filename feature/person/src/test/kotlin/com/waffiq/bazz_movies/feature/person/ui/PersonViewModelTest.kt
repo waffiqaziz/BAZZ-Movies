@@ -1,10 +1,13 @@
 package com.waffiq.bazz_movies.feature.person.ui
 
+import androidx.lifecycle.Observer
 import com.waffiq.bazz_movies.core.models.Outcome
+import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.ImagePerson
 import com.waffiq.bazz_movies.feature.person.testutils.BasePersonViewModelTest
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -14,6 +17,8 @@ import org.junit.Assert.assertNull
 import org.junit.Test
 
 class PersonViewModelTest : BasePersonViewModelTest() {
+
+  val observer = mockk<Observer<List<CastItem>>>(relaxed = true)
 
   @Test
   fun getDetailPerson_whenSuccessful_emitsSuccess() {
@@ -60,34 +65,53 @@ class PersonViewModelTest : BasePersonViewModelTest() {
   }
 
   @Test
-  fun getKnownFor_whenSuccessful_emitsSuccess() {
-    coEvery { getDetailPersonUseCase.getKnownForPerson(personId) } returns
-      successFlow(listOf(mockCastItem))
+  fun castList_whenNotNull_returnsCorrectData() {
+    coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns
+      flowSuccessWithLoading(mockDetailPerson)
 
     testViewModel(
-      runBlock = { personViewModel.getKnownFor(personId) },
-      liveData = personViewModel.knownFor,
+      runBlock = { personViewModel.getDetailPerson(personId) },
+      liveData = personViewModel.castList,
       expectedSuccess = listOf(mockCastItem),
+      checkLoading = true,
       verifyBlock = {
-        coVerify { getDetailPersonUseCase.getKnownForPerson(personId) }
+        coVerify { getDetailPersonUseCase.getDetailPerson(personId) }
       },
     )
   }
 
   @Test
-  fun getKnownFor_whenUnsuccessful_emitsError() =
+  fun castList_whenCastNull_returnsEmptyList() =
     runTest {
-      coEvery { getDetailPersonUseCase.getKnownForPerson(personId) } returns errorFlow
+      personViewModel.castList.observeForever(observer)
+      coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns
+        successFlow(
+          mockDetailPerson.copy(
+            credits = mockCreditsPerson.copy(
+              cast = null,
+            ),
+          ),
+        )
 
-      testViewModel(
-        runBlock = { personViewModel.getKnownFor(personId) },
-        liveData = personViewModel.knownFor,
-        expectError = errorMessage,
-        verifyBlock = {
-          coVerify { getDetailPersonUseCase.getKnownForPerson(personId) }
-        },
-      )
+      personViewModel.getDetailPerson(personId)
+      advanceUntilIdle()
+      assertEquals(emptyList<CastItem>(), personViewModel.castList.value)
+
+      personViewModel.castList.removeObserver(observer)
     }
+
+  @Test
+  fun castList_whenCreditsNull_returnsEmptyList() = runTest {
+    personViewModel.castList.observeForever(observer)
+    coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns
+      successFlow(mockDetailPerson.copy(credits = null))
+
+    personViewModel.getDetailPerson(personId)
+    advanceUntilIdle()
+    assertEquals(emptyList<CastItem>(), personViewModel.castList.value)
+
+    personViewModel.castList.removeObserver(observer)
+  }
 
   @Test
   fun getImagePerson_whenSuccessful_emitsSuccess() {

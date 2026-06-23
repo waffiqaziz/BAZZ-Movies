@@ -982,7 +982,140 @@ object DataDumpManager {
     watchlist = true,
   )
 
-  val personResponseDump = DetailPersonResponse(
+  val castItemResponseDump = CastItemResponse(
+    firstAirDate = "2022-10-10",
+    adult = false,
+    backdropPath = "/nH6hPhJq3EEv9CnBZgXU3IQnpJo.jpg",
+    genreIds = listOf(12, 53, 878),
+    id = 74,
+    originalLanguage = "en",
+    episodeCount = 1,
+    originalTitle = "War of the Worlds",
+    overview = """
+      Ray Ferrier is a divorced dockworker and less-than-perfect father. Soon after his ex-wife and 
+      her new husband drop off his teenage son and young daughter for a rare weekend visit, a strange 
+      and powerful lightning storm touches down.
+    """.trimIndent(),
+    popularity = 50.065,
+    posterPath = "/6Biy7R9LfumYshur3YKhpj56MpB.jpg",
+    originCountry = listOf("US"),
+    releaseDate = "2005-06-13",
+    title = "War of the Worlds",
+    video = false,
+    name = "Name",
+    voteAverage = 6.5f,
+    voteCount = 8409,
+    character = "Ray Ferrier",
+    creditId = "52fe4213c3a36847f800226b",
+    order = 0,
+    mediaType = "movie",
+    originalName = "War of the Worlds",
+  )
+
+  val crewItemResponseDump = CrewItemResponse(
+    adult = false,
+    backdropPath = "/z354BaTVzKj7E60WLzDoSmUuO4u.jpg",
+    genreIds = listOf(18, 28, 10752),
+    id = 616,
+    originalLanguage = "en",
+    originalTitle = "The Last Samurai",
+    overview = "Nathan Algren is an American hired",
+    popularity = 44.954f,
+    posterPath = "/lsasOSgYI85EHygtT5SvcxtZVYT.jpg",
+    releaseDate = "2003-12-05",
+    title = "The Last Samurai",
+    video = false,
+    voteAverage = 7.6f,
+    voteCount = 6884,
+    creditId = "52fe425ec3a36847f8018e1f",
+    department = "Production",
+    job = "Producer",
+    mediaType = "movie",
+  )
+
+  val castItemResponse2 = CastItemResponse(
+    adult = false,
+    backdropPath = "/r1gLQFbpkWWLrOEPmpqzzMIUxxj.jpg",
+    genreIds = listOf(878, 28, 53),
+    id = 180,
+    originalLanguage = "en",
+    originalTitle = "Minority Report",
+    overview = """
+          John Anderton is a top 'Precrime' cop in the late-21st century, when technology can predict 
+          crimes before they're committed. But Anderton becomes the quarry when another investigator 
+          targets him for a murder charge.
+    """.trimIndent(),
+    popularity = 39.352,
+    posterPath = "/qtgFcnwh9dAFLocsDk2ySDVS8UF.jpg",
+    releaseDate = "2002-06-20",
+    title = "Minority Report",
+    video = false,
+    voteAverage = 7.4f,
+    voteCount = 8730,
+    character = "Chief John Anderton [Pre-Crime]",
+    creditId = "52fe4223c3a36847f8006f53",
+    order = 0,
+    mediaType = "movie",
+  )
+
+  val crewItemResponse2 = CrewItemResponse(
+    adult = false,
+    backdropPath = "/wwLufumafJojc59hgIamHyJSTO9.jpg",
+    genreIds = listOf(878, 10749, 18, 14, 53, 9648),
+    id = 1903,
+    originalLanguage = "en",
+    originalTitle = "Vanilla Sky",
+    overview = """
+          David Aames has it all: wealth, good looks and gorgeous women on his arm. But just as he 
+          begins falling for the warmhearted Sofia, his face is horribly disfigured in a car accident. 
+          That's just the beginning of his troubles as the lines between illusion and reality, between 
+          life and death, are blurred.
+    """.trimIndent(),
+    popularity = 33.937f,
+    posterPath = "/cAh2pCiNPftsY3aSqJuIOde7uWr.jpg",
+    releaseDate = "2001-12-14",
+    title = "Vanilla Sky",
+    video = false,
+    voteAverage = 6.8f,
+    voteCount = 4152,
+    creditId = "52fe4320c3a36847f803c339",
+    department = "Production",
+    job = "Producer",
+    mediaType = "movie",
+  )
+
+  val crewItemResponse3 = CrewItemResponse(
+    adult = false,
+    backdropPath = "/5IxQYCNd0pU8wYDrvHiVIaWDWGX.jpg",
+    genreIds = listOf(27, 9648, 53),
+    id = 1933,
+    originalLanguage = "en",
+    originalTitle = "The Others",
+    overview = """
+          Grace is a religious woman who lives in an old house kept dark because her two children, Anne 
+          and Nicholas, have a rare sensitivity to light. When the family begins to suspect the house 
+          is haunted, Grace fights to protect her children at any cost in the face of strange events 
+          and disturbing visions.
+    """.trimIndent(),
+    popularity = 42.581f,
+    posterPath = "/p8g1vlTvpM6nr2hMMiZ1fUlKF0D.jpg",
+    releaseDate = "2001-08-02",
+    title = "The Others",
+    video = false,
+    voteAverage = 7.609f,
+    voteCount = 6543,
+    creditId = "52fe4323c3a36847f803d391",
+    department = "Production",
+    job = "Executive Producer",
+    mediaType = "movie",
+  )
+
+  val combinedCreditResponseDump = CombinedCreditResponse(
+    cast = listOf(castItemResponseDump, castItemResponse2),
+    crew = listOf(crewItemResponseDump, crewItemResponse2, crewItemResponse3),
+  )
+
+  val detailPersonResponse = DetailPersonResponse(
     alsoKnownAs = listOf(
       "ฮีธ เลดเจอร์",
       "ヒース・レジャー",
@@ -1018,6 +1151,7 @@ object DataDumpManager {
     id = 1810,
     adult = false,
     homepage = null,
+    combinedCredits = combinedCreditResponseDump,
   )
 
   val profileItemResponseDump = ProfilesItemResponse(
@@ -1087,141 +1221,6 @@ object DataDumpManager {
         width = 581,
         iso6391 = null,
         height = 872,
-      ),
-    ),
-  )
-
-  val castItemResponseDump = CastItemResponse(
-    firstAirDate = "2022-10-10",
-    adult = false,
-    backdropPath = "/nH6hPhJq3EEv9CnBZgXU3IQnpJo.jpg",
-    genreIds = listOf(12, 53, 878),
-    id = 74,
-    originalLanguage = "en",
-    episodeCount = 1,
-    originalTitle = "War of the Worlds",
-    overview = """
-      Ray Ferrier is a divorced dockworker and less-than-perfect father. Soon after his ex-wife and 
-      her new husband drop off his teenage son and young daughter for a rare weekend visit, a strange 
-      and powerful lightning storm touches down.
-    """.trimIndent(),
-    popularity = 50.065,
-    posterPath = "/6Biy7R9LfumYshur3YKhpj56MpB.jpg",
-    originCountry = listOf("US"),
-    releaseDate = "2005-06-13",
-    title = "War of the Worlds",
-    video = false,
-    name = "Name",
-    voteAverage = 6.5f,
-    voteCount = 8409,
-    character = "Ray Ferrier",
-    creditId = "52fe4213c3a36847f800226b",
-    order = 0,
-    mediaType = "movie",
-    originalName = "War of the Worlds",
-  )
-
-  val crewItemResponseDump = CrewItemResponse(
-    adult = false,
-    backdropPath = "/z354BaTVzKj7E60WLzDoSmUuO4u.jpg",
-    genreIds = listOf(18, 28, 10752),
-    id = 616,
-    originalLanguage = "en",
-    originalTitle = "The Last Samurai",
-    overview = "Nathan Algren is an American hired",
-    popularity = 44.954f,
-    posterPath = "/lsasOSgYI85EHygtT5SvcxtZVYT.jpg",
-    releaseDate = "2003-12-05",
-    title = "The Last Samurai",
-    video = false,
-    voteAverage = 7.6f,
-    voteCount = 6884,
-    creditId = "52fe425ec3a36847f8018e1f",
-    department = "Production",
-    job = "Producer",
-    mediaType = "movie",
-  )
-
-  val combinedCreditResponseDump = CombinedCreditResponse(
-    id = 500,
-    cast = listOf(
-      castItemResponseDump,
-      CastItemResponse(
-        adult = false,
-        backdropPath = "/r1gLQFbpkWWLrOEPmpqzzMIUxxj.jpg",
-        genreIds = listOf(878, 28, 53),
-        id = 180,
-        originalLanguage = "en",
-        originalTitle = "Minority Report",
-        overview = """
-          John Anderton is a top 'Precrime' cop in the late-21st century, when technology can predict 
-          crimes before they're committed. But Anderton becomes the quarry when another investigator 
-          targets him for a murder charge.
-        """.trimIndent(),
-        popularity = 39.352,
-        posterPath = "/qtgFcnwh9dAFLocsDk2ySDVS8UF.jpg",
-        releaseDate = "2002-06-20",
-        title = "Minority Report",
-        video = false,
-        voteAverage = 7.4f,
-        voteCount = 8730,
-        character = "Chief John Anderton [Pre-Crime]",
-        creditId = "52fe4223c3a36847f8006f53",
-        order = 0,
-        mediaType = "movie",
-      ),
-    ),
-    crew = listOf(
-      crewItemResponseDump,
-      CrewItemResponse(
-        adult = false,
-        backdropPath = "/wwLufumafJojc59hgIamHyJSTO9.jpg",
-        genreIds = listOf(878, 10749, 18, 14, 53, 9648),
-        id = 1903,
-        originalLanguage = "en",
-        originalTitle = "Vanilla Sky",
-        overview = """
-          David Aames has it all: wealth, good looks and gorgeous women on his arm. But just as he 
-          begins falling for the warmhearted Sofia, his face is horribly disfigured in a car accident. 
-          That's just the beginning of his troubles as the lines between illusion and reality, between 
-          life and death, are blurred.
-        """.trimIndent(),
-        popularity = 33.937f,
-        posterPath = "/cAh2pCiNPftsY3aSqJuIOde7uWr.jpg",
-        releaseDate = "2001-12-14",
-        title = "Vanilla Sky",
-        video = false,
-        voteAverage = 6.8f,
-        voteCount = 4152,
-        creditId = "52fe4320c3a36847f803c339",
-        department = "Production",
-        job = "Producer",
-        mediaType = "movie",
-      ),
-      CrewItemResponse(
-        adult = false,
-        backdropPath = "/5IxQYCNd0pU8wYDrvHiVIaWDWGX.jpg",
-        genreIds = listOf(27, 9648, 53),
-        id = 1933,
-        originalLanguage = "en",
-        originalTitle = "The Others",
-        overview = """
-          Grace is a religious woman who lives in an old house kept dark because her two children, Anne 
-          and Nicholas, have a rare sensitivity to light. When the family begins to suspect the house 
-          is haunted, Grace fights to protect her children at any cost in the face of strange events 
-          and disturbing visions.
-        """.trimIndent(),
-        popularity = 42.581f,
-        posterPath = "/p8g1vlTvpM6nr2hMMiZ1fUlKF0D.jpg",
-        releaseDate = "2001-08-02",
-        title = "The Others",
-        video = false,
-        voteAverage = 7.609f,
-        voteCount = 6543,
-        creditId = "52fe4323c3a36847f803d391",
-        department = "Production",
-        job = "Executive Producer",
-        mediaType = "movie",
       ),
     ),
   )

@@ -118,7 +118,7 @@ class ImagePersonAdapterTest {
     val viewHolder = ImagePersonAdapter.ViewHolder(binding)
 
     val testCases = listOf(
-      ProfilesItem(filePath = "valid_image.jpg") to (TMDB_IMG_LINK_POSTER_W185 + "valid_image.jpg"),
+      ProfilesItem(filePath = "valid_image.jpg") to TMDB_IMG_LINK_POSTER_W185 + "valid_image.jpg",
       ProfilesItem(filePath = null) to null, // use `ic_poster_error`
       ProfilesItem(filePath = "") to null, // use `ic_poster_error`
     )

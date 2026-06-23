@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.feature.person.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.models.Outcome
@@ -25,11 +26,12 @@ class PersonViewModel @Inject constructor(
   private val _detailPerson = MutableLiveData<DetailPerson>()
   val detailPerson: LiveData<DetailPerson> get() = _detailPerson
 
-  private val _knownFor = MutableLiveData<List<CastItem>>()
-  val knownFor: LiveData<List<CastItem>> get() = _knownFor
-
   private val _imagePerson = MutableLiveData<List<ProfilesItem>>()
   val imagePerson: LiveData<List<ProfilesItem>> get() = _imagePerson
+
+  val castList: LiveData<List<CastItem>> = _detailPerson.map {
+    it.credits?.cast.orEmpty()
+  }
 
   private val _externalIdPerson = MutableLiveData<ExternalIDPerson>()
   val externalIdPerson: LiveData<ExternalIDPerson> get() = _externalIdPerson
@@ -46,13 +48,6 @@ class PersonViewModel @Inject constructor(
       onSuccess = { _detailPerson.value = it },
       onFinallySuccess = { _loadingState.value = false },
       onLoading = { _loadingState.value = true },
-    )
-  }
-
-  fun getKnownFor(id: Int) {
-    executeUseCase(
-      flowProvider = { getDetailPersonUseCase.getKnownForPerson(id) },
-      onSuccess = { _knownFor.value = it },
     )
   }
 

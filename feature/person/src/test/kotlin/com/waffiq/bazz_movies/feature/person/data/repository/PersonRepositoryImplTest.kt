@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.feature.person.data.repository
 
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CombinedCreditResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.DetailPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ExternalIDPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ImagePersonResponse
@@ -8,7 +7,6 @@ import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testLoadingState
 import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testSuccessfulCall
 import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testUnsuccessfulCall
 import com.waffiq.bazz_movies.feature.person.testutils.BasePersonRepositoryImplTest
-import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toCombinedCredit
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toDetailPerson
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toImagePerson
@@ -50,41 +48,6 @@ class PersonRepositoryImplTest : BasePersonRepositoryImplTest() {
         dataSourceCall = { mockPersonRemoteDataSource.getPersonDetails(id) },
         repositoryCall = { repository.getDetailPerson(id) },
         verifyDataSourceCall = { coVerify { mockPersonRemoteDataSource.getPersonDetails(id) } },
-      )
-    }
-
-  @Test
-  fun getKnownForPerson_whenSuccessful_returnsSuccessResult() =
-    runTest {
-      val mockResponse = mockk<CombinedCreditResponse>(relaxed = true)
-      testSuccessfulCall(
-        mockResponse = mockResponse,
-        dataSourceCall = { mockPersonRemoteDataSource.getPersonCredits(id) },
-        repositoryCall = { repository.getKnownForPerson(id) },
-        expectedData = mockResponse.toCombinedCredit(),
-        verifyDataSourceCall = {
-          coVerify(atLeast = 1) { mockPersonRemoteDataSource.getPersonCredits(id) }
-        },
-      )
-    }
-
-  @Test
-  fun getKnownForPerson_whenUnsuccessful_returnsErrorResult() =
-    runTest {
-      testUnsuccessfulCall(
-        dataSourceCall = { mockPersonRemoteDataSource.getPersonCredits(id) },
-        repositoryCall = { repository.getKnownForPerson(id) },
-        verifyDataSourceCall = { coVerify { mockPersonRemoteDataSource.getPersonCredits(id) } },
-      )
-    }
-
-  @Test
-  fun getKnownForPerson_whenLoadingEmitted_returnsLoadingOutcome() =
-    runTest {
-      testLoadingState(
-        dataSourceCall = { mockPersonRemoteDataSource.getPersonCredits(id) },
-        repositoryCall = { repository.getKnownForPerson(id) },
-        verifyDataSourceCall = { coVerify { mockPersonRemoteDataSource.getPersonCredits(id) } },
       )
     }
 

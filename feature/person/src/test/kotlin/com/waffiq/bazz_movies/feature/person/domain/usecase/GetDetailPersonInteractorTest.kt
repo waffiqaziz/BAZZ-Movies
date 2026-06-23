@@ -3,8 +3,6 @@ package com.waffiq.bazz_movies.feature.person.domain.usecase
 import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.models.Outcome
-import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
-import com.waffiq.bazz_movies.feature.person.domain.model.CombinedCreditPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ImagePerson
@@ -14,7 +12,6 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -41,37 +38,6 @@ class GetDetailPersonInteractorTest {
   )
   private val personId = 12345
   private val errorMessage = "Network error"
-
-  private val castItem = CastItem(
-    firstAirDate = "2014-02-17",
-    overview = "lorem_ipsum",
-    originalLanguage = "en",
-    episodeCount = 1,
-    listGenreIds = listOf(80, 28, 53),
-    posterPath = "/poser_path.jpg",
-    listOriginCountry = listOf("origin_country"),
-    backdropPath = "/backdrop_path.jpg",
-    character = "character_name",
-    creditId = "credit_id",
-    mediaType = "movie",
-    originalName = "original_name",
-    popularity = 63992.0,
-    voteAverage = 9f,
-    name = "name",
-    id = 12345,
-    adult = false,
-    voteCount = 500,
-    originalTitle = "original_title",
-    video = true,
-    title = "title",
-    releaseDate = "2003-01-26",
-    order = 3,
-  )
-  private val combinedCreditPerson = CombinedCreditPerson(
-    cast = listOf(castItem),
-    id = 12345678,
-    crew = null,
-  )
 
   private val profilesItem = ProfilesItem(
     aspectRatio = 0.667,
@@ -141,88 +107,15 @@ class GetDetailPersonInteractorTest {
     }
 
   @Test
-  fun getKnownForPerson_whenSuccessful_emitsSuccess() =
+  fun getDetailPerson_whenLoading_emitsLoading() =
     runTest {
-      coEvery { mockRepository.getKnownForPerson(personId) } returns
-        flowSuccess(combinedCreditPerson)
+      coEvery { mockRepository.getDetailPerson(personId) } returns flowLoading
 
-      getDetailPersonInteractor.getKnownForPerson(personId).test {
-        val result = awaitSuccessData()
-        assertEquals("2014-02-17", result[0].firstAirDate)
-        assertEquals("lorem_ipsum", result[0].overview)
-        assertEquals("en", result[0].originalLanguage)
-        assertEquals(1, result[0].episodeCount)
-        assertEquals(listOf(80, 28, 53), result[0].listGenreIds)
-        assertEquals("/poser_path.jpg", result[0].posterPath)
-        assertEquals(listOf("origin_country"), result[0].listOriginCountry)
-        assertEquals("/backdrop_path.jpg", result[0].backdropPath)
-        assertEquals("character_name", result[0].character)
-        assertEquals("credit_id", result[0].creditId)
-        assertEquals("movie", result[0].mediaType)
-        assertEquals("original_name", result[0].originalName)
-        assertEquals(63992.0, result[0].popularity)
-        assertEquals(9f, result[0].voteAverage)
-        assertEquals("name", result[0].name)
-        assertEquals(12345, result[0].id)
-        assertFalse(result[0].adult)
-        assertEquals(500, result[0].voteCount)
-        assertEquals("original_title", result[0].originalTitle)
-        assertTrue(result[0].video)
-        assertEquals("title", result[0].title)
-        assertEquals("2003-01-26", result[0].releaseDate)
-        assertEquals(3, result[0].order)
-
-        awaitComplete()
-      }
-
-      coVerify(exactly = 1) { mockRepository.getKnownForPerson(personId) }
-    }
-
-  @Test
-  fun getKnownForPerson_whenLoading_emitsLoading() =
-    runTest {
-      coEvery { mockRepository.getKnownForPerson(personId) } returns flowLoading
-
-      getDetailPersonInteractor.getKnownForPerson(personId).test {
+      getDetailPersonInteractor.getDetailPerson(personId).test {
         awaitOutcomeLoading()
-        awaitComplete()
-      }
-      coVerify { mockRepository.getKnownForPerson(personId) }
-    }
-
-  @Test
-  fun getKnownForPerson_whenUnsuccessful_emitsError() =
-    runTest {
-      coEvery { mockRepository.getKnownForPerson(personId) } returns flowError
-
-      getDetailPersonInteractor.getKnownForPerson(personId).test {
-        assertEquals(errorMessage, awaitOutcomeError())
-        awaitComplete()
-      }
-      coVerify { mockRepository.getKnownForPerson(personId) }
-    }
-
-  @Test
-  fun getKnownForPerson_whenSuccessful_sortsCastItemsByVoteCountDescending() =
-    runTest {
-      val castItems = listOf(
-        castItem.copy(voteCount = 100, id = 1),
-        castItem.copy(voteCount = 500, id = 2),
-        castItem.copy(voteCount = 300, id = 3),
-      )
-
-      val sortedCastItems = castItems.sortedByDescending { it.voteCount }
-      val combinedCreditPerson = CombinedCreditPerson(cast = castItems, id = 12345678, crew = null)
-
-      coEvery { mockRepository.getKnownForPerson(personId) } returns
-        flowSuccess(combinedCreditPerson)
-
-      getDetailPersonInteractor.getKnownForPerson(personId).test {
-        assertEquals(sortedCastItems, awaitSuccessData())
-        awaitComplete()
       }
 
-      coVerify(exactly = 1) { mockRepository.getKnownForPerson(personId) }
+      coVerify(exactly = 1) { mockRepository.getDetailPerson(personId) }
     }
 
   @Test
@@ -315,6 +208,7 @@ class GetDetailPersonInteractorTest {
   private suspend fun <T> ReceiveTurbine<Outcome<T>>.awaitOutcomeLoading() {
     val emission = awaitItem()
     assertTrue(emission is Outcome.Loading)
+    awaitComplete()
   }
 
   private fun <T> flowSuccess(data: T) = flowOf(Outcome.Success(data))

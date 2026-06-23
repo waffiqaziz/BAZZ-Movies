@@ -3,12 +3,10 @@ package com.waffiq.bazz_movies.feature.person.data.repository
 import com.waffiq.bazz_movies.core.mappers.NetworkResultMapper.toOutcome
 import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.person.PersonRemoteDataSource
-import com.waffiq.bazz_movies.feature.person.domain.model.CombinedCreditPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ImagePerson
 import com.waffiq.bazz_movies.feature.person.domain.repository.IPersonRepository
-import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toCombinedCredit
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toDetailPerson
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toImagePerson
@@ -23,9 +21,6 @@ class PersonRepositoryImpl @Inject constructor(
 
   override fun getDetailPerson(id: Int): Flow<Outcome<DetailPerson>> =
     personRemoteDataSource.getPersonDetails(id).toOutcome { it.toDetailPerson() }
-
-  override fun getKnownForPerson(id: Int): Flow<Outcome<CombinedCreditPerson>> =
-    personRemoteDataSource.getPersonCredits(id).toOutcome { it.toCombinedCredit() }
 
   override fun getImagePerson(id: Int): Flow<Outcome<ImagePerson>> =
     personRemoteDataSource.getPersonImages(id).toOutcome { it.toImagePerson() }

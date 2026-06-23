@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person
 
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.personResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.detailPersonResponse
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNull
 import junit.framework.TestCase.assertTrue
@@ -12,7 +12,7 @@ class DetailPersonResponseTest {
 
   @Test
   fun detailPersonResponse_withValidValues_setsPropertiesCorrectly() {
-    val detailPersonResponse = personResponseDump
+    val detailPersonResponse = detailPersonResponse
     assertEquals("希斯·萊傑", detailPersonResponse.alsoKnownAs?.get(3))
     assertEquals("1979-04-04", detailPersonResponse.birthday)
     assertEquals(2, detailPersonResponse.gender)
@@ -49,6 +49,7 @@ class DetailPersonResponseTest {
     assertNull(detailPersonResponse.id)
     assertNull(detailPersonResponse.adult)
     assertNull(detailPersonResponse.homepage)
+    assertNull(detailPersonResponse.combinedCredits)
   }
 
   @Test

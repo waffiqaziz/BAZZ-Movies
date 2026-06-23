@@ -6,7 +6,7 @@ import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ProfilesItem
 
-object DataDumpTest {
+object DummyData {
 
   // helper methods to create test data
   val testMediaCastItem =

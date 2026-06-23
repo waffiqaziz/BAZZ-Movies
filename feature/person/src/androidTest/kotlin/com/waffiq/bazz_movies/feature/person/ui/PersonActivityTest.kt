@@ -51,13 +51,11 @@ import com.waffiq.bazz_movies.feature.person.R.id.tv_born
 import com.waffiq.bazz_movies.feature.person.R.id.tv_dead_header
 import com.waffiq.bazz_movies.feature.person.R.id.tv_death
 import com.waffiq.bazz_movies.feature.person.R.id.view_group_social_media
-import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testCastItem
-import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testDetailPerson
-import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testExternalIDPerson
-import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testMediaCastItem
-import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testProfileItem
-import com.waffiq.bazz_movies.feature.person.testutils.DefaultPersonActivityTestHelper
-import com.waffiq.bazz_movies.feature.person.testutils.PersonActivityTestHelper
+import com.waffiq.bazz_movies.feature.person.testutils.BasePersonActivityTest
+import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testDetailPerson
+import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testExternalIDPerson
+import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testMediaCastItem
+import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testProfileItem
 import com.waffiq.bazz_movies.feature.person.testutils.TestHelper.isRefreshing
 import com.waffiq.bazz_movies.feature.person.testutils.TestHelper.withCollapsingToolbarTitle
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper
@@ -82,7 +80,7 @@ import org.junit.Test
 import kotlin.test.assertTrue
 
 @HiltAndroidTest
-class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTestHelper() {
+class PersonActivityTest : BasePersonActivityTest() {
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)
@@ -116,12 +114,11 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
         InstrumentationRegistry.getInstrumentation().runOnMainSync {
           loadingStateLiveData.postValue(true)
           detailPersonLiveData.postValue(testDetailPerson)
-          knownForLiveData.postValue(listOf(testCastItem))
           imagePersonLiveData.postValue(listOf(testProfileItem))
           externalIdPersonLiveData.postValue(testExternalIDPerson)
           loadingStateLiveData.postValue(false)
         }
-        shortDelay()
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync()
 
         iv_picture.hasContentDescription("with_profile")
         collapse.isDisplayed()
@@ -135,7 +132,6 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
         rv_photos.isDisplayed()
 
         verify { mockPersonViewModel.getDetailPerson(any<Int>()) }
-        verify { mockPersonViewModel.getKnownFor(any<Int>()) }
         verify { mockPersonViewModel.getImagePerson(any<Int>()) }
         verify { mockPersonViewModel.getExternalIDPerson(any<Int>()) }
       }
@@ -222,7 +218,6 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
   fun dataPerson_whenNoId_shouldNoProblem() =
     runTest {
       context.launchPersonActivity(testMediaCastItem.copy(id = null)) {
-        verify(exactly = 0) { mockPersonViewModel.getKnownFor(any()) }
         verify(exactly = 0) { mockPersonViewModel.getImagePerson(any()) }
         verify(exactly = 0) { mockPersonViewModel.getDetailPerson(any()) }
         verify(exactly = 0) { mockPersonViewModel.getExternalIDPerson(any()) }

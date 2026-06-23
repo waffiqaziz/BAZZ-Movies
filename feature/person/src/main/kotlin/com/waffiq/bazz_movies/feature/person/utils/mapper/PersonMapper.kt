@@ -15,14 +15,14 @@ import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ImagePerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ProfilesItem
+import kotlin.collections.sortedByDescending
 
 object PersonMapper {
 
   fun CombinedCreditResponse.toCombinedCredit() =
     CombinedCreditPerson(
-      cast = cast?.map { it.toCastItem() },
-      id = id,
-      crew = crew?.map { it.toCrewItem() },
+      cast = cast?.map { it.toCastItem() }?.sortedByDescending { it.voteCount },
+      crew = crew?.map { it.toCrewItem() }?.sortedByDescending { it.voteCount },
     )
 
   private fun CastItemResponse.toCastItem() =
@@ -90,6 +90,7 @@ object PersonMapper {
       id = id,
       adult = adult,
       homepage = homepage,
+      credits = combinedCredits?.toCombinedCredit(),
     )
 
   fun ImagePersonResponse.toImagePerson() =

@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.person
 
 import com.waffiq.bazz_movies.core.coroutines.IoDispatcher
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CombinedCreditResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.DetailPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ExternalIDPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ImagePersonResponse
@@ -28,12 +27,6 @@ class PersonRemoteDataSource @Inject constructor(
   override fun getPersonImages(id: Int): Flow<NetworkResult<ImagePersonResponse>> =
     executeApiCall(
       apiCall = { personApiService.getPersonImages(id) },
-      ioDispatcher = ioDispatcher,
-    )
-
-  override fun getPersonCredits(id: Int): Flow<NetworkResult<CombinedCreditResponse>> =
-    executeApiCall(
-      apiCall = { personApiService.getPersonCredits(id) },
       ioDispatcher = ioDispatcher,
     )
 
