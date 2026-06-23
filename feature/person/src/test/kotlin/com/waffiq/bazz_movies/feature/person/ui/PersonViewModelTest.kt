@@ -101,17 +101,18 @@ class PersonViewModelTest : BasePersonViewModelTest() {
     }
 
   @Test
-  fun castList_whenCreditsNull_returnsEmptyList() = runTest {
-    personViewModel.castList.observeForever(observer)
-    coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns
-      successFlow(mockDetailPerson.copy(credits = null))
+  fun castList_whenCreditsNull_returnsEmptyList() =
+    runTest {
+      personViewModel.castList.observeForever(observer)
+      coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns
+        successFlow(mockDetailPerson.copy(credits = null))
 
-    personViewModel.getDetailPerson(personId)
-    advanceUntilIdle()
-    assertEquals(emptyList<CastItem>(), personViewModel.castList.value)
+      personViewModel.getDetailPerson(personId)
+      advanceUntilIdle()
+      assertEquals(emptyList<CastItem>(), personViewModel.castList.value)
 
-    personViewModel.castList.removeObserver(observer)
-  }
+      personViewModel.castList.removeObserver(observer)
+    }
 
   @Test
   fun getImagePerson_whenSuccessful_emitsSuccess() {
@@ -177,37 +178,6 @@ class PersonViewModelTest : BasePersonViewModelTest() {
         expectError = errorMessage,
         verifyBlock = {
           coVerify { getDetailPersonUseCase.getImagePerson(personId) }
-        },
-      )
-    }
-
-  @Test
-  fun getExternalIDPerson_whenSuccessful_emitsSuccess() =
-    runTest {
-      coEvery { getDetailPersonUseCase.getExternalIDPerson(personId) } returns
-        successFlow(mockExternalIDPerson)
-
-      testViewModel(
-        runBlock = { personViewModel.getExternalIDPerson(personId) },
-        liveData = personViewModel.externalIdPerson,
-        expectedSuccess = mockExternalIDPerson,
-        verifyBlock = {
-          coVerify { getDetailPersonUseCase.getExternalIDPerson(personId) }
-        },
-      )
-    }
-
-  @Test
-  fun getExternalIDPerson_whenUnsuccessful_emitsError() =
-    runTest {
-      coEvery { getDetailPersonUseCase.getExternalIDPerson(personId) } returns errorFlow
-
-      testViewModel(
-        runBlock = { personViewModel.getExternalIDPerson(personId) },
-        liveData = personViewModel.externalIdPerson,
-        expectError = errorMessage,
-        verifyBlock = {
-          coVerify { getDetailPersonUseCase.getExternalIDPerson(personId) }
         },
       )
     }

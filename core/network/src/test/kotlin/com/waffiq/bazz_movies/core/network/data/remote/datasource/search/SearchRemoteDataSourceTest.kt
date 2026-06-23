@@ -8,8 +8,8 @@ import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingFlowSe
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingSearchSource
 import io.mockk.coEvery
 import io.mockk.coVerify
-import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class SearchRemoteDataSourceTest : BaseMediaDataSourceTest() {

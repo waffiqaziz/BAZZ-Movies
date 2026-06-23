@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.retrofit.services
 
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.DetailPersonResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ExternalIDPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ImagePersonResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -21,9 +20,4 @@ interface PersonApiService {
     @Path("personId") personId: Int,
     @Query("language") language: String = "en-US",
   ): Response<ImagePersonResponse>
-
-  @GET("3/person/{personId}/external_ids")
-  suspend fun getPersonExternalIds(
-    @Path("personId") personId: Int,
-  ): Response<ExternalIDPersonResponse>
 }

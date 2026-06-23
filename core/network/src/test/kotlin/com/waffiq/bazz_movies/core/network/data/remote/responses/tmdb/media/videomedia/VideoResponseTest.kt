@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia
 
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertNotNull
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Test
 
 class VideoResponseTest {

@@ -4,17 +4,16 @@ import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
-import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ImagePerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ProfilesItem
 import com.waffiq.bazz_movies.feature.person.domain.repository.IPersonRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -51,20 +50,6 @@ class GetDetailPersonInteractorTest {
   private val imagePerson = ImagePerson(
     profiles = listOf(profilesItem),
     id = 12345,
-  )
-
-  private val externalIdPerson = ExternalIDPerson(
-    imdbId = "imdb_id",
-    freebaseMid = "freebase_m_id",
-    tiktokId = "tiktok_id",
-    wikidataId = "wikidata_id",
-    id = 1234567890,
-    freebaseId = "freebase_id",
-    twitterId = "twitter_id",
-    youtubeId = "youtube_id",
-    tvrageId = "tv_rage_id",
-    facebookId = "facebook_id",
-    instagramId = "instagram_id",
   )
 
   private val mockRepository: IPersonRepository = mockk()
@@ -152,45 +137,6 @@ class GetDetailPersonInteractorTest {
         awaitComplete()
       }
       coVerify { mockRepository.getImagePerson(personId) }
-    }
-
-  @Test
-  fun getExternalIDPerson_whenSuccessful_emitsSuccess() =
-    runTest {
-      coEvery { mockRepository.getExternalIDPerson(personId) } returns
-        flowSuccess(externalIdPerson)
-
-      getDetailPersonInteractor.getExternalIDPerson(personId).test {
-        val result = awaitSuccessData()
-        assertEquals("imdb_id", result.imdbId)
-        assertEquals("freebase_m_id", result.freebaseMid)
-        assertEquals("tiktok_id", result.tiktokId)
-        assertEquals("wikidata_id", result.wikidataId)
-        assertEquals(1234567890, result.id)
-        assertEquals("freebase_id", result.freebaseId)
-        assertEquals("twitter_id", result.twitterId)
-        assertEquals("youtube_id", result.youtubeId)
-        assertEquals("tv_rage_id", result.tvrageId)
-        assertEquals("facebook_id", result.facebookId)
-        assertEquals("instagram_id", result.instagramId)
-
-        awaitComplete()
-      }
-
-      coVerify(exactly = 1) { mockRepository.getExternalIDPerson(personId) }
-      coVerify { mockRepository.getExternalIDPerson(personId) }
-    }
-
-  @Test
-  fun getExternalIDPerson_whenUnsuccessful_emitsError() =
-    runTest {
-      coEvery { mockRepository.getExternalIDPerson(personId) } returns flowError
-
-      getDetailPersonInteractor.getExternalIDPerson(personId).test {
-        assertEquals(errorMessage, awaitOutcomeError())
-        awaitComplete()
-      }
-      coVerify { mockRepository.getExternalIDPerson(personId) }
     }
 
   private suspend fun <T> ReceiveTurbine<Outcome<T>>.awaitSuccessData(): T {

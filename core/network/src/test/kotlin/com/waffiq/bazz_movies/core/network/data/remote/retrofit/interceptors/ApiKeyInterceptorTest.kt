@@ -1,7 +1,5 @@
 package com.waffiq.bazz_movies.core.network.data.remote.retrofit.interceptors
 
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertTrue
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -9,6 +7,8 @@ import okhttp3.Response
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 

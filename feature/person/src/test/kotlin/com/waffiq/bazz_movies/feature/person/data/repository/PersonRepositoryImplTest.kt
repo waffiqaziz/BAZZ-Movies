@@ -1,14 +1,12 @@
 package com.waffiq.bazz_movies.feature.person.data.repository
 
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.DetailPersonResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ExternalIDPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ImagePersonResponse
 import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testLoadingState
 import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testSuccessfulCall
 import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testUnsuccessfulCall
 import com.waffiq.bazz_movies.feature.person.testutils.BasePersonRepositoryImplTest
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toDetailPerson
-import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toImagePerson
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -83,41 +81,6 @@ class PersonRepositoryImplTest : BasePersonRepositoryImplTest() {
         dataSourceCall = { mockPersonRemoteDataSource.getPersonImages(id) },
         repositoryCall = { repository.getImagePerson(id) },
         verifyDataSourceCall = { coVerify { mockPersonRemoteDataSource.getPersonImages(id) } },
-      )
-    }
-
-  @Test
-  fun getExternalIDPerson_whenSuccessful_returnsSuccessResult() =
-    runTest {
-      val mockResponse = mockk<ExternalIDPersonResponse>(relaxed = true)
-      testSuccessfulCall(
-        mockResponse = mockResponse,
-        dataSourceCall = { mockPersonRemoteDataSource.getPersonExternalIds(id) },
-        repositoryCall = { repository.getExternalIDPerson(id) },
-        expectedData = mockResponse.toExternalIDPerson(),
-        verifyDataSourceCall = {
-          coVerify(atLeast = 1) { mockPersonRemoteDataSource.getPersonExternalIds(id) }
-        },
-      )
-    }
-
-  @Test
-  fun getExternalIDPerson_whenUnsuccessful_returnsErrorResult() =
-    runTest {
-      testUnsuccessfulCall(
-        dataSourceCall = { mockPersonRemoteDataSource.getPersonExternalIds(id) },
-        repositoryCall = { repository.getExternalIDPerson(id) },
-        verifyDataSourceCall = { coVerify { mockPersonRemoteDataSource.getPersonExternalIds(id) } },
-      )
-    }
-
-  @Test
-  fun getExternalIDPerson_whenLoadingEmitted_returnsLoadingOutcome() =
-    runTest {
-      testLoadingState(
-        dataSourceCall = { mockPersonRemoteDataSource.getPersonExternalIds(id) },
-        repositoryCall = { repository.getExternalIDPerson(id) },
-        verifyDataSourceCall = { coVerify { mockPersonRemoteDataSource.getPersonExternalIds(id) } },
       )
     }
 }

@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew
 
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.mediaCrewItemResponseDump
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertNull
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
 
 class MediaCrewItemResponseTest {

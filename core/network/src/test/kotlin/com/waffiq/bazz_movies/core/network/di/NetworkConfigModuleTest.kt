@@ -4,9 +4,9 @@ import com.waffiq.bazz_movies.core.network.domain.DebugConfigImpl
 import com.waffiq.bazz_movies.core.network.domain.IDebugConfig
 import io.mockk.every
 import io.mockk.mockk
-import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertNotNull
-import junit.framework.TestCase.assertTrue
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 

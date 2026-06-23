@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.person.domain.model
 
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertNull
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -28,6 +28,7 @@ class DetailPersonTest {
     assertNull(detailPerson.adult)
     assertNull(detailPerson.homepage)
     assertNull(detailPerson.credits)
+    assertNull(detailPerson.externalIds)
   }
 
   @Test

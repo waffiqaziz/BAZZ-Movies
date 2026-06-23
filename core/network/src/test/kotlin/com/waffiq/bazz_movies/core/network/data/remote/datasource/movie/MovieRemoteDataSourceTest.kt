@@ -12,8 +12,8 @@ import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingFlow
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingSource
 import io.mockk.coEvery
 import io.mockk.coVerify
-import junit.framework.TestCase
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class MovieRemoteDataSourceTest : BaseMediaDataSourceTest() {
@@ -28,7 +28,7 @@ class MovieRemoteDataSourceTest : BaseMediaDataSourceTest() {
         mockApiCall = { mockMovieApiService.getTopRatedMovies(1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
-        TestCase.assertEquals(2, page.data.size)
+        assertEquals(2, page.data.size)
       }
     }
 
@@ -54,7 +54,7 @@ class MovieRemoteDataSourceTest : BaseMediaDataSourceTest() {
         mockApiCall = { mockMovieApiService.getPopularMovies(1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
-        TestCase.assertEquals(1, page.data.size)
+        assertEquals(1, page.data.size)
       }
     }
 
@@ -81,7 +81,7 @@ class MovieRemoteDataSourceTest : BaseMediaDataSourceTest() {
         mockApiCall = { mockMovieApiService.getMovieRecommendations(12345678, 1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
-        TestCase.assertEquals(1, page.data.size)
+        assertEquals(1, page.data.size)
       }
     }
 
@@ -108,7 +108,7 @@ class MovieRemoteDataSourceTest : BaseMediaDataSourceTest() {
         mockApiCall = { mockMovieApiService.getUpcomingMovies("cn", 1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
-        TestCase.assertEquals(1, page.data.size)
+        assertEquals(1, page.data.size)
       }
     }
 
@@ -135,7 +135,7 @@ class MovieRemoteDataSourceTest : BaseMediaDataSourceTest() {
         mockApiCall = { mockMovieApiService.getNowPlayingMovies("gb", 1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
-        TestCase.assertEquals(1, page.data.size)
+        assertEquals(1, page.data.size)
       }
     }
 

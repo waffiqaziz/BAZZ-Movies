@@ -12,9 +12,9 @@ import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.getAg
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.setupSocialLink
 import io.mockk.mockk
 import io.mockk.verify
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertNotNull
-import junit.framework.TestCase.assertTrue
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric

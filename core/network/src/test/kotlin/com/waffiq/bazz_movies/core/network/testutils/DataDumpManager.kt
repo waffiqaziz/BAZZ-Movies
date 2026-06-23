@@ -1115,6 +1115,20 @@ object DataDumpManager {
     crew = listOf(crewItemResponseDump, crewItemResponse2, crewItemResponse3),
   )
 
+  val externalIDPersonResponseDump = ExternalIDPersonResponse(
+    id = 114253,
+    freebaseMid = "/m/027xw9j",
+    freebaseId = null,
+    imdbId = "nm1375030",
+    tvrageId = null,
+    wikidataId = "Q7518724",
+    facebookId = null,
+    instagramId = null,
+    tiktokId = null,
+    twitterId = "simonfarnaby",
+    youtubeId = null,
+  )
+
   val detailPersonResponse = DetailPersonResponse(
     alsoKnownAs = listOf(
       "ฮีธ เลดเจอร์",
@@ -1152,6 +1166,7 @@ object DataDumpManager {
     adult = false,
     homepage = null,
     combinedCredits = combinedCreditResponseDump,
+    externalIds = externalIDPersonResponseDump,
   )
 
   val profileItemResponseDump = ProfilesItemResponse(
@@ -1223,20 +1238,6 @@ object DataDumpManager {
         height = 872,
       ),
     ),
-  )
-
-  val externalIDPersonResponseDump = ExternalIDPersonResponse(
-    id = 114253,
-    freebaseMid = "/m/027xw9j",
-    freebaseId = null,
-    imdbId = "nm1375030",
-    tvrageId = null,
-    wikidataId = "Q7518724",
-    facebookId = null,
-    instagramId = null,
-    tiktokId = null,
-    twitterId = "simonfarnaby",
-    youtubeId = null,
   )
 
   val postResponseSuccessDump = PostFavoriteWatchlistResponse(

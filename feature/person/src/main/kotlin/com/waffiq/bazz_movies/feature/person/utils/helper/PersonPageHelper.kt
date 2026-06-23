@@ -58,12 +58,16 @@ object PersonPageHelper {
   fun getAge(birthday: String, currentDate: LocalDate = LocalDate.now()) =
     ChronoUnit.YEARS.between(LocalDate.parse(birthday), currentDate)
 
-  fun hasAnySocialMediaIds(externalID: ExternalIDPerson): Boolean =
-    !externalID.instagramId.isNullOrEmpty() ||
-      !externalID.twitterId.isNullOrEmpty() ||
-      !externalID.facebookId.isNullOrEmpty() ||
-      !externalID.tiktokId.isNullOrEmpty() ||
-      !externalID.youtubeId.isNullOrEmpty()
+  fun hasAnySocialMediaIds(externalID: ExternalIDPerson?): Boolean =
+    if (externalID != null) {
+      !externalID.instagramId.isNullOrEmpty() ||
+        !externalID.twitterId.isNullOrEmpty() ||
+        !externalID.facebookId.isNullOrEmpty() ||
+        !externalID.tiktokId.isNullOrEmpty() ||
+        !externalID.youtubeId.isNullOrEmpty()
+    } else {
+      false
+    }
 
   fun Context.formatBirthInfo(
     birthday: String?,

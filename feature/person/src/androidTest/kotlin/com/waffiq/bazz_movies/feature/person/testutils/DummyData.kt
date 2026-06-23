@@ -17,32 +17,6 @@ object DummyData {
       profilePath = "/test_profile.jpg",
     )
 
-  val testDetailPerson =
-    DetailPerson(
-      id = 123,
-      name = "Test Actor",
-      biography = "Test biography for the actor",
-      birthday = "1990-01-01",
-      placeOfBirth = "Test City",
-      homepage = "https://example.com",
-    )
-
-  val testCastItem =
-    CastItem(
-      id = 456,
-      title = "Test Movie",
-      character = "Test Character",
-      posterPath = "/test_poster.jpg",
-      releaseDate = "2023-01-01",
-    )
-
-  val testProfileItem =
-    ProfilesItem(
-      filePath = "/test_image.jpg",
-      width = 500,
-      height = 750,
-    )
-
   val testExternalIDPerson =
     ExternalIDPerson(
       id = 123,
@@ -53,6 +27,24 @@ object DummyData {
       tiktokId = null,
       youtubeId = null,
       wikidataId = "Q123456",
+    )
+
+  val testDetailPerson =
+    DetailPerson(
+      id = 123,
+      name = "Test Actor",
+      biography = "Test biography for the actor",
+      birthday = "1990-01-01",
+      placeOfBirth = "Test City",
+      homepage = "https://example.com",
+      externalIds = testExternalIDPerson,
+    )
+
+  val testProfileItem =
+    ProfilesItem(
+      filePath = "/test_image.jpg",
+      width = 500,
+      height = 750,
     )
 
   val testKnownForList =

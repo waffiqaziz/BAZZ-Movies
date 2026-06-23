@@ -182,22 +182,20 @@ class PersonActivity : AppCompatActivity() {
   }
 
   private fun showSocialMediaPerson() {
-    dataExtra.id?.let { personViewModel.getExternalIDPerson(it) }
-    personViewModel.externalIdPerson.observe(this) { externalID ->
-
-      if (hasAnySocialMediaIds(externalID)) {
+    personViewModel.detailPerson.observe(this) {
+      if (hasAnySocialMediaIds(it.externalIds)) {
         binding.viewGroupSocialMedia.isVisible = true
-        setupSocialLink(externalID.instagramId, binding.btnInstagram, INSTAGRAM_LINK)
-        setupSocialLink(externalID.twitterId, binding.btnX, X_LINK)
-        setupSocialLink(externalID.facebookId, binding.btnFacebook, FACEBOOK_LINK)
-        setupSocialLink(externalID.tiktokId, binding.btnTiktok, TIKTOK_PERSON_LINK)
-        setupSocialLink(externalID.youtubeId, binding.btnYoutube, YOUTUBE_CHANNEL_LINK)
+        setupSocialLink(it.externalIds?.instagramId, binding.btnInstagram, INSTAGRAM_LINK)
+        setupSocialLink(it.externalIds?.twitterId, binding.btnX, X_LINK)
+        setupSocialLink(it.externalIds?.facebookId, binding.btnFacebook, FACEBOOK_LINK)
+        setupSocialLink(it.externalIds?.tiktokId, binding.btnTiktok, TIKTOK_PERSON_LINK)
+        setupSocialLink(it.externalIds?.youtubeId, binding.btnYoutube, YOUTUBE_CHANNEL_LINK)
       } else {
         binding.viewGroupSocialMedia.isVisible = false
       }
 
-      setupSocialLink(externalID.imdbId, binding.btnImdb, IMDB_PERSON_LINK)
-      setupSocialLink(externalID.wikidataId, binding.btnWikidata, WIKIDATA_PERSON_LINK)
+      setupSocialLink(it.externalIds?.imdbId, binding.btnImdb, IMDB_PERSON_LINK)
+      setupSocialLink(it.externalIds?.wikidataId, binding.btnWikidata, WIKIDATA_PERSON_LINK)
     }
   }
 

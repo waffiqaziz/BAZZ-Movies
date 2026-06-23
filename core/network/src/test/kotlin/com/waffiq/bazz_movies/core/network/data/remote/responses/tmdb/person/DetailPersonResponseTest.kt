@@ -1,11 +1,11 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person
 
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.detailPersonResponse
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertNull
-import junit.framework.TestCase.assertTrue
 import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.MatcherAssert.assertThat
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class DetailPersonResponseTest {
@@ -50,6 +50,7 @@ class DetailPersonResponseTest {
     assertNull(detailPersonResponse.adult)
     assertNull(detailPersonResponse.homepage)
     assertNull(detailPersonResponse.combinedCredits)
+    assertNull(detailPersonResponse.externalIds)
   }
 
   @Test

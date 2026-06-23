@@ -14,9 +14,9 @@ import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.unmockkObject
 import io.mockk.verify
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertTrue
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import java.time.LocalDate
@@ -42,6 +42,7 @@ class PersonPageHelperTest {
     assertTrue(hasAnySocialMediaIds(ExternalIDPerson(youtubeId = "youtubeId")))
 
     // should return false if there's no id at all
+    assertFalse(hasAnySocialMediaIds(null))
     assertFalse(hasAnySocialMediaIds(ExternalIDPerson(instagramId = "")))
     assertFalse(hasAnySocialMediaIds(ExternalIDPerson(twitterId = "")))
     assertFalse(hasAnySocialMediaIds(ExternalIDPerson(facebookId = "")))

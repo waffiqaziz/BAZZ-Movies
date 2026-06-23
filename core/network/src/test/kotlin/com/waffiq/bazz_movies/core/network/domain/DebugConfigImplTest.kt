@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.network.domain
 
-import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertTrue
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class DebugConfigImplTest {

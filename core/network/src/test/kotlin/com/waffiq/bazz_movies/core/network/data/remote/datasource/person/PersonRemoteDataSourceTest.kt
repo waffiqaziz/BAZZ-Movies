@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.core.network.data.remote.datasource.person
 
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.detailPersonResponse
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.externalIDPersonResponseDump
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.imagePersonResponseDump
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testError404Response
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testErrorResponse
@@ -173,82 +172,4 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
       )
     }
   // endregion getPersonImages EDGE CASE
-
-  @Test
-  fun getPersonExternalIds_whenSuccessful_returnsExpectedResponse() =
-    runTest {
-      testSuccessResponse(
-        apiEndpoint = { mockPersonApiService.getPersonExternalIds(114253) },
-        mockApiResponse = success(externalIDPersonResponseDump),
-        dataSourceEndpointCall = { personRemoteDataSource.getPersonExternalIds(114253) },
-        expectedData = externalIDPersonResponseDump,
-      )
-    }
-
-  @Test
-  fun getPersonExternalIds_whenServerError_returnsExpectedStatusMessageResponse() =
-    runTest {
-      testErrorResponse(
-        apiEndpoint = { mockPersonApiService.getPersonExternalIds(114253) },
-        errorResponse = backendErrorResponse,
-        dataSourceEndpointCall = { personRemoteDataSource.getPersonExternalIds(114253) },
-        expectedErrorMessage = backendErrorMessage,
-      )
-    }
-
-  // region getPersonExternalIds EDGE CASE
-  @Test
-  fun getPersonExternalIds_whenAPIRespondsWith404_returnsExpectedResponse() =
-    runTest {
-      testError404Response(
-        apiEndpoint = { mockPersonApiService.getPersonExternalIds(114253) },
-        dataSourceEndpointCall = { personRemoteDataSource.getPersonExternalIds(114253) },
-      )
-    }
-
-  @Test
-  fun getPersonExternalIds_whenNetworkErrorOccurs_returnsExpectedResponse() =
-    runTest {
-      testUnknownHostExceptionResponse(
-        apiEndpoint = { mockPersonApiService.getPersonExternalIds(114253) },
-        dataSourceEndpointCall = { personRemoteDataSource.getPersonExternalIds(114253) },
-      )
-    }
-
-  @Test
-  fun getPersonExternalIds_whenTimeoutOccurs_returnsErrorResponse() =
-    runTest {
-      testSocketTimeoutExceptionResponse(
-        apiEndpoint = { mockPersonApiService.getPersonExternalIds(114253) },
-        dataSourceEndpointCall = { personRemoteDataSource.getPersonExternalIds(114253) },
-      )
-    }
-
-  @Test
-  fun getPersonExternalIds_whenHttpExceptionOccurs_returnsErrorResponse() =
-    runTest {
-      testHttpExceptionResponse(
-        apiEndpoint = { mockPersonApiService.getPersonExternalIds(114253) },
-        dataSourceEndpointCall = { personRemoteDataSource.getPersonExternalIds(114253) },
-      )
-    }
-
-  @Test
-  fun getPersonExternalIds_whenIOExceptionOccurs_returnsErrorResponse() =
-    runTest {
-      testIOExceptionResponse(
-        apiEndpoint = { mockPersonApiService.getPersonExternalIds(114253) },
-        dataSourceEndpointCall = { personRemoteDataSource.getPersonExternalIds(114253) },
-      )
-    }
-
-  @Test
-  fun getPersonExternalIds_whenExceptionOccurs_returnsErrorResponse() =
-    runTest {
-      testGeneralExceptionResponse(
-        apiEndpoint = { mockPersonApiService.getPersonExternalIds(114253) },
-        dataSourceEndpointCall = { personRemoteDataSource.getPersonExternalIds(114253) },
-      )
-    }
-  // endregion getPersonExternalIds EDGE CASE
 }
