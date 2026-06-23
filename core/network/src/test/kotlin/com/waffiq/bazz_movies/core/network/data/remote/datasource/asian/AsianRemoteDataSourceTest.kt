@@ -10,7 +10,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.datasource.asian.AsianRem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.asian.AsianRemoteDataSource.Companion.ONE_MONTH
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.asian.AsianRemoteDataSource.Companion.REALITY_SHOW_TYPE
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.asian.AsianRemoteDataSource.Companion.ROMANCE_DRAMA_WITHOUT_GENRES
-import com.waffiq.bazz_movies.core.network.data.remote.datasource.asian.AsianRemoteDataSource.Companion.STRICT_KEYWORDS
+import com.waffiq.bazz_movies.core.network.data.remote.datasource.asian.AsianRemoteDataSource.Companion.ROMANCE_DRAMA_WITHOUT_KEYWORDS
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.asian.AsianRemoteDataSource.Companion.THREE_MONTHS
 import com.waffiq.bazz_movies.core.network.data.remote.query.DiscoverTvParams
 import com.waffiq.bazz_movies.core.network.data.remote.query.toQueryMap
@@ -66,7 +66,7 @@ class AsianRemoteDataSourceTest : BaseMediaDataSourceTest() {
         originCountry = ASIAN_REGION,
         page = 1,
         withoutGenres = ROMANCE_DRAMA_WITHOUT_GENRES,
-        withoutKeywords = STRICT_KEYWORDS,
+        withoutKeywords = ROMANCE_DRAMA_WITHOUT_KEYWORDS,
       ).toQueryMap()
 
       verifyTvDiscovery(asianRemoteDataSource.getAsianRomance(), query)
