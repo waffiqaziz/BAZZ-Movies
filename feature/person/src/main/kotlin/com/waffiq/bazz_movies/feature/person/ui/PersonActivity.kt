@@ -52,7 +52,6 @@ import com.waffiq.bazz_movies.feature.person.utils.helper.DialogHelper.setupTran
 import com.waffiq.bazz_movies.feature.person.utils.helper.ParcelableHelper.extractMediaCastItemFromIntent
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.formatBirthInfo
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.formatDeathInfo
-import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.hasAnySocialMediaIds
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.setupSocialLink
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
@@ -182,20 +181,24 @@ class PersonActivity : AppCompatActivity() {
   }
 
   private fun showSocialMediaPerson() {
-    personViewModel.detailPerson.observe(this) {
-      if (hasAnySocialMediaIds(it.externalIds)) {
-        binding.viewGroupSocialMedia.isVisible = true
-        setupSocialLink(it.externalIds?.instagramId, binding.btnInstagram, INSTAGRAM_LINK)
-        setupSocialLink(it.externalIds?.twitterId, binding.btnX, X_LINK)
-        setupSocialLink(it.externalIds?.facebookId, binding.btnFacebook, FACEBOOK_LINK)
-        setupSocialLink(it.externalIds?.tiktokId, binding.btnTiktok, TIKTOK_PERSON_LINK)
-        setupSocialLink(it.externalIds?.youtubeId, binding.btnYoutube, YOUTUBE_CHANNEL_LINK)
-      } else {
+    personViewModel.detailPerson.observe(this) { person ->
+      val externalIds = person.externalIds
+
+      if (externalIds == null) {
         binding.viewGroupSocialMedia.isVisible = false
+        return@observe
       }
 
-      setupSocialLink(it.externalIds?.imdbId, binding.btnImdb, IMDB_PERSON_LINK)
-      setupSocialLink(it.externalIds?.wikidataId, binding.btnWikidata, WIKIDATA_PERSON_LINK)
+      binding.viewGroupSocialMedia.isVisible = externalIds.hasAnySocialMediaIds()
+
+      setupSocialLink(externalIds.instagramId, binding.btnInstagram, INSTAGRAM_LINK)
+      setupSocialLink(externalIds.twitterId, binding.btnX, X_LINK)
+      setupSocialLink(externalIds.facebookId, binding.btnFacebook, FACEBOOK_LINK)
+      setupSocialLink(externalIds.tiktokId, binding.btnTiktok, TIKTOK_PERSON_LINK)
+      setupSocialLink(externalIds.youtubeId, binding.btnYoutube, YOUTUBE_CHANNEL_LINK)
+
+      setupSocialLink(externalIds.imdbId, binding.btnImdb, IMDB_PERSON_LINK)
+      setupSocialLink(externalIds.wikidataId, binding.btnWikidata, WIKIDATA_PERSON_LINK)
     }
   }
 

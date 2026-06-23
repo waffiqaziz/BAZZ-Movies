@@ -370,6 +370,18 @@ class PersonActivityTest : BasePersonActivityTest() {
     }
 
   @Test
+  fun socialMediaLinks_whenExternalIdIsNull_shouldHidden() =
+    runTest {
+      context.launchPersonActivity {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+          detailPersonLiveData.postValue(testDetailPerson.copy(externalIds = null))
+        }
+
+        view_group_social_media.isGone()
+      }
+    }
+
+  @Test
   fun socialMediaLinks_withNullId_shouldHidden() =
     runTest {
       context.launchPersonActivity {

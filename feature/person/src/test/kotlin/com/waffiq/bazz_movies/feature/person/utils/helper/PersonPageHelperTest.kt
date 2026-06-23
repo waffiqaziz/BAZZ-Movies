@@ -3,20 +3,16 @@ package com.waffiq.bazz_movies.feature.person.utils.helper
 import android.content.Context
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.R.string.years_old
-import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.formatBirthInfo
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.formatDeathInfo
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.getAge
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.getAgeDeath
-import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.hasAnySocialMediaIds
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.unmockkObject
 import io.mockk.verify
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import java.time.LocalDate
@@ -30,38 +26,6 @@ class PersonPageHelperTest {
   @Before
   fun setup() {
     every { context.getString(no_data) } returns "no data"
-  }
-
-  @Test
-  fun hasAnySocialMediaIds_whenCheckingVariousIds_returnsExpectedResult() {
-    // should return true if there's id
-    assertTrue(hasAnySocialMediaIds(ExternalIDPerson(instagramId = "instagramId")))
-    assertTrue(hasAnySocialMediaIds(ExternalIDPerson(twitterId = "twitterId")))
-    assertTrue(hasAnySocialMediaIds(ExternalIDPerson(facebookId = "facebookId")))
-    assertTrue(hasAnySocialMediaIds(ExternalIDPerson(tiktokId = "tiktokId")))
-    assertTrue(hasAnySocialMediaIds(ExternalIDPerson(youtubeId = "youtubeId")))
-
-    // should return false if there's no id at all
-    assertFalse(hasAnySocialMediaIds(null))
-    assertFalse(hasAnySocialMediaIds(ExternalIDPerson(instagramId = "")))
-    assertFalse(hasAnySocialMediaIds(ExternalIDPerson(twitterId = "")))
-    assertFalse(hasAnySocialMediaIds(ExternalIDPerson(facebookId = "")))
-    assertFalse(hasAnySocialMediaIds(ExternalIDPerson(tiktokId = "")))
-    assertFalse(hasAnySocialMediaIds(ExternalIDPerson(youtubeId = "")))
-    assertFalse(hasAnySocialMediaIds(ExternalIDPerson()))
-
-    // all id is available
-    assertTrue(
-      hasAnySocialMediaIds(
-        ExternalIDPerson(
-          youtubeId = "youtubeId",
-          instagramId = "instagramId",
-          facebookId = "facebookId",
-          tiktokId = "tiktokId",
-          twitterId = "twitterId",
-        ),
-      ),
-    )
   }
 
   @Test
