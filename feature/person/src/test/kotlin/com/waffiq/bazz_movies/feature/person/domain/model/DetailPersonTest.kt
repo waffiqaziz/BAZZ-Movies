@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.feature.person.domain.model
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -29,6 +30,7 @@ class DetailPersonTest {
     assertNull(detailPerson.homepage)
     assertNull(detailPerson.credits)
     assertNull(detailPerson.externalIds)
+    assertNull(detailPerson.images)
   }
 
   @Test
@@ -48,6 +50,7 @@ class DetailPersonTest {
       id = 12345,
       adult = false,
       homepage = "https://example.com",
+      images = ImagePerson(listOf(ProfilesItem(filePath = "path"))),
     )
 
     assertEquals(listOf("Name1", "Name2"), detailPerson.alsoKnownAs)
@@ -64,5 +67,6 @@ class DetailPersonTest {
     assertEquals(12345, detailPerson.id)
     assertEquals(false, detailPerson.adult)
     assertEquals("https://example.com", detailPerson.homepage)
+    assertNotNull(detailPerson.images)
   }
 }

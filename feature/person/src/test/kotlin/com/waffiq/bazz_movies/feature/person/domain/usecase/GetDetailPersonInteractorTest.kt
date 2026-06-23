@@ -4,8 +4,6 @@ import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
-import com.waffiq.bazz_movies.feature.person.domain.model.ImagePerson
-import com.waffiq.bazz_movies.feature.person.domain.model.ProfilesItem
 import com.waffiq.bazz_movies.feature.person.domain.repository.IPersonRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -37,20 +35,6 @@ class GetDetailPersonInteractorTest {
   )
   private val personId = 12345
   private val errorMessage = "Network error"
-
-  private val profilesItem = ProfilesItem(
-    aspectRatio = 0.667,
-    filePath = "/file_path.jpg",
-    voteAverage = 5.318f,
-    width = 300,
-    iso6391 = null,
-    voteCount = 3,
-    height = 450,
-  )
-  private val imagePerson = ImagePerson(
-    profiles = listOf(profilesItem),
-    id = 12345,
-  )
 
   private val mockRepository: IPersonRepository = mockk()
   private lateinit var getDetailPersonInteractor: GetDetailPersonInteractor
@@ -101,42 +85,6 @@ class GetDetailPersonInteractorTest {
       }
 
       coVerify(exactly = 1) { mockRepository.getDetailPerson(personId) }
-    }
-
-  @Test
-  fun getImagePerson_whenSuccessful_emitsSuccess() =
-    runTest {
-      coEvery { mockRepository.getImagePerson(personId) } returns flowSuccess(imagePerson)
-
-      getDetailPersonInteractor.getImagePerson(personId).test {
-        val result = awaitSuccessData()
-        assertEquals(listOf(profilesItem), result.profiles)
-        assertEquals(12345, result.id)
-        assertEquals(0.667, result.profiles?.get(0)?.aspectRatio)
-        assertEquals("/file_path.jpg", result.profiles?.get(0)?.filePath)
-        assertEquals(5.318f, result.profiles?.get(0)?.voteAverage)
-        assertEquals(300, result.profiles?.get(0)?.width)
-        assertEquals(null, result.profiles?.get(0)?.iso6391)
-        assertEquals(3, result.profiles?.get(0)?.voteCount)
-        assertEquals(450, result.profiles?.get(0)?.height)
-
-        awaitComplete()
-      }
-
-      coVerify(exactly = 1) { mockRepository.getImagePerson(personId) }
-    }
-
-  @Test
-  fun getImagePerson_whenUnsuccessful_emitsError() =
-    runTest {
-      val flow = flowOf(Outcome.Error(message = errorMessage))
-      coEvery { mockRepository.getImagePerson(personId) } returns flow
-
-      getDetailPersonInteractor.getImagePerson(personId).test {
-        assertEquals(errorMessage, awaitOutcomeError())
-        awaitComplete()
-      }
-      coVerify { mockRepository.getImagePerson(personId) }
     }
 
   private suspend fun <T> ReceiveTurbine<Outcome<T>>.awaitSuccessData(): T {

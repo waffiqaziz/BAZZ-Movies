@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.core.network.data.remote.datasource.person
 
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.detailPersonResponse
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.imagePersonResponseDump
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testError404Response
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testErrorResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testGeneralExceptionResponse
@@ -94,82 +93,4 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
       )
     }
   // endregion getPersonDetails EDGE CASE
-
-  @Test
-  fun getPersonImages_whenSuccessful_returnsExpectedResponse() =
-    runTest {
-      testSuccessResponse(
-        apiEndpoint = { mockPersonApiService.getPersonImages(1878952) },
-        mockApiResponse = success(imagePersonResponseDump),
-        dataSourceEndpointCall = { personRemoteDataSource.getPersonImages(1878952) },
-        expectedData = imagePersonResponseDump,
-      )
-    }
-
-  @Test
-  fun getPersonImages_whenServerError_returnsExpectedStatusMessageResponse() =
-    runTest {
-      testErrorResponse(
-        apiEndpoint = { mockPersonApiService.getPersonImages(1878952) },
-        errorResponse = backendErrorResponse,
-        dataSourceEndpointCall = { personRemoteDataSource.getPersonImages(1878952) },
-        expectedErrorMessage = backendErrorMessage,
-      )
-    }
-
-  // region getPersonImages EDGE CASE
-  @Test
-  fun getPersonImages_whenAPIRespondsWith404_returnsExpectedResponse() =
-    runTest {
-      testError404Response(
-        apiEndpoint = { mockPersonApiService.getPersonImages(1878952) },
-        dataSourceEndpointCall = { personRemoteDataSource.getPersonImages(1878952) },
-      )
-    }
-
-  @Test
-  fun getPersonImages_whenNetworkErrorOccurs_returnsExpectedResponse() =
-    runTest {
-      testUnknownHostExceptionResponse(
-        apiEndpoint = { mockPersonApiService.getPersonImages(1878952) },
-        dataSourceEndpointCall = { personRemoteDataSource.getPersonImages(1878952) },
-      )
-    }
-
-  @Test
-  fun getPersonImages_whenTimeoutOccurs_returnsErrorResponse() =
-    runTest {
-      testSocketTimeoutExceptionResponse(
-        apiEndpoint = { mockPersonApiService.getPersonImages(1878952) },
-        dataSourceEndpointCall = { personRemoteDataSource.getPersonImages(1878952) },
-      )
-    }
-
-  @Test
-  fun getPersonImages_whenHttpExceptionOccurs_returnsErrorResponse() =
-    runTest {
-      testHttpExceptionResponse(
-        apiEndpoint = { mockPersonApiService.getPersonImages(1878952) },
-        dataSourceEndpointCall = { personRemoteDataSource.getPersonImages(1878952) },
-      )
-    }
-
-  @Test
-  fun getPersonImages_whenIOExceptionOccurs_returnsErrorResponse() =
-    runTest {
-      testIOExceptionResponse(
-        apiEndpoint = { mockPersonApiService.getPersonImages(1878952) },
-        dataSourceEndpointCall = { personRemoteDataSource.getPersonImages(1878952) },
-      )
-    }
-
-  @Test
-  fun getPersonImages_whenExceptionOccurs_returnsErrorResponse() =
-    runTest {
-      testGeneralExceptionResponse(
-        apiEndpoint = { mockPersonApiService.getPersonImages(1878952) },
-        dataSourceEndpointCall = { personRemoteDataSource.getPersonImages(1878952) },
-      )
-    }
-  // endregion getPersonImages EDGE CASE
 }

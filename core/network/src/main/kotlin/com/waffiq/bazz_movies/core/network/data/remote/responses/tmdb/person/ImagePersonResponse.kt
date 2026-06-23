@@ -8,7 +8,4 @@ data class ImagePersonResponse(
 
   @Json(name = "profiles")
   val profiles: List<ProfilesItemResponse>? = null,
-
-  @Json(name = "id")
-  val id: Int? = null,
 )

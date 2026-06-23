@@ -10,7 +10,6 @@ import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.CombinedCreditPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.CrewItem
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
-import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ImagePerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ProfilesItem
 import com.waffiq.bazz_movies.feature.person.domain.usecase.GetDetailPersonUseCase
@@ -47,12 +46,6 @@ abstract class BasePersonViewModelTest {
     cast = listOf(mockCastItem),
     crew = listOf(mockCrewItem),
   )
-  protected val mockDetailPerson = DetailPerson(
-    id = personId,
-    name = "John Doe",
-    biography = "Sample biography",
-    credits = mockCreditsPerson,
-  )
   protected val mockProfilesItem = ProfilesItem(
     aspectRatio = 0.667,
     filePath = "/file_path_profile.jpg",
@@ -60,13 +53,13 @@ abstract class BasePersonViewModelTest {
     width = 300,
     height = 450,
   )
-  protected val mockImagePerson = ImagePerson(
-    profiles = listOf(mockProfilesItem),
-    id = 12345,
-  )
-  protected val mockExternalIDPerson = ExternalIDPerson(
-    id = 3254153,
-    instagramId = "instagram_id",
+  protected val mockImagePerson = ImagePerson(profiles = listOf(mockProfilesItem))
+  protected val mockDetailPerson = DetailPerson(
+    id = personId,
+    name = "John Doe",
+    biography = "Sample biography",
+    credits = mockCreditsPerson,
+    images = mockImagePerson,
   )
 
   @get:Rule

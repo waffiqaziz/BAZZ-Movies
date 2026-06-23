@@ -155,8 +155,7 @@ class PersonActivity : AppCompatActivity() {
     }
 
     // show picture
-    dataExtra.id?.let { personViewModel.getImagePerson(it) }
-    personViewModel.imagePerson.observe(this) {
+    personViewModel.imageList.observe(this) {
       adapterImage.setImage(it)
     }
 

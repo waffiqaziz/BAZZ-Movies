@@ -10,6 +10,5 @@ class ImagePersonTest {
     val imagePeron = ImagePerson()
 
     assertNull(imagePeron.profiles)
-    assertNull(imagePeron.id)
   }
 }

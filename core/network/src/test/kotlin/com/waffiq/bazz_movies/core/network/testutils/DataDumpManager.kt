@@ -1180,7 +1180,6 @@ object DataDumpManager {
   )
 
   val imagePersonResponseDump = ImagePersonResponse(
-    id = 1878952,
     profiles = listOf(
       profileItemResponseDump,
       ProfilesItemResponse(
