@@ -8,9 +8,9 @@ import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toFavorit
 import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toUpdateFavoriteParams
 import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toUpdateWatchlistParams
 import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toWatchlistRequest
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertTrue
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class NetworkMapperTest {

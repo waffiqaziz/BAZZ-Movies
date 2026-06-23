@@ -11,8 +11,8 @@ import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingFlow
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingSource
 import io.mockk.coEvery
 import io.mockk.coVerify
-import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class AccountRemoteDataSourceTest : BaseMediaDataSourceTest() {

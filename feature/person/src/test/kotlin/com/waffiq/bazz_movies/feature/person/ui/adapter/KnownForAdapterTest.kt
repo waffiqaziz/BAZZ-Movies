@@ -15,11 +15,11 @@ import com.waffiq.bazz_movies.navigation.INavigator
 import io.mockk.mockk
 import io.mockk.slot
 import io.mockk.verify
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertNotNull
-import junit.framework.TestCase.assertSame
-import junit.framework.TestCase.assertTrue
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertSame
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

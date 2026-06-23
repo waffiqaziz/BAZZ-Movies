@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.feature.person.domain.model
 
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertNull
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Test
 
 class CastItemTest {
@@ -23,7 +23,7 @@ class CastItemTest {
     assertNull(castItem.creditId)
     assertEquals(castItem.mediaType, "movie")
     assertNull(castItem.originalName)
-    assertEquals(castItem.popularity, 0.0)
+    assertEquals(castItem.popularity, 0.0, 0.0001)
     assertEquals(castItem.voteAverage, 0f)
     assertNull(castItem.name)
     assertEquals(castItem.id, 0)

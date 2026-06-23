@@ -10,8 +10,8 @@ import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingFlow
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingSource
 import io.mockk.coEvery
 import io.mockk.coVerify
-import junit.framework.TestCase
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class TvPagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
@@ -29,8 +29,8 @@ class TvPagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
         mockApiCall = { mockTvApiService.getPopularTv("id", airDate, 1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
-        TestCase.assertEquals(null, page.prevKey)
-        TestCase.assertEquals(2, page.nextKey)
+        assertEquals(null, page.prevKey)
+        assertEquals(2, page.nextKey)
       }
     }
 
@@ -61,8 +61,8 @@ class TvPagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
         mockApiCall = { mockTvApiService.getAiringTv("id", airDate, airDateEnd, 1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
-        TestCase.assertEquals(null, page.prevKey)
-        TestCase.assertEquals(2, page.nextKey)
+        assertEquals(null, page.prevKey)
+        assertEquals(2, page.nextKey)
       }
     }
 
@@ -91,8 +91,8 @@ class TvPagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
         mockApiCall = { mockTvApiService.getTvRecommendations(98765, 1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
-        TestCase.assertEquals(null, page.prevKey)
-        TestCase.assertEquals(2, page.nextKey)
+        assertEquals(null, page.prevKey)
+        assertEquals(2, page.nextKey)
       }
     }
 
@@ -120,8 +120,8 @@ class TvPagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
         mockApiCall = { mockTvApiService.getTopRatedTv(1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
-        TestCase.assertEquals(null, page.prevKey)
-        TestCase.assertEquals(2, page.nextKey)
+        assertEquals(null, page.prevKey)
+        assertEquals(2, page.nextKey)
       }
     }
 

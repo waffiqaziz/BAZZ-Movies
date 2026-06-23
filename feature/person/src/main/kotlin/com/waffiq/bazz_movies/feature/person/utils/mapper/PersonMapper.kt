@@ -15,7 +15,6 @@ import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ImagePerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ProfilesItem
-import kotlin.collections.sortedByDescending
 
 object PersonMapper {
 
@@ -91,6 +90,7 @@ object PersonMapper {
       adult = adult,
       homepage = homepage,
       credits = combinedCredits?.toCombinedCredit(),
+      externalIds = externalIds?.toExternalIDPerson(),
     )
 
   fun ImagePersonResponse.toImagePerson() =

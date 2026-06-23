@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.feature.person.domain.usecase
 
 import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
-import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ImagePerson
 import com.waffiq.bazz_movies.feature.person.domain.repository.IPersonRepository
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +15,4 @@ class GetDetailPersonInteractor @Inject constructor(
 
   override fun getImagePerson(id: Int): Flow<Outcome<ImagePerson>> =
     personRepository.getImagePerson(id)
-
-  override fun getExternalIDPerson(id: Int): Flow<Outcome<ExternalIDPerson>> =
-    personRepository.getExternalIDPerson(id)
 }

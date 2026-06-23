@@ -50,4 +50,7 @@ data class DetailPersonResponse(
 
   @Json(name = "combined_credits")
   val combinedCredits: CombinedCreditResponse? = null,
+
+  @Json(name = "external_ids")
+  val externalIds: ExternalIDPersonResponse? = null,
 )

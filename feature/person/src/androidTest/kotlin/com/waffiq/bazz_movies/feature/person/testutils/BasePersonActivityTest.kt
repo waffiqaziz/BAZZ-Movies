@@ -11,10 +11,8 @@ import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
-import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ProfilesItem
 import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testDetailPerson
-import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testImagesList
 import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testKnownForList
 import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testMediaCastItem
@@ -32,7 +30,6 @@ abstract class BasePersonActivityTest {
   protected val detailPersonLiveData = MutableLiveData<DetailPerson>()
   protected val imagePersonLiveData = MutableLiveData<List<ProfilesItem>>()
   protected val creditPersonLiveData = MutableLiveData<List<CastItem>>()
-  protected val externalIdPersonLiveData = MutableLiveData<ExternalIDPerson>()
   protected val errorStateLiveData = MutableLiveData<Event<String>>()
   protected val loadingStateLiveData = MutableLiveData<Boolean>()
   protected lateinit var context: Context
@@ -52,20 +49,17 @@ abstract class BasePersonActivityTest {
     creditPersonLiveData.postValue(testKnownForList)
     detailPersonLiveData.postValue(testDetailPerson)
     imagePersonLiveData.postValue(testImagesList)
-    externalIdPersonLiveData.postValue(testExternalIDPerson)
   }
 
   protected fun setupViewModelMocks(mockPersonViewModel: PersonViewModel) {
     every { mockPersonViewModel.detailPerson } returns detailPersonLiveData
     every { mockPersonViewModel.castList } returns creditPersonLiveData
     every { mockPersonViewModel.imagePerson } returns imagePersonLiveData
-    every { mockPersonViewModel.externalIdPerson } returns externalIdPersonLiveData
     every { mockPersonViewModel.errorState } returns errorStateLiveData
     every { mockPersonViewModel.loadingState } returns loadingStateLiveData
 
     every { mockPersonViewModel.getDetailPerson(any()) } just Runs
     every { mockPersonViewModel.getImagePerson(any()) } just Runs
-    every { mockPersonViewModel.getExternalIDPerson(any()) } just Runs
   }
 
   protected fun setupNavigatorMocks(mockNavigator: INavigator) {

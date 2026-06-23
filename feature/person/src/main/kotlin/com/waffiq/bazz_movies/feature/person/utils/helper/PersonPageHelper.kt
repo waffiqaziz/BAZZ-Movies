@@ -10,7 +10,6 @@ import androidx.core.view.isVisible
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.R.string.years_old
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
-import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
 import java.time.LocalDate
 import java.time.Period
 import java.time.temporal.ChronoUnit
@@ -57,13 +56,6 @@ object PersonPageHelper {
 
   fun getAge(birthday: String, currentDate: LocalDate = LocalDate.now()) =
     ChronoUnit.YEARS.between(LocalDate.parse(birthday), currentDate)
-
-  fun hasAnySocialMediaIds(externalID: ExternalIDPerson): Boolean =
-    !externalID.instagramId.isNullOrEmpty() ||
-      !externalID.twitterId.isNullOrEmpty() ||
-      !externalID.facebookId.isNullOrEmpty() ||
-      !externalID.tiktokId.isNullOrEmpty() ||
-      !externalID.youtubeId.isNullOrEmpty()
 
   fun Context.formatBirthInfo(
     birthday: String?,

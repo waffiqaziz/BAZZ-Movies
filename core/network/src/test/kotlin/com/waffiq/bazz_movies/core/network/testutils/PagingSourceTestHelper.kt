@@ -5,10 +5,10 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.network.utils.common.Constants.INITIAL_PAGE_INDEX
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertNull
-import junit.framework.TestCase.fail
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.fail
 import retrofit2.HttpException
 
 object PagingSourceTestHelper {

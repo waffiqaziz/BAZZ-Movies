@@ -2,9 +2,9 @@ package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search
 
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.movieSearchDump
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.personDump1
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertNull
-import junit.framework.TestCase.assertTrue
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class MultiSearchItemResponseTest {

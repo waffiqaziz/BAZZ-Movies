@@ -12,4 +12,13 @@ data class ExternalIDPerson(
   val tvrageId: String? = null,
   val facebookId: String? = null,
   val instagramId: String? = null,
-)
+) {
+  fun hasAnySocialMediaIds(): Boolean =
+    listOf(
+      instagramId,
+      twitterId,
+      facebookId,
+      tiktokId,
+      youtubeId,
+    ).any { !it.isNullOrEmpty() }
+}

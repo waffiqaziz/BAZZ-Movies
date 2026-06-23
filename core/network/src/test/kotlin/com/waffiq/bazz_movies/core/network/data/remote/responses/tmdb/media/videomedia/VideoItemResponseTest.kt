@@ -1,10 +1,10 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia
 
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.videoItemMovieResponseDump1
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertNotNull
-import junit.framework.TestCase.assertNull
-import junit.framework.TestCase.assertTrue
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class VideoItemResponseTest {

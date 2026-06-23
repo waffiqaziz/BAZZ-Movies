@@ -11,8 +11,8 @@ import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toCombine
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toDetailPerson
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toImagePerson
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertNull
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
 
 class PersonMapperTest {

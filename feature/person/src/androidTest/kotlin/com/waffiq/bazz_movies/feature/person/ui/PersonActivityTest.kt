@@ -115,7 +115,6 @@ class PersonActivityTest : BasePersonActivityTest() {
           loadingStateLiveData.postValue(true)
           detailPersonLiveData.postValue(testDetailPerson)
           imagePersonLiveData.postValue(listOf(testProfileItem))
-          externalIdPersonLiveData.postValue(testExternalIDPerson)
           loadingStateLiveData.postValue(false)
         }
         InstrumentationRegistry.getInstrumentation().waitForIdleSync()
@@ -133,7 +132,6 @@ class PersonActivityTest : BasePersonActivityTest() {
 
         verify { mockPersonViewModel.getDetailPerson(any<Int>()) }
         verify { mockPersonViewModel.getImagePerson(any<Int>()) }
-        verify { mockPersonViewModel.getExternalIDPerson(any<Int>()) }
       }
     }
 
@@ -220,7 +218,6 @@ class PersonActivityTest : BasePersonActivityTest() {
       context.launchPersonActivity(testMediaCastItem.copy(id = null)) {
         verify(exactly = 0) { mockPersonViewModel.getImagePerson(any()) }
         verify(exactly = 0) { mockPersonViewModel.getDetailPerson(any()) }
-        verify(exactly = 0) { mockPersonViewModel.getExternalIDPerson(any()) }
       }
     }
 
@@ -341,15 +338,9 @@ class PersonActivityTest : BasePersonActivityTest() {
   @Test
   fun socialMediaLinks_withValidIds_shouldVisible() =
     runTest {
-      val testExternalIds = testExternalIDPerson.copy(
-        instagramId = "test_instagram",
-        twitterId = "test_twitter",
-        facebookId = "test_facebook",
-      )
-
       context.launchPersonActivity {
         InstrumentationRegistry.getInstrumentation().runOnMainSync {
-          externalIdPersonLiveData.postValue(testExternalIds)
+          detailPersonLiveData.postValue(testDetailPerson)
         }
         view_group_social_media.isDisplayed()
         btn_instagram.isDisplayed()
@@ -371,7 +362,31 @@ class PersonActivityTest : BasePersonActivityTest() {
 
       context.launchPersonActivity {
         InstrumentationRegistry.getInstrumentation().runOnMainSync {
-          externalIdPersonLiveData.postValue(testExternalIds)
+          detailPersonLiveData.postValue(testDetailPerson.copy(externalIds = testExternalIds))
+        }
+
+        view_group_social_media.isGone()
+      }
+    }
+
+  @Test
+  fun socialMediaLinks_whenExternalIdIsNull_shouldHidden() =
+    runTest {
+      context.launchPersonActivity {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+          detailPersonLiveData.postValue(testDetailPerson.copy(externalIds = null))
+        }
+
+        view_group_social_media.isGone()
+      }
+    }
+
+  @Test
+  fun socialMediaLinks_withNullId_shouldHidden() =
+    runTest {
+      context.launchPersonActivity {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+          detailPersonLiveData.postValue(testDetailPerson.copy(externalIds = null))
         }
 
         view_group_social_media.isGone()

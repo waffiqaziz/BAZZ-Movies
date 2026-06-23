@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.person.domain.model
 
-import junit.framework.TestCase.assertNull
+import org.junit.Assert.assertNull
 import org.junit.Test
 
 class CombinedCreditPersonTest {

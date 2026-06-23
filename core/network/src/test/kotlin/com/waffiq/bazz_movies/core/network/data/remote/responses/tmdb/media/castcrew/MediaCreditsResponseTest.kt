@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.cas
 
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.mediaCastItemResponseDump
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.mediaCrewItemResponseDump
-import junit.framework.TestCase.assertEquals
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class MediaCreditsResponseTest {

@@ -9,7 +9,6 @@ import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
-import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ProfilesItem
 import com.waffiq.bazz_movies.feature.person.domain.usecase.GetDetailPersonUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,9 +32,6 @@ class PersonViewModel @Inject constructor(
     it.credits?.cast.orEmpty()
   }
 
-  private val _externalIdPerson = MutableLiveData<ExternalIDPerson>()
-  val externalIdPerson: LiveData<ExternalIDPerson> get() = _externalIdPerson
-
   private val _errorState = MutableLiveData<Event<String>>()
   val errorState: LiveData<Event<String>> get() = _errorState
 
@@ -55,13 +51,6 @@ class PersonViewModel @Inject constructor(
     executeUseCase(
       flowProvider = { getDetailPersonUseCase.getImagePerson(id) },
       onSuccess = { _imagePerson.value = it.profiles.orEmpty() },
-    )
-  }
-
-  fun getExternalIDPerson(id: Int) {
-    executeUseCase(
-      flowProvider = { getDetailPersonUseCase.getExternalIDPerson(id) },
-      onSuccess = { _externalIdPerson.value = it },
     )
   }
 

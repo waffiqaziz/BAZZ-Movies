@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.core.network.data.remote.retrofit.adapter
 
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.RatedResponse
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertTrue
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class RatedResponseAdapterToJsonTest {

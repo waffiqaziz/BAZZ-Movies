@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.core.network.data.remote.datasource.person
 
 import com.waffiq.bazz_movies.core.coroutines.IoDispatcher
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.DetailPersonResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ExternalIDPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ImagePersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.PersonApiService
 import com.waffiq.bazz_movies.core.network.utils.helpers.SafeApiCallHelper.executeApiCall
@@ -27,12 +26,6 @@ class PersonRemoteDataSource @Inject constructor(
   override fun getPersonImages(id: Int): Flow<NetworkResult<ImagePersonResponse>> =
     executeApiCall(
       apiCall = { personApiService.getPersonImages(id) },
-      ioDispatcher = ioDispatcher,
-    )
-
-  override fun getPersonExternalIds(id: Int): Flow<NetworkResult<ExternalIDPersonResponse>> =
-    executeApiCall(
-      apiCall = { personApiService.getPersonExternalIds(id) },
       ioDispatcher = ioDispatcher,
     )
 }

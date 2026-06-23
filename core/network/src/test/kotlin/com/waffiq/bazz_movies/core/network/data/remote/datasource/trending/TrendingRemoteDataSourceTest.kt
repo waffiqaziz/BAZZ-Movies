@@ -12,8 +12,8 @@ import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingFlow
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingSource
 import io.mockk.coEvery
 import io.mockk.coVerify
-import junit.framework.TestCase
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class TrendingRemoteDataSourceTest : BaseMediaDataSourceTest() {
@@ -29,7 +29,7 @@ class TrendingRemoteDataSourceTest : BaseMediaDataSourceTest() {
         mockApiCall = { mockTrendingApiService.getTrendingThisWeek("id", 1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
-        TestCase.assertEquals(3, page.data.size)
+        assertEquals(3, page.data.size)
       }
     }
 
@@ -55,13 +55,13 @@ class TrendingRemoteDataSourceTest : BaseMediaDataSourceTest() {
         mockApiCall = { mockTrendingApiService.getTrendingToday("ca", 1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
-        TestCase.assertEquals(2, page.data.size)
-        TestCase.assertEquals("Squid Game", page.data[0].name)
-        TestCase.assertEquals("Wicked", page.data[1].title)
-        TestCase.assertEquals(tvShowDump1, page.data[0])
-        TestCase.assertEquals(movieDump7, page.data[1])
-        TestCase.assertEquals(null, page.prevKey)
-        TestCase.assertEquals(2, page.nextKey)
+        assertEquals(2, page.data.size)
+        assertEquals("Squid Game", page.data[0].name)
+        assertEquals("Wicked", page.data[1].title)
+        assertEquals(tvShowDump1, page.data[0])
+        assertEquals(movieDump7, page.data[1])
+        assertEquals(null, page.prevKey)
+        assertEquals(2, page.nextKey)
       }
     }
 

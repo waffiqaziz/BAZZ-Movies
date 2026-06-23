@@ -16,4 +16,5 @@ data class DetailPerson(
   val adult: Boolean? = null,
   val homepage: String? = null,
   val credits: CombinedCreditPerson? = null,
+  val externalIds: ExternalIDPerson? = null,
 )

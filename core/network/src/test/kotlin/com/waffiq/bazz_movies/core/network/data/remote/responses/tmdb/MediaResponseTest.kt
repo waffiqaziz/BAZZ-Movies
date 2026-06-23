@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb
 
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.movieDump1
-import junit.framework.TestCase.assertEquals
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class MediaResponseTest {

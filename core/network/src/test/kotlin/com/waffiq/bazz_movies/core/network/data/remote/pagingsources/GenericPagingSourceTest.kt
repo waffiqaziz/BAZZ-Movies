@@ -15,9 +15,9 @@ import com.waffiq.bazz_movies.core.network.utils.common.Constants.INITIAL_PAGE_I
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
-import junit.framework.TestCase.assertNull
-import junit.framework.TestCase.fail
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertNull
+import org.junit.Assert.fail
 import org.junit.Test
 import retrofit2.HttpException
 import java.io.IOException

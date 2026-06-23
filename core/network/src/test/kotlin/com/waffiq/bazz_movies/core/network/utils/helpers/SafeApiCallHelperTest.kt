@@ -5,12 +5,12 @@ import com.waffiq.bazz_movies.core.network.utils.helpers.SafeApiCallHelper.safeA
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import io.mockk.every
 import io.mockk.mockk
-import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import retrofit2.HttpException

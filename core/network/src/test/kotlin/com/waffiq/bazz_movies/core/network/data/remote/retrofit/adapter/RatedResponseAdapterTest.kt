@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.core.network.data.remote.retrofit.adapter
 
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.RatedResponse
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertTrue
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class RatedResponseAdapterTest {
@@ -24,7 +24,7 @@ class RatedResponseAdapterTest {
   fun fromJson_withCorrectMap_returnsValueResponse() {
     val result = adapter.fromJson(mapOf("value" to 4.5))
     assertTrue(result is RatedResponse.Value)
-    assertEquals(4.5, (result as RatedResponse.Value).value)
+    assertEquals(4.5, (result as RatedResponse.Value).value, 0.0001)
   }
 
   @Test
