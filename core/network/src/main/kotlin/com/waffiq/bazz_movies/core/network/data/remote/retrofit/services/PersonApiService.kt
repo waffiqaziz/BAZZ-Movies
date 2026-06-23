@@ -9,7 +9,7 @@ import retrofit2.http.Query
 
 interface PersonApiService {
 
-  @GET("3/person/{personId}?append_to_response=combined_credits")
+  @GET("3/person/{personId}?append_to_response=combined_credits,external_ids")
   suspend fun getPersonDetails(
     @Path("personId") personId: Int,
     @Query("language") language: String = "en-US",
