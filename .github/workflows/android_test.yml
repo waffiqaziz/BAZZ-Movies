@@ -102,7 +102,7 @@ jobs:
       # skip cache operations for Renovate PRs
       - name: Cache Gradle dependencies
         if: github.actor != 'renovate[bot]'
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: |
             ~/.gradle/caches
@@ -113,7 +113,7 @@ jobs:
             gradle-${{ runner.os }}-
 
       - name: Restore build cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: |
             **/build/
@@ -129,7 +129,7 @@ jobs:
 
       # Cache unit test results for the coverage job
       - name: Cache unit test results
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         if: always() # Save cache even if tests fail
         with:
           path: |
@@ -198,7 +198,7 @@ jobs:
 
       - name: Cache Gradle dependencies
         if: github.actor != 'renovate[bot]'
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: |
             ~/.gradle/caches
@@ -209,7 +209,7 @@ jobs:
             gradle-${{ runner.os }}-
 
       - name: Restore build cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: |
             **/build/
@@ -221,7 +221,7 @@ jobs:
 
       # Each module gets its own AVD cache to avoid conflicts between parallel instances
       - name: AVD cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         id: avd-cache
         with:
           path: |
@@ -254,7 +254,7 @@ jobs:
 
       # Cache per-module results so test_coverage can restore them individually
       - name: Cache instrumentation test results (${{ matrix.module }})
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         if: always()
         with:
           path: |
@@ -296,7 +296,7 @@ jobs:
 
       - name: Restore unit test results
         id: cache_restore_unit
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: |
             ${{ github.workspace }}/**/build/outputs/unit_test_code_coverage/
@@ -307,7 +307,7 @@ jobs:
 
       # Restore each module's instrumentation results individually
       - name: Restore instrumentation test results (about)
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: |
             ${{ github.workspace }}/**/build/outputs/androidTest-results/
@@ -319,7 +319,7 @@ jobs:
           key: instrumentation-test-results-${{ github.run_id }}-about
 
       - name: Restore instrumentation test results (detail)
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: |
             ${{ github.workspace }}/**/build/outputs/androidTest-results/
@@ -331,7 +331,7 @@ jobs:
           key: instrumentation-test-results-${{ github.run_id }}-detail
 
       - name: Restore instrumentation test results (favorite)
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: |
             ${{ github.workspace }}/**/build/outputs/androidTest-results/
@@ -343,7 +343,7 @@ jobs:
           key: instrumentation-test-results-${{ github.run_id }}-favorite
 
       - name: Restore instrumentation test results (home)
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: |
             ${{ github.workspace }}/**/build/outputs/androidTest-results/
@@ -355,7 +355,7 @@ jobs:
           key: instrumentation-test-results-${{ github.run_id }}-home
 
       - name: Restore instrumentation test results (list)
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: |
             ${{ github.workspace }}/**/build/outputs/androidTest-results/
@@ -367,7 +367,7 @@ jobs:
           key: instrumentation-test-results-${{ github.run_id }}-list
 
       - name: Restore instrumentation test results (login)
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: |
             ${{ github.workspace }}/**/build/outputs/androidTest-results/
@@ -379,7 +379,7 @@ jobs:
           key: instrumentation-test-results-${{ github.run_id }}-login
 
       - name: Restore instrumentation test results (more)
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: |
             ${{ github.workspace }}/**/build/outputs/androidTest-results/
@@ -391,7 +391,7 @@ jobs:
           key: instrumentation-test-results-${{ github.run_id }}-more
 
       - name: Restore instrumentation test results (person)
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: |
             ${{ github.workspace }}/**/build/outputs/androidTest-results/
@@ -404,7 +404,7 @@ jobs:
 
       - name: Restore instrumentation test results (search)
         id: cache_restore_instrumentation
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: |
             ${{ github.workspace }}/**/build/outputs/androidTest-results/
