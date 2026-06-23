@@ -6,7 +6,7 @@ enum class Keyword(val id: String) {
   DONGHUA("315535"),
   ROMANCE("9840"),
 
-  // used for without keyboard to get romance drama, strictly
+  // strictly keywords
   BISEXUAL_MAN("168812"),
   GAY_ROMANCE("240305"),
   GAY_RELATIONSHIP("265777"),
