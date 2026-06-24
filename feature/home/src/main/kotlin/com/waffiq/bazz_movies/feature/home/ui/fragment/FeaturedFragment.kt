@@ -216,6 +216,7 @@ class FeaturedFragment : BaseHomeFragment() {
     binding.apply {
       imgMainFeatured.isVisible = isVisible
       buttonGroup.isVisible = isVisible
+      layoutHeaderTrendingFeatured.isVisible = isVisible
       rvTrending.isVisible = isVisible
       layoutHeaderUpcomingMovieFeatured.isVisible = isVisible
       rvUpcomingMovieFeatured.isVisible = isVisible

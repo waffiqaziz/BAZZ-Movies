@@ -23,7 +23,12 @@ import com.waffiq.bazz_movies.feature.home.R.id.btn_trending_today
 import com.waffiq.bazz_movies.feature.home.R.id.button_group
 import com.waffiq.bazz_movies.feature.home.R.id.illustration_error_featured
 import com.waffiq.bazz_movies.feature.home.R.id.img_main_featured
+import com.waffiq.bazz_movies.feature.home.R.id.layout_header_movie_playing_now_featured
+import com.waffiq.bazz_movies.feature.home.R.id.layout_header_trending_featured
+import com.waffiq.bazz_movies.feature.home.R.id.layout_header_upcoming_movie_featured
+import com.waffiq.bazz_movies.feature.home.R.id.rv_movie_playing_now_featured
 import com.waffiq.bazz_movies.feature.home.R.id.rv_trending
+import com.waffiq.bazz_movies.feature.home.R.id.rv_upcoming_movie_featured
 import com.waffiq.bazz_movies.feature.home.R.id.swipe_refresh_featured
 import com.waffiq.bazz_movies.feature.home.testutils.BaseHomeFragmentTest
 import com.waffiq.bazz_movies.feature.home.ui.domain.TrendingPeriod
@@ -100,6 +105,14 @@ class FeaturedFragmentTest : BaseHomeFragmentTest() {
 
     waitUntilVisible(withId(illustration_error_featured))
     img_main_featured.isNotDisplayed()
+    layout_header_trending_featured.isNotDisplayed()
+    button_group.isNotDisplayed()
+    btn_more_trending_featured.isNotDisplayed()
+    rv_trending.isNotDisplayed()
+    layout_header_upcoming_movie_featured.isNotDisplayed()
+    rv_upcoming_movie_featured.isNotDisplayed()
+    layout_header_movie_playing_now_featured.isNotDisplayed()
+    rv_movie_playing_now_featured.isNotDisplayed()
   }
 
   @Test
