@@ -28,7 +28,7 @@ import org.junit.Before
 abstract class BasePersonActivityTest {
 
   protected val detailPersonLiveData = MutableLiveData<DetailPerson>()
-  protected val imagePersonLiveData = MutableLiveData<List<ProfilesItem>>()
+  protected val imageListLiveData = MutableLiveData<List<ProfilesItem>>()
   protected val creditPersonLiveData = MutableLiveData<List<CastItem>>()
   protected val errorStateLiveData = MutableLiveData<Event<String>>()
   protected val loadingStateLiveData = MutableLiveData<Boolean>()
@@ -48,18 +48,17 @@ abstract class BasePersonActivityTest {
     loadingStateLiveData.postValue(false)
     creditPersonLiveData.postValue(testKnownForList)
     detailPersonLiveData.postValue(testDetailPerson)
-    imagePersonLiveData.postValue(testImagesList)
+    imageListLiveData.postValue(testImagesList)
   }
 
   protected fun setupViewModelMocks(mockPersonViewModel: PersonViewModel) {
     every { mockPersonViewModel.detailPerson } returns detailPersonLiveData
     every { mockPersonViewModel.castList } returns creditPersonLiveData
-    every { mockPersonViewModel.imagePerson } returns imagePersonLiveData
+    every { mockPersonViewModel.imageList } returns imageListLiveData
     every { mockPersonViewModel.errorState } returns errorStateLiveData
     every { mockPersonViewModel.loadingState } returns loadingStateLiveData
 
     every { mockPersonViewModel.getDetailPerson(any()) } just Runs
-    every { mockPersonViewModel.getImagePerson(any()) } just Runs
   }
 
   protected fun setupNavigatorMocks(mockNavigator: INavigator) {

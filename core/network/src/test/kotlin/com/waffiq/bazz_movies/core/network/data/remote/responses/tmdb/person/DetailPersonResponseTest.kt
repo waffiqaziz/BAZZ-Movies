@@ -51,6 +51,7 @@ class DetailPersonResponseTest {
     assertNull(detailPersonResponse.homepage)
     assertNull(detailPersonResponse.combinedCredits)
     assertNull(detailPersonResponse.externalIds)
+    assertNull(detailPersonResponse.images)
   }
 
   @Test

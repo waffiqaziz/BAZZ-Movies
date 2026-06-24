@@ -17,4 +17,5 @@ data class DetailPerson(
   val homepage: String? = null,
   val credits: CombinedCreditPerson? = null,
   val externalIds: ExternalIDPerson? = null,
+  val images: ImagePerson? = null,
 )

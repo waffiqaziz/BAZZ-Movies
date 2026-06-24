@@ -114,7 +114,7 @@ class PersonActivityTest : BasePersonActivityTest() {
         InstrumentationRegistry.getInstrumentation().runOnMainSync {
           loadingStateLiveData.postValue(true)
           detailPersonLiveData.postValue(testDetailPerson)
-          imagePersonLiveData.postValue(listOf(testProfileItem))
+          imageListLiveData.postValue(listOf(testProfileItem))
           loadingStateLiveData.postValue(false)
         }
         InstrumentationRegistry.getInstrumentation().waitForIdleSync()
@@ -131,7 +131,6 @@ class PersonActivityTest : BasePersonActivityTest() {
         rv_photos.isDisplayed()
 
         verify { mockPersonViewModel.getDetailPerson(any<Int>()) }
-        verify { mockPersonViewModel.getImagePerson(any<Int>()) }
       }
     }
 
@@ -216,7 +215,6 @@ class PersonActivityTest : BasePersonActivityTest() {
   fun dataPerson_whenNoId_shouldNoProblem() =
     runTest {
       context.launchPersonActivity(testMediaCastItem.copy(id = null)) {
-        verify(exactly = 0) { mockPersonViewModel.getImagePerson(any()) }
         verify(exactly = 0) { mockPersonViewModel.getDetailPerson(any()) }
       }
     }

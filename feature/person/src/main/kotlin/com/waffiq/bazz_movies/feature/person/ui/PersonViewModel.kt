@@ -25,11 +25,12 @@ class PersonViewModel @Inject constructor(
   private val _detailPerson = MutableLiveData<DetailPerson>()
   val detailPerson: LiveData<DetailPerson> get() = _detailPerson
 
-  private val _imagePerson = MutableLiveData<List<ProfilesItem>>()
-  val imagePerson: LiveData<List<ProfilesItem>> get() = _imagePerson
-
   val castList: LiveData<List<CastItem>> = _detailPerson.map {
     it.credits?.cast.orEmpty()
+  }
+
+  val imageList: LiveData<List<ProfilesItem>> = _detailPerson.map {
+    it.images?.profiles.orEmpty()
   }
 
   private val _errorState = MutableLiveData<Event<String>>()
@@ -44,13 +45,6 @@ class PersonViewModel @Inject constructor(
       onSuccess = { _detailPerson.value = it },
       onFinallySuccess = { _loadingState.value = false },
       onLoading = { _loadingState.value = true },
-    )
-  }
-
-  fun getImagePerson(id: Int) {
-    executeUseCase(
-      flowProvider = { getDetailPersonUseCase.getImagePerson(id) },
-      onSuccess = { _imagePerson.value = it.profiles.orEmpty() },
     )
   }
 

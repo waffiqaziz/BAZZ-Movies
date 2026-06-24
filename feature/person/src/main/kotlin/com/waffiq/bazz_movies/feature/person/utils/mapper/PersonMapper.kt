@@ -91,12 +91,12 @@ object PersonMapper {
       homepage = homepage,
       credits = combinedCredits?.toCombinedCredit(),
       externalIds = externalIds?.toExternalIDPerson(),
+      images = images?.toImagePerson(),
     )
 
   fun ImagePersonResponse.toImagePerson() =
     ImagePerson(
       profiles = profiles?.map { it.toProfilesItem() },
-      id = id,
     )
 
   private fun ProfilesItemResponse.toProfilesItem() =

@@ -12,6 +12,7 @@ import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toDetailP
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toImagePerson
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Test
 
@@ -96,11 +97,39 @@ class PersonMapperTest {
 
   @Test
   fun toDetailPerson_withValidValue_returnsDetailPerson() {
-    val response = DetailPersonResponse(imdbId = "nm123456", name = "Silverst", gender = 2)
+    val response = DetailPersonResponse(
+      imdbId = "nm123456",
+      name = "Silverst",
+      gender = 2,
+      images = ImagePersonResponse(listOf(ProfilesItemResponse())),
+    )
     val detailPerson = response.toDetailPerson()
     assertEquals("nm123456", detailPerson.imdbId)
     assertEquals("Silverst", detailPerson.name)
     assertEquals(2, detailPerson.gender)
+    assertNotNull(detailPerson.images)
+  }
+
+  @Test
+  fun toDetailPerson_withNullValue_returnsNull() {
+    val detailPerson = DetailPersonResponse().toDetailPerson()
+    assertNull(detailPerson.alsoKnownAs)
+    assertNull(detailPerson.birthday)
+    assertNull(detailPerson.gender)
+    assertNull(detailPerson.imdbId)
+    assertNull(detailPerson.knownForDepartment)
+    assertNull(detailPerson.profilePath)
+    assertNull(detailPerson.biography)
+    assertNull(detailPerson.deathday)
+    assertNull(detailPerson.placeOfBirth)
+    assertNull(detailPerson.popularity)
+    assertNull(detailPerson.name)
+    assertNull(detailPerson.id)
+    assertNull(detailPerson.adult)
+    assertNull(detailPerson.homepage)
+    assertNull(detailPerson.credits)
+    assertNull(detailPerson.externalIds)
+    assertNull(detailPerson.images)
   }
 
   @Test
@@ -119,7 +148,7 @@ class PersonMapperTest {
         voteCount = 9999,
       ),
     )
-    val response = ImagePersonResponse(profiles = listOfProfilesItemResponse, id = 1)
+    val response = ImagePersonResponse(profiles = listOfProfilesItemResponse)
     val imagePerson = response.toImagePerson()
     assertEquals(300, imagePerson.profiles?.get(0)?.width)
     assertEquals(450, imagePerson.profiles?.get(0)?.height)
@@ -133,10 +162,9 @@ class PersonMapperTest {
 
   @Test
   fun toImagePerson_whenProfilesIsNull_returnsImagePerson() {
-    val response = ImagePersonResponse(profiles = null, id = 4531)
+    val response = ImagePersonResponse(profiles = null)
     val imagePerson = response.toImagePerson()
 
-    assertEquals(4531, imagePerson.id)
     assertNull(imagePerson.profiles)
   }
 

@@ -57,22 +57,6 @@ class PersonActivityImageDialogTest : BasePersonActivityTest() {
   fun imageDialog_whenImageClicked_showsDialog() =
     runTest {
       context.launchPersonActivity {
-        InstrumentationRegistry.getInstrumentation().runOnMainSync {
-          imagePersonLiveData.postValue(
-            listOf(testProfileItem, testProfileItem.copy(filePath = "path")),
-          )
-        }
-        performClickListPhotos(0)
-      }
-    }
-
-  @Test
-  fun imageDialog_whenCloseButtonClicked_dismissesDialog() =
-    runTest {
-      context.launchPersonActivity {
-        InstrumentationRegistry.getInstrumentation().runOnMainSync {
-          imagePersonLiveData.postValue(listOf(testProfileItem, testProfileItem))
-        }
         performClickListPhotos(0)
 
         // close dialog
@@ -91,12 +75,9 @@ class PersonActivityImageDialogTest : BasePersonActivityTest() {
 
       context.launchPersonActivity {
         InstrumentationRegistry.getInstrumentation().runOnMainSync {
-          imagePersonLiveData.postValue(listOf(testProfileItem, testProfileItem, testProfileItem))
+          imageListLiveData.postValue(listOf(testProfileItem, testProfileItem, testProfileItem))
         }
-        performClickListPhotos(1)
-
-        // verify the ViewPager is at the correct position,
-        // but it requires custom matchers or checking the adapter state
+        performClickListPhotos(1) // at least multiple images
       }
     }
 
@@ -106,9 +87,6 @@ class PersonActivityImageDialogTest : BasePersonActivityTest() {
       setupMocks()
 
       context.launchPersonActivity {
-        InstrumentationRegistry.getInstrumentation().runOnMainSync {
-          imagePersonLiveData.postValue(listOf(testProfileItem))
-        }
         performClickListPhotos(0)
         pressBack()
         shortDelay()

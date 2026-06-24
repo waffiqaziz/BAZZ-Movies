@@ -53,4 +53,7 @@ data class DetailPersonResponse(
 
   @Json(name = "external_ids")
   val externalIds: ExternalIDPersonResponse? = null,
+
+  @Json(name = "images")
+  val images: ImagePersonResponse? = null,
 )
