@@ -86,7 +86,7 @@ class AsianRemoteDataSource @Inject constructor(
           originCountry = ASIAN_REGION,
           page = page,
           withoutGenres = ROMANCE_DRAMA_WITHOUT_GENRES,
-          withoutKeywords = ROMANCE_DRAMA_WITHOUT_KEYWORDS,
+          withoutKeywords = TV_STRICT_KEYWORDS,
         ).toQueryMap(),
       ).results
     }.flow.flowOn(ioDispatcher)
@@ -113,17 +113,14 @@ class AsianRemoteDataSource @Inject constructor(
       ).results
     }.flow.flowOn(ioDispatcher)
 
-  companion object {
+  internal companion object {
     const val THREE_MONTHS = 3L
     const val ONE_MONTH = 1L
     const val REALITY_SHOW_TYPE = "3"
 
     val ASIAN_REGION = listOf(CHINA, INDONESIA, JAPAN, KOREA, MALAYSIA, TAIWAN, THAILAND)
 
-    val ANIME_WITHOUT_KEYWORDS = listOf(ECCHI, EROTIC, HENTAI, SOFTCORE)
-
-    val ROMANCE_DRAMA_WITHOUT_GENRES = listOf(ANIMATION, REALITY)
-    val ROMANCE_DRAMA_WITHOUT_KEYWORDS = listOf(
+    val TV_STRICT_KEYWORDS = listOf(
       BISEXUAL_MAN,
       GAY_ROMANCE,
       GAY_RELATIONSHIP,
@@ -132,5 +129,10 @@ class AsianRemoteDataSource @Inject constructor(
       LESBIAN,
       LESBIAN_RELATIONSHIP,
     )
+
+    val ANIME_WITHOUT_KEYWORDS =
+      (listOf(ECCHI, EROTIC, HENTAI, SOFTCORE) + TV_STRICT_KEYWORDS).distinct()
+
+    val ROMANCE_DRAMA_WITHOUT_GENRES = listOf(ANIMATION, REALITY)
   }
 }
