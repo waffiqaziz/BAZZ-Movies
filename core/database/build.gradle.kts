@@ -3,6 +3,7 @@ plugins {
   alias(libs.plugins.bazzmovies.android.room)
   alias(libs.plugins.bazzmovies.android.library.jacoco)
   alias(libs.plugins.bazzmovies.hilt)
+  alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -32,6 +33,12 @@ dependencies {
   implementation(project(":core:utils"))
 
   implementation(libs.gson)
+  implementation(libs.kotlinx.serialization.json)
+
+  // Remove false warning "..should be marked with @InternalSerializationApi"
+  // https://youtrack.jetbrains.com/issue/KTIJ-31549/K2-kotlinx.serialization.Serializable-error-only-in-IDE#focus=Comments-27-12461586.0-0
+  // https://github.com/Kotlin/kotlinx.serialization/issues/2844#issuecomment-3254213059
+  implementation(libs.androidx.annotation.experimental)
 
   testImplementation(project(":core:test"))
   testImplementation(libs.androidx.core.testing)

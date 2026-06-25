@@ -1,221 +1,346 @@
 package com.waffiq.bazz_movies.core.database.data.manager
 
+import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
-import androidx.test.core.app.ApplicationProvider
+import android.util.Log
+import com.waffiq.bazz_movies.core.database.data.model.BackupPayload
 import com.waffiq.bazz_movies.core.database.data.model.DatabaseBackup
-import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
 import com.waffiq.bazz_movies.core.database.data.room.FavoriteDao
+import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteTvEntity
 import com.waffiq.bazz_movies.core.database.utils.DbResult
-import io.mockk.Runs
+import com.waffiq.bazz_movies.core.database.utils.FavoriteMapper.toBackupEntry
+import com.waffiq.bazz_movies.core.database.utils.sha256
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.just
+import io.mockk.every
 import io.mockk.mockk
-import io.mockk.slot
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertTrue
+import io.mockk.mockkStatic
+import io.mockk.unmockkAll
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import kotlinx.serialization.json.Json
+import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
-import kotlin.test.assertIs
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.IOException
 
-@RunWith(RobolectricTestRunner::class)
-class DatabaseBackupManagerTest : BaseDatabaseBackupManagerTest() {
+class DatabaseBackupManagerTest {
+
+  private val context: Context = mockk(relaxed = true)
+  private val contentResolver: ContentResolver = mockk()
+  private val favoriteDao: FavoriteDao = mockk(relaxed = true)
+  private val testDispatcher = StandardTestDispatcher()
+  private val appVersion = "1.0.0"
+  private val mockUri = mockk<Uri>()
 
   private lateinit var manager: DatabaseBackupManager
 
-  private val context = ApplicationProvider.getApplicationContext<Context>()
-  private val mockFavoriteDao: FavoriteDao = mockk()
+  private val jsonCompact = Json { ignoreUnknownKeys = true }
+  private val jsonPretty = Json {
+    ignoreUnknownKeys = true
+    prettyPrint = true
+  }
 
-  private val testDispatcher = StandardTestDispatcher()
+  private fun createMockEntity(id: Int) = favoriteTvEntity.copy(id = id)
+  private fun createMockBackupEntry(id: Int) = favoriteTvEntity.toBackupEntry().copy(mediaId = id)
 
   @Before
-  fun setup() {
+  fun setUp() {
+    Dispatchers.setMain(testDispatcher)
+    mockkStatic(Log::class)
+    every { Log.e(any(), any(), any()) } returns 0
+
+    every { context.contentResolver } returns contentResolver
+
     manager = DatabaseBackupManager(
       context = context,
-      favoriteDao = mockFavoriteDao,
+      favoriteDao = favoriteDao,
       ioDispatcher = testDispatcher,
-      appVersion = "1.0.0",
+      appVersion = appVersion,
     )
   }
 
+  @After
+  fun tearDown() {
+    Dispatchers.resetMain()
+    unmockkAll()
+  }
+
   @Test
-  fun backupToUri_withValidJSON_successWrites() =
-    runTest(testDispatcher) {
-      val entities = listOf<FavoriteEntity>(fakeEntity(id = 1), fakeEntity(id = 2))
-      coEvery { mockFavoriteDao.getAllFavorites() } returns entities
+  fun backupToUri_whenDatabaseHasData_expectedSuccessAndCorrectJsonWritten() =
+    runTest {
+      val entities = listOf(createMockEntity(1), createMockEntity(2))
+      coEvery { favoriteDao.getAllFavorites() } returns entities
 
-      val file = context.tempFile()
-      val uri = Uri.fromFile(file)
+      val outputStream = ByteArrayOutputStream()
+      every { contentResolver.openOutputStream(mockUri) } returns outputStream
 
-      val result = manager.backupToUri(uri)
+      val result = manager.backupToUri(mockUri)
 
-      assertIs<DbResult.Success<Unit>>(result)
-      val backup = gson.fromJson(file.readText(), DatabaseBackup::class.java)
-      assertEquals(1, backup.version)
-      assertEquals("1.0.0", backup.appVersion)
-      assertEquals(2, backup.favorites.size)
+      assertTrue(result is DbResult.Success)
+      val writtenString = outputStream.toString(Charsets.UTF_8.name())
+
+      // verify the validity
+      val decodedBackup = jsonPretty.decodeFromString<DatabaseBackup>(writtenString)
+      assertEquals(DatabaseBackup.BACKUP_VERSION, decodedBackup.version)
+      assertEquals(appVersion, decodedBackup.appVersion)
+      assertEquals(2, decodedBackup.favorites.size)
+
+      // verify checksum integrity matches production logic
+      val expectedPayload = BackupPayload(
+        version = decodedBackup.version,
+        createdAt = decodedBackup.createdAt,
+        appVersion = decodedBackup.appVersion,
+        favorites = decodedBackup.favorites,
+      )
+      val expectedChecksum = jsonCompact.encodeToString(expectedPayload).sha256()
+      assertEquals(expectedChecksum, decodedBackup.checksum)
     }
 
   @Test
-  fun backupToUri_withEmptyFavorites_stillSucceed() =
-    runTest(testDispatcher) {
-      coEvery { mockFavoriteDao.getAllFavorites() } returns emptyList()
+  fun backupToUri_whenOutputStreamCannotBeOpened_expectedErrorResult() =
+    runTest {
+      coEvery { favoriteDao.getAllFavorites() } returns emptyList()
+      every { contentResolver.openOutputStream(mockUri) } returns null
 
-      val file = context.tempFile()
-      val result = manager.backupToUri(Uri.fromFile(file))
+      val result = manager.backupToUri(mockUri)
 
-      assertIs<DbResult.Success<Unit>>(result)
-      val backup = gson.fromJson(file.readText(), DatabaseBackup::class.java)
-      assertEquals(0, backup.favorites.size)
+      assertTrue(result is DbResult.Error)
+      assertEquals("Cannot open output stream", (result as DbResult.Error).errorMessage)
     }
 
   @Test
-  fun backupToUri_whenDaoThrows_returnsError() =
-    runTest(testDispatcher) {
-      coEvery { mockFavoriteDao.getAllFavorites() } throws RuntimeException("db error")
+  fun backupToUri_whenDaoThrowsException_expectedErrorResult() =
+    runTest {
+      coEvery {
+        favoriteDao.getAllFavorites()
+      } throws RuntimeException("Database disk image is malformed")
 
-      val result = manager.backupToUri(Uri.fromFile(context.tempFile()))
+      val result = manager.backupToUri(mockUri)
 
-      assertIs<DbResult.Error>(result)
-      assertEquals("db error", result.errorMessage)
+      assertTrue(result is DbResult.Error)
+      assertEquals("Database disk image is malformed", (result as DbResult.Error).errorMessage)
     }
 
   @Test
-  fun backupToUri_whenErrorMessageIsNull_returnsFallbackError() =
-    runTest(testDispatcher) {
-      coEvery { mockFavoriteDao.getAllFavorites() } throws Exception()
+  fun backupToUri_whenExceptionHasNullMessage_expectedErrorResultWithDefaultMessage() =
+    runTest {
+      coEvery { favoriteDao.getAllFavorites() } throws RuntimeException(null as String?)
 
-      val result = manager.backupToUri(Uri.fromFile(context.tempFile()))
+      val result = manager.backupToUri(mockUri)
 
-      assertIs<DbResult.Error>(result)
-      assertEquals("Backup failed", result.errorMessage)
+      assertTrue(result is DbResult.Error)
+      assertEquals("Backup failed", (result as DbResult.Error).errorMessage)
     }
 
   @Test
-  fun backupToUri_whenOutputStreamCannotBeOpened_returnsError() =
-    runTest(testDispatcher) {
-      coEvery { mockFavoriteDao.getAllFavorites() } returns listOf(fakeEntity())
+  fun restoreFromUri_whenValidBackupProvided_expectedSuccessAndDatabaseWipedAndInserted() =
+    runTest {
+      val favorites = listOf(createMockBackupEntry(10), createMockBackupEntry(20))
 
-      // non-existent directory,stream will be null
-      val uri = Uri.parse("content://com.invalid.provider/no/such/path")
-
-      val result = manager.backupToUri(uri)
-
-      assertIs<DbResult.Error>(result)
-    }
-
-  @Test
-  fun restoreFromUri_withValidBackup_successRestores() =
-    runTest(testDispatcher) {
-      coEvery { mockFavoriteDao.clearAndInsert(any()) } just Runs
-
-      val file = context.writeBackupFile(favorites = listOf(fakeBackupEntry()))
-      val result = manager.restoreFromUri(Uri.fromFile(file))
-
-      assertIs<DbResult.Success<Unit>>(result)
-      coVerify(exactly = 1) { mockFavoriteDao.clearAndInsert(any()) }
-    }
-
-  @Test
-  fun restoreFromUri_onInvalidJSON_returnsError() =
-    runTest(testDispatcher) {
-      val file = context.tempFile().also { it.writeText("not json at all }{") }
-
-      val result = manager.restoreFromUri(Uri.fromFile(file))
-
-      assertIs<DbResult.Error>(result)
-      assertEquals("Invalid backup file: not valid JSON", result.errorMessage)
-    }
-
-  @Test
-  fun restoreFromUri_whenBackupVersionIsNewer_returnsError() =
-    runTest(testDispatcher) {
-      val file = context.writeBackupFile(version = 999)
-
-      val result = manager.restoreFromUri(Uri.fromFile(file))
-
-      assertIs<DbResult.Error>(result)
-      assertTrue(result.errorMessage.contains("newer app version"))
-    }
-
-  @Test
-  fun restoreFromUri_whenBackupVersionIsInvalid_returnsError() =
-    runTest(testDispatcher) {
-      val file = context.writeBackupFile(version = -1)
-
-      val result = manager.restoreFromUri(Uri.fromFile(file))
-
-      assertIs<DbResult.Error>(result)
-      assertTrue(result.errorMessage.contains("Invalid backup version"))
-    }
-
-  @Test
-  fun restoreFromUri_whenAllEntriesAreInvalid_returnsError() =
-    runTest(testDispatcher) {
-      coEvery { mockFavoriteDao.clearAndInsert(any()) } just Runs
-
-      val file = context.writeBackupFile(
-        favorites = listOf(
-          fakeBackupEntry(mediaId = 0, mediaType = "", title = ""),
-          fakeBackupEntry(mediaId = -1, mediaType = "", title = ""),
-        ),
+      val payload = BackupPayload(
+        version = DatabaseBackup.BACKUP_VERSION,
+        createdAt = System.currentTimeMillis(),
+        appVersion = appVersion,
+        favorites = favorites,
+      )
+      val validBackup = DatabaseBackup(
+        version = payload.version,
+        createdAt = payload.createdAt,
+        appVersion = payload.appVersion,
+        favorites = payload.favorites,
+        checksum = jsonCompact.encodeToString(payload).sha256(),
       )
 
-      val result = manager.restoreFromUri(Uri.fromFile(file))
+      val rawJson = jsonPretty.encodeToString(validBackup)
+      val inputStream = ByteArrayInputStream(rawJson.toByteArray(Charsets.UTF_8))
+      every { contentResolver.openInputStream(mockUri) } returns inputStream
 
-      assertIs<DbResult.Error>(result)
-      assertEquals("Backup contains no valid entries", result.errorMessage)
-      coVerify(exactly = 0) { mockFavoriteDao.clearAndInsert(any()) }
+      val result = manager.restoreFromUri(mockUri)
+
+      assertTrue(result is DbResult.Success)
+      coVerify(exactly = 1) { favoriteDao.clearAndInsert(any()) }
     }
 
   @Test
-  fun restoreFromUri_entriesAndRestoresIsValid_skipsInvalid() =
-    runTest(testDispatcher) {
-      val captured = slot<List<FavoriteEntity>>()
-      coEvery { mockFavoriteDao.clearAndInsert(capture(captured)) } just Runs
+  fun restoreFromUri_whenInputStreamCannotBeOpened_expectedErrorResult() =
+    runTest {
+      every { contentResolver.openInputStream(mockUri) } returns null
 
-      val file = context.writeBackupFile(
-        favorites = listOf(
-          fakeBackupEntry(mediaId = 1, title = "Valid"),
-          fakeBackupEntry(mediaId = -1, title = "Bad id"), // skipped
-          fakeBackupEntry(mediaId = 2, title = "Also Valid"),
-        ),
+      val result = manager.restoreFromUri(mockUri)
+
+      assertTrue(result is DbResult.Error)
+      assertEquals("Cannot open input stream", (result as DbResult.Error).errorMessage)
+    }
+
+  @Test
+  fun restoreFromUri_whenJsonIsMalformed_expectedErrorResult() =
+    runTest {
+      val malformedJson = "{ invalid json structure }"
+      val inputStream = ByteArrayInputStream(malformedJson.toByteArray(Charsets.UTF_8))
+      every { contentResolver.openInputStream(mockUri) } returns inputStream
+
+      val result = manager.restoreFromUri(mockUri)
+
+      assertTrue(result is DbResult.Error)
+      assertTrue(
+        (result as DbResult.Error).errorMessage.contains("Invalid backup file: not valid JSON"),
       )
-
-      val result = manager.restoreFromUri(Uri.fromFile(file))
-
-      assertIs<DbResult.Success<Unit>>(result)
-      assertEquals(2, captured.captured.size)
     }
 
   @Test
-  fun restoreFromUri_whenDaoThrowsDuringRestore_returnsError() =
-    runTest(testDispatcher) {
-      coEvery { mockFavoriteDao.clearAndInsert(any()) } throws RuntimeException("insert failed")
+  fun restoreFromUri_whenVersionIsInvalidZeroOrNegative_expectedErrorResult() =
+    runTest {
+      val badBackup = DatabaseBackup(
+        version = 0, // invalid version
+        createdAt = System.currentTimeMillis(),
+        appVersion = appVersion,
+        favorites = emptyList(),
+      )
+      val inputStream =
+        ByteArrayInputStream(jsonPretty.encodeToString(badBackup).toByteArray(Charsets.UTF_8))
+      every { contentResolver.openInputStream(mockUri) } returns inputStream
 
-      val file = context.writeBackupFile(favorites = listOf(fakeBackupEntry()))
+      val result = manager.restoreFromUri(mockUri)
 
-      val result = manager.restoreFromUri(Uri.fromFile(file))
-
-      assertIs<DbResult.Error>(result)
-      assertEquals("insert failed", result.errorMessage)
+      assertTrue(result is DbResult.Error)
+      assertEquals("Invalid backup version", (result as DbResult.Error).errorMessage)
     }
 
   @Test
-  fun restoreFromUri_messageErrorIsNull_returnsFallbackError() =
-    runTest(testDispatcher) {
-      coEvery { mockFavoriteDao.clearAndInsert(any()) } throws Exception()
+  fun restoreFromUri_whenVersionIsNewerThanSupported_expectedErrorResult() =
+    runTest {
+      val badBackup = DatabaseBackup(
+        version = DatabaseBackup.BACKUP_VERSION + 1, // newer unsupported framework
+        createdAt = System.currentTimeMillis(),
+        appVersion = appVersion,
+        favorites = emptyList(),
+      )
+      val inputStream =
+        ByteArrayInputStream(jsonPretty.encodeToString(badBackup).toByteArray(Charsets.UTF_8))
+      every { contentResolver.openInputStream(mockUri) } returns inputStream
 
-      val file = context.writeBackupFile(favorites = listOf(fakeBackupEntry()))
+      val result = manager.restoreFromUri(mockUri)
 
-      val result = manager.restoreFromUri(Uri.fromFile(file))
+      assertTrue(result is DbResult.Error)
+      assertEquals(
+        "Backup is from a newer app version. Please update the app.",
+        (result as DbResult.Error).errorMessage,
+      )
+    }
 
-      assertIs<DbResult.Error>(result)
-      assertEquals("Restore failed", result.errorMessage)
+  @Test
+  fun restoreFromUri_whenChecksumIsCorruptedOrTampered_expectedErrorResult() =
+    runTest {
+      val badBackup = DatabaseBackup(
+        version = DatabaseBackup.BACKUP_VERSION,
+        createdAt = System.currentTimeMillis(),
+        appVersion = appVersion,
+        favorites = listOf(createMockBackupEntry(1)),
+        checksum = "wrong_or_manipulated_checksum_hash",
+      )
+      val inputStream =
+        ByteArrayInputStream(jsonPretty.encodeToString(badBackup).toByteArray(Charsets.UTF_8))
+      every { contentResolver.openInputStream(mockUri) } returns inputStream
+
+      val result = manager.restoreFromUri(mockUri)
+
+      assertTrue(result is DbResult.Error)
+      assertEquals(
+        "Backup file is corrupted or has been modified",
+        (result as DbResult.Error).errorMessage,
+      )
+    }
+
+  @Test
+  fun restoreFromUri_whenLegacyBackupHasNullChecksum_expectedSuccessWithoutVerifyingChecksum() =
+    runTest {
+      val favorites = listOf(createMockBackupEntry(5))
+
+      val legacyBackup = DatabaseBackup(
+        version = DatabaseBackup.BACKUP_VERSION,
+        createdAt = System.currentTimeMillis(),
+        appVersion = appVersion,
+        favorites = favorites,
+        checksum = null, // Legacy condition
+      )
+      val inputStream =
+        ByteArrayInputStream(jsonPretty.encodeToString(legacyBackup).toByteArray(Charsets.UTF_8))
+      every { contentResolver.openInputStream(mockUri) } returns inputStream
+
+      val result = manager.restoreFromUri(mockUri)
+
+      assertTrue(result is DbResult.Success)
+      coVerify(exactly = 1) { favoriteDao.clearAndInsert(any()) }
+    }
+
+  @Test
+  fun restoreFromUri_whenBackupContainsNoValidEntries_expectedErrorResult() =
+    runTest {
+      // create invalid data that trigger`.isValid()` inside FavoriteBackupEntry whis was
+      // the mediaType should not empty and mediaId should more that 0
+      val invalidEntry = favoriteTvEntity.toBackupEntry().copy(mediaId = -1, mediaType = "")
+
+      val payload = BackupPayload(
+        version = DatabaseBackup.BACKUP_VERSION,
+        createdAt = System.currentTimeMillis(),
+        appVersion = appVersion,
+        favorites = listOf(invalidEntry),
+      )
+      val backup = DatabaseBackup(
+        version = payload.version,
+        createdAt = payload.createdAt,
+        appVersion = payload.appVersion,
+        favorites = payload.favorites,
+        checksum = jsonCompact.encodeToString(payload).sha256(),
+      )
+      val inputStream =
+        ByteArrayInputStream(jsonPretty.encodeToString(backup).toByteArray(Charsets.UTF_8))
+      every { contentResolver.openInputStream(mockUri) } returns inputStream
+
+      val result = manager.restoreFromUri(mockUri)
+
+      assertTrue(result is DbResult.Error)
+      assertEquals("Backup contains no valid entries", (result as DbResult.Error).errorMessage)
+    }
+
+  @Test
+  fun restoreFromUri_whenClassicTryFinallyThrowsException_expectedStreamClosedAndError() =
+    runTest {
+      val mockUri = mockk<Uri>()
+      val mockInputStream = mockk<java.io.InputStream>()
+
+      every { contentResolver.openInputStream(mockUri) } returns mockInputStream
+      // error during the reading phase
+      every { mockInputStream.read(any<ByteArray>(), any(), any()) } throws
+        IOException("Read crash")
+
+      every { mockInputStream.close() } returns Unit
+
+      val result = manager.restoreFromUri(mockUri)
+
+      assertTrue(result is DbResult.Error)
+      assertEquals("Read crash", (result as DbResult.Error).errorMessage)
+      coVerify(exactly = 1) { mockInputStream.close() }
+    }
+
+  @Test
+  fun restoreFromUri_whenExceptionHasNullMessage_expectedErrorResultWithDefaultMessage() =
+    runTest {
+      // exception with no message
+      every { contentResolver.openInputStream(mockUri) } throws RuntimeException(null as String?)
+
+      val result = manager.restoreFromUri(mockUri)
+
+      assertTrue(result is DbResult.Error)
+      assertEquals("Restore failed", (result as DbResult.Error).errorMessage)
     }
 }
