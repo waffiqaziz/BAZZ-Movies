@@ -101,7 +101,7 @@ object HomeFragmentHelper {
     lifecycleScope.launch {
       loadStateFlow.debounce(DEBOUNCE_VERY_LONG).distinctUntilChanged().collectLatest { loadState ->
         when {
-          (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading) -> {
+          loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading -> {
             onLoading()
           }
 
