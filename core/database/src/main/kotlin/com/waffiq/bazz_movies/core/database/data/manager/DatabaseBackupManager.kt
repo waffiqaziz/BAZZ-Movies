@@ -170,8 +170,8 @@ class DatabaseBackupManager @Inject constructor(
       favorites = backup.favorites,
     )
 
-    if (jsonCompact.encodeToString(payload).sha256() != expectedChecksum) {
-      throw IllegalArgumentException("Backup file is corrupted or has been modified")
+    require(jsonCompact.encodeToString(payload).sha256() == expectedChecksum) {
+      "Backup file is corrupted or has been modified"
     }
   }
 }
