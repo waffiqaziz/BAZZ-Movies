@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.database.utils
 
-import com.waffiq.bazz_movies.core.database.testdummy.DummyData.searchHistory
-import com.waffiq.bazz_movies.core.database.testdummy.DummyData.searchHistoryEntity
+import com.waffiq.bazz_movies.core.database.testutils.DummyData.searchHistory
+import com.waffiq.bazz_movies.core.database.testutils.DummyData.searchHistoryEntity
 import com.waffiq.bazz_movies.core.database.utils.SearchHistoryMapper.toSearchHistory
 import com.waffiq.bazz_movies.core.database.utils.SearchHistoryMapper.toSearchHistoryEntity
 import org.junit.Test

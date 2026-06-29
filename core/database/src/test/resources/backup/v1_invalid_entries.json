@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "createdAt": 1710000000000,
+  "appVersion": "1.0.0",
+  "favorites": [
+    {
+      "mediaId": -1,
+      "mediaType": "",
+      "genre": "",
+      "backDrop": "",
+      "poster": "",
+      "overview": "",
+      "title": "",
+      "releaseDate": "",
+      "popularity": 0.0,
+      "rating": 0.0,
+      "isFavorite": false,
+      "isWatchlist": false,
+      "lastUpdated": 1710000000000
+    }
+  ],
+  "checksum": "eb76feb116aeab7cec1427a96de5bdccc492dfdc4da983312327ef8b93dfee56"
+}

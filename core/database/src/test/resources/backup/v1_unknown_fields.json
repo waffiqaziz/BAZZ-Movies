@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "createdAt": 1710000000000,
+  "appVersion": "1.0.0",
+
+  "futureTopLevelField": "this should be ignored",
+
+  "favorites": [
+    {
+      "mediaId": 101,
+      "mediaType": "tv",
+      "genre": "Drama",
+      "backDrop": "/backdrop1.jpg",
+      "poster": "/poster1.jpg",
+      "overview": "Overview 1",
+      "title": "Breaking Test",
+      "releaseDate": "2024-01-01",
+      "popularity": 98.5,
+      "rating": 8.7,
+      "isFavorite": true,
+      "isWatchlist": false,
+      "lastUpdated": 1710000000000,
+
+      "futureFavoriteField": "ignore me",
+      "anotherField": 12345
+    }
+  ],
+
+  "checksum": null
+}

@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "createdAt": 1710000000000,
+  "appVersion": "1.0.0",
+  "favorites": [
+    {
+      "mediaId": 101,
+      "mediaType": "tv",
+      "genre": "Drama",
+      "backDrop": "/backdrop1.jpg",
+      "poster": "/poster1.jpg",
+      "overview": "Overview 1",
+      "title": "Breaking Test",
+      "releaseDate": "2024-01-01",
+      "popularity": 98.5,
+      "rating": 8.7,
+      "isFavorite": true,
+      "isWatchlist": false,
+      "lastUpdated": 1710000000000
+    },
+    {
+      "mediaId": 202,
+      "mediaType": "movie",
+      "genre": "Action",
+      "backDrop": "/backdrop2.jpg",
+      "poster": "/poster2.jpg",
+      "overview": "Overview 2",
+      "title": "Movie Test",
+      "releaseDate": "2024-02-01",
+      "popularity": 88.2,
+      "rating": 7.9,
+      "isFavorite": true,
+      "isWatchlist": true,
+      "lastUpdated": 1710000000000
+    }
+  ],
+  "checksum": "invalid_checksum"
+}

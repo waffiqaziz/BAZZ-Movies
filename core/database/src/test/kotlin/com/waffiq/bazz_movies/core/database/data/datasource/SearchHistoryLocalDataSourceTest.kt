@@ -2,8 +2,8 @@ package com.waffiq.bazz_movies.core.database.data.datasource
 
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.database.data.room.SearchHistoryDao
-import com.waffiq.bazz_movies.core.database.testdummy.DummyData.listSearchHistoryEntityFlow
-import com.waffiq.bazz_movies.core.database.testdummy.DummyData.searchHistoryEntity
+import com.waffiq.bazz_movies.core.database.testutils.DummyData.listSearchHistoryEntityFlow
+import com.waffiq.bazz_movies.core.database.testutils.DummyData.searchHistoryEntity
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import io.mockk.Runs
 import io.mockk.coEvery

@@ -7,10 +7,10 @@ import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteMovieEntity
-import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteTvEntity
-import com.waffiq.bazz_movies.core.database.testdummy.DummyData.watchlistMovieEntity
-import com.waffiq.bazz_movies.core.database.testdummy.DummyData.watchlistTvEntity
+import com.waffiq.bazz_movies.core.database.testutils.DummyData.favoriteMovieEntity
+import com.waffiq.bazz_movies.core.database.testutils.DummyData.favoriteTvEntity
+import com.waffiq.bazz_movies.core.database.testutils.DummyData.watchlistMovieEntity
+import com.waffiq.bazz_movies.core.database.testutils.DummyData.watchlistTvEntity
 import io.mockk.coEvery
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals

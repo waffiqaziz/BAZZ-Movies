@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.core.database.data.datasource
 import android.database.sqlite.SQLiteException
 import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
 import com.waffiq.bazz_movies.core.database.data.room.FavoriteDao
-import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteMovieEntity
+import com.waffiq.bazz_movies.core.database.testutils.DummyData.favoriteMovieEntity
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import io.mockk.coEvery

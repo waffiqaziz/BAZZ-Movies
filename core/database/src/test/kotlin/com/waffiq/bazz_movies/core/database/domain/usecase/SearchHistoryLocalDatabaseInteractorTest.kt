@@ -2,8 +2,8 @@ package com.waffiq.bazz_movies.core.database.domain.usecase
 
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.database.domain.repository.ISearchHistoryLocalDatabaseRepository
-import com.waffiq.bazz_movies.core.database.testdummy.DummyData.listSearchHistoryFlow
-import com.waffiq.bazz_movies.core.database.testdummy.DummyData.searchHistory
+import com.waffiq.bazz_movies.core.database.testutils.DummyData.listSearchHistoryFlow
+import com.waffiq.bazz_movies.core.database.testutils.DummyData.searchHistory
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
