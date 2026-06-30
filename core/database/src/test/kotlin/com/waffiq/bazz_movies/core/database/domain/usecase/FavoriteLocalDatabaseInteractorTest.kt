@@ -2,10 +2,10 @@ package com.waffiq.bazz_movies.core.database.domain.usecase
 
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.database.domain.repository.IFavoriteLocalDatabaseRepository
-import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteMovie
-import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteTv
-import com.waffiq.bazz_movies.core.database.testdummy.DummyData.watchlistMovie
-import com.waffiq.bazz_movies.core.database.testdummy.DummyData.watchlistTv
+import com.waffiq.bazz_movies.core.database.testutils.DummyData.favoriteMovie
+import com.waffiq.bazz_movies.core.database.testutils.DummyData.favoriteTv
+import com.waffiq.bazz_movies.core.database.testutils.DummyData.watchlistMovie
+import com.waffiq.bazz_movies.core.database.testutils.DummyData.watchlistTv
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import io.mockk.coEvery
 import io.mockk.coVerify

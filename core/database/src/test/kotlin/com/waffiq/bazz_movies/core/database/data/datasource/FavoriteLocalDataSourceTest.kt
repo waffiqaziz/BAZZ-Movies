@@ -6,10 +6,10 @@ import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.database.data.room.FavoriteDao
 import com.waffiq.bazz_movies.core.database.data.room.FavoriteDatabase
-import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteMovieEntity
-import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteTvEntity
-import com.waffiq.bazz_movies.core.database.testdummy.DummyData.watchlistMovieEntity
-import com.waffiq.bazz_movies.core.database.testdummy.DummyData.watchlistTvEntity
+import com.waffiq.bazz_movies.core.database.testutils.DummyData.favoriteMovieEntity
+import com.waffiq.bazz_movies.core.database.testutils.DummyData.favoriteTvEntity
+import com.waffiq.bazz_movies.core.database.testutils.DummyData.watchlistMovieEntity
+import com.waffiq.bazz_movies.core.database.testutils.DummyData.watchlistTvEntity
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher

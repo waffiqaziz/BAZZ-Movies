@@ -31,6 +31,7 @@ dependencyGuard = "0.5.0"
 # AndroidX Libraries
 activityKtx = "1.13.0"
 appcompat = "1.7.1"
+annotationExperimental = "1.6.0"
 cardview = "1.0.0"
 coreKtx = "1.18.0"
 constraintlayout = "2.2.1"
@@ -101,6 +102,7 @@ moduleGraph = "2.9.1"
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-appcompat-resources = { module = "androidx.appcompat:appcompat-resources", version.ref = "appcompat" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activityKtx" }
+androidx-annotation-experimental = { module = "androidx.annotation:annotation-experimental", version.ref = "annotationExperimental" }
 androidx-cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
 androidx-core = { group = "androidx.core", name = "core", version.ref = "coreKtx" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -229,6 +231,7 @@ hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hi
 
 kotlin-metadata-jvm = { module = "org.jetbrains.kotlin:kotlin-metadata-jvm", version.ref = "kotlin" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxCoroutines" }
 
 # Dependencies of the included build-logic
 android-gradleApiPlugin = { group = "com.android.tools.build", name = "gradle-api", version.ref = "agp" }
@@ -261,6 +264,7 @@ detekt = { id = "dev.detekt", version.ref = "detekt" }
 dependencyGuard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuard" }
 module-graph = { id = "com.jraska.module.graph.assertion", version.ref = "moduleGraph" }
 kotlinx-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kotlinxKover" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
 # Custom Plugins
 bazzmovies-android-application = { id = "bazzmovies.android.application" }

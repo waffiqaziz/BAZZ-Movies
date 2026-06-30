@@ -26,6 +26,9 @@ class DatabaseBackupTest {
     val databaseBackup = DatabaseBackup(
       createdAt = 123123,
       favorites = listOf(favorite),
+      version = 1,
+      appVersion = "",
+      checksum = "1234",
     )
 
     assertEquals(databaseBackup.favorites[0], favorite)
@@ -35,10 +38,12 @@ class DatabaseBackupTest {
   }
 
   @Test
-  fun databaseBackup_customAppVerison_shouldReturnValueCorrectly() {
+  fun databaseBackup_checksumNull_retunsValueCorrectly() {
     val databaseBackup = DatabaseBackup(
       appVersion = "1.5.0",
       favorites = listOf(favorite),
+      version = 1,
+      createdAt = 43232,
     )
 
     assertEquals(databaseBackup.appVersion, "1.5.0")

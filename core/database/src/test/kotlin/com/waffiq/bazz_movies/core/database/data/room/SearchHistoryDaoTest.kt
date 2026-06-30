@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.database.testdummy.DummyData.searchHistoryEntity
+import com.waffiq.bazz_movies.core.database.testutils.DummyData.searchHistoryEntity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.After

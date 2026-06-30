@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.database.testdummy
+package com.waffiq.bazz_movies.core.database.testutils
 
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
