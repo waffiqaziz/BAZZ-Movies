@@ -10,5 +10,11 @@
       android:name="com.waffiq.bazz_movies.feature.detail.ui.MediaDetailActivity"
       android:autofillHints=""
       android:windowSoftInputMode="stateHidden" />
+
+    <activity
+      android:name="com.waffiq.bazz_movies.feature.detail.ui.CollectionDetailActivity"
+      android:autofillHints=""
+      android:windowSoftInputMode="stateHidden" />
+
   </application>
 </manifest>

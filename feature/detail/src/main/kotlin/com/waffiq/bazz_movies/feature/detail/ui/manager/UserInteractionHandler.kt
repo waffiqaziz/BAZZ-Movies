@@ -1,7 +1,11 @@
 package com.waffiq.bazz_movies.feature.detail.ui.manager
 
+import android.R.anim.fade_in
+import android.R.anim.fade_out
+import android.content.Intent
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.isVisible
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
@@ -19,6 +23,7 @@ import com.waffiq.bazz_movies.core.models.MediaState
 import com.waffiq.bazz_movies.core.models.Rated
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding
+import com.waffiq.bazz_movies.feature.detail.ui.CollectionDetailActivity
 import com.waffiq.bazz_movies.feature.detail.ui.dialog.RateDialog
 import com.waffiq.bazz_movies.feature.detail.ui.fragment.CreditsBottomSheet
 import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
@@ -163,6 +168,14 @@ class UserInteractionHandler(
           backdrop = dataExtra.backdropPathSource,
           mediaId = dataExtra.id,
         )
+      }
+      collectionSection.container.setOnClickListener {
+        val id = collectionSection.container.contentDescription.toString().toInt()
+        val intent = Intent(activity, CollectionDetailActivity::class.java).apply {
+          putExtra(CollectionDetailActivity.EXTRA_COLLECTION_ID, id)
+        }
+        val options = ActivityOptionsCompat.makeCustomAnimation(activity, fade_in, fade_out)
+        activity.startActivity(intent, options.toBundle())
       }
     }
   }

@@ -420,12 +420,25 @@
           tools:listitem="@layout/item_cast"
           tools:orientation="horizontal" />
 
+        <com.google.android.material.divider.MaterialDivider
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:layout_marginHorizontal="@dimen/default_margin_parent_20"
+          android:layout_marginTop="@dimen/margin_between_item"
+          app:dividerColor="@color/gray_700" />
+
+        <include
+          android:id="@+id/collection_section"
+          layout="@layout/collection_section"
+          android:visibility="gone"
+          tools:visibility="visible" />
+
         <!-- Recommendation -->
         <androidx.coordinatorlayout.widget.CoordinatorLayout
           android:id="@+id/layout_recommendation"
           style="@style/LayoutHeaderTheme"
           android:layout_marginHorizontal="@dimen/default_margin_parent_20"
-          android:layout_marginTop="16dp">
+          android:layout_marginTop="4dp">
 
           <TextView
             android:id="@+id/tv_recommendation_header"

@@ -38,7 +38,10 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.movie.BelongsToCollection
+import com.waffiq.bazz_movies.feature.detail.domain.model.movie.DetailCollections
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
+import com.waffiq.bazz_movies.feature.detail.domain.model.movie.PartsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.RatingsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
@@ -73,6 +76,43 @@ object DummyData {
   const val USER_REGION = "US"
   const val ERROR_MESSAGE = "Network error"
   const val SESSION_ID = "session123"
+  const val COLLECTION_ID = 100
+
+  val belongsToCollection = BelongsToCollection(
+    id = COLLECTION_ID,
+    name = "name collection",
+    backdropPath = "backdrop path collection",
+    posterPath = "poster path collection",
+  )
+
+  val partsItem = PartsItem(
+    id = 12344,
+    title = "parts item title",
+    originalTitle = "parts item original title",
+    posterPath = "parts item poster path",
+    backdropPath = "parts item backdrop path",
+    overview = "parts item overview",
+    originalLanguage = "parts item original language",
+    video = false,
+    genreIds = listOf(33, 44, 55),
+    mediaType = "parts item media type",
+    releaseDate = "parts item release date",
+    popularity = 444.0f,
+    voteAverage = 555.0f,
+    adult = false,
+    voteCount = 666,
+  )
+
+  val detailCollection = DetailCollections(
+    id = COLLECTION_ID,
+    name = "Test Collection",
+    originalName = "Test original name",
+    overview = "test overview",
+    backdropPath = "backdrop path",
+    posterPath = "poster path",
+    originalLanguage = "en",
+    parts = listOf(partsItem),
+  )
 
   val mediaCastResponseItem = MediaCastResponseItem(
     castId = 1111,
@@ -499,6 +539,7 @@ object DummyData {
         ),
       ),
     ),
+    belongsToCollection = belongsToCollection,
   )
 
   val movieMediaDetail = MediaDetail(

@@ -31,6 +31,7 @@ class MediaDetailTest {
     assertNull(detail.language)
     assertNull(detail.budget)
     assertNull(detail.revenue)
+    assertNull(detail.belongsToCollection)
     assertEquals(releaseDateRegion, detail.releaseDateRegion)
   }
 

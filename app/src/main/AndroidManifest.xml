@@ -33,6 +33,10 @@
       android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:exported="false" />
     <activity
+      android:name=".feature.detail.ui.CollectionDetailActivity"
+      android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+      android:exported="false" />
+    <activity
       android:name=".feature.person.ui.PersonActivity"
       android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:exported="false" />

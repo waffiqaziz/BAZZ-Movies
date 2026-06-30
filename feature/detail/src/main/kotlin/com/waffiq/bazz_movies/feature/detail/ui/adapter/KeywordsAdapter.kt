@@ -16,7 +16,7 @@ import com.waffiq.bazz_movies.navigation.ListType.BY_KEYWORD
 import com.waffiq.bazz_movies.navigation.MediaSource
 
 class KeywordsAdapter(private val navigator: INavigator) :
-  ListAdapter<MediaKeywordsItem, KeywordsAdapter.ViewHolder>(CastDiffCallback()) {
+  ListAdapter<MediaKeywordsItem, KeywordsAdapter.ViewHolder>(KeywordsDiffCallback()) {
 
   private var mediaType = MOVIE_MEDIA_TYPE
 
@@ -58,7 +58,7 @@ class KeywordsAdapter(private val navigator: INavigator) :
     }
   }
 
-  class CastDiffCallback : DiffUtil.ItemCallback<MediaKeywordsItem>() {
+  class KeywordsDiffCallback : DiffUtil.ItemCallback<MediaKeywordsItem>() {
     override fun areItemsTheSame(oldItem: MediaKeywordsItem, newItem: MediaKeywordsItem): Boolean =
       oldItem.id == newItem.id
 

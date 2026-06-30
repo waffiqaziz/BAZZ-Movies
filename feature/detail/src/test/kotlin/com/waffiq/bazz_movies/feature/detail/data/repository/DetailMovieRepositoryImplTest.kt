@@ -1,10 +1,12 @@
 package com.waffiq.bazz_movies.feature.detail.data.repository
 
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailCollectionsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse
 import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testLoadingState
 import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testSuccessfulCall
 import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testUnsuccessfulCall
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseDetailRepositoryImplTest
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toDetailCollections
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toDetailMovie
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -43,6 +45,21 @@ class DetailMovieRepositoryImplTest : BaseDetailRepositoryImplTest() {
         dataSourceCall = { mockMovieDataSource.getMovieDetail(id) },
         repositoryCall = { repository.getMovieDetail(id) },
         verifyDataSourceCall = { coVerify { mockMovieDataSource.getMovieDetail(id) } },
+      )
+    }
+
+  @Test
+  fun getMovieCollection_whenSuccessful_returnsSuccessResult() =
+    runTest {
+      val mockResponse = mockk<DetailCollectionsResponse>(relaxed = true)
+      testSuccessfulCall(
+        mockResponse = mockResponse,
+        dataSourceCall = { mockMovieDataSource.getMovieCollection(id) },
+        repositoryCall = { repository.getMovieCollection(id) },
+        expectedData = mockResponse.toDetailCollections(),
+        verifyDataSourceCall = {
+          coVerify(atLeast = 1) { mockMovieDataSource.getMovieCollection(id) }
+        },
       )
     }
 }

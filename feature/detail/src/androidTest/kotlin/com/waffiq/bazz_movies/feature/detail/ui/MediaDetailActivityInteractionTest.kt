@@ -3,6 +3,8 @@ package com.waffiq.bazz_movies.feature.detail.ui
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.Intents.intended
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.cancel
@@ -23,6 +25,7 @@ import com.waffiq.bazz_movies.feature.detail.R.id.btn_favorite
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_more_recommendation
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_view_all_cast
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_watchlist
+import com.waffiq.bazz_movies.feature.detail.R.id.collection_section
 import com.waffiq.bazz_movies.feature.detail.R.id.iv_poster
 import com.waffiq.bazz_movies.feature.detail.R.id.layout_recommendation
 import com.waffiq.bazz_movies.feature.detail.R.id.rating_bar_action
@@ -383,6 +386,16 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
   }
 
   @Test
+  fun buttonCollection_whenClicked_shouldOpenCollectionPage() {
+    context.launchMediaDetailActivity {
+      collection_section.performScrollTo()
+      collection_section.performClick()
+
+      intended(hasComponent(CollectionDetailActivity::class.java.name))
+    }
+  }
+
+  @Test
   fun showBottomSheet_whenButtonClicked_showsTheView() {
     context.launchMediaDetailActivity {
       uiState.update { state ->
@@ -391,18 +404,20 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
         )
       }
       performOpenBottomSheet()
+      val castNumber = testMediaCredits.cast.size
+      val crewNumber = testMediaCredits.crew.size
 
       // test cast value
-      "Cast (2)".performClick()
+      "Cast ($castNumber)".performClick()
       testMediaCredits.cast[0].name?.isVisible()
       testMediaCredits.cast[1].name?.isVisible()
 
       // test crew value
-      "Crew (1)".performClick()
+      "Crew ($crewNumber)".performClick()
       testMediaCredits.crew[0].name?.isVisible()
 
       // back to cast layout again
-      "Cast (2)".performClick()
+      "Cast ($castNumber)".performClick()
     }
   }
 

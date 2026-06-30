@@ -1,8 +1,9 @@
 package com.waffiq.bazz_movies.feature.detail.ui.adapter
 
 import android.os.Looper
-import com.waffiq.bazz_movies.feature.detail.databinding.ChipGenreBinding
-import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
+import androidx.core.view.isVisible
+import com.waffiq.bazz_movies.feature.detail.databinding.ItemCollectionPartBinding
+import com.waffiq.bazz_movies.feature.detail.domain.model.movie.PartsItem
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseAdapterTest
 import io.mockk.verify
 import org.junit.Assert.assertEquals
@@ -14,32 +15,32 @@ import org.junit.Before
 import org.junit.Test
 import org.robolectric.Shadows.shadowOf
 
-class KeywordsAdapterTest : BaseAdapterTest() {
+class CollectionPartsAdapterTest : BaseAdapterTest() {
 
-  private lateinit var adapter: KeywordsAdapter
-  private lateinit var viewHolder: KeywordsAdapter.ViewHolder
-  private lateinit var binding: ChipGenreBinding
+  private lateinit var adapter: CollectionPartsAdapter
+  private lateinit var viewHolder: CollectionPartsAdapter.ViewHolder
+  private lateinit var binding: ItemCollectionPartBinding
 
-  private val mediaKeywordsItemList = listOf(
-    MediaKeywordsItem(name = "war", id = 21),
-    MediaKeywordsItem(name = "tragedy", id = 22),
+  private val partsItems = listOf(
+    PartsItem(title = "movie 1", id = 21, voteAverage = 21f),
+    PartsItem(title = "movie 2", id = 22, voteAverage = 33f),
   )
 
   @Before
   fun setup() {
     super.baseSetup()
-    adapter = KeywordsAdapter(navigator)
+    adapter = CollectionPartsAdapter(navigator)
     recyclerView.adapter = adapter
     viewHolder = adapter.onCreateViewHolder(parent, 0)
-    binding = ChipGenreBinding.bind(viewHolder.itemView)
+    binding = ItemCollectionPartBinding.bind(viewHolder.itemView)
   }
 
   @Test
   fun submitList_whenCalled_updatesListAndNotifiesChanges() {
-    val oldList = listOf(MediaKeywordsItem(id = 1, name = "family"))
+    val oldList = listOf(PartsItem(id = 1, title = "movie 4"))
     val newList = listOf(
-      MediaKeywordsItem(id = 2, name = "war"),
-      MediaKeywordsItem(id = 3, name = "superhero"),
+      PartsItem(id = 2, title = "movie 5"),
+      PartsItem(id = 3, title = "movie 6"),
     )
 
     adapter.submitList(oldList) {
@@ -54,27 +55,26 @@ class KeywordsAdapterTest : BaseAdapterTest() {
 
   @Test
   fun onBindViewHolder_whenCalled_bindsCorrectForAllData() {
-    adapter.submitList(mediaKeywordsItemList)
+    adapter.submitList(partsItems)
 
-    // Let ListAdapter process the diff
     shadowOf(Looper.getMainLooper()).idle()
 
-    mediaKeywordsItemList.forEachIndexed { index, item ->
-      adapter.onBindViewHolder(viewHolder, index) // Covers getItem(position)
-      assertEquals(item.name, binding.chip.text.toString())
+    partsItems.forEachIndexed { index, item ->
+      adapter.onBindViewHolder(viewHolder, index)
+      assertEquals(item.title, binding.tvMovieTitle.text.toString())
     }
   }
 
   @Test
   fun bind_withEmptyData_showsNothing() {
-    val testData = emptyList<MediaKeywordsItem>()
+    val testData = emptyList<PartsItem>()
 
     adapter.submitList(testData)
     shadowOf(Looper.getMainLooper()).idle()
 
     testData.forEachIndexed { index, _ ->
       adapter.onBindViewHolder(viewHolder, index)
-      viewHolder.bind(MediaKeywordsItem())
+      viewHolder.bind(PartsItem())
 
       assertEquals(adapter.itemCount, 0)
     }
@@ -89,23 +89,25 @@ class KeywordsAdapterTest : BaseAdapterTest() {
   }
 
   @Test
-  fun bind_whenIdIsNull_doesNotBindData() {
-    viewHolder.bind(MediaKeywordsItem(id = null, name = "war"))
+  fun bind_whenVoteAverageIsNull_hidesTheView() {
+    val data = PartsItem(id = 32, voteAverage = null)
 
-    val binding = ChipGenreBinding.bind(viewHolder.itemView)
-    assertEquals("", binding.chip.text.toString())
+    viewHolder.bind(data)
+
+    val binding = ItemCollectionPartBinding.bind(viewHolder.itemView)
+    assertFalse(binding.tvMovieRating.isVisible)
+    assertFalse(binding.metaDivider.isVisible)
   }
 
   @Test
-  fun bind_whenNameIsNull_doesNotBindData() {
-    viewHolder.bind(MediaKeywordsItem(id = 1, name = null))
-    assertEquals("", binding.chip.text.toString())
-  }
+  fun bind_whenVoteAverageIsNegative_hidesTheView() {
+    val data = PartsItem(id = 32, voteAverage = -78f)
 
-  @Test
-  fun bind_whenNameIsEmpty_doesNotBindData() {
-    viewHolder.bind(MediaKeywordsItem(id = 1, name = ""))
-    assertEquals("", binding.chip.text.toString())
+    viewHolder.bind(data)
+
+    val binding = ItemCollectionPartBinding.bind(viewHolder.itemView)
+    assertFalse(binding.tvMovieRating.isVisible)
+    assertFalse(binding.metaDivider.isVisible)
   }
 
   @Test
@@ -120,30 +122,30 @@ class KeywordsAdapterTest : BaseAdapterTest() {
 
   @Test
   fun onClick_whenClicked_opensMovieDetails() {
-    adapter.submitList(mediaKeywordsItemList)
+    adapter.submitList(partsItems)
     shadowOf(Looper.getMainLooper()).idle()
 
     adapter.onBindViewHolder(viewHolder, 0)
-    binding.chip.performClick()
+    binding.container.performClick()
 
-    verify { navigator.openList(any(), any()) }
+    verify { navigator.openDetails(any(), any()) }
   }
 
   @Test
   fun areContentsTheSame_whenContentIsSame_returnsTrue() {
-    val oldItem = MediaKeywordsItem(id = 1, name = "Test Name")
-    val newItem = MediaKeywordsItem(id = 1, name = "Test Name")
+    val oldItem = PartsItem(id = 1, title = "Test Title")
+    val newItem = PartsItem(id = 1, title = "Test Title")
 
-    val diffCallback = KeywordsAdapter.KeywordsDiffCallback()
+    val diffCallback = CollectionPartsAdapter.CollectionsDiffCallback()
     assertTrue(diffCallback.areContentsTheSame(oldItem, newItem))
   }
 
   @Test
   fun areContentsTheSame_whenDifferent_returnsFalse() {
-    val oldItem = MediaKeywordsItem(id = 1, name = "Test Name")
-    val newItem = MediaKeywordsItem(id = 4, name = "Test Name")
+    val oldItem = PartsItem(id = 1, title = "Test Title")
+    val newItem = PartsItem(id = 4, title = "Test Title")
 
-    val diffCallback = KeywordsAdapter.KeywordsDiffCallback()
+    val diffCallback = CollectionPartsAdapter.CollectionsDiffCallback()
     assertFalse(diffCallback.areContentsTheSame(oldItem, newItem))
   }
 }

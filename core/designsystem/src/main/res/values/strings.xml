@@ -149,6 +149,9 @@
   <string name="tmdb">TMDB</string>
   <string name="r_tomatoes">R. Tomatoes</string>
   <string name="tmdb_full">The Movie Database</string>
+  <string name="part_of_the">Part of the</string>
+  <string name="backdrop_collection">backdrop collection</string>
+
 
   <string name="status">Status</string>
   <string name="original_language">Original Language</string>

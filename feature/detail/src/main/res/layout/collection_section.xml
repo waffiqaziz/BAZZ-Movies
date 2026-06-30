@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/container"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_margin="16dp"
+  android:contentDescription="0"
+  app:cardBackgroundColor="@color/gray_850"
+  app:cardCornerRadius="16dp"
+  app:cardElevation="2dp"
+  app:strokeWidth="0dp">
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="16dp">
+
+    <ImageView
+      android:id="@+id/iv_collection_backdrop"
+      android:layout_width="0dp"
+      android:layout_height="160dp"
+      android:contentDescription="@string/backdrop_collection"
+      android:foreground="@drawable/backdrop_left_gradient"
+      android:scaleType="matrix"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:src="@tools:sample/avatars" />
+
+    <View
+      android:id="@+id/feature_detail_view"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:background="@android:color/transparent"
+      app:layout_constraintBottom_toBottomOf="@id/iv_collection_backdrop"
+      app:layout_constraintEnd_toEndOf="@id/iv_collection_backdrop"
+      app:layout_constraintStart_toStartOf="@id/iv_collection_backdrop" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+      android:id="@+id/iv_collection_poster"
+      android:layout_width="76dp"
+      android:layout_height="114dp"
+      android:layout_marginStart="16dp"
+      android:scaleType="centerCrop"
+      app:layout_constraintBottom_toBottomOf="@+id/iv_collection_backdrop"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@+id/iv_collection_backdrop"
+      app:shapeAppearanceOverlay="@style/ShapeAppearance.App.ImageView.Rounded"
+      tools:src="@tools:sample/avatars" />
+
+    <TextView
+      android:id="@+id/tv_collection_label"
+      style="@style/TextAppearance.App.Chip"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="12dp"
+      android:letterSpacing="0.08"
+      android:text="@string/part_of_the"
+      android:textAllCaps="true"
+      android:textColor="@color/gray_400"
+      android:textSize="11sp"
+      android:textStyle="bold"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/iv_collection_backdrop" />
+
+    <TextView
+      android:id="@+id/tv_collection_name"
+      style="@style/TextAppearance.App.Body"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="2dp"
+      android:ellipsize="end"
+      android:maxLines="2"
+      android:textStyle="bold"
+      app:layout_constraintEnd_toEndOf="@id/tv_collection_label"
+      app:layout_constraintStart_toStartOf="@id/tv_collection_label"
+      app:layout_constraintTop_toBottomOf="@id/tv_collection_label"
+      tools:text="Star Wars Collection" />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

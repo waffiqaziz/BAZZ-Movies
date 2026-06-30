@@ -11,6 +11,9 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.movie.BelongsToCollection
+import com.waffiq.bazz_movies.feature.detail.domain.model.movie.DetailCollections
+import com.waffiq.bazz_movies.feature.detail.domain.model.movie.PartsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.RatingsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
@@ -76,9 +79,69 @@ object DataDumb {
     job = "director",
   )
 
+  val testMediaCrewItems = listOf(
+    testMediaCrewItem.copy(
+      id = 1,
+      name = "Director 1",
+      job = "Director",
+      department = "Directing",
+    ),
+    testMediaCrewItem.copy(
+      id = 2,
+      name = "Director 2",
+      job = "Director",
+      department = "Directing",
+    ),
+    testMediaCrewItem.copy(
+      id = 3,
+      name = "Story Author",
+      job = "Story",
+      department = "Writing",
+    ),
+    testMediaCrewItem.copy(
+      id = 4,
+      name = "Character Creator",
+      job = "Characters",
+      department = "Writing",
+    ),
+    testMediaCrewItem.copy(
+      id = 5,
+      name = "Executive Producer",
+      job = "Executive Producer",
+      department = "Production",
+    ),
+    testMediaCrewItem.copy(
+      id = 6,
+      name = "Main Writer",
+      job = "Writer",
+      department = "Writing",
+    ),
+    testMediaCrewItem.copy(
+      id = 7,
+      name = "Original Author",
+      job = "Author",
+      department = "Writing",
+    ),
+    testMediaCrewItem.copy(
+      id = 8,
+      name = "Screenplay Writer",
+      job = "Screenplay",
+      department = "Writing",
+    ),
+    testMediaCrewItem.copy(
+      id = 9,
+      name = "Novel Author",
+      job = "Novel",
+      department = "Writing",
+    ),
+  )
+
   val testMediaCredits = MediaCredits(
-    cast = listOf(testMediaCastItem, testMediaCastItem.copy(id = 89, name = "actor 2")),
-    crew = listOf(testMediaCrewItem),
+    cast = listOf(
+      testMediaCastItem,
+      testMediaCastItem.copy(id = 89, name = "Actor 2"),
+    ),
+    crew = testMediaCrewItems,
   )
 
   private val testRatingsItem = RatingsItem(
@@ -115,8 +178,16 @@ object DataDumb {
     rent = listOf(testProvider),
   )
 
+  val belongsToCollection = BelongsToCollection(
+    id = 413,
+    name = "Avatar Collection",
+    backdropPath = "collection backdrop path",
+    posterPath = "colleciton poster path ",
+  )
+
   val testMediaDetail = MediaDetail(
     id = 12345678,
+    credits = testMediaCredits,
     genre = "Action",
     genreId = listOf(28),
     duration = "1h 1m",
@@ -137,6 +208,7 @@ object DataDumb {
       MediaKeywordsItem(null, 334),
       MediaKeywordsItem("", 335),
     ),
+    belongsToCollection = belongsToCollection,
   )
 
   val testTvExternalIds = TvExternalIds(
@@ -179,5 +251,33 @@ object DataDumb {
     isWatchlist = false,
     mediaStateResult = null, // it should only initiate when add to watchlist/favorite
     isLoading = false,
+  )
+
+  val partsItem = PartsItem(
+    id = 23,
+    genreIds = listOf(16, 35, 80, 99),
+    title = "movie 1",
+    overview =
+    """
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+        ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation 
+        ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
+        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur 
+        sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est 
+        laborum.",
+    """.trimIndent(),
+  )
+
+  val detailCollections = DetailCollections(
+    id = 22,
+    name = "Lorem Ipsum Collections",
+    originalName = "Lorem Ipsum Original",
+    overview = "Overview Lorem Ipsum",
+    parts = listOf(
+      partsItem,
+      partsItem.copy(id = 24, title = "movie 2"),
+      partsItem.copy(id = 25, title = "movie 3"),
+      partsItem.copy(id = 25, title = "movie 4"),
+    ),
   )
 }

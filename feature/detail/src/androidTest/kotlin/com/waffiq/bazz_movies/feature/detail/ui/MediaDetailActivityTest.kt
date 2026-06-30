@@ -7,19 +7,30 @@ import androidx.test.espresso.intent.Intents
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.add_to_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNotExist
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_back
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_favorite
+import com.waffiq.bazz_movies.feature.detail.R.id.btn_view_all_cast
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_watchlist
 import com.waffiq.bazz_movies.feature.detail.R.id.chip
+import com.waffiq.bazz_movies.feature.detail.R.id.collection_section
+import com.waffiq.bazz_movies.feature.detail.R.id.layout_cast
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_cast
+import com.waffiq.bazz_movies.feature.detail.R.id.rv_genre
+import com.waffiq.bazz_movies.feature.detail.R.id.rv_recommendation
+import com.waffiq.bazz_movies.feature.detail.R.id.score_section
+import com.waffiq.bazz_movies.feature.detail.R.id.table
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_age_rating
+import com.waffiq.bazz_movies.feature.detail.R.id.tv_cast_header
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_duration
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_tmdb
+import com.waffiq.bazz_movies.feature.detail.R.id.tv_summary_header
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_year_released
+import com.waffiq.bazz_movies.feature.detail.R.id.watch_provider_section
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailActivityTest
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaCredits
@@ -93,6 +104,25 @@ class MediaDetailActivityTest : BaseMediaDetailActivityTest() {
       btn_back.isDisplayed()
       btn_watchlist.isDisplayed()
       btn_favorite.isDisplayed()
+      rv_genre.isDisplayed()
+      score_section.isDisplayed()
+      watch_provider_section.isDisplayed()
+
+      tv_summary_header.performScrollTo()
+      tv_summary_header.isDisplayed()
+
+      table.performScrollTo()
+      table.isDisplayed()
+
+      collection_section.performScrollTo()
+      collection_section.isDisplayed()
+
+      layout_cast.performScrollTo()
+      tv_cast_header.isDisplayed()
+      btn_view_all_cast.isDisplayed()
+
+      rv_recommendation.performScrollTo()
+      rv_recommendation.isDisplayed()
     }
   }
 
@@ -171,6 +201,13 @@ class MediaDetailActivityTest : BaseMediaDetailActivityTest() {
 
       uiState.update { s -> s.copy(detail = testMediaDetail.copy(tmdbScore = "")) }
       tv_score_tmdb.isNotDisplayed()
+    }
+
+    // collection hidden
+    context.launchMediaDetailActivity {
+      uiState.update { s -> s.copy(detail = testMediaDetail.copy(belongsToCollection = null)) }
+      rv_recommendation.performScrollTo()
+      collection_section.isNotDisplayed()
     }
   }
 

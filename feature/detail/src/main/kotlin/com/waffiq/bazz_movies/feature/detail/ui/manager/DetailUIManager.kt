@@ -7,7 +7,6 @@ import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
-import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.bumptech.glide.Glide
@@ -38,6 +37,7 @@ import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBind
 import com.waffiq.bazz_movies.feature.detail.databinding.SideSheetContentBinding
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
+import com.waffiq.bazz_movies.feature.detail.domain.model.movie.BelongsToCollection
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.CastAdapter
@@ -55,6 +55,7 @@ import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getEpisod
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getOverview
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getScoreFromOMDB
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.isBackReleased
+import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.CustomZoomAndPan
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType.RECOMMENDATION
@@ -144,22 +145,6 @@ class DetailUIManager(
       adapter = adapterRecommendation.withLoadStateFooter(
         footer = LoadingStateAdapter { adapterRecommendation.retry() },
       )
-    }
-
-    setupRecommendationVisibility()
-  }
-
-  /**
-   * Controls the visibility of recommendation section based on loading state and item count.
-   */
-  private fun setupRecommendationVisibility() {
-    adapterRecommendation.addLoadStateListener { loadState ->
-      val isRecommendationEmpty = loadState.source.refresh is LoadState.NotLoading &&
-        loadState.append.endOfPaginationReached &&
-        adapterRecommendation.itemCount < 1
-
-      binding.tvRecommendationHeader.isVisible = !isRecommendationEmpty
-      binding.rvRecommendation.isVisible = !isRecommendationEmpty
     }
   }
 
@@ -276,6 +261,7 @@ class DetailUIManager(
     setupTrailerButton(details.trailer)
     updateAgeRating(details.ageRating)
     updateReleaseInfo(details.releaseDateRegion)
+    updateCollection(details.belongsToCollection)
     showLoadingDim(false)
   }
 
@@ -329,13 +315,43 @@ class DetailUIManager(
   }
 
   /**
+   * Updates collection if its available
+   */
+  private fun updateCollection(collection: BelongsToCollection?) {
+    if (collection == null) {
+      binding.collectionSection.root.isVisible = false
+      return
+    }
+    binding.collectionSection.apply {
+      container.contentDescription = collection.id.toString()
+      container.isVisible = true
+      tvCollectionName.text = collection.name.toString()
+
+      Glide.with(ivCollectionBackdrop)
+        .load(collection.backdropOriginalSource)
+        .error(ic_backdrop_error_filled)
+        .transition(withCrossFade())
+        .override(ivCollectionBackdrop.width, ivCollectionBackdrop.height)
+        .transform(CustomZoomAndPan(zoomFactor = 1.1f, biasX = 0.8f))
+        .into(ivCollectionBackdrop)
+
+      Glide.with(ivCollectionPoster)
+        .load(collection.posterDetailSource)
+        .placeholder(ic_bazz_placeholder_poster)
+        .error(ic_poster_error)
+        .transition(withCrossFade())
+        .into(ivCollectionPoster)
+    }
+  }
+
+  /**
    * Updates the cast and crew credits section.
    */
   fun updateCreditsUI(credits: MediaCredits) {
     createTable(activity, extractCrewDisplayNames(credits.crew), binding.table)
     adapterCast.submitList(credits.cast)
 
-    val hasCast = adapterCast.itemCount > 0
+    val hasCast = credits.cast.isNotEmpty()
     binding.rvCast.isVisible = hasCast
     binding.tvCastHeader.isVisible = hasCast
   }
