@@ -25,8 +25,7 @@ class DatabaseRestoreManagerTest : BaseDatabaseBackupManagerTest() {
           favorites = listOf(validBackupEntry, secondBackupEntry),
         ),
       )
-      val inputStream =
-        ByteArrayInputStream(jsonPretty.encodeToString(legacyBackup).toByteArray(Charsets.UTF_8))
+      val inputStream = generateInputStream(legacyBackup)
       every { contentResolver.openInputStream(mockUri) } returns inputStream
 
       val result = manager.restoreFromUri(mockUri)
@@ -70,8 +69,7 @@ class DatabaseRestoreManagerTest : BaseDatabaseBackupManagerTest() {
           version = 0, // invalid version
         ),
       )
-      val inputStream =
-        ByteArrayInputStream(jsonPretty.encodeToString(badBackup).toByteArray(Charsets.UTF_8))
+      val inputStream = generateInputStream(badBackup)
       every { contentResolver.openInputStream(mockUri) } returns inputStream
 
       val result = manager.restoreFromUri(mockUri)
@@ -89,8 +87,7 @@ class DatabaseRestoreManagerTest : BaseDatabaseBackupManagerTest() {
           version = DatabaseBackup.BACKUP_VERSION + 1, // newer unsupported framework
         ),
       )
-      val inputStream =
-        ByteArrayInputStream(jsonPretty.encodeToString(badBackup).toByteArray(Charsets.UTF_8))
+      val inputStream = generateInputStream(badBackup)
       every { contentResolver.openInputStream(mockUri) } returns inputStream
 
       val result = manager.restoreFromUri(mockUri)
@@ -109,8 +106,7 @@ class DatabaseRestoreManagerTest : BaseDatabaseBackupManagerTest() {
         payload = createPayload(favorites = listOf(validBackupEntry)),
         checksum = "wrong_or_manipulated_checksum_hash",
       )
-      val inputStream =
-        ByteArrayInputStream(jsonPretty.encodeToString(badBackup).toByteArray(Charsets.UTF_8))
+      val inputStream = generateInputStream(badBackup)
       every { contentResolver.openInputStream(mockUri) } returns inputStream
 
       val result = manager.restoreFromUri(mockUri)
@@ -129,8 +125,7 @@ class DatabaseRestoreManagerTest : BaseDatabaseBackupManagerTest() {
         payload = createPayload(favorites = listOf(validBackupEntry)),
         checksum = null,
       )
-      val inputStream =
-        ByteArrayInputStream(jsonPretty.encodeToString(legacyBackup).toByteArray(Charsets.UTF_8))
+      val inputStream = generateInputStream(legacyBackup)
       every { contentResolver.openInputStream(mockUri) } returns inputStream
 
       val result = manager.restoreFromUri(mockUri)
@@ -143,12 +138,11 @@ class DatabaseRestoreManagerTest : BaseDatabaseBackupManagerTest() {
   fun restoreFromUri_whenBackupContainsNoValidEntries_expectedErrorResult() =
     runTest {
       // create invalid data that trigger`.isValid()` inside FavoriteBackupEntry whis was
-      // the mediaType should not empty and mediaId should more that 0
+      // the mediaType should not empty and mediaId should more than 0
       val backup = generateBackupJson(
         payload = createPayload(favorites = listOf(invalidBackupEntry)),
       )
-      val inputStream =
-        ByteArrayInputStream(jsonPretty.encodeToString(backup).toByteArray(Charsets.UTF_8))
+      val inputStream = generateInputStream(backup)
       every { contentResolver.openInputStream(mockUri) } returns inputStream
 
       val result = manager.restoreFromUri(mockUri)

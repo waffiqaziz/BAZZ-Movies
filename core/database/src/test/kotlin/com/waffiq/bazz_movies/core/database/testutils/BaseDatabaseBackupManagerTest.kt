@@ -174,6 +174,9 @@ abstract class BaseDatabaseBackupManagerTest {
     )
   }
 
+  protected fun generateInputStream(backup: DatabaseBackup) =
+    ByteArrayInputStream(jsonPretty.encodeToString(backup).toByteArray(Charsets.UTF_8))
+
   protected fun generateBackupJson(
     payload: BackupPayload,
     checksum: String? = jsonCompact.encodeToString(payload).sha256(),
