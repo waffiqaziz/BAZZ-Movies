@@ -6,13 +6,12 @@ import com.waffiq.bazz_movies.core.designsystem.R.id.btn_try_again
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
-import com.waffiq.bazz_movies.core.uihelper.state.UIState
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_back
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_collection_parts
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_genre
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_movies
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseCollectionDetailActivityTest
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.detailCollections
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.CollectionViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
@@ -63,19 +62,19 @@ class CollectionDetailActivityTest : BaseCollectionDetailActivityTest() {
   }
 
   @Test
-  fun detailScreen_withCollectionNull_hidesSomeViews() {
-    context.launchCollectionDetailActivity {
-      uiState.update { UIState.Success(detailCollections.copy(parts = null)) }
-      btn_back.isDisplayed()
-      rv_genre.isNotDisplayed()
-      tv_movies.isDisplayed()
-    }
-  }
-
-  @Test
   fun detailScreen_whenError_showsErrorViews() {
     context.launchCollectionDetailActivity {
-      uiState.update { UIState.Error("error") }
+      uiState.update { it.copy(name = "", isError = false, isLoading = false) }
+      shortDelay()
+
+      uiState.update { it.copy(name = "", isError = true, isLoading = true) }
+      shortDelay()
+
+      uiState.update { it.copy(isError = true) }
+      shortDelay()
+
+      uiState.update { it.copy(name = "something", isError = true, isLoading = false) }
+      shortDelay()
 
       btn_back.isDisplayed()
       rv_genre.isNotDisplayed()

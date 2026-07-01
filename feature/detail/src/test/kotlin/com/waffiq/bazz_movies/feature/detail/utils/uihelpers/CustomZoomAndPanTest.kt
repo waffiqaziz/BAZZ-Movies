@@ -16,7 +16,6 @@ import io.mockk.verify
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertSame
 import org.junit.Before
 import org.junit.Test
@@ -100,9 +99,11 @@ class CustomZoomAndPanTest {
     verify { pool.get(50, 50, Bitmap.Config.ARGB_8888) }
   }
 
+  @Suppress("EqualsNullCall")
   @Test
   fun equals_whenOtherIsNull_returnsFalse() {
-    assertNotNull(CustomZoomAndPan(1.0f, 0.5f))
+    val a = CustomZoomAndPan(1.0f, 0.5f)
+    assertFalse(a.equals(null))
   }
 
   @Test

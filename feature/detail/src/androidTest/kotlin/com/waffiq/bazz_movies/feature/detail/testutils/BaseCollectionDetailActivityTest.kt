@@ -7,10 +7,11 @@ import androidx.test.espresso.intent.Intents
 import androidx.test.platform.app.InstrumentationRegistry
 import com.bumptech.glide.Glide
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
-import com.waffiq.bazz_movies.core.uihelper.state.UIState
-import com.waffiq.bazz_movies.feature.detail.domain.model.movie.DetailCollections
+import com.waffiq.bazz_movies.feature.detail.domain.model.movie.PartsItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.movie.genreIds
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.detailCollections
 import com.waffiq.bazz_movies.feature.detail.ui.CollectionDetailActivity
+import com.waffiq.bazz_movies.feature.detail.ui.state.CollectionUiState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.CollectionViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import io.mockk.Runs
@@ -18,6 +19,7 @@ import io.mockk.every
 import io.mockk.just
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import org.junit.After
 import org.junit.Before
 
@@ -27,9 +29,9 @@ import org.junit.Before
 abstract class BaseCollectionDetailActivityTest {
 
   protected lateinit var context: Context
-  protected val uiState = MutableStateFlow<UIState<DetailCollections>>(UIState.Idle)
 
-  val sUiState = uiState.asStateFlow()
+  protected val uiState = MutableStateFlow(CollectionUiState())
+  protected val sUiState = uiState.asStateFlow()
 
   @Before
   open fun setup() {
@@ -45,7 +47,18 @@ abstract class BaseCollectionDetailActivityTest {
     every { mockCollectionViewModel.uiState } returns sUiState
     every { mockCollectionViewModel.loadMovieCollection(any()) } just Runs
 
-    uiState.value = UIState.Success(detailCollections)
+    @Suppress("UNCHECKED_CAST")
+    uiState.update {
+      it.copy(
+        isLoading = false,
+        isError = false,
+        name = detailCollections.name ?: "",
+        overview = detailCollections.overview ?: "",
+        genreIds = detailCollections.genreIds,
+        backdropUrl = detailCollections.backdropPath,
+        parts = detailCollections.parts as List<PartsItem>,
+      )
+    }
   }
 
   protected fun setupNavigatorMocks(mockNavigator: INavigator) {

@@ -19,19 +19,14 @@ import com.google.android.flexbox.JustifyContent
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.color.gray_900
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
-import com.waffiq.bazz_movies.core.uihelper.state.UIState
-import com.waffiq.bazz_movies.core.uihelper.state.dataOrNull
-import com.waffiq.bazz_movies.core.uihelper.state.isLoading
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.core.uihelper.utils.InsetHelper.setupWindowInsets
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectFlow
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityCollectionDetailBinding
-import com.waffiq.bazz_movies.feature.detail.domain.model.movie.DetailCollections
-import com.waffiq.bazz_movies.feature.detail.domain.model.movie.genreIds
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.CollectionPartsAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.GenreAdapter
+import com.waffiq.bazz_movies.feature.detail.ui.state.CollectionUiState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.CollectionViewModel
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.backdropOriginalSource
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -74,52 +69,48 @@ class CollectionDetailActivity : AppCompatActivity() {
   }
 
   private fun setupRecyclerView() {
-    binding.apply {
-      partsAdapter = CollectionPartsAdapter(navigator)
-      rvCollectionParts.adapter = partsAdapter
+    // collections adapter
+    partsAdapter = CollectionPartsAdapter(navigator)
+    binding.rvCollectionParts.adapter = partsAdapter
 
-      adapterGenre = GenreAdapter(navigator)
-      rvGenre.apply {
-        layoutManager = FlexboxLayoutManager(context).apply {
-          flexDirection = FlexDirection.ROW
-          flexWrap = FlexWrap.WRAP
-          justifyContent = JustifyContent.FLEX_START
-        }
-        itemAnimator = DefaultItemAnimator()
-        adapter = adapterGenre
-      }
-      adapterGenre.setMediaType(MOVIE_MEDIA_TYPE)
+    // genres adapter
+    adapterGenre = GenreAdapter(navigator)
+    binding.rvGenre.layoutManager = FlexboxLayoutManager(this).apply {
+      flexDirection = FlexDirection.ROW
+      flexWrap = FlexWrap.WRAP
+      justifyContent = JustifyContent.FLEX_START
     }
+    binding.rvGenre.itemAnimator = DefaultItemAnimator()
+    binding.rvGenre.adapter = adapterGenre
+    adapterGenre.setMediaType(MOVIE_MEDIA_TYPE)
   }
 
   private fun observeViewModel() {
-    collectFlow(viewModel.uiState) {
-      binding.apply {
-        // loading
-        loadingIndicator.isVisible = it.isLoading
-        tvMovies.isVisible = !it.isLoading
+    collectFlow(viewModel.uiState) { state ->
+      showLoading(state.isLoading)
+      showError(state.isError)
 
-        // error
-        showError(it is UIState.Error)
-
-        // success
-        displayCollectionDetails(it.dataOrNull ?: return@collectFlow)
+      if (state.name.isNotEmpty() && !state.isError) {
+        displayCollectionDetails(state)
       }
     }
   }
 
-  private fun showError(isError: Boolean) {
-    binding.apply {
-      if (isError) collapsingToolbar.title = ""
-      tvCollectionOverview.isVisible = !isError
-      ivCollectionBackdrop.isVisible = !isError
-      scrollView.isVisible = !isError
-      rvCollectionParts.isVisible = !isError
+  private fun showLoading(isLoading: Boolean) {
+    binding.loadingIndicator.isVisible = isLoading
+    binding.tvMovies.isVisible = !isLoading
+  }
 
-      illustrationError.root.isVisible = isError
-      illustrationError.btnTryAgain.isVisible = isError
-      illustrationError.progressCircular.isVisible = !isError
-    }
+  private fun showError(isError: Boolean) {
+    if (isError) binding.collapsingToolbar.title = ""
+    binding.tvCollectionOverview.isVisible = !isError
+    binding.ivCollectionBackdrop.isVisible = !isError
+    binding.scrollView.isVisible = !isError
+    binding.rvCollectionParts.isVisible = !isError
+
+    binding.illustrationError.root.isVisible = isError
+    binding.illustrationError.btnTryAgain.isVisible = isError
+    binding.illustrationError.progressCircular.isVisible = !isError
   }
 
   private fun buttonAction() {
@@ -129,24 +120,21 @@ class CollectionDetailActivity : AppCompatActivity() {
     }
   }
 
-  private fun displayCollectionDetails(collection: DetailCollections) {
-    binding.apply {
-      rvCollectionParts.isVisible = true
-      tvMovies.isVisible = true
-      collapsingToolbar.title = collection.name
-      tvCollectionOverview.text = collection.overview
-      adapterGenre.setGenre(collection.genreIds)
+  private fun displayCollectionDetails(state: CollectionUiState) {
+    binding.rvCollectionParts.isVisible = true
+    binding.tvMovies.isVisible = true
+    binding.collapsingToolbar.title = state.name
+    binding.tvCollectionOverview.text = state.overview
 
-      Glide.with(ivCollectionBackdrop)
-        .load(collection.backdropOriginalSource)
-        .override(ivCollectionBackdrop.width, ivCollectionBackdrop.height)
-        .transition(withCrossFade())
-        .error(ic_backdrop_error_filled)
-        .into(ivCollectionBackdrop)
-    }
+    adapterGenre.setGenre(state.genreIds)
+    partsAdapter.submitList(state.parts)
 
-    val cleanPartsList = collection.parts?.filterNotNull() ?: emptyList()
-    partsAdapter.submitList(cleanPartsList)
+    Glide.with(binding.ivCollectionBackdrop)
+      .load(state.backdropUrl)
+      .override(binding.ivCollectionBackdrop.width, binding.ivCollectionBackdrop.height)
+      .transition(withCrossFade())
+      .error(ic_backdrop_error_filled)
+      .into(binding.ivCollectionBackdrop)
   }
 
   companion object {
