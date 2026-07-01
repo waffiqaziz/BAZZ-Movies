@@ -19,7 +19,9 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keyw
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.MovieKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.TvKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.BelongsToCollectionResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailCollectionsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.PartsResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.releasedates.ReleaseDatesResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.releasedates.ReleaseDatesResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.releasedates.ReleaseDatesResponseItemValue
@@ -748,6 +750,56 @@ object DataDumpManager {
     id = 67884,
     name = "name episode",
     airDate = "2026-06-20",
+  )
+
+  val partsResponseItem1 = PartsResponseItem(
+    id = 101,
+    title = "Legend Saga",
+    originalTitle = "Legend Saga",
+    overview = "The beginning of an epic adventure.",
+    originalLanguage = "en",
+    video = false,
+    genreIds = listOf(28, 12, 14), // Action, Adventure, Fantasy
+    posterPath = "/legend_saga.jpg",
+    backdropPath = "/legend_saga_backdrop.jpg",
+    mediaType = "movie",
+    releaseDate = "2018-05-18",
+    popularity = 321.45f,
+    voteAverage = 7.8f,
+    adult = false,
+    voteCount = 4521,
+  )
+
+  val partsResponseItem2 = partsResponseItem1.copy(
+    id = 102,
+    title = "Legend Saga: The Return",
+    originalTitle = "Legend Saga: The Return",
+    overview = "The hero returns to face an even greater threat.",
+  )
+
+  val partsResponseItem3 = partsResponseItem1.copy(
+    id = 103,
+    title = "Legend Saga: Final Dawn",
+    originalTitle = "Legend Saga: Final Dawn",
+    overview = "The final battle that decides the fate of the kingdom.",
+  )
+
+  val partsResponseItem4 = partsResponseItem1.copy(
+    id = 104,
+    title = "Legend Saga Origins",
+    originalTitle = "Legend Saga Origins",
+    overview = "Discover how the legend first began.",
+  )
+
+  val detailCollectionsResponse = DetailCollectionsResponse(
+    backdropPath = "/collection_backdrop.jpg",
+    overview = "A collection of action-adventure films following the journey of a legendary hero.",
+    originalLanguage = "en",
+    originalName = "Legend Saga Collection",
+    name = "Legend Saga Collection",
+    id = 1001,
+    posterPath = "/collection_poster.jpg",
+    parts = listOf(partsResponseItem1, partsResponseItem2, partsResponseItem3, partsResponseItem4),
   )
 
   val detailMovieResponseDump = DetailMovieResponse(
