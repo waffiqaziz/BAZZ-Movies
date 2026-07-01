@@ -160,52 +160,52 @@ class MediaDetailActivityTest : BaseMediaDetailActivityTest() {
   fun mediaDetailValue_withMixedValue_showsViewsCorrectly() {
     // genre empty or null, then chip is not exist at all
     context.launchMediaDetailActivity {
-      uiState.update { s -> s.copy(detail = testMediaDetail.copy(genreId = emptyList())) }
+      updateState { copy(detail = testMediaDetail.copy(genreId = emptyList())) }
       chip.doesNotExist()
     }
     context.launchMediaDetailActivity {
-      uiState.update { s -> s.copy(detail = testMediaDetail.copy(genreId = null)) }
+      updateState { copy(detail = testMediaDetail.copy(genreId = null)) }
       chip.doesNotExist()
     }
 
     // status
     context.launchMediaDetailActivity(testMediaItem.copy(mediaType = TV_MEDIA_TYPE)) {
-      uiState.update { s -> s.copy(detail = testMediaDetail.copy(status = null)) }
+      updateState { copy(detail = testMediaDetail.copy(status = null)) }
       tv_duration.doesHaveText(context.getString(not_available))
     }
 
     context.launchMediaDetailActivity(testMediaItem.copy(mediaType = TV_MEDIA_TYPE)) {
-      uiState.update { s -> s.copy(detail = testMediaDetail.copy(status = "")) }
+      updateState { copy(detail = testMediaDetail.copy(status = "")) }
       tv_duration.doesHaveText(context.getString(not_available))
     }
 
     // movie duration null
     context.launchMediaDetailActivity {
-      uiState.update { s -> s.copy(detail = testMediaDetail.copy(duration = null)) }
+      updateState { copy(detail = testMediaDetail.copy(duration = null)) }
       tv_duration.doesHaveText(context.getString(not_available))
     }
 
     // tv status null or empty
     context.launchMediaDetailActivity(data = testMediaItem.copy(mediaType = TV_MEDIA_TYPE)) {
-      uiState.update { s -> s.copy(detail = testMediaDetail.copy(status = null)) }
+      updateState { copy(detail = testMediaDetail.copy(status = null)) }
       tv_duration.doesHaveText(context.getString(not_available))
 
-      uiState.update { s -> s.copy(detail = testMediaDetail.copy(status = "")) }
+      updateState { copy(detail = testMediaDetail.copy(status = "")) }
       tv_duration.doesHaveText(context.getString(not_available))
     }
 
     // tmdb score hidden
     context.launchMediaDetailActivity {
-      uiState.update { s -> s.copy(detail = testMediaDetail.copy(tmdbScore = null)) }
+      updateState { copy(detail = testMediaDetail.copy(tmdbScore = null)) }
       tv_score_tmdb.isNotDisplayed()
 
-      uiState.update { s -> s.copy(detail = testMediaDetail.copy(tmdbScore = "")) }
+      updateState { copy(detail = testMediaDetail.copy(tmdbScore = "")) }
       tv_score_tmdb.isNotDisplayed()
     }
 
     // collection hidden
     context.launchMediaDetailActivity {
-      uiState.update { s -> s.copy(detail = testMediaDetail.copy(belongsToCollection = null)) }
+      updateState { copy(detail = testMediaDetail.copy(belongsToCollection = null)) }
       rv_recommendation.performScrollTo()
       collection_section.isNotDisplayed()
     }
@@ -215,13 +215,13 @@ class MediaDetailActivityTest : BaseMediaDetailActivityTest() {
   fun ageRatingValue_withMixedValue_showsAgeViewsCorrectly() {
     // age rating null
     context.launchMediaDetailActivity {
-      uiState.update { s -> s.copy(detail = testMediaDetail.copy(ageRating = null)) }
+      updateState { copy(detail = testMediaDetail.copy(ageRating = null)) }
       tv_age_rating.isNotDisplayed()
     }
 
     // age rating empty
     context.launchMediaDetailActivity {
-      uiState.update { s -> s.copy(detail = testMediaDetail.copy(ageRating = "")) }
+      updateState { copy(detail = testMediaDetail.copy(ageRating = "")) }
       tv_age_rating.isNotDisplayed()
     }
   }
@@ -230,8 +230,8 @@ class MediaDetailActivityTest : BaseMediaDetailActivityTest() {
   fun releaseDateValue_withEmptyValue_showsReleaseDateCorrectly() {
     // release date empty
     context.launchMediaDetailActivity {
-      uiState.update { state ->
-        state.copy(
+      updateState {
+        copy(
           detail = testMediaDetail.copy(
             releaseDateRegion = ReleaseDateRegion(regionRelease = "", releaseDate = ""),
           ),

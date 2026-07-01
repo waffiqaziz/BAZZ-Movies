@@ -52,8 +52,8 @@ abstract class BaseCollectionDetailActivityTest {
       it.copy(
         isLoading = false,
         isError = false,
-        name = detailCollections.name ?: "",
-        overview = detailCollections.overview ?: "",
+        name = detailCollections.name.orEmpty(),
+        overview = detailCollections.overview.orEmpty(),
         genreIds = detailCollections.genreIds,
         backdropUrl = detailCollections.backdropPath,
         parts = detailCollections.parts as List<PartsItem>,
@@ -108,4 +108,7 @@ abstract class BaseCollectionDetailActivityTest {
       block(scenario)
     }
   }
+
+  protected fun updateState(block: CollectionUiState.() -> CollectionUiState) =
+    uiState.update { it.block() }
 }

@@ -19,7 +19,6 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.flow.update
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -64,16 +63,16 @@ class CollectionDetailActivityTest : BaseCollectionDetailActivityTest() {
   @Test
   fun detailScreen_whenError_showsErrorViews() {
     context.launchCollectionDetailActivity {
-      uiState.update { it.copy(name = "", isError = false, isLoading = false) }
+      updateState { copy(name = "", isError = false, isLoading = false) }
       shortDelay()
 
-      uiState.update { it.copy(name = "", isError = true, isLoading = true) }
+      updateState { copy(name = "", isError = true, isLoading = true) }
       shortDelay()
 
-      uiState.update { it.copy(isError = true) }
+      updateState { copy(isError = true) }
       shortDelay()
 
-      uiState.update { it.copy(name = "something", isError = true, isLoading = false) }
+      updateState { copy(name = "something", isError = true, isLoading = false) }
       shortDelay()
 
       btn_back.isDisplayed()
