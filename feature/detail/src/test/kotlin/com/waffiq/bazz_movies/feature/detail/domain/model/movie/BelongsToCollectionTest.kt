@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.feature.detail.domain.model
+package com.waffiq.bazz_movies.feature.detail.domain.model.movie
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull

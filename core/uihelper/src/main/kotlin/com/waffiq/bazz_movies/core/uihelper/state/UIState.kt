@@ -29,3 +29,10 @@ sealed interface UIState<out T> {
  */
 val UIState<*>.isLoading: Boolean
   get() = this is UIState.Loading
+
+/**
+ * Returns the value of [T] if this [UIState] represents a successful operation;
+ * otherwise, returns `null`.
+ */
+val <T> UIState<T>.dataOrNull: T?
+  get() = (this as? UIState.Success)?.data

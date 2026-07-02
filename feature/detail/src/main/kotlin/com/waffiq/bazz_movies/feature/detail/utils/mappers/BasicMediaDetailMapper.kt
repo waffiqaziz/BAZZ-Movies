@@ -72,6 +72,7 @@ object BasicMediaDetailMapper {
       budget = toUsd(budget),
       duration = getTransformDuration(runtime),
       revenue = toUsd(revenue),
+      belongsToCollection = belongsToCollection,
 
       // updated data
       title = titleHandler(title, originalTitle),

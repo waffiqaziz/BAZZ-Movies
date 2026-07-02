@@ -20,6 +20,7 @@ import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ
 import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.collection.GetMovieCollectionUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostRateUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.RefreshMediaMetadataUseCase
@@ -33,6 +34,7 @@ import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.movieMediaDetai
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.oMDbDetails
 import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
+import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.CollectionViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -52,6 +54,7 @@ import org.junit.Rule
 abstract class BaseMediaDetailViewModelTest {
 
   protected lateinit var viewModel: MediaDetailViewModel
+  protected lateinit var collectionViewModel: CollectionViewModel
 
   protected val mockGetListMoviesUseCase: GetListMoviesUseCase = mockk()
   protected val mockGetListTvUseCase: GetListTvUseCase = mockk()
@@ -63,10 +66,12 @@ abstract class BaseMediaDetailViewModelTest {
   protected val mockGetMediaDetailUseCase: GetMediaDetailUseCase = mockk()
   protected val mockUserPrefUseCase: UserPrefUseCase = mockk()
   protected val mockRefreshMediaMetadataUseCase: RefreshMediaMetadataUseCase = mockk()
+  protected val mockGetMovieCollectionUseCase: GetMovieCollectionUseCase = mockk()
 
   protected val imdbId = IMDB_ID
   protected val movieId = MOVIE_ID
   protected val tvId = TV_ID
+  protected val collectionId = 231
   protected val errorMessage = ERROR_MESSAGE
 
   protected val mockMediaItem = mockk<MediaItem>()
@@ -124,6 +129,7 @@ abstract class BaseMediaDetailViewModelTest {
       mockGetMediaDetailUseCase,
       mockRefreshMediaMetadataUseCase,
     )
+    collectionViewModel = CollectionViewModel(mockGetMovieCollectionUseCase)
   }
 
   private val errorStates = mutableListOf<String>()

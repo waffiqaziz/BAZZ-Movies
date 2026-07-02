@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.domain.model.movie
 
 import com.waffiq.bazz_movies.core.models.GenresItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.BelongsToCollection
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem

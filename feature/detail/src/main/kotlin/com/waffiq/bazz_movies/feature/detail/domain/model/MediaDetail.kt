@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.domain.model
 
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.movie.BelongsToCollection
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 
@@ -23,6 +24,7 @@ data class MediaDetail(
   // movie
   val budget: String? = null,
   val revenue: String? = null,
+  val belongsToCollection: BelongsToCollection? = null,
 
   // tv
   val totalEpisodes: Int? = null,

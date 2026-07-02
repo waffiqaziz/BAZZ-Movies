@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.core.network.data.remote.retrofit.services
 
 import com.waffiq.bazz_movies.core.network.data.remote.models.RatingRequest
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailCollectionsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.MediaStateResponse
@@ -52,6 +53,11 @@ interface MovieApiService {
     @Path("movieId") movieId: Int,
     @Query("language") language: String = "en-US",
   ): Response<DetailMovieResponse>
+
+  @GET("3/collection/{collectionId}")
+  suspend fun getMovieCollection(
+    @Path("collectionId") collectionId: Int,
+  ): Response<DetailCollectionsResponse>
 
   @GET("3/movie/{movieId}/recommendations")
   suspend fun getMovieRecommendations(
