@@ -64,8 +64,11 @@ configurations.androidTestImplementation.configure {
 }
 
 dependencyGuard {
-  configuration("releaseCompileClasspath")
-  configuration("releaseRuntimeClasspath")
+  configuration("withFirebaseReleaseCompileClasspath")
+  configuration("withFirebaseReleaseRuntimeClasspath")
+
+  configuration("withoutFirebaseReleaseCompileClasspath")
+  configuration("withoutFirebaseReleaseRuntimeClasspath")
 }
 
 // Disabling detekt from the check task

@@ -10,4 +10,6 @@ interface UserPrefUseCase {
   suspend fun saveRegionPref(region: String)
   suspend fun saveUserPref(userModel: UserModel)
   suspend fun removeUserDataPref()
+  suspend fun savePermissionAsked()
+  fun getPermissionAsked(): Flow<Boolean>
 }
