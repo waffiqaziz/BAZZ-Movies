@@ -1,7 +1,7 @@
 [versions]
 # SDK Versions
-targetSdk = "36"
-compileSdk = "36"
+targetSdk = "37"
+compileSdk = "37"
 minSdk = "23"
 ndkVersion = "28.2.13676358"
 
@@ -33,7 +33,7 @@ activityKtx = "1.13.0"
 appcompat = "1.7.1"
 annotationExperimental = "1.6.0"
 cardview = "1.0.0"
-coreKtx = "1.18.0"
+coreKtx = "1.19.0"
 constraintlayout = "2.2.1"
 coreSplashscreen = "1.2.0"
 fragmentKtx = "1.8.9"
