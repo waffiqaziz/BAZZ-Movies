@@ -25,6 +25,11 @@ object CustomVisibilityMatchers {
       .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
   }
 
+  fun Int.isTextNotVisible() {
+    onView(withText(this))
+      .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+  }
+
   fun Int.isGone() {
     onView(withId(this))
       .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))

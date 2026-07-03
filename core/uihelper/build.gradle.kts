@@ -13,6 +13,8 @@ dependencies {
   api(libs.androidx.core.ktx)
   implementation(libs.androidx.paging.runtime)
 
+  testImplementation(project(":navigation"))
+  testImplementation(project(":core:models"))
   testImplementation(libs.androidx.test.core)
   testImplementation(libs.mockk)
   testImplementation(libs.robolectric)

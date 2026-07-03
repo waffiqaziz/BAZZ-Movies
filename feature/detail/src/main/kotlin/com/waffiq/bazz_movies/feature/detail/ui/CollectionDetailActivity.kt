@@ -7,7 +7,9 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.bumptech.glide.Glide
@@ -19,10 +21,13 @@ import com.google.android.flexbox.JustifyContent
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.color.gray_900
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
+import com.waffiq.bazz_movies.core.designsystem.R.string.movies
+import com.waffiq.bazz_movies.core.uihelper.dialog.SingleChoiceDialog
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.core.uihelper.utils.InsetHelper.setupWindowInsets
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectFlow
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityCollectionDetailBinding
+import com.waffiq.bazz_movies.feature.detail.domain.model.movie.CollectionSortOption
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.CollectionPartsAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.GenreAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.state.CollectionUiState
@@ -44,6 +49,8 @@ class CollectionDetailActivity : AppCompatActivity() {
 
   private val viewModel: CollectionViewModel by viewModels()
 
+  private var collapsedVisible = false
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     enableEdgeToEdge(
@@ -59,12 +66,53 @@ class CollectionDetailActivity : AppCompatActivity() {
     observeViewModel()
     buttonAction()
     justifyTextView(binding.tvCollectionOverview as TextView)
+    setupScrollBehavior()
+    getDataExtra()
+  }
 
+  private fun getDataExtra() {
     collectionId = intent.getIntExtra(EXTRA_COLLECTION_ID, -1)
     if (collectionId != -1) {
       viewModel.loadMovieCollection(collectionId)
     } else {
       finish()
+    }
+  }
+
+  private fun setupScrollBehavior() {
+    binding.scrollView.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+      // position of the RecyclerView relative to the screen
+      val location = IntArray(2)
+      binding.rvCollectionParts.getLocationOnScreen(location)
+
+      // Ppsition of the toolbar relative to the screen
+      val toolbarLocation = IntArray(2)
+      binding.toolbar.getLocationOnScreen(toolbarLocation)
+
+      // point at which the header is fully scrolled past the toolbar
+      val trigger = toolbarLocation[1] + binding.toolbar.height + binding.headerLayout.root.height
+      val passedThreshold = location[1] <= trigger
+
+      // direction of scroll (up or down)
+      val scrollingDown = scrollY > oldScrollY
+
+      // Show the collapsed header only if the scrolled past the real header AND on scrolling down
+      // When scrolling up always reveals the full header again
+      val shouldShowCollapsed = passedThreshold && scrollingDown
+
+      // skip if state no change, to avoid redundant view updates
+      if (shouldShowCollapsed == collapsedVisible) return@setOnScrollChangeListener
+      collapsedVisible = shouldShowCollapsed
+
+      binding.headerLayout.root.isInvisible = shouldShowCollapsed
+      binding.headerLayoutCollapsed.root.isInvisible = !shouldShowCollapsed
+    }
+
+    // align the collapsed header directly below the toolbar once its height is known
+    binding.toolbar.post {
+      val params = binding.headerLayoutCollapsed.root.layoutParams as CoordinatorLayout.LayoutParams
+      params.topMargin = binding.toolbar.height
+      binding.headerLayoutCollapsed.root.layoutParams = params
     }
   }
 
@@ -98,7 +146,7 @@ class CollectionDetailActivity : AppCompatActivity() {
 
   private fun showLoading(isLoading: Boolean) {
     binding.loadingIndicator.isVisible = isLoading
-    binding.tvMovies.isVisible = !isLoading
+    binding.headerLayout.root.isVisible = !isLoading
   }
 
   private fun showError(isError: Boolean) {
@@ -118,13 +166,38 @@ class CollectionDetailActivity : AppCompatActivity() {
     binding.illustrationError.btnTryAgain.setOnClickListener {
       viewModel.loadMovieCollection(collectionId)
     }
+    binding.headerLayout.btnSort.setOnClickListener {
+      showSortDialog()
+    }
+    binding.headerLayoutCollapsed.btnSort.setOnClickListener {
+      showSortDialog()
+    }
+  }
+
+  private fun showSortDialog() {
+    collectFlow(viewModel.currentSort) { currentSort ->
+      SingleChoiceDialog.show(
+        context = this,
+        items = CollectionSortOption.entries,
+        selected = currentSort,
+        onSelected = {
+          viewModel.applySort(it)
+        },
+      )
+    }
   }
 
   private fun displayCollectionDetails(state: CollectionUiState) {
-    binding.rvCollectionParts.isVisible = true
-    binding.tvMovies.isVisible = true
-    binding.collapsingToolbar.title = state.name
-    binding.tvCollectionOverview.text = state.overview
+    val textMovie = "${state.parts.size} ${getString(movies)}"
+    binding.apply {
+      rvCollectionParts.isVisible = true
+      headerLayout.root.isVisible = true
+      headerLayout.tvMovies.text = textMovie
+      headerLayoutCollapsed.tvMovies.text = textMovie
+
+      collapsingToolbar.title = state.name
+      tvCollectionOverview.text = state.overview
+    }
 
     adapterGenre.setGenre(state.genreIds)
     partsAdapter.submitList(state.parts)

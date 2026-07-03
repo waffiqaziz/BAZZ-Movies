@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.ui.viewmodel
 
 import app.cash.turbine.test
+import com.waffiq.bazz_movies.feature.detail.domain.model.movie.CollectionSortOption
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.PartsItem
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailViewModelTest
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.detailCollection
@@ -77,4 +78,18 @@ class CollectionViewModelTest : BaseMediaDetailViewModelTest() {
       }
       coVerify { mockGetMovieCollectionUseCase.getMovieCollection(collectionId) }
     }
+
+  @Test
+  fun applySort_sameOption_doNothing() {
+    assertEquals(CollectionSortOption.RELEASE_DATE_OLDEST, collectionViewModel.currentSort.value)
+    collectionViewModel.applySort(CollectionSortOption.RELEASE_DATE_OLDEST)
+    assertEquals(CollectionSortOption.RELEASE_DATE_OLDEST, collectionViewModel.currentSort.value)
+  }
+
+  @Test
+  fun applySort_differentOption_changesCurrentSort() {
+    assertEquals(CollectionSortOption.RELEASE_DATE_OLDEST, collectionViewModel.currentSort.value)
+    collectionViewModel.applySort(CollectionSortOption.TITLE_AZ)
+    assertEquals(CollectionSortOption.TITLE_AZ, collectionViewModel.currentSort.value)
+  }
 }

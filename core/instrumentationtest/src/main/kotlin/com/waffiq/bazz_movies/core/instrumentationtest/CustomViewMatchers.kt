@@ -100,7 +100,7 @@ object CustomViewMatchers {
   }
 
   fun Int.doesHaveText(text: String) {
-    onView(withId(this)).check(matches((isViewDisplayed()))).check(matches(withText(text)))
+    onView(withId(this)).check(matches(isViewDisplayed())).check(matches(withText(text)))
   }
 
   fun Int.hasErrorText(text: String) {

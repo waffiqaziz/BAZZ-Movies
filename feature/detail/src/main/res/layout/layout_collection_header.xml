@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/header_layout"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_marginVertical="@dimen/margin_between_item"
+  android:layout_marginStart="@dimen/default_margin_parent_20"
+  android:layout_marginEnd="@dimen/margin_between_item">
+
+  <TextView
+    android:id="@+id/tv_movies"
+    style="@style/TextAppearance.App.Header3"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="start|center_vertical"
+    android:letterSpacing="0.08"
+    android:textAllCaps="true"
+    android:textStyle="bold"
+    tools:text="5 Movies" />
+
+  <Button
+    android:id="@+id/btn_sort"
+    style="?attr/borderlessButtonStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="end|center_vertical"
+    android:layout_marginEnd="8dp"
+    android:drawableEnd="@drawable/ic_arrow_down"
+    android:drawablePadding="0dp"
+    android:drawableTint="@color/white"
+    android:fontFamily="@font/nunito_sans_regular"
+    android:paddingHorizontal="4dp"
+    android:text="@string/sort"
+    android:textColor="@color/white"
+    android:theme="@style/ThemeOverlay.App.Button.Transparent"
+    app:rippleColor="@color/gray_800" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
