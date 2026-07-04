@@ -38,7 +38,6 @@ import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.hamcrest.Matchers.allOf
@@ -136,7 +135,7 @@ class CollectionDetailActivityTest : BaseCollectionDetailActivityTest() {
       popularity_asc.performTextClick()
       shortDelay(500)
 
-      every { mockCollectionViewModel.applySort(any()) }
+      verify { mockCollectionViewModel.applySort(any()) }
     }
   }
 
