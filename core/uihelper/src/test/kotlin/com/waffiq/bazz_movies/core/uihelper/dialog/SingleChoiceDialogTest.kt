@@ -93,6 +93,7 @@ class SingleChoiceDialogTest {
     assertNotNull(holder)
 
     holder?.binding?.item?.performClick()
+    holder?.binding?.item?.performClick()
     shadowOf(Looper.getMainLooper()).runToEndOfTasks()
 
     assertFalse(dialog.isShowing)

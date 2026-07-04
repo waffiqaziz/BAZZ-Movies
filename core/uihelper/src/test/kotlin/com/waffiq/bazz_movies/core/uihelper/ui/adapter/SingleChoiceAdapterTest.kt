@@ -1,6 +1,8 @@
 package com.waffiq.bazz_movies.core.uihelper.ui.adapter
 
 import android.graphics.Typeface
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
@@ -14,6 +16,7 @@ import com.waffiq.bazz_movies.core.uihelper.testutils.BaseAdapterTest
 import com.waffiq.bazz_movies.core.uihelper.testutils.SortOption
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.delay
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -42,7 +45,10 @@ class SingleChoiceAdapterTest : BaseAdapterTest() {
       items,
       SortOption.TITLE_AZ,
       onSelected,
-      postDelayed = { _, action -> action() },
+      postDelayed = { _, action ->
+        action()
+        return@SingleChoiceAdapter {}
+      }
     )
     binding = ItemSingleChoiceBinding.inflate(inflater, parent, false)
   }
@@ -107,6 +113,7 @@ class SingleChoiceAdapterTest : BaseAdapterTest() {
     val holder = bindAt(1)
 
     holder.binding.item.performClick()
+    Thread.sleep(500L)
 
     verify(exactly = 1) { onSelected(SortOption.TITLE_ZA) }
   }

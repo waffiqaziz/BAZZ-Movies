@@ -1,17 +1,18 @@
 package com.waffiq.bazz_movies.core.uihelper.ui.adapter
 
-import android.graphics.Typeface
+import android.graphics.Typeface.BOLD
+import android.graphics.Typeface.NORMAL
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getColor
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.listitem.ListItemViewHolder
-import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
+import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_LONG
 import com.waffiq.bazz_movies.core.designsystem.R.color.gray_400
 import com.waffiq.bazz_movies.core.designsystem.R.color.gray_800
 import com.waffiq.bazz_movies.core.designsystem.R.color.white
@@ -23,13 +24,19 @@ class SingleChoiceAdapter<T : LabeledOption>(
   private val items: List<T>,
   selected: T,
   private val onSelected: (T) -> Unit,
-  private val debounceMs: Long = DEBOUNCE_SHORT,
-  private val postDelayed: (Long, () -> Unit) -> Unit = { delay, action ->
-    Handler(Looper.getMainLooper()).postDelayed(action, delay)
+  private val debounceMs: Long = DEBOUNCE_LONG,
+  private val postDelayed: (Long, () -> Unit) -> (() -> Unit) = { delay, action ->
+    val handler = Handler(Looper.getMainLooper())
+    val runnable = Runnable(action)
+    handler.postDelayed(runnable, delay)
+
+    val cancel: () -> Unit = { handler.removeCallbacks(runnable) }
+    cancel
   },
 ) : RecyclerView.Adapter<SingleChoiceAdapter<T>.ViewHolder>() {
 
   private var selectedPosition = items.indexOf(selected)
+  private var cancelAction: () -> Unit = {}
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding =
@@ -46,40 +53,47 @@ class SingleChoiceAdapter<T : LabeledOption>(
   inner class ViewHolder(val binding: ItemSingleChoiceBinding) :
     ListItemViewHolder(binding.listItemLayout) {
 
-    val textView: TextView = binding.tvLabel
-
     fun onBind(
       item: T,
       position: Int,
       isSelected: Boolean,
     ) {
       bind(position, itemCount)
+      binding.setItemAppearance(item, isSelected)
+      binding.buttonAction(item, position)
+    }
 
-      binding.item.setCardBackgroundColor(
-        ContextCompat.getColor(
-          binding.item.context,
+    private fun ItemSingleChoiceBinding.setItemAppearance(item: T, isSelected: Boolean) {
+      this.item.setCardBackgroundColor(
+        getColor(
+          this.item.context,
           if (isSelected) yellow_alpha_9 else gray_800,
         ),
       )
-      binding.ivSelected.isVisible = isSelected
-      textView.apply {
+      ivSelected.isVisible = isSelected
+      binding.tvLabel.apply {
         text = context.getString(item.label)
-        setTypeface(typeface, if (isSelected) Typeface.BOLD else Typeface.NORMAL)
-        setTextColor(ContextCompat.getColor(context, if (isSelected) white else gray_400))
+        setTypeface(typeface, if (isSelected) BOLD else NORMAL)
+        setTextColor(getColor(context, if (isSelected) white else gray_400))
         updatePadding(
           top = if (isSelected) 10 else -3,
           bottom = if (isSelected) 10 else -3,
         )
       }
+    }
 
-      binding.item.setOnClickListener {
+    private fun ItemSingleChoiceBinding.buttonAction(item: T, position: Int) {
+      this.item.setOnClickListener {
         val previous = selectedPosition
         selectedPosition = position
 
         notifyItemChanged(previous)
         notifyItemChanged(selectedPosition)
 
-        postDelayed(debounceMs) {
+        // cancel if there's previous callback
+        cancelAction()
+
+        cancelAction = postDelayed(debounceMs) {
           onSelected(item)
         }
       }
