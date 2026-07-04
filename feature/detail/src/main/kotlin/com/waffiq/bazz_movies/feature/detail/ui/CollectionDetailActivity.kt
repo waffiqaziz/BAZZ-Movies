@@ -147,6 +147,7 @@ class CollectionDetailActivity : AppCompatActivity() {
   private fun showLoading(isLoading: Boolean) {
     binding.loadingIndicator.isVisible = isLoading
     binding.headerLayout.root.isVisible = !isLoading
+    if (isLoading) binding.headerLayoutCollapsed.root.isVisible = false
   }
 
   private fun showError(isError: Boolean) {
@@ -175,16 +176,14 @@ class CollectionDetailActivity : AppCompatActivity() {
   }
 
   private fun showSortDialog() {
-    collectFlow(viewModel.currentSort) { currentSort ->
-      SingleChoiceDialog.show(
-        context = this,
-        items = CollectionSortOption.entries,
-        selected = currentSort,
-        onSelected = {
-          viewModel.applySort(it)
-        },
-      )
-    }
+    SingleChoiceDialog.show(
+      context = this,
+      items = CollectionSortOption.entries,
+      selected = viewModel.currentSort.value,
+      onSelected = {
+        viewModel.applySort(it)
+      },
+    )
   }
 
   private fun displayCollectionDetails(state: CollectionUiState) {
