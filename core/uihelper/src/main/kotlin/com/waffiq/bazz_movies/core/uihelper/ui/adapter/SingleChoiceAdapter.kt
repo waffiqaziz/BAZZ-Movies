@@ -6,7 +6,6 @@ import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
