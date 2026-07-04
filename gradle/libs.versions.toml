@@ -87,6 +87,7 @@ robolectric = "4.16.1"
 androidxTest = "1.7.0"
 truth = "1.4.5"
 turbine = "1.2.1"
+uiautomator = "2.4.0"
 
 # Image Loading
 glide = "5.0.7"
@@ -174,6 +175,7 @@ androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTest" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
 androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "androidxJunit" }
+androidx-uiautomator = { module = "androidx.test.uiautomator:uiautomator", version.ref = "uiautomator" }
 
 # Junit Testing Libraries
 junit = { group = "junit", name = "junit", version.ref = "junitVersion" }

@@ -10,7 +10,7 @@ via [CI (GitHub Action)](../.github/workflows/android_test.yml).
   for both unit tests and instrumentation tests.
 - [Kotest](https://github.com/kotest/kotest) → Currently being explored for more expressive testing.
   For now, it is only adopted in unit tests within the [`:feature:favorite`](../feature/favorite)
-  module
+  and [`:feature:list`](../feature/list) module
 
 ## Testing Library
 
@@ -26,6 +26,8 @@ coroutines, and assertions.
 
 - [Robolectric](https://github.com/robolectric/robolectric) → run Android code on JVM
 - [Espresso](https://github.com/android/android-test) → UI testing
+- [UI Automator](https://developer.android.com/training/testing/other-components/ui-automator) → UI
+  testing
 
 ### Coroutines & Flow
 

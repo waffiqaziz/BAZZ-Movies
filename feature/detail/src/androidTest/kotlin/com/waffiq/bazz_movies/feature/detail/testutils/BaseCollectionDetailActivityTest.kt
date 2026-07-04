@@ -7,6 +7,7 @@ import androidx.test.espresso.intent.Intents
 import androidx.test.platform.app.InstrumentationRegistry
 import com.bumptech.glide.Glide
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
+import com.waffiq.bazz_movies.feature.detail.domain.model.movie.CollectionSortOption
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.PartsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.genreIds
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.detailCollections
@@ -45,7 +46,10 @@ abstract class BaseCollectionDetailActivityTest {
 
   protected fun setupBaseMocks(mockCollectionViewModel: CollectionViewModel) {
     every { mockCollectionViewModel.uiState } returns sUiState
+    every { mockCollectionViewModel.currentSort } returns
+      MutableStateFlow(CollectionSortOption.RELEASE_DATE_OLDEST)
     every { mockCollectionViewModel.loadMovieCollection(any()) } just Runs
+    every { mockCollectionViewModel.applySort(any()) } just Runs
 
     @Suppress("UNCHECKED_CAST")
     uiState.update {

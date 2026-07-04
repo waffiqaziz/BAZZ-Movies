@@ -31,6 +31,7 @@ dependencies {
   testImplementation(libs.turbine)
 
   androidTestImplementation(libs.androidx.junit.ktx)
+  androidTestImplementation(libs.androidx.uiautomator)
   androidTestImplementation(libs.kotlinx.coroutines.test)
   androidTestImplementation(libs.mockk.android)
 }

@@ -592,4 +592,18 @@
   <style name="Widget.App.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
     <item name="backgroundTint">@color/gray_900</item>
   </style>
+
+  <style name="ThemeOverlay.App.AlertDialog.Sort" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+    <item name="fontFamily">@font/nunito_sans_regular</item>
+    <item name="colorControlActivated">@color/gray_300</item>
+    <item name="colorSurfaceContainerHigh">@color/gray_850</item>
+    <item name="materialAlertDialogTitleTextStyle">@style/TextAppearance.App.AlertDialog.Title</item>
+    <item name="colorOnSurfaceVariant">@color/gray_300</item>
+  </style>
+
+  <style name="TextAppearance.App.AlertDialog.Title" parent="MaterialAlertDialog.Material3.Title.Text">
+    <item name="android:textAppearance">@style/TextAppearance.Material3.TitleMedium.Emphasized</item>
+    <item name="android:textColor">@color/gray_200</item>
+    <item name="android:textStyle">bold</item>
+  </style>
 </resources>

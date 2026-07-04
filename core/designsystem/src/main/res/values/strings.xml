@@ -194,6 +194,20 @@
   <string name="picture">Picture</string>
   <string name="forget_password">Forget Password</string>
 
+  <!-- SORT BY -->
+  <string name="sort">Sort</string>
+  <string name="sort_by">Sort by</string>
+  <string name="recently_added">Recently Added</string>
+  <string name="oldest_added">Oldest Added</string>
+  <string name="title_az">Title (A–Z)</string>
+  <string name="title_za">Title (Z–A)</string>
+  <string name="rating_desc">Rating (High to Low)</string>
+  <string name="rating_asc">Rating (Low to High)</string>
+  <string name="popularity_desc">Popularity (High to Low)</string>
+  <string name="popularity_asc">Popularity (Low to High)</string>
+  <string name="release_date_newest">Release Date (Newest First)</string>
+  <string name="release_date_olders">Release Date (Oldest First)</string>
+
   <!-- PERSON -->
   <string name="known_for">Known For</string>
   <string name="biography">Biography</string>

@@ -3,7 +3,9 @@ package com.waffiq.bazz_movies.feature.detail.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.core.models.Outcome
+import com.waffiq.bazz_movies.feature.detail.domain.model.movie.CollectionSortOption
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.genreIds
+import com.waffiq.bazz_movies.feature.detail.domain.model.movie.sortedByOption
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.collection.GetMovieCollectionUseCase
 import com.waffiq.bazz_movies.feature.detail.ui.state.CollectionUiState
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.backdropOriginalSource
@@ -18,6 +20,10 @@ import javax.inject.Inject
 class CollectionViewModel @Inject constructor(
   private val getMovieCollectionUseCase: GetMovieCollectionUseCase,
 ) : ViewModel() {
+
+  private val _currentSort =
+    MutableStateFlow(CollectionSortOption.RELEASE_DATE_OLDEST)
+  val currentSort = _currentSort.asStateFlow()
 
   private val _uiState = MutableStateFlow(CollectionUiState())
   val uiState = _uiState.asStateFlow()
@@ -47,12 +53,20 @@ class CollectionViewModel @Inject constructor(
                   overview = rawData.overview ?: "",
                   genreIds = rawData.genreIds,
                   backdropUrl = rawData.backdropOriginalSource,
-                  parts = cleanParts,
+                  parts = cleanParts.sortedByOption(_currentSort.value),
                 )
               }
             }
           }
         }
+    }
+  }
+
+  fun applySort(option: CollectionSortOption) {
+    if (_currentSort.value == option) return
+    _currentSort.value = option
+    _uiState.update { state ->
+      state.copy(parts = state.parts.sortedByOption(_currentSort.value))
     }
   }
 }

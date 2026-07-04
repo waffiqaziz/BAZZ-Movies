@@ -277,7 +277,13 @@ object DataDumb {
       partsItem,
       partsItem.copy(id = 24, title = "movie 2"),
       partsItem.copy(id = 25, title = "movie 3"),
-      partsItem.copy(id = 25, title = "movie 4"),
+      partsItem.copy(id = 26, title = "movie 4"),
+      partsItem.copy(id = 27, title = "movie 5"),
+      partsItem.copy(id = 28, title = "movie 6"),
+      partsItem.copy(id = 29, title = "movie 7"),
+      partsItem.copy(id = 30, title = "movie 8"),
+      partsItem.copy(id = 31, title = "movie 9"),
+      partsItem.copy(id = 32, title = "movie 10"),
     ),
   )
 }
