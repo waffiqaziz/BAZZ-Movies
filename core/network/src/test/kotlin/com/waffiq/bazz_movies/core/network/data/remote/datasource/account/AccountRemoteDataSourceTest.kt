@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.core.network.data.remote.datasource.account
 
 import com.waffiq.bazz_movies.core.network.data.remote.constants.AccountMediaCategory
 import com.waffiq.bazz_movies.core.network.data.remote.constants.MediaType
+import com.waffiq.bazz_movies.core.network.data.remote.constants.SortBy.CREATED_AT_ASC
 import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.GenericPagingSource
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager
@@ -23,6 +24,7 @@ class AccountRemoteDataSourceTest : BaseMediaDataSourceTest() {
       sessionId = sessionId,
       category = category.asApiValue(),
       mediaType = mediaType.asApiValue(),
+      sortBy = CREATED_AT_ASC,
       page = 1,
     )
 
@@ -41,7 +43,8 @@ class AccountRemoteDataSourceTest : BaseMediaDataSourceTest() {
     runTest {
       val expected = listOf(DataDumpManager.movieDump6)
       coEvery { stubFavoriteMovies() } returns defaultMediaResponse(expected)
-      accountRemoteDataSource.getFavoriteMovies(userId, sessionId).testPagingFlow(this, expected)
+      accountRemoteDataSource.getFavoriteMovies(userId, sessionId, CREATED_AT_ASC)
+        .testPagingFlow(this, expected)
       coVerify { stubFavoriteMovies() }
     }
 
@@ -50,7 +53,8 @@ class AccountRemoteDataSourceTest : BaseMediaDataSourceTest() {
     runTest {
       val expected = listOf(DataDumpManager.movieDump2)
       coEvery { stubWatchlistMovies() } returns defaultMediaResponse(expected)
-      accountRemoteDataSource.getWatchlistMovies(userId, sessionId).testPagingFlow(this, expected)
+      accountRemoteDataSource.getWatchlistMovies(userId, sessionId, CREATED_AT_ASC)
+        .testPagingFlow(this, expected)
       coVerify { stubWatchlistMovies() }
     }
 
@@ -73,7 +77,8 @@ class AccountRemoteDataSourceTest : BaseMediaDataSourceTest() {
     runTest {
       val expected = listOf(tvShowDump2)
       coEvery { stubFavoriteTv() } returns defaultMediaResponse(expected)
-      accountRemoteDataSource.getFavoriteTv(userId, sessionId).testPagingFlow(this, expected)
+      accountRemoteDataSource.getFavoriteTv(userId, sessionId, CREATED_AT_ASC)
+        .testPagingFlow(this, expected)
       coVerify { stubFavoriteTv() }
     }
 
@@ -96,7 +101,8 @@ class AccountRemoteDataSourceTest : BaseMediaDataSourceTest() {
     runTest {
       val expected = listOf(tvShowDump2)
       coEvery { stubWatchlistTv() } returns defaultMediaResponse(expected)
-      accountRemoteDataSource.getWatchlistTv(userId, sessionId).testPagingFlow(this, expected)
+      accountRemoteDataSource.getWatchlistTv(userId, sessionId, CREATED_AT_ASC)
+        .testPagingFlow(this, expected)
       coVerify { stubWatchlistTv() }
     }
 }

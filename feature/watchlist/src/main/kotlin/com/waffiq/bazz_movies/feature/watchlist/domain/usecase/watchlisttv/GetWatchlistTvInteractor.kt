@@ -12,8 +12,9 @@ class GetWatchlistTvInteractor @Inject constructor(
   private val watchlistRepository: IWatchlistRepository,
   private val userRepository: IUserRepository,
 ) : GetWatchlistTvUseCase {
-  override fun getWatchlistTv(): Flow<PagingData<MediaItem>> =
+
+  override fun getWatchlistTv(sortBy: String): Flow<PagingData<MediaItem>> =
     userRepository.getUserPref().flatMapConcat {
-      watchlistRepository.getWatchlistTv(it.userId, it.token)
+      watchlistRepository.getWatchlistTv(it.userId, it.token, sortBy)
     }
 }

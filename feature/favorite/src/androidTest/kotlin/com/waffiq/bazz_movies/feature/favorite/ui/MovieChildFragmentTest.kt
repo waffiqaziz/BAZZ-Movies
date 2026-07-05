@@ -13,22 +13,27 @@ import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.designsystem.R.color.red_matte
+import com.waffiq.bazz_movies.core.designsystem.R.id.chip_sort
 import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.already_watchlist
+import com.waffiq.bazz_movies.core.designsystem.R.string.oldest_added
+import com.waffiq.bazz_movies.core.designsystem.R.string.recently_added
 import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_favorite
 import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.snackbar_anchor_test
 import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.view_pager
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performTextClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.models.FavoriteParams
 import com.waffiq.bazz_movies.core.models.WatchlistParams
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
+import com.waffiq.bazz_movies.feature.favorite.testutils.BaseFavoriteFragmentTestHelper
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.favoriteMovie
-import com.waffiq.bazz_movies.feature.favorite.testutils.DefaultFavoriteFragmentTestHelper
-import com.waffiq.bazz_movies.feature.favorite.testutils.FavoriteFragmentTestHelper
 import com.waffiq.bazz_movies.feature.favorite.ui.fragment.FavoriteChildFragment
 import com.waffiq.bazz_movies.feature.favorite.ui.viewmodel.FavoriteViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
@@ -44,7 +49,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFragmentTestHelper() {
+class MovieChildFragmentTest : BaseFavoriteFragmentTestHelper() {
 
   private val snackBarLoginData = SnackBarUserLoginData(
     isSuccess = true,
@@ -104,6 +109,26 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
   }
 
   @Test
+  fun loggedUser_performSort_shouldSortCorrectly() {
+    loggedUser(mockFavoriteViewModel)
+    launchFragment()
+
+    chip_sort.performClick()
+    shortDelay()
+    oldest_added.performTextClick()
+  }
+
+  @Test
+  fun loggedUser_performSortSameSortType_doNothing() {
+    loggedUser(mockFavoriteViewModel)
+    launchFragment()
+
+    chip_sort.performClick()
+    shortDelay()
+    recently_added.performTextClick()
+  }
+
+  @Test
   fun loggedUser_swipeAction_shouldPassed() {
     loggedUser(mockFavoriteViewModel)
     launchFragment()
@@ -124,7 +149,7 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
       launchFragment()
 
       // swipe left
-      performSwipeAction(0, swipeLeft())
+      performSwipeAction(1, swipeLeft())
 
       mockSnackBarChannel.send(data)
       onIdle()
@@ -140,7 +165,7 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
       loggedUser(mockFavoriteViewModel)
       launchFragment()
 
-      performSwipeAction(1, swipeRight())
+      performSwipeAction(2, swipeRight())
 
       mockSnackBarAlready.postValue(Event("This Movie"))
       onIdle()
@@ -164,7 +189,7 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
       launchFragment()
 
       // swipe right (isWantToDelete = true)
-      performSwipeAction(1, swipeRight())
+      performSwipeAction(2, swipeRight())
 
       mockSnackBarChannel.send(data)
       onIdle()
@@ -191,7 +216,7 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
       launchFragment()
 
       // swipe right (isWantToDelete = true)
-      performSwipeAction(1, swipeRight())
+      performSwipeAction(2, swipeRight())
 
       mockSnackBarChannel.send(failedDate)
       snackbar_text.doesHaveText(failedDate.title)
@@ -213,7 +238,7 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
       mockSnackBarChannel.send(emptyData)
 
       // swipe right (isWantToDelete = true)
-      performSwipeAction(1, swipeRight())
+      performSwipeAction(2, swipeRight())
 
       mockSnackBarChannel.send(emptyData)
       onIdle()
@@ -233,7 +258,7 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
       loggedUser(mockFavoriteViewModel)
       launchFragment()
 
-      performSwipeAction(1, swipeRight())
+      performSwipeAction(2, swipeRight())
       mockSnackBarChannel.send(deleteData)
       onIdle()
 
@@ -263,7 +288,7 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
       loggedUser(mockFavoriteViewModel)
       launchFragment()
 
-      performSwipeAction(1, swipeRight())
+      performSwipeAction(2, swipeRight())
       mockSnackBarChannel.send(deleteData)
       onIdle()
 
@@ -294,9 +319,10 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
     // set first item is on watchlist, and second item not in watchlist
     mockFavoriteMoviesFromDB.postValue(listOf(data, favoriteMovie.copy(id = 4567)))
     launchFragment()
+    shortDelay(500)
 
     // swipe right delete data already in watchlist
-    performSwipeAction(0, swipeRight())
+    performSwipeAction(1, swipeRight())
     mockUndoDB.postValue(Event(data))
     onIdle()
 
@@ -305,7 +331,7 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
     performUndoAction()
 
     // swipe right delete data not in watchlist
-    performSwipeAction(1, swipeRight())
+    performSwipeAction(2, swipeRight())
     mockUndoDB.postValue(Event(favoriteMovie.copy(id = 4567)))
     onIdle()
     performUndoAction()
@@ -321,7 +347,7 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
     launchFragment()
 
     // swipe left (isWantToDelete = false)
-    performSwipeAction(0, swipeLeft())
+    performSwipeAction(1, swipeLeft())
 
     mockUndoDB.postValue(Event(data))
     onIdle()
@@ -341,7 +367,7 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
     launchFragment()
 
     // swipe left (isWantToDelete = false)
-    performSwipeAction(1, swipeLeft())
+    performSwipeAction(2, swipeLeft())
     mockUndoDB.postValue(Event(data))
     onIdle()
 
@@ -361,7 +387,7 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
     launchFragment()
 
     // swipe left (isWantToDelete = false)
-    performSwipeAction(0, swipeLeft())
+    performSwipeAction(1, swipeLeft())
     mockUndoDB.postValue(Event(data))
     onIdle()
 
@@ -379,7 +405,7 @@ class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFrag
     launchFragment()
 
     // swipe left (isWantToDelete = false)
-    performSwipeAction(0, swipeLeft())
+    performSwipeAction(1, swipeLeft())
     mockUndoDB.postValue(Event(data))
     onIdle()
 

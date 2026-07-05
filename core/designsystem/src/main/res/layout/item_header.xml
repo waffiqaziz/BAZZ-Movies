@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.chip.ChipGroup xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:paddingStart="16dp">
+
+  <com.google.android.material.chip.Chip
+    android:id="@+id/chip_sort"
+    style="@style/Widget.Material3.Chip.Filter"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:checkable="false"
+    android:checked="true"
+    android:textAppearance="@style/TextAppearance.App.Chip"
+    android:textColor="@color/gray_400"
+    app:chipBackgroundColor="@color/gray_900_light"
+    app:chipStrokeColor="@color/gray_800"
+    app:closeIcon="@drawable/ic_arrow_down"
+    app:closeIconStartPadding="2dp"
+    app:closeIconTint="@color/gray_400"
+    app:closeIconVisible="true"
+    app:ensureMinTouchTargetSize="true"
+    app:rippleColor="@color/gray_800"
+    tools:text="@string/recently_added" />
+
+</com.google.android.material.chip.ChipGroup>

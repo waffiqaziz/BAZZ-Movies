@@ -5,5 +5,5 @@ import com.waffiq.bazz_movies.core.models.MediaItem
 import kotlinx.coroutines.flow.Flow
 
 interface GetWatchlistMovieUseCase {
-  fun getWatchlistMovies(): Flow<PagingData<MediaItem>>
+  fun getWatchlistMovies(sortBy: String): Flow<PagingData<MediaItem>>
 }

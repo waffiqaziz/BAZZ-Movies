@@ -8,11 +8,10 @@ import androidx.annotation.VisibleForTesting
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.favoritewatchlist.databinding.FragmentChildBinding
-import com.waffiq.bazz_movies.core.models.MediaItem
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FavoriteChildFragment : BaseFavoriteFragment<MediaItem>() {
+class FavoriteChildFragment : BaseFavoriteFragment() {
 
   private var _binding: FragmentChildBinding? = null
   override val binding get() = _binding ?: error(getString(binding_error))

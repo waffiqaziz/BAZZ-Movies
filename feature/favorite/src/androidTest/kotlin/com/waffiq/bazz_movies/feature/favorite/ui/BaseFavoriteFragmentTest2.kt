@@ -19,9 +19,8 @@ import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltConta
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
+import com.waffiq.bazz_movies.feature.favorite.testutils.BaseFavoriteFragmentTestHelper
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.userModel
-import com.waffiq.bazz_movies.feature.favorite.testutils.DefaultFavoriteFragmentTestHelper
-import com.waffiq.bazz_movies.feature.favorite.testutils.FavoriteFragmentTestHelper
 import com.waffiq.bazz_movies.feature.favorite.ui.fragment.FavoriteChildFragment
 import com.waffiq.bazz_movies.feature.favorite.ui.fragment.FavoriteFragment
 import com.waffiq.bazz_movies.feature.favorite.ui.viewmodel.FavoriteViewModel
@@ -37,8 +36,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class BaseFavoriteFragmentTest2 :
-  FavoriteFragmentTestHelper by DefaultFavoriteFragmentTestHelper() {
+class BaseFavoriteFragmentTest2 : BaseFavoriteFragmentTestHelper() {
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)

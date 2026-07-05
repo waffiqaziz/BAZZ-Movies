@@ -25,7 +25,10 @@ dependencies {
   testImplementation(libs.robolectric) // used to test FavoriteViewPagerAdapter
   testImplementation(libs.truth)
   testImplementation(libs.turbine)
-  testRuntimeOnly(libs.junit.vintage) // allow JUnit4 tests on JUnit5 runner
+
+  // Allow JUnit4 tests on JUnit5 runner
+  // https://github.com/kotest/kotest/issues/737#issuecomment-509998038
+  testRuntimeOnly(libs.junit.vintage)
 
   androidTestImplementation(libs.androidx.core.testing)
   androidTestImplementation(libs.androidx.datastore.preferences)

@@ -10,6 +10,8 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.data.domain.usecase.composite.PostActionUseCase
+import com.waffiq.bazz_movies.core.favoritewatchlist.domain.sort.LoggedFavoriteSortOption
+import com.waffiq.bazz_movies.core.favoritewatchlist.domain.sort.toQueryString
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.launchAndHandleOutcome
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
 import com.waffiq.bazz_movies.core.models.FavoriteParams
@@ -22,6 +24,10 @@ import com.waffiq.bazz_movies.feature.watchlist.domain.usecase.watchlisttv.GetWa
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import javax.inject.Inject
 
@@ -39,15 +45,21 @@ class WatchlistViewModel @Inject constructor(
   private val _snackBarAdded = Channel<SnackBarUserLoginData>(Channel.CONFLATED)
   val snackBarAdded = _snackBarAdded.receiveAsFlow()
 
-  // region NETWORK
+  private val _currentSort = MutableStateFlow(LoggedFavoriteSortOption.RECENTLY_ADDED)
+  val currentSort: StateFlow<LoggedFavoriteSortOption> = _currentSort.asStateFlow()
+
   fun getWatchlistData(mediaType: String): Flow<PagingData<MediaItem>> =
-    (
+    _currentSort.flatMapLatest { sortOption ->
       if (mediaType == MOVIE_MEDIA_TYPE) {
-        getWatchlistMovieUseCase.getWatchlistMovies()
+        getWatchlistMovieUseCase.getWatchlistMovies(sortOption.toQueryString())
       } else {
-        getWatchlistTvUseCase.getWatchlistTv()
+        getWatchlistTvUseCase.getWatchlistTv(sortOption.toQueryString())
       }
-      ).cachedIn(viewModelScope)
+    }.cachedIn(viewModelScope)
+
+  fun updateSort(option: LoggedFavoriteSortOption) {
+    if (_currentSort.value != option) _currentSort.value = option
+  }
 
   fun postFavorite(data: FavoriteParams, title: String) {
     launchAndHandleOutcome(
@@ -104,7 +116,6 @@ class WatchlistViewModel @Inject constructor(
       onError = { onError(it) },
     )
   }
-  // endregion NETWORK
 
   private fun already(title: String) {
     _snackBarAlready.value = Event(title)

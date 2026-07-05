@@ -5,6 +5,7 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.data.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.data.domain.usecase.composite.PostActionUseCase
+import com.waffiq.bazz_movies.core.favoritewatchlist.domain.sort.LoggedFavoriteSortOption
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
 import com.waffiq.bazz_movies.core.models.FavoriteParams
 import com.waffiq.bazz_movies.core.models.WatchlistParams
@@ -34,6 +35,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
+import org.junit.Assert.assertEquals
 
 /**
  * Unit tests for [FavoriteViewModel] using Kotest BehaviorSpec.
@@ -71,9 +73,9 @@ class FavoriteViewModelTest :
       Dispatchers.resetMain()
     }
 
-    Given("fetching favorite movies") {
-      When("the response is successful") {
-        coEvery { getFavoriteMovieUseCase.getFavoriteMovies() } returns
+    Given("favorite data is ready") {
+      When("fetching favorite movie is successful") {
+        coEvery { getFavoriteMovieUseCase.getFavoriteMovies(any()) } returns
           flowOf(fakeMovieMediaItemPagingData)
 
         Then("it should emit the favorite movies list") {
@@ -84,20 +86,36 @@ class FavoriteViewModelTest :
           }
         }
       }
-    }
 
-    Given("fetching favorite TV shows") {
-      When("the response is successful") {
-        coEvery { getFavoriteTvUseCase.getFavoriteTv() } returns
+      When("fetching favorite tv is successful") {
+        coEvery { getFavoriteTvUseCase.getFavoriteTv(any()) } returns
           flowOf(fakeTvMediaItemPagingData)
 
-        Then("it should emit the favorite TV shows list") {
+        Then("it should emit the favorite tv list") {
           testPagingFlowCancelRemaining(viewModel.getFavoriteData(TV_MEDIA_TYPE)) {
             it[0].id shouldBe 1
             it[0].title shouldBe "Breaking Bad"
             it[0].overview shouldBe
               "A high school chemistry teacher turned methamphetamine producer"
           }
+        }
+      }
+    }
+
+    Given("current sorting is recently added") {
+      assertEquals(LoggedFavoriteSortOption.RECENTLY_ADDED, viewModel.currentSort.value)
+
+      When("update sort by oldest first") {
+        Then("it should change current sort") {
+          viewModel.updateSort(LoggedFavoriteSortOption.OLDEST_ADDED)
+          assertEquals(LoggedFavoriteSortOption.OLDEST_ADDED, viewModel.currentSort.value)
+        }
+      }
+
+      When("update sort by recently added") {
+        Then("it should not change current sort") {
+          viewModel.updateSort(LoggedFavoriteSortOption.RECENTLY_ADDED)
+          assertEquals(LoggedFavoriteSortOption.RECENTLY_ADDED, viewModel.currentSort.value)
         }
       }
     }

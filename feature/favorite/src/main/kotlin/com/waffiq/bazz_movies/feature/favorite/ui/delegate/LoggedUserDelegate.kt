@@ -1,10 +1,12 @@
 package com.waffiq.bazz_movies.feature.favorite.ui.delegate
 
+import android.text.SpannableString
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.ConcatAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
@@ -13,13 +15,16 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.undo
 import com.waffiq.bazz_movies.core.favoritewatchlist.databinding.FragmentChildBinding
+import com.waffiq.bazz_movies.core.favoritewatchlist.domain.sort.LoggedFavoriteSortOption
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.MediaPagingAdapter
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.sort.SortChipAdapter
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.handlePagingLoadState
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlreadyUtils.snackBarAlready
 import com.waffiq.bazz_movies.core.models.FavoriteParams
 import com.waffiq.bazz_movies.core.models.WatchlistParams
+import com.waffiq.bazz_movies.core.uihelper.dialog.SingleChoiceDialog
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.SwipeConfig
@@ -45,6 +50,7 @@ class LoggedUserDelegate(
 ) {
 
   private lateinit var adapter: MediaPagingAdapter
+  private lateinit var headerAdapter: SortChipAdapter
   private var currentSnackbar: Snackbar? = null
   private var isWantToDelete = false
   private var isUndo = false
@@ -84,8 +90,22 @@ class LoggedUserDelegate(
         postToAddWatchlist(titleHandler(mediaItem), mediaItem.id)
       },
     )
-    binding.recyclerView.adapter = adapter.withLoadStateFooter(
-      footer = LoadingStateAdapter { adapter.retry() },
+    headerAdapter = SortChipAdapter {
+      SingleChoiceDialog.show(
+        context = fragment.requireContext(),
+        items = LoggedFavoriteSortOption.entries,
+        selected = favoriteViewModel.currentSort.value,
+        onSelected = { selectedOption ->
+          favoriteViewModel.updateSort(selectedOption)
+          headerAdapter.updateSort(selectedOption.label)
+        },
+      )
+    }
+    binding.recyclerView.adapter = ConcatAdapter(
+      headerAdapter,
+      adapter.withLoadStateFooter(
+        footer = LoadingStateAdapter { adapter.retry() },
+      ),
     )
   }
 
@@ -185,35 +205,37 @@ class LoggedUserDelegate(
     fav: FavoriteParams?,
     wtc: WatchlistParams?,
   ) {
-    val isDelete = isWantToDelete && fav != null
-    val isAddToWatchlist = !isWantToDelete && wtc != null
-
-    if (!isDelete && !isAddToWatchlist) return
-
-    val message = if (isDelete) {
-      buildActionMessage(title, fragment.getString(removed_from_favorite))
+    if (isWantToDelete) {
+      showFavoriteUndoSnackbar(title, fav ?: return)
     } else {
-      buildActionMessage(title, fragment.getString(added_to_watchlist))
+      showWatchlistUndoSnackbar(title, wtc ?: return)
     }
+  }
 
+  private fun showFavoriteUndoSnackbar(title: String, fav: FavoriteParams) {
+    val message = buildActionMessage(title, fragment.getString(removed_from_favorite))
+    makeUndoSnackbar(message) {
+      isUndo = true
+      favoriteViewModel.postFavorite(fav.copy(favorite = true), title)
+      isWantToDelete = false // cancel delete, then update flag as false
+    }
+  }
+
+  private fun showWatchlistUndoSnackbar(title: String, wtc: WatchlistParams) {
+    val message = buildActionMessage(title, fragment.getString(added_to_watchlist))
+    makeUndoSnackbar(message) {
+      isUndo = true
+      favoriteViewModel.postWatchlist(wtc.copy(watchlist = false), title)
+    }
+  }
+
+  private fun makeUndoSnackbar(message: SpannableString, onUndo: () -> Unit) {
     currentSnackbar = Snackbar.make(
       fragment.requireActivity().findViewById(snackbarAnchor),
       message,
       Snackbar.LENGTH_LONG,
     ).apply {
-      setAction(fragment.getString(undo)) {
-        isUndo = true
-        when {
-          fav != null -> {
-            favoriteViewModel.postFavorite(fav.copy(favorite = true), title)
-            isWantToDelete = !isWantToDelete
-          }
-
-          wtc != null -> {
-            favoriteViewModel.postWatchlist(wtc.copy(watchlist = false), title)
-          }
-        }
-      }
+      setAction(fragment.getString(undo)) { onUndo() }
       anchorView = fragment.requireActivity().findViewById(snackbarAnchor)
       setActionTextColor(ContextCompat.getColor(fragment.requireContext(), yellow_700))
       show()

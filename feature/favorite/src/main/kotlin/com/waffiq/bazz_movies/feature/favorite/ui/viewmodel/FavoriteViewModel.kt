@@ -10,6 +10,8 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.data.domain.usecase.composite.PostActionUseCase
+import com.waffiq.bazz_movies.core.favoritewatchlist.domain.sort.LoggedFavoriteSortOption
+import com.waffiq.bazz_movies.core.favoritewatchlist.domain.sort.toQueryString
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.launchAndHandleOutcome
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
 import com.waffiq.bazz_movies.core.models.FavoriteParams
@@ -22,6 +24,10 @@ import com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritetv.GetFavo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import javax.inject.Inject
 
@@ -36,18 +42,24 @@ class FavoriteViewModel @Inject constructor(
   private val _snackBarAlready = MutableLiveData<Event<String>>()
   val snackBarAlready: LiveData<Event<String>> = _snackBarAlready
 
-  // Make capacity configurable for testing
   private val _snackBarAdded = Channel<SnackBarUserLoginData>(Channel.CONFLATED)
   val snackBarAdded = _snackBarAdded.receiveAsFlow()
 
+  private val _currentSort = MutableStateFlow(LoggedFavoriteSortOption.RECENTLY_ADDED)
+  val currentSort: StateFlow<LoggedFavoriteSortOption> = _currentSort.asStateFlow()
+
   fun getFavoriteData(mediaType: String): Flow<PagingData<MediaItem>> =
-    (
+    _currentSort.flatMapLatest { sortOption ->
       if (mediaType == MOVIE_MEDIA_TYPE) {
-        getFavoriteMovieUseCase.getFavoriteMovies()
+        getFavoriteMovieUseCase.getFavoriteMovies(sortOption.toQueryString())
       } else {
-        getFavoriteTvUseCase.getFavoriteTv()
+        getFavoriteTvUseCase.getFavoriteTv(sortOption.toQueryString())
       }
-      ).cachedIn(viewModelScope)
+    }.cachedIn(viewModelScope)
+
+  fun updateSort(option: LoggedFavoriteSortOption) {
+    if (_currentSort.value != option) _currentSort.value = option
+  }
 
   fun postFavorite(data: FavoriteParams, title: String) {
     launchAndHandleOutcome(
