@@ -41,6 +41,7 @@ class GuestUserDelegate(
   private lateinit var headerAdapter: SortChipAdapter
   private var currentSnackbar: Snackbar? = null
   private var isWantToDelete = false
+  private var pendingRestorePosition: Int? = null
 
   private val snackbarAnchor = navigator.snackbarAnchor()
   private val context = fragment.requireContext()
@@ -98,7 +99,12 @@ class GuestUserDelegate(
 
   private fun setupData() {
     getDBFavoriteData().observe(fragment.viewLifecycleOwner) { favorites ->
-      adapter.submitList(favorites)
+      adapter.submitList(favorites) {
+        pendingRestorePosition?.let { pos ->
+          binding.recyclerView.scrollToPosition(pos + headerAdapter.itemCount)
+          pendingRestorePosition = null // prevent multiple scrollToPosition
+        }
+      }
       updateViewVisibility(favorites.isNotEmpty())
     }
   }
@@ -172,7 +178,7 @@ class GuestUserDelegate(
     } else {
       sharedDBViewModel.insertToDB(favorite.copy(isFavorite = true))
     }
-    binding.recyclerView.scrollToPosition(position)
+    pendingRestorePosition = position
   }
 
   private fun observeDbOperations() {

@@ -3,9 +3,6 @@ package com.waffiq.bazz_movies.feature.watchlist.ui.delegate
 import android.text.SpannableString
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.ConcatAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
@@ -31,9 +28,9 @@ import com.waffiq.bazz_movies.core.uihelper.ui.adapter.SwipeConfig
 import com.waffiq.bazz_movies.core.uihelper.utils.SpannableUtils.buildActionMessage
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
+import com.waffiq.bazz_movies.core.utils.FlowUtils.collectFlow
 import com.waffiq.bazz_movies.feature.watchlist.ui.viewmodel.WatchlistViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
-import kotlinx.coroutines.launch
 
 /**
  * Handles watchlist list functionality for logged-in users.
@@ -145,12 +142,8 @@ class LoggedUserDelegate(
       showAlreadySnackbar(it)
     }
 
-    fragment.viewLifecycleOwner.lifecycleScope.launch {
-      fragment.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        watchlistViewModel.snackBarAdded.collect { data ->
-          handleSnackbarData(data)
-        }
-      }
+    fragment.requireActivity().collectFlow(watchlistViewModel.snackBarAdded, false) {
+      handleSnackbarData(it)
     }
   }
 

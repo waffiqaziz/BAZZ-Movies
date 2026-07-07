@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.feature.watchlist.ui.delegate
 
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.ConcatAdapter
@@ -42,6 +41,7 @@ class GuestUserDelegate(
   private lateinit var headerAdapter: SortChipAdapter
   private var currentSnackbar: Snackbar? = null
   private var isWantToDelete = false
+  private var pendingRestorePosition: Int? = null
 
   private val snackbarAnchor = navigator.snackbarAnchor()
   private val context = fragment.requireContext()
@@ -99,7 +99,12 @@ class GuestUserDelegate(
 
   private fun setupData() {
     getDBWatchlistData().observe(fragment.viewLifecycleOwner) { favorites ->
-      adapter.submitList(favorites)
+      adapter.submitList(favorites) {
+        pendingRestorePosition?.let { pos ->
+          binding.recyclerView.scrollToPosition(pos + headerAdapter.itemCount)
+          pendingRestorePosition = null // prevent multiple scrollToPosition
+        }
+      }
       updateViewVisibility(favorites.isNotEmpty())
     }
   }
@@ -152,7 +157,7 @@ class GuestUserDelegate(
         handleUndo(position)
       }
       anchorView = fragment.requireActivity().findViewById(snackbarAnchor)
-      setActionTextColor(ContextCompat.getColor(context, yellow_700))
+      setActionTextColor(context.getColor(yellow_700))
       show()
     }
   }
@@ -175,7 +180,7 @@ class GuestUserDelegate(
     } else {
       sharedDBViewModel.insertToDB(watchlistItem.copy(isWatchlist = true))
     }
-    binding.recyclerView.scrollToPosition(position)
+    pendingRestorePosition = position
   }
 
   private fun observeDbOperations() {
