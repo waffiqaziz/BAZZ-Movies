@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.feature.favorite.ui
 
 import androidx.core.content.ContextCompat.getString
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.test.espresso.Espresso.onIdle
@@ -32,8 +31,8 @@ import com.waffiq.bazz_movies.feature.favorite.testutils.BaseFavoriteFragmentTes
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.coVerify
 import io.mockk.every
+import io.mockk.verify
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -69,31 +68,37 @@ class LoggedUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
   }
 
   @Test
-  fun performSort_shouldSortCorrectly() {
+  fun performSort_byOldestAdded_shouldSortCorrectly() {
     launchFragment()
 
     chip_sort.performClick()
     shortDelay()
     oldest_added.performTextClick()
+
+    shortDelay(500)
+    verify { mockFavoriteViewModel.updateSort(any()) }
   }
 
   @Test
-  fun performSortSameSortType_doNothing() {
+  fun performSort_withSameSortType_doNothing() {
     launchFragment()
 
     chip_sort.performClick()
     shortDelay()
     recently_added.performTextClick()
+
+    shortDelay(500)
+    verify { mockFavoriteViewModel.updateSort(any()) }
   }
 
   @Test
-  fun swipeAction_shouldPassed() {
+  fun swipeAction_multipleTimes_shouldPassed() {
     launchFragment()
     performSwipeActions()
   }
 
   @Test
-  fun swipeLeft_showAddedSnackbar() =
+  fun addToWatchlist_successful_showsAddedSnackbar() =
     runTest {
       val data = snackBarLoginData.copy(
         watchlistModel = WatchlistParams(
@@ -116,7 +121,7 @@ class LoggedUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
     }
 
   @Test
-  fun swipeRight_showDeletedSnackbar() =
+  fun deleteAction_successful_showsDeletedSnackbar() =
     runTest {
       val data = snackBarLoginData.copy(
         favoriteModel = FavoriteParams(
@@ -159,7 +164,7 @@ class LoggedUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
   }
 
   @Test
-  fun pagingDataError_snackbarIsAlreadyShows_doesnShowsTwice() {
+  fun pagingDataError_snackbarIsAlreadyShows_showsOnlyOnce() {
     every { mockFavoriteViewModel.getFavoriteData("movie") } returns
       Pager(PagingConfig(pageSize = 20)) { ErrorPagingSource() }.flow
     every { mockBaseViewModel.isSnackbarShown.value } returns true
@@ -171,16 +176,7 @@ class LoggedUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
   }
 
   @Test
-  fun verifyMock() {
-    val liveData = MutableLiveData(true)
-
-    every { mockBaseViewModel.isSnackbarShown } returns liveData
-
-    assertTrue(mockBaseViewModel.isSnackbarShown.value == true)
-  }
-
-  @Test
-  fun swipeFailedResult_showFailedSnackbar() =
+  fun deleteItem_failed_showFailedSnackbar() =
     runTest {
       val failedDate = SnackBarUserLoginData(
         title = "Test Error",
@@ -204,7 +200,7 @@ class LoggedUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
     }
 
   @Test
-  fun swipeActionEmptyResult_doNothing() =
+  fun delete_emptyResult_doNothing() =
     runTest {
       val emptyData = snackBarLoginData.copy(
         title = "Test Empty Data",
@@ -224,7 +220,7 @@ class LoggedUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
     }
 
   @Test
-  fun addToWatchlist_butDuplicate_showsSnackbarDuplicate() =
+  fun addToWatchlist_butItemAlreadyOnWatchlis_showsAlreadySnackbar() =
     runTest {
       loggedUser(mockFavoriteViewModel)
       launchFragment()
@@ -239,7 +235,7 @@ class LoggedUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
     }
 
   @Test
-  fun undoDelete_withSuccessResponse_invokesPostFavoriteTwice() =
+  fun undoDelete_successful_invokesPostFavoriteTwice() =
     runTest {
       val deleteData = snackBarLoginData.copy(
         favoriteModel = FavoriteParams(
@@ -264,11 +260,13 @@ class LoggedUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
       mockSnackBarChannel.send(undoSuccessData)
       onIdle()
 
+      // snackbar should not show for success undo action
+
       coVerify(atLeast = 2) { mockFavoriteViewModel.postFavorite(any(), any()) }
     }
 
   @Test
-  fun undoDelete_withFailedResponse_invokesPostFavoriteOnce() =
+  fun undoDelete_failed_invokesPostFavoriteOnce() =
     runTest {
       val deleteData = snackBarLoginData.copy(
         favoriteModel = FavoriteParams(

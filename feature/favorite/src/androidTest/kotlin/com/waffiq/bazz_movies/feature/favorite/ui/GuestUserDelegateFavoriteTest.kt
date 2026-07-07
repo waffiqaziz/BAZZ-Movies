@@ -23,6 +23,7 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performTextClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.feature.favorite.testutils.BaseFavoriteFragmentTestHelper
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.favoriteMovie
@@ -126,7 +127,7 @@ class GuestUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
   }
 
   @Test
-  fun undoDelete_whenSuccess_restoresScrollPosition() {
+  fun undoDelete_successful_restoresScrollPosition() {
     launchFragment()
     shortDelay()
 
@@ -209,7 +210,7 @@ class GuestUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
   }
 
   @Test
-  fun swipeLeft_alreadyWatchlist() {
+  fun addToWatchlist_alreadyWatchlist_showAlreadySnackbar() {
     val data = favoriteMovie.copy(isWatchlist = true)
 
     // setup item is on watchlist
@@ -228,7 +229,7 @@ class GuestUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
   }
 
   @Test
-  fun swipeLeft_addToWatchlist() {
+  fun addToWatchlist_successful_showsSuccessSnackbar() {
     val data = favoriteMovie.copy(isWatchlist = false)
 
     // setup item is on watchlist
@@ -246,7 +247,7 @@ class GuestUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
   }
 
   @Test
-  fun failedSwipeAction_showError() {
+  fun addToWatclist_failed_showsErrorToast() {
     val data = favoriteMovie.copy(isWatchlist = false)
     mockDbResult.postValue(Event(DbResult.Error("Error Action")))
 
@@ -263,7 +264,7 @@ class GuestUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
   }
 
   @Test
-  fun successSwipeAction_showSuccess() {
+  fun addToWatchlist_successful_showsAddedSnackbar() {
     val data = favoriteMovie.copy(isWatchlist = false)
     mockDbResult.postValue(Event(DbResult.Success(1)))
 
@@ -276,7 +277,7 @@ class GuestUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
     mockUndoDB.postValue(Event(data))
     onIdle()
 
-    // cant handle toast need manual
+    snackbar_text.isDisplayed()
   }
 
   @Test
