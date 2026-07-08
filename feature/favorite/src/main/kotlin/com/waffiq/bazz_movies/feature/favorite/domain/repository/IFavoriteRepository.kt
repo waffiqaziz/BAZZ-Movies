@@ -5,6 +5,15 @@ import com.waffiq.bazz_movies.core.models.MediaItem
 import kotlinx.coroutines.flow.Flow
 
 interface IFavoriteRepository {
-  fun getFavoriteMovies(userId: Int, sessionId: String): Flow<PagingData<MediaItem>>
-  fun getFavoriteTv(userId: Int, sessionId: String): Flow<PagingData<MediaItem>>
+  fun getFavoriteMovies(
+    userId: Int,
+    sessionId: String,
+    sortBy: String,
+  ): Flow<PagingData<MediaItem>>
+
+  fun getFavoriteTv(
+    userId: Int,
+    sessionId: String,
+    sortBy: String,
+  ): Flow<PagingData<MediaItem>>
 }

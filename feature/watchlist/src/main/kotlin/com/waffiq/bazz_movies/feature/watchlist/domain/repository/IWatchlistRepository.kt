@@ -5,6 +5,15 @@ import com.waffiq.bazz_movies.core.models.MediaItem
 import kotlinx.coroutines.flow.Flow
 
 interface IWatchlistRepository {
-  fun getWatchlistMovies(userId: Int, sessionId: String): Flow<PagingData<MediaItem>>
-  fun getWatchlistTv(userId: Int, sessionId: String): Flow<PagingData<MediaItem>>
+  fun getWatchlistMovies(
+    userId: Int,
+    sessionId: String,
+    sortBy: String,
+  ): Flow<PagingData<MediaItem>>
+
+  fun getWatchlistTv(
+    userId: Int,
+    sessionId: String,
+    sortBy: String,
+  ): Flow<PagingData<MediaItem>>
 }

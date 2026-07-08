@@ -16,13 +16,21 @@ class WatchlistRepositoryImpl @Inject constructor(
   private val accountRemoteDataSource: AccountRemoteDataSource,
 ) : IWatchlistRepository {
 
-  override fun getWatchlistMovies(userId: Int, sessionId: String): Flow<PagingData<MediaItem>> =
-    accountRemoteDataSource.getWatchlistMovies(userId, sessionId).map { pagingData ->
+  override fun getWatchlistMovies(
+    userId: Int,
+    sessionId: String,
+    sortBy: String,
+  ): Flow<PagingData<MediaItem>> =
+    accountRemoteDataSource.getWatchlistMovies(userId, sessionId, sortBy).map { pagingData ->
       pagingData.map { it.toMediaItem() }
     }
 
-  override fun getWatchlistTv(userId: Int, sessionId: String): Flow<PagingData<MediaItem>> =
-    accountRemoteDataSource.getWatchlistTv(userId, sessionId).map { pagingData ->
+  override fun getWatchlistTv(
+    userId: Int,
+    sessionId: String,
+    sortBy: String,
+  ): Flow<PagingData<MediaItem>> =
+    accountRemoteDataSource.getWatchlistTv(userId, sessionId, sortBy).map { pagingData ->
       pagingData.map { it.toMediaItem() }
     }
 }

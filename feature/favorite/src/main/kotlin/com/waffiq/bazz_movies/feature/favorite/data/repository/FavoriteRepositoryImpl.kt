@@ -16,13 +16,21 @@ class FavoriteRepositoryImpl @Inject constructor(
   private val accountRemoteDataSource: AccountRemoteDataSource,
 ) : IFavoriteRepository {
 
-  override fun getFavoriteMovies(userId: Int, sessionId: String): Flow<PagingData<MediaItem>> =
-    accountRemoteDataSource.getFavoriteMovies(userId, sessionId).map { pagingData ->
+  override fun getFavoriteMovies(
+    userId: Int,
+    sessionId: String,
+    sortBy: String,
+  ): Flow<PagingData<MediaItem>> =
+    accountRemoteDataSource.getFavoriteMovies(userId, sessionId, sortBy).map { pagingData ->
       pagingData.map { it.toMediaItem() }
     }
 
-  override fun getFavoriteTv(userId: Int, sessionId: String): Flow<PagingData<MediaItem>> =
-    accountRemoteDataSource.getFavoriteTv(userId, sessionId).map { pagingData ->
+  override fun getFavoriteTv(
+    userId: Int,
+    sessionId: String,
+    sortBy: String,
+  ): Flow<PagingData<MediaItem>> =
+    accountRemoteDataSource.getFavoriteTv(userId, sessionId, sortBy).map { pagingData ->
       pagingData.map { it.toMediaItem() }
     }
 }

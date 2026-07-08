@@ -1,8 +1,12 @@
 package com.waffiq.bazz_movies.feature.favorite.testutils
 
+import android.view.View
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewAction
@@ -12,14 +16,20 @@ import androidx.test.espresso.action.ViewActions.swipeRight
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.snackbar.Snackbar
 import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.utils.DbResult
+import com.waffiq.bazz_movies.core.designsystem.R.color.red_matte
 import com.waffiq.bazz_movies.core.designsystem.R.string.undo
 import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.recycler_view
+import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.snackbar_anchor_test
 import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.swipe_refresh
+import com.waffiq.bazz_movies.core.favoritewatchlist.domain.sort.GuestFavoriteSortOption
+import com.waffiq.bazz_movies.core.favoritewatchlist.domain.sort.LoggedFavoriteSortOption
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions.actionOnItemAt
@@ -30,43 +40,85 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
 import com.waffiq.bazz_movies.core.models.Favorite
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.models.UserModel
+import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.favoriteMovie
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.favoriteMovie2
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.favoriteTv
+import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.listOfMovie
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.testMediaItem
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.userModel
 import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.withCustomConstraints
 import com.waffiq.bazz_movies.feature.favorite.ui.fragment.FavoriteFragment
 import com.waffiq.bazz_movies.feature.favorite.ui.viewmodel.FavoriteViewModel
+import com.waffiq.bazz_movies.navigation.INavigator
+import dagger.hilt.android.testing.HiltAndroidRule
+import io.mockk.Runs
 import io.mockk.every
+import io.mockk.just
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.receiveAsFlow
+import org.junit.Before
 import org.junit.Rule
+import javax.inject.Inject
 
-class DefaultFavoriteFragmentTestHelper : FavoriteFragmentTestHelper {
+abstract class BaseFavoriteFragmentTestHelper {
 
-  @get:Rule
+  protected val snackBarLoginData = SnackBarUserLoginData(
+    isSuccess = true,
+    title = "Title",
+    favoriteModel = null,
+    watchlistModel = null,
+  )
+
+  @get:Rule(order = 0)
+  var hiltRule = HiltAndroidRule(this)
+
+  @get:Rule(order = 1)
   val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-  override lateinit var favoriteFragment: FavoriteFragment
+  @Inject
+  lateinit var mockNavigator: INavigator
 
-  override var mockUserModel = MutableLiveData<UserModel>()
+  @Inject
+  lateinit var mockSnackbar: ISnackbar
+
+  @Inject
+  lateinit var mockUserPrefViewModel: UserPreferenceViewModel
+
+  @Inject
+  lateinit var mockFavoriteViewModel: FavoriteViewModel
+
+  @Inject
+  lateinit var mockSharedDBViewModel: SharedDBViewModel
+
+  @Inject
+  lateinit var mockBaseViewModel: BaseViewModel
+
+  @Before
+  open fun baseSetup() {
+    hiltRule.inject()
+    setupMocks(mockUserPrefViewModel)
+  }
+
+  protected lateinit var favoriteFragment: FavoriteFragment
+
+  protected var mockUserModel = MutableLiveData<UserModel>()
 
   // Mocks for SharedDBViewModel
-  override var mockFavoriteMoviesFromDB = MutableLiveData<List<Favorite>>()
-  override var mockFavoriteTvFromDB = MutableLiveData<List<Favorite>>()
-  override var mockUndoDB = MutableLiveData<Event<Favorite>>()
-  override var mockDbResult = MutableLiveData<Event<DbResult<*>>>()
-  override var mockSnackBarAlready = MutableLiveData<Event<String>>()
-  override var mockSnackBarChannel: Channel<SnackBarUserLoginData> = Channel()
-  override var mockSnackBarAdded: Flow<SnackBarUserLoginData> =
+  protected var mockFavoriteMoviesFromDB = MutableLiveData<List<Favorite>>()
+  protected var mockFavoriteTvFromDB = MutableLiveData<List<Favorite>>()
+  protected var mockUndoDB = MutableLiveData<Event<Favorite>>()
+  protected var mockDbResult = MutableLiveData<Event<DbResult<*>>>()
+  protected var mockSnackBarAlready = MutableLiveData<Event<String>>()
+  protected var mockSnackBarChannel: Channel<SnackBarUserLoginData> = Channel()
+  protected var mockSnackBarAdded: Flow<SnackBarUserLoginData> =
     mockSnackBarChannel.receiveAsFlow()
 
-  override fun setupMocks(userPreferenceViewModel: UserPreferenceViewModel) {
+  protected fun setupMocks(userPreferenceViewModel: UserPreferenceViewModel) {
     mockUserModel = MutableLiveData()
     mockFavoriteMoviesFromDB = MutableLiveData()
     mockFavoriteTvFromDB = MutableLiveData()
@@ -76,11 +128,15 @@ class DefaultFavoriteFragmentTestHelper : FavoriteFragmentTestHelper {
     every { userPreferenceViewModel.getUserPref() } returns mockUserModel
   }
 
-  override fun loggedUser(favoriteViewModel: FavoriteViewModel) {
+  protected fun loggedUser(favoriteViewModel: FavoriteViewModel) {
     mockUserModel.postValue(userModel)
 
     every { favoriteViewModel.snackBarAlready } returns mockSnackBarAlready
     every { favoriteViewModel.snackBarAdded } returns mockSnackBarAdded
+    every { favoriteViewModel.currentSort } returns
+      MutableStateFlow(LoggedFavoriteSortOption.RECENTLY_ADDED)
+    every { mockBaseViewModel.markSnackbarShown() } just Runs
+    every { mockBaseViewModel.resetSnackbarShown() } just Runs
 
     every { favoriteViewModel.getFavoriteData("movie") } returns
       flowOf(
@@ -101,10 +157,11 @@ class DefaultFavoriteFragmentTestHelper : FavoriteFragmentTestHelper {
           ),
         ),
       )
+    every { favoriteViewModel.updateSort(any()) } just Runs
   }
 
-  override fun guestUser(sharedDBViewModel: SharedDBViewModel) {
-    mockFavoriteMoviesFromDB.postValue(listOf(favoriteMovie, favoriteMovie2))
+  protected fun guestUser(sharedDBViewModel: SharedDBViewModel) {
+    mockFavoriteMoviesFromDB.postValue(listOfMovie)
     mockFavoriteTvFromDB.postValue(listOf(favoriteTv, favoriteTv.copy(id = 12345)))
     mockUserModel.postValue(userModel.copy(token = NAN))
 
@@ -112,56 +169,90 @@ class DefaultFavoriteFragmentTestHelper : FavoriteFragmentTestHelper {
     every { sharedDBViewModel.favoriteTvFromDB } returns mockFavoriteTvFromDB
     every { sharedDBViewModel.undoDB } returns mockUndoDB
     every { sharedDBViewModel.dbResult } returns mockDbResult
+    every { sharedDBViewModel.currentSort } returns
+      MutableStateFlow(GuestFavoriteSortOption.RECENTLY_ADDED)
+    every { sharedDBViewModel.updateSort(any()) } just Runs
   }
 
-  override fun launchFragment() {
+  protected fun setupSnackbar() {
+    every { mockSnackbar.showSnackbarWarning(any<String>()) } answers {
+      val message = firstArg<String>()
+      try {
+        val childFragment = favoriteFragment.childFragmentManager.fragments.first()
+        val rootView = childFragment.requireView().findViewById<View>(snackbar_anchor_test)
+
+        Snackbar.make(rootView, message, Snackbar.LENGTH_SHORT).apply {
+          setBackgroundTint(ContextCompat.getColor(rootView.context, red_matte))
+          show()
+        }
+      } catch (_: Exception) {
+        null
+      }
+    }
+
+    every { mockSnackbar.showSnackbarWarning(any<Event<String>>()) } answers {
+      firstArg<Event<String>>().getContentIfNotHandled()?.let { errorMessage ->
+        mockSnackbar.showSnackbarWarning(errorMessage)
+      }
+    }
+  }
+
+  protected fun launchFragment() {
     favoriteFragment = launchFragmentInHiltContainer<FavoriteFragment>().fragment
     shortDelay()
   }
 
-  override fun performSwipeActions() {
+  protected fun performSwipeActions() {
     recycler_view.isDisplayed()
     onIdle()
 
     recycler_view.scrollToPosition(0)
-    performSwipeAction(0, swipeLeft())
-    performSwipeAction(1, swipeRight())
+    performSwipeAction(1, swipeLeft())
+    performSwipeAction(2, swipeRight())
   }
 
-  override fun performPullToRefresh() {
+  protected fun performPullToRefresh() {
     onView(withId(swipe_refresh))
       .perform(withCustomConstraints(swipeDown(), isDisplayingAtLeast(85)))
   }
 
-  override fun performUndoAction() {
+  protected fun performUndoAction() {
     undo.isTextVisible() // check if "undo" text is visible inside snackbar
     undo.performTextClick()
     shortDelay()
     onIdle()
   }
 
-  override fun performSwipeAction(position: Int, viewAction: ViewAction) {
+  protected fun performSwipeAction(position: Int, viewAction: ViewAction) {
     recycler_view.actionOnItemAt(position, viewAction)
   }
 
-  override fun Int.assertViewPagerPosition(expected: Int) {
+  protected fun Int.assertViewPagerPosition(expected: Int) {
     onView(withId(this)).check { view, _ ->
       val vp = view as ViewPager2
       assertThat(vp.currentItem).isEqualTo(expected)
     }
   }
 
-  override fun Int.assertViewPagerUserInputEnabled(expected: Boolean) {
+  protected fun Int.assertViewPagerUserInputEnabled(expected: Boolean) {
     onView(withId(this)).check { view, _ ->
       val vp = view as ViewPager2
       assertThat(vp.isUserInputEnabled).isEqualTo(expected)
     }
   }
 
-  override fun Int.assertViewPagerItemCount(expected: Int) {
+  protected fun Int.assertViewPagerItemCount(expected: Int) {
     onView(withId(this)).check { view, _ ->
       val vp = view as ViewPager2
       assertThat(vp.adapter?.itemCount).isEqualTo(expected)
     }
+  }
+
+  class ErrorPagingSource : PagingSource<Int, MediaItem>() {
+
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MediaItem> =
+      LoadResult.Error(Throwable("Network error"))
+
+    override fun getRefreshKey(state: PagingState<Int, MediaItem>): Int? = null
   }
 }

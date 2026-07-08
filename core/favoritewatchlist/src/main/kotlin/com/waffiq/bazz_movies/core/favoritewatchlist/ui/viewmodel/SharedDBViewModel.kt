@@ -4,13 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.domain.usecase.FavoriteLocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DbResult
+import com.waffiq.bazz_movies.core.favoritewatchlist.domain.sort.GuestFavoriteSortOption
+import com.waffiq.bazz_movies.core.favoritewatchlist.domain.sort.sortedByOption
 import com.waffiq.bazz_movies.core.models.Favorite
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,15 +31,32 @@ class SharedDBViewModel @Inject constructor(
   private val _undoDB = MutableLiveData<Event<Favorite>>()
   val undoDB: LiveData<Event<Favorite>> = _undoDB
 
+  private val _currentSort = MutableStateFlow(GuestFavoriteSortOption.RECENTLY_ADDED)
+  val currentSort: StateFlow<GuestFavoriteSortOption> = _currentSort.asStateFlow()
+
   val favoriteTvFromDB =
-    localDatabaseUseCase.favoriteTvFromDB.asLiveData().distinctUntilChanged()
+    combine(localDatabaseUseCase.favoriteTvFromDB, _currentSort) { movies, sortOption ->
+      movies.sortedByOption(sortOption)
+    }.distinctUntilChanged().asLiveData()
+
   val favoriteMoviesFromDB =
-    localDatabaseUseCase.favoriteMoviesFromDB.asLiveData().distinctUntilChanged()
+    combine(localDatabaseUseCase.favoriteMoviesFromDB, _currentSort) { movies, sortOption ->
+      movies.sortedByOption(sortOption)
+    }.distinctUntilChanged().asLiveData()
+
+  fun updateSort(option: GuestFavoriteSortOption) {
+    if (_currentSort.value != option) _currentSort.value = option
+  }
 
   val watchlistMoviesDB =
-    localDatabaseUseCase.watchlistMovieFromDB.asLiveData().distinctUntilChanged()
+    combine(localDatabaseUseCase.watchlistMovieFromDB, _currentSort) { movies, sortOption ->
+      movies.sortedByOption(sortOption)
+    }.distinctUntilChanged().asLiveData()
+
   val watchlistTvSeriesDB =
-    localDatabaseUseCase.watchlistTvFromDB.asLiveData().distinctUntilChanged()
+    combine(localDatabaseUseCase.watchlistTvFromDB, _currentSort) { movies, sortOption ->
+      movies.sortedByOption(sortOption)
+    }.distinctUntilChanged().asLiveData()
 
   fun insertToDB(fav: Favorite) {
     viewModelScope.launch {

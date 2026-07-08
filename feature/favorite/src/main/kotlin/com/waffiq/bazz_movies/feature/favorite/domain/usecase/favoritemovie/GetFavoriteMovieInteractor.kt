@@ -13,8 +13,8 @@ class GetFavoriteMovieInteractor @Inject constructor(
   private val userRepository: IUserRepository,
 ) : GetFavoriteMovieUseCase {
 
-  override fun getFavoriteMovies(): Flow<PagingData<MediaItem>> =
+  override fun getFavoriteMovies(sortBy: String): Flow<PagingData<MediaItem>> =
     userRepository.getUserPref().flatMapConcat {
-      favoriteRepository.getFavoriteMovies(it.userId, it.token)
+      favoriteRepository.getFavoriteMovies(it.userId, it.token, sortBy)
     }
 }

@@ -14,12 +14,13 @@ import retrofit2.http.Query
 
 interface AccountApiService {
 
-  @GET("3/account/{account_id}/{category}/{media_type}?sort_by=created_at.asc")
+  @GET("3/account/{account_id}/{category}/{media_type}")
   suspend fun getMediaList(
     @Path("account_id") accountId: Int,
     @Path("category") category: String,
     @Path("media_type") mediaType: String,
     @Query("session_id") sessionId: String,
+    @Query("sort_by") sortBy: String,
     @Query("page") page: Int,
     @Query("language") language: String = "en-US",
   ): MediaResponse

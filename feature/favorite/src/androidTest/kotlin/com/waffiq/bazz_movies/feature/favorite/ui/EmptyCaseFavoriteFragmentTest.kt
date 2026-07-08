@@ -11,62 +11,28 @@ import androidx.viewpager2.widget.ViewPager2
 import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.illustration_no_data_view
 import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.progress_bar
 import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.view_pager
-import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomAssertions.waitFor
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
 import com.waffiq.bazz_movies.core.models.MediaItem
-import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
-import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
+import com.waffiq.bazz_movies.feature.favorite.testutils.BaseFavoriteFragmentTestHelper
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.userModel
-import com.waffiq.bazz_movies.feature.favorite.testutils.DefaultFavoriteFragmentTestHelper
-import com.waffiq.bazz_movies.feature.favorite.testutils.FavoriteFragmentTestHelper
 import com.waffiq.bazz_movies.feature.favorite.ui.fragment.FavoriteChildFragment
 import com.waffiq.bazz_movies.feature.favorite.ui.fragment.FavoriteFragment
-import com.waffiq.bazz_movies.feature.favorite.ui.viewmodel.FavoriteViewModel
-import com.waffiq.bazz_movies.navigation.INavigator
-import dagger.hilt.android.testing.BindValue
-import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
-import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class BaseFavoriteFragmentTest2 :
-  FavoriteFragmentTestHelper by DefaultFavoriteFragmentTestHelper() {
-
-  @get:Rule
-  var hiltRule = HiltAndroidRule(this)
-
-  @BindValue
-  @JvmField
-  val mockNavigator: INavigator = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockSnackbar: ISnackbar = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockUserPrefViewModel: UserPreferenceViewModel = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockFavoriteViewModel: FavoriteViewModel = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockSharedDBViewModel: SharedDBViewModel = mockk(relaxed = true)
+class EmptyCaseFavoriteFragmentTest : BaseFavoriteFragmentTestHelper() {
 
   @Before
-  fun setUp() {
-    hiltRule.inject()
-    setupMocks(mockUserPrefViewModel)
+  override fun baseSetup() {
+    super.baseSetup()
+    setupSnackbar()
   }
 
   @Test

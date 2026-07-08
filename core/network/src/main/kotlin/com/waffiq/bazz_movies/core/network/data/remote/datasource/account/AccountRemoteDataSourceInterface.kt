@@ -9,10 +9,29 @@ import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import kotlinx.coroutines.flow.Flow
 
 interface AccountRemoteDataSourceInterface {
-  fun getFavoriteMovies(userId: Int, sessionId: String): Flow<PagingData<MediaResponseItem>>
-  fun getFavoriteTv(userId: Int, sessionId: String): Flow<PagingData<MediaResponseItem>>
-  fun getWatchlistTv(userId: Int, sessionId: String): Flow<PagingData<MediaResponseItem>>
-  fun getWatchlistMovies(userId: Int, sessionId: String): Flow<PagingData<MediaResponseItem>>
+  fun getFavoriteMovies(
+    userId: Int,
+    sessionId: String,
+    sortBy: String,
+  ): Flow<PagingData<MediaResponseItem>>
+
+  fun getFavoriteTv(
+    userId: Int,
+    sessionId: String,
+    sortBy: String,
+  ): Flow<PagingData<MediaResponseItem>>
+
+  fun getWatchlistTv(
+    userId: Int,
+    sessionId: String,
+    sortBy: String,
+  ): Flow<PagingData<MediaResponseItem>>
+
+  fun getWatchlistMovies(
+    userId: Int,
+    sessionId: String,
+    sortBy: String,
+  ): Flow<PagingData<MediaResponseItem>>
 
   fun postFavorite(
     sessionId: String,

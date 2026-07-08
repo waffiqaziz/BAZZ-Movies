@@ -37,6 +37,24 @@ object DataDump {
   )
   val favoriteMovie2 = favoriteMovie.copy(id = 551, title = "Fight Club 2")
 
+  val listOfMovie = listOf(
+    favoriteMovie,
+    favoriteMovie.copy(id = 23, title = "movie 2"),
+    favoriteMovie.copy(id = 24, title = "movie 3"),
+    favoriteMovie.copy(id = 25, title = "movie 4"),
+    favoriteMovie.copy(id = 26, title = "movie 5"),
+    favoriteMovie.copy(id = 27, title = "movie 6"),
+    favoriteMovie.copy(id = 28, title = "movie 7"),
+    favoriteMovie.copy(id = 28, title = "movie 8"),
+    favoriteMovie.copy(id = 28, title = "movie 9"),
+    favoriteMovie.copy(id = 28, title = "movie 10"),
+    favoriteMovie.copy(id = 28, title = "movie 12"),
+    favoriteMovie.copy(id = 28, title = "movie 13"),
+    favoriteMovie.copy(id = 28, title = "movie 14"),
+    favoriteMovie.copy(id = 28, title = "movie 15"),
+    favoriteMovie2,
+  )
+
   val favoriteTv = Favorite(
     id = 2,
     mediaId = 1399,

@@ -22,37 +22,53 @@ class AccountRemoteDataSource @Inject constructor(
   @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : AccountRemoteDataSourceInterface {
 
-  override fun getFavoriteMovies(userId: Int, sessionId: String) =
-    getAccountMediaPaging(
-      userId = userId,
-      sessionId = sessionId,
-      category = AccountMediaCategory.FAVORITE,
-      mediaType = MediaType.MOVIES,
-    )
+  override fun getFavoriteMovies(
+    userId: Int,
+    sessionId: String,
+    sortBy: String,
+  ) = getAccountMediaPaging(
+    userId = userId,
+    sessionId = sessionId,
+    category = AccountMediaCategory.FAVORITE,
+    mediaType = MediaType.MOVIES,
+    sortBy = sortBy,
+  )
 
-  override fun getFavoriteTv(userId: Int, sessionId: String) =
-    getAccountMediaPaging(
-      userId = userId,
-      sessionId = sessionId,
-      category = AccountMediaCategory.FAVORITE,
-      mediaType = MediaType.TV,
-    )
+  override fun getFavoriteTv(
+    userId: Int,
+    sessionId: String,
+    sortBy: String,
+  ) = getAccountMediaPaging(
+    userId = userId,
+    sessionId = sessionId,
+    category = AccountMediaCategory.FAVORITE,
+    mediaType = MediaType.TV,
+    sortBy = sortBy,
+  )
 
-  override fun getWatchlistTv(userId: Int, sessionId: String) =
-    getAccountMediaPaging(
-      userId = userId,
-      sessionId = sessionId,
-      category = AccountMediaCategory.WATCHLIST,
-      mediaType = MediaType.TV,
-    )
+  override fun getWatchlistTv(
+    userId: Int,
+    sessionId: String,
+    sortBy: String,
+  ) = getAccountMediaPaging(
+    userId = userId,
+    sessionId = sessionId,
+    category = AccountMediaCategory.WATCHLIST,
+    mediaType = MediaType.TV,
+    sortBy = sortBy,
+  )
 
-  override fun getWatchlistMovies(userId: Int, sessionId: String) =
-    getAccountMediaPaging(
-      userId = userId,
-      sessionId = sessionId,
-      category = AccountMediaCategory.WATCHLIST,
-      mediaType = MediaType.MOVIES,
-    )
+  override fun getWatchlistMovies(
+    userId: Int,
+    sessionId: String,
+    sortBy: String,
+  ) = getAccountMediaPaging(
+    userId = userId,
+    sessionId = sessionId,
+    category = AccountMediaCategory.WATCHLIST,
+    mediaType = MediaType.MOVIES,
+    sortBy = sortBy,
+  )
 
   override fun postFavorite(
     sessionId: String,
@@ -79,6 +95,7 @@ class AccountRemoteDataSource @Inject constructor(
     sessionId: String,
     category: AccountMediaCategory,
     mediaType: MediaType,
+    sortBy: String,
   ): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->
       accountApiService.getMediaList(
@@ -86,6 +103,7 @@ class AccountRemoteDataSource @Inject constructor(
         sessionId = sessionId,
         category = category.asApiValue(),
         mediaType = mediaType.asApiValue(),
+        sortBy = sortBy,
         page = page,
       ).results
     }.flow.flowOn(ioDispatcher)

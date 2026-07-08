@@ -5,5 +5,5 @@ import com.waffiq.bazz_movies.core.models.MediaItem
 import kotlinx.coroutines.flow.Flow
 
 interface GetFavoriteTvUseCase {
-  fun getFavoriteTv(): Flow<PagingData<MediaItem>>
+  fun getFavoriteTv(sortBy: String): Flow<PagingData<MediaItem>>
 }

@@ -6,6 +6,7 @@ import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.account.AccountRemoteDataSource
 import com.waffiq.bazz_movies.core.test.PagingFlowHelperTest.testPagingFlowAwaitComplete
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.SESSION_ID
+import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.SORT_TYPE
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.USER_ID
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.fakeMovieResponsePagingData
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.fakeTvResponsePagingData
@@ -32,10 +33,12 @@ class FavoriteRepositoryImplTest :
     Given("FavoriteRepositoryImpl") {
 
       When("getFavoriteMovies is called") {
-        every { mockAccountRemoteDataSource.getFavoriteMovies(USER_ID, SESSION_ID) } returns
+        every { mockAccountRemoteDataSource.getFavoriteMovies(any(), any(), any()) } returns
           flowOf(fakeMovieResponsePagingData)
         Then("it should return mapped MediaItem list") {
-          testPagingFlowAwaitComplete(repository.getFavoriteMovies(USER_ID, SESSION_ID)) {
+          testPagingFlowAwaitComplete(
+            repository.getFavoriteMovies(USER_ID, SESSION_ID, SORT_TYPE),
+          ) {
             it[0].title shouldBe "Inception"
             it[1].title shouldBe "The Dark Knight"
           }
@@ -43,10 +46,12 @@ class FavoriteRepositoryImplTest :
       }
 
       When("getFavoriteTv is called") {
-        every { mockAccountRemoteDataSource.getFavoriteTv(USER_ID, SESSION_ID) } returns
+        every { mockAccountRemoteDataSource.getFavoriteTv(any(), any(), any()) } returns
           flowOf(fakeTvResponsePagingData)
         Then("it should return mapped MediaItem list") {
-          testPagingFlowAwaitComplete(repository.getFavoriteTv(USER_ID, SESSION_ID)) {
+          testPagingFlowAwaitComplete(
+            repository.getFavoriteTv(USER_ID, SESSION_ID, SORT_TYPE),
+          ) {
             it[0].title shouldBe "Breaking Bad"
             it[1].title shouldBe "Game of Thrones"
           }
@@ -54,20 +59,24 @@ class FavoriteRepositoryImplTest :
       }
 
       When("getFavoriteMovies is called with empty data") {
-        every { mockAccountRemoteDataSource.getFavoriteMovies(USER_ID, SESSION_ID) } returns
+        every { mockAccountRemoteDataSource.getFavoriteMovies(any(), any(), any()) } returns
           flowOf(PagingData.empty())
         Then("it should return empty MediaItem list") {
-          testPagingFlowAwaitComplete(repository.getFavoriteMovies(USER_ID, SESSION_ID)) {
+          testPagingFlowAwaitComplete(
+            repository.getFavoriteMovies(USER_ID, SESSION_ID, SORT_TYPE),
+          ) {
             it shouldBe emptyList()
           }
         }
       }
 
       When("getFavoriteTv is called with empty data") {
-        every { mockAccountRemoteDataSource.getFavoriteTv(USER_ID, SESSION_ID) } returns
+        every { mockAccountRemoteDataSource.getFavoriteTv(any(), any(), any()) } returns
           flowOf(PagingData.empty())
         Then("it should return empty MediaItem list") {
-          testPagingFlowAwaitComplete(repository.getFavoriteTv(USER_ID, SESSION_ID)) {
+          testPagingFlowAwaitComplete(
+            repository.getFavoriteTv(USER_ID, SESSION_ID, SORT_TYPE),
+          ) {
             it shouldBe emptyList()
           }
         }
@@ -75,7 +84,7 @@ class FavoriteRepositoryImplTest :
     }
 
     Given("multiple paging data emissions") {
-      every { mockAccountRemoteDataSource.getFavoriteMovies(USER_ID, SESSION_ID) } returns
+      every { mockAccountRemoteDataSource.getFavoriteMovies(any(), any(), any()) } returns
         flowOf(
           fakeMovieResponsePagingData,
           PagingData.empty(),
@@ -85,7 +94,7 @@ class FavoriteRepositoryImplTest :
       When("getFavoriteMovies is called") {
         // collect multiple emissions
         val emissions = mutableListOf<PagingData<MediaItem>>()
-        repository.getFavoriteMovies(USER_ID, SESSION_ID).test {
+        repository.getFavoriteMovies(USER_ID, SESSION_ID, SORT_TYPE).test {
           repeat(3) {
             emissions.add(awaitItem())
           }

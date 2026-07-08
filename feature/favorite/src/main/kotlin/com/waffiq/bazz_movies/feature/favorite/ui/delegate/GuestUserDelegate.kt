@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.feature.favorite.ui.delegate
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
+import androidx.recyclerview.widget.ConcatAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
@@ -12,10 +13,13 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.undo
 import com.waffiq.bazz_movies.core.favoritewatchlist.databinding.FragmentChildBinding
+import com.waffiq.bazz_movies.core.favoritewatchlist.domain.sort.GuestFavoriteSortOption
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local.MediaLocalAdapter
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.sort.SortChipAdapter
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlreadyUtils
 import com.waffiq.bazz_movies.core.models.Favorite
+import com.waffiq.bazz_movies.core.uihelper.dialog.SingleChoiceDialog
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.SwipeConfig
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
 import com.waffiq.bazz_movies.core.uihelper.utils.SpannableUtils.buildActionMessage
@@ -34,8 +38,10 @@ class GuestUserDelegate(
 ) {
 
   private lateinit var adapter: MediaLocalAdapter
+  private lateinit var headerAdapter: SortChipAdapter
   private var currentSnackbar: Snackbar? = null
   private var isWantToDelete = false
+  private var pendingRestorePosition: Int? = null
 
   private val snackbarAnchor = navigator.snackbarAnchor()
   private val context = fragment.requireContext()
@@ -65,7 +71,21 @@ class GuestUserDelegate(
         addToWatchlist(favorite, position)
       },
     )
-    binding.recyclerView.adapter = adapter
+    headerAdapter = SortChipAdapter {
+      SingleChoiceDialog.show(
+        context = context,
+        items = GuestFavoriteSortOption.entries,
+        selected = sharedDBViewModel.currentSort.value,
+        onSelected = { selectedOption ->
+          sharedDBViewModel.updateSort(selectedOption)
+          headerAdapter.updateSort(selectedOption.label)
+        },
+      )
+    }
+    binding.recyclerView.adapter = ConcatAdapter(
+      headerAdapter,
+      adapter,
+    )
   }
 
   private fun setupRefresh() {
@@ -79,7 +99,12 @@ class GuestUserDelegate(
 
   private fun setupData() {
     getDBFavoriteData().observe(fragment.viewLifecycleOwner) { favorites ->
-      adapter.submitList(favorites)
+      adapter.submitList(favorites) {
+        pendingRestorePosition?.let { pos ->
+          binding.recyclerView.scrollToPosition(pos + headerAdapter.itemCount)
+          pendingRestorePosition = null // prevent multiple scrollToPosition
+        }
+      }
       updateViewVisibility(favorites.isNotEmpty())
     }
   }
@@ -153,7 +178,7 @@ class GuestUserDelegate(
     } else {
       sharedDBViewModel.insertToDB(favorite.copy(isFavorite = true))
     }
-    binding.recyclerView.scrollToPosition(position)
+    pendingRestorePosition = position
   }
 
   private fun observeDbOperations() {

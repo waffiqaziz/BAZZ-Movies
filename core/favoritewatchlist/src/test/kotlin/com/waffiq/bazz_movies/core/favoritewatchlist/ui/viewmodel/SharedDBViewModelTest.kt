@@ -6,6 +6,7 @@ import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.domain.usecase.FavoriteLocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.favoritewatchlist.LiveDataCollectors
+import com.waffiq.bazz_movies.core.favoritewatchlist.domain.sort.GuestFavoriteSortOption
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.favorite
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.favoriteMoviesList
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.favoriteTvList
@@ -24,6 +25,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -125,6 +127,18 @@ class SharedDBViewModelTest {
 
       collectors.assertAllDataTransformed()
     }
+
+  @Test
+  fun updateSort_withSameOption_doNotChangeCurrentSort() {
+    viewModel.updateSort(GuestFavoriteSortOption.RECENTLY_ADDED)
+    assertEquals(GuestFavoriteSortOption.RECENTLY_ADDED, viewModel.currentSort.value)
+  }
+
+  @Test
+  fun updateSort_byOldestFirst_changesCurrentSort() {
+    viewModel.updateSort(GuestFavoriteSortOption.OLDEST_ADDED)
+    assertEquals(GuestFavoriteSortOption.OLDEST_ADDED, viewModel.currentSort.value)
+  }
 
   private fun TestScope.collectDbResults(operation: suspend () -> Unit): List<Event<DbResult<*>>> {
     val results = mutableListOf<Event<DbResult<*>>>()

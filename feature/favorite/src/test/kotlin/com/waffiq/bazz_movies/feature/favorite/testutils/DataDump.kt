@@ -15,6 +15,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaRespo
  */
 object DataDump {
 
+  const val SORT_TYPE = "sort"
   const val SESSION_ID = "test_session_id"
   const val USER_ID = 123
   const val ERROR_MESSAGE = "Test error message"
