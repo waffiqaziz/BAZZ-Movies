@@ -563,7 +563,6 @@ object DummyData {
     keywords = mediaKeywords,
     voteAverage = 8.0,
     status = "Released",
-    releaseDate = "2025-07-01",
     runtime = 120,
     imdbId = "tt9999999",
     budget = 1000000,
@@ -571,6 +570,10 @@ object DummyData {
     popularity = 4444.0,
     videos = video,
     watchProviders = watchProviders,
+    releaseDate = "2025-07-01",
+    posterPath = "posterPath",
+    backdropPath = "backdropPath",
+    overview = "overview",
   )
   // endregion MOVIE
 
@@ -605,6 +608,9 @@ object DummyData {
     externalIds = tvExternalIds,
     videos = video,
     watchProviders = watchProviders,
+    posterPath = "posterPath",
+    backdropPath = "backdropPath",
+    overview = "overview",
   )
 
   // endregion TV
