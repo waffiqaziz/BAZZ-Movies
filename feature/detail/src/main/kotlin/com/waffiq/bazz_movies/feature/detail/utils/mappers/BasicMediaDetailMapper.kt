@@ -45,9 +45,9 @@ object BasicMediaDetailMapper {
       // updated data
       title = titleHandler(name, originalName),
       popularity = popularity?.toFloat() ?: 0f,
-      backdrop = backdropPath.toString(),
-      poster = posterPath.toString(),
-      overview = overview.toString(),
+      backdrop = backdropPath.orEmpty(),
+      poster = posterPath.orEmpty(),
+      overview = overview.orEmpty(),
       releaseDate = firstAirDate.orEmpty(),
     )
 
@@ -77,9 +77,9 @@ object BasicMediaDetailMapper {
       // updated data
       title = titleHandler(title, originalTitle),
       popularity = popularity?.toFloat() ?: 0f,
-      backdrop = backdropPath.toString(),
-      poster = posterPath.toString(),
-      overview = overview.toString(),
+      backdrop = backdropPath.orEmpty(),
+      poster = posterPath.orEmpty(),
+      overview = overview.orEmpty(),
       releaseDate = releaseDate.orEmpty(),
     )
 

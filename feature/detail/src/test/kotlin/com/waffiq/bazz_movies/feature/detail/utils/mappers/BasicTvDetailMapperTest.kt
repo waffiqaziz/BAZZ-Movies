@@ -54,11 +54,14 @@ class BasicTvDetailMapperTest {
       status = null,
       numberOfSeasons = null,
       numberOfEpisodes = null,
-      firstAirDate = null,
       popularity = null,
       videos = null,
       watchProviders = null,
       externalIds = null,
+      backdropPath = null,
+      posterPath = null,
+      overview = null,
+      firstAirDate = null,
     ).stubToMediaDetail()
 
     assertEquals(0, result.id)
@@ -71,7 +74,6 @@ class BasicTvDetailMapperTest {
     assertNull(result.status)
     assertNull(result.totalSeasons)
     assertNull(result.totalEpisodes)
-    assertEquals("", result.releaseDate)
     assertEquals(9.0f, validTvDetail.popularity)
     assertEquals(0f, result.popularity)
     assertNull(result.trailer)
@@ -79,6 +81,10 @@ class BasicTvDetailMapperTest {
       WatchProvidersUiState.Error("No watch providers available"),
       result.watchProviders,
     )
+    assertEquals("", result.backdrop)
+    assertEquals("", result.poster)
+    assertEquals("", result.overview)
+    assertEquals("", result.releaseDate)
   }
 
   @Test

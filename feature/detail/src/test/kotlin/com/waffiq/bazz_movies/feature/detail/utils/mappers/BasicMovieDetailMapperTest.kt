@@ -60,6 +60,9 @@ class BasicMovieDetailMapperTest {
       popularity = null,
       videos = null,
       watchProviders = null,
+      backdropPath = null,
+      posterPath = null,
+      overview = null,
       releaseDate = null,
     ).stubToMediaDetail()
 
@@ -81,6 +84,9 @@ class BasicMovieDetailMapperTest {
       result.watchProviders,
     )
     assertEquals("", result.releaseDate)
+    assertEquals("", result.backdrop)
+    assertEquals("", result.poster)
+    assertEquals("", result.overview)
   }
 
   @Test
