@@ -2,6 +2,83 @@
 <issues format="6" by="lint 9.2.1" type="baseline" client="gradle" dependencies="false" name="AGP (9.2.1)" variant="all" version="9.2.1">
 
     <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/btn_sort, defined or included multiple times in layout/activity_collection_detail.xml: [layout/activity_collection_detail.xml => layout/layout_collection_header.xml defines @+id/btn_sort, layout/activity_collection_detail.xml => layout/layout_collection_header_collapsed.xml defines @+id/btn_sort]"
+        errorLine1="  &lt;include"
+        errorLine2="  ^">
+        <location
+            file="src/main/res/layout/activity_collection_detail.xml"
+            line="109"
+            column="3"
+            message="Duplicate id @+id/btn_sort, defined or included multiple times in layout/activity_collection_detail.xml: [layout/activity_collection_detail.xml => layout/layout_collection_header.xml defines @+id/btn_sort, layout/activity_collection_detail.xml => layout/layout_collection_header_collapsed.xml defines @+id/btn_sort]"/>
+        <location
+            file="src/main/res/layout/layout_collection_header.xml"
+            line="24"
+            column="5"
+            message="Defined here, included via layout/activity_collection_detail.xml => layout/layout_collection_header.xml defines @+id/btn_sort"/>
+        <location
+            file="src/main/res/layout/layout_collection_header_collapsed.xml"
+            line="26"
+            column="5"
+            message="Defined here, included via layout/activity_collection_detail.xml => layout/layout_collection_header_collapsed.xml defines @+id/btn_sort"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/header_layout, defined or included multiple times in layout/activity_collection_detail.xml: [layout/activity_collection_detail.xml => layout/layout_collection_header.xml defines @+id/header_layout, layout/activity_collection_detail.xml => layout/layout_collection_header_collapsed.xml defines @+id/header_layout]"
+        errorLine1="  &lt;include"
+        errorLine2="  ^">
+        <location
+            file="src/main/res/layout/activity_collection_detail.xml"
+            line="109"
+            column="3"
+            message="Duplicate id @+id/header_layout, defined or included multiple times in layout/activity_collection_detail.xml: [layout/activity_collection_detail.xml => layout/layout_collection_header.xml defines @+id/header_layout, layout/activity_collection_detail.xml => layout/layout_collection_header_collapsed.xml defines @+id/header_layout]"/>
+        <location
+            file="src/main/res/layout/layout_collection_header.xml"
+            line="5"
+            column="3"
+            message="Defined here, included via layout/activity_collection_detail.xml => layout/layout_collection_header.xml defines @+id/header_layout"/>
+        <location
+            file="src/main/res/layout/layout_collection_header_collapsed.xml"
+            line="5"
+            column="3"
+            message="Defined here, included via layout/activity_collection_detail.xml => layout/layout_collection_header_collapsed.xml defines @+id/header_layout"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/tv_movies, defined or included multiple times in layout/activity_collection_detail.xml: [layout/activity_collection_detail.xml => layout/layout_collection_header.xml defines @+id/tv_movies, layout/activity_collection_detail.xml => layout/layout_collection_header_collapsed.xml defines @+id/tv_movies]"
+        errorLine1="  &lt;include"
+        errorLine2="  ^">
+        <location
+            file="src/main/res/layout/activity_collection_detail.xml"
+            line="109"
+            column="3"
+            message="Duplicate id @+id/tv_movies, defined or included multiple times in layout/activity_collection_detail.xml: [layout/activity_collection_detail.xml => layout/layout_collection_header.xml defines @+id/tv_movies, layout/activity_collection_detail.xml => layout/layout_collection_header_collapsed.xml defines @+id/tv_movies]"/>
+        <location
+            file="src/main/res/layout/layout_collection_header.xml"
+            line="13"
+            column="5"
+            message="Defined here, included via layout/activity_collection_detail.xml => layout/layout_collection_header.xml defines @+id/tv_movies"/>
+        <location
+            file="src/main/res/layout/layout_collection_header_collapsed.xml"
+            line="13"
+            column="5"
+            message="Defined here, included via layout/activity_collection_detail.xml => layout/layout_collection_header_collapsed.xml defines @+id/tv_movies"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/gray_900` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="  android:background=&quot;@color/gray_900&quot;"
+        errorLine2="  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_collection_detail.xml"
+            line="7"
+            column="3"/>
+    </issue>
+
+    <issue
         id="Overdraw"
         message="Possible overdraw: Root element paints background `@color/gray_900` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
         errorLine1="  android:background=&quot;@color/gray_900&quot;"
@@ -18,8 +95,41 @@
         errorLine1="  android:background=&quot;?attr/selectableItemBackground&quot;"
         errorLine2="  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
+            file="src/main/res/layout/item_collection_part.xml"
+            line="8"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?attr/selectableItemBackground` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="  android:background=&quot;?attr/selectableItemBackground&quot;"
+        errorLine2="  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
             file="src/main/res/layout/item_credits_person.xml"
             line="8"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/gray_1000` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="  android:background=&quot;@color/gray_1000&quot;>"
+        errorLine2="  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/layout_collection_header_collapsed.xml"
+            line="8"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;0&quot;, should use `@string` resource"
+        errorLine1="  android:contentDescription=&quot;0&quot;"
+        errorLine2="  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/collection_section.xml"
+            line="9"
             column="3"/>
     </issue>
 
