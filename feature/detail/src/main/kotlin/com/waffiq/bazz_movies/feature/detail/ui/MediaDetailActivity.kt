@@ -26,8 +26,8 @@ import com.waffiq.bazz_movies.feature.detail.ui.manager.WatchProvidersManager
 import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.ParcelableHelper.extractMediaItemFromIntent
 import com.waffiq.bazz_movies.navigation.INavigator
+import com.waffiq.bazz_movies.navigation.extractParcelableExtraFromIntent
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -81,7 +81,8 @@ class MediaDetailActivity : AppCompatActivity() {
   }
 
   private fun extractDataFromIntent(): Boolean {
-    val item = extractMediaItemFromIntent(intent) ?: return false
+    val item = extractParcelableExtraFromIntent<MediaItem>(intent, EXTRA_MOVIE)
+      ?: return false
     dataExtra = item
     return true
   }

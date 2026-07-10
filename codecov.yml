@@ -160,6 +160,11 @@ flag_management:
         - feature/watchlist/
       carryforward: true
 
+    - name: navigation
+      paths:
+        - navigation
+      carryforward: true
+
 comment:
   layout: "reach,diff,flags,tree"
   behavior: default
