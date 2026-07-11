@@ -1,5 +1,7 @@
 # :navigation Module  
 
+[![Code Coverage][navigation-coverage-badge]][navigation-coverage-link]
+
 ## Dependency Graph  
 
 ![Dependency graph](../docs/images/module-graphs/navigation.svg)
@@ -55,3 +57,9 @@ class MovieAdapter(private val navigator: INavigator) {
 - **Maintain Consistency** – Ensure all navigation calls go through the `INavigator` interface for modularity.  
 
 This module ensures a clean and structured approach to navigation, promoting better separation of concerns within the app.
+
+<!-- LINK -->
+
+[navigation-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=navigation
+
+[navigation-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=navigation

@@ -121,6 +121,7 @@ Below you can find a list of BAZZ Movies modules.
 | [`:feature:person`][feature-person-link]                     | [![Coverage][feature-person-coverage-badge]][feature-person-coverage-link]                     |
 | [`:feature:search`][feature-search-link]                     | [![Coverage][feature-search-coverage-badge]][feature-search-coverage-link]                     |
 | [`:feature:watchlist`][feature-watchlist-link]               | [![Coverage][feature-watchlist-coverage-badge]][feature-watchlist-coverage-link]               |
+| [`:navigation`][navigation-link]                             | [![Coverage][navigation-coverage-badge]][navigation-coverage-link]                             |
 | **TOTAL COVERAGE**                                           | [![Codecov][BADGE-CODECOV]][CODECOV]                                                           |
 
 ## Unit Tests
@@ -426,6 +427,12 @@ plugins {
 [feature-watchlist-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-watchlist
 
 [feature-watchlist-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=feature-watchlist
+
+[navigation-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/navigation
+
+[navigation-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=navigation
+
+[navigation-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=navigation
 
 [CODECOV]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies
 
