@@ -49,11 +49,11 @@ import com.waffiq.bazz_movies.feature.person.ui.adapter.ImagePagerAdapter
 import com.waffiq.bazz_movies.feature.person.ui.adapter.ImagePersonAdapter
 import com.waffiq.bazz_movies.feature.person.ui.adapter.KnownForAdapter
 import com.waffiq.bazz_movies.feature.person.utils.helper.DialogHelper.setupTransparentDialog
-import com.waffiq.bazz_movies.feature.person.utils.helper.ParcelableHelper.extractMediaCastItemFromIntent
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.formatBirthInfo
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.formatDeathInfo
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.setupSocialLink
 import com.waffiq.bazz_movies.navigation.INavigator
+import com.waffiq.bazz_movies.navigation.extractParcelableExtraFromIntent
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -99,7 +99,8 @@ class PersonActivity : AppCompatActivity() {
   }
 
   private fun extractDataFromIntent(): Boolean {
-    val item = extractMediaCastItemFromIntent(intent) ?: return false
+    val item = extractParcelableExtraFromIntent<MediaCastItem>(intent, EXTRA_PERSON)
+      ?: return false
     dataExtra = item
     return true
   }

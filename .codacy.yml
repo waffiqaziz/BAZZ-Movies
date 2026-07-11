@@ -7,8 +7,9 @@ engines:
     enabled: true
     exclude_paths:
       - '**/*Response.kt'
+      - '**/*ResponseItem.kt'
       - '**/*Adapter.kt'
-      - '**/build.gradle.kts'      
+      - '**/build.gradle.kts'
       - '**/I*Repository.kt'
       - '**/*PagingSource.kt'
-      - '**/SafeApiCallHelperTest.kt'
+      - '**/*Test.kt'

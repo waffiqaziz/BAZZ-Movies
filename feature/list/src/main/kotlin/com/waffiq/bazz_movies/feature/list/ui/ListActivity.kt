@@ -55,13 +55,13 @@ import com.waffiq.bazz_movies.feature.list.ui.adapter.ListAdapter
 import com.waffiq.bazz_movies.feature.list.ui.viewmodel.ListViewModel
 import com.waffiq.bazz_movies.feature.list.utils.BackdropHelper.getBackdrop
 import com.waffiq.bazz_movies.feature.list.utils.Helper.capitaliseEachWord
-import com.waffiq.bazz_movies.feature.list.utils.ParcelableHelper.extractArgsItemFromIntent
 import com.waffiq.bazz_movies.feature.list.utils.RecyclerViewLayoutHelper.restoreInstanceState
 import com.waffiq.bazz_movies.feature.list.utils.RecyclerViewLayoutHelper.saveInstanceState
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType
 import com.waffiq.bazz_movies.navigation.MediaSource
+import com.waffiq.bazz_movies.navigation.extractParcelableExtraFromIntent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
@@ -103,7 +103,8 @@ class ListActivity : AppCompatActivity() {
     adjustAdapterPadding()
   }
 
-  private fun extractDataFromIntent(): ListArgs? = extractArgsItemFromIntent(intent)
+  private fun extractDataFromIntent(): ListArgs? =
+    extractParcelableExtraFromIntent<ListArgs>(intent, EXTRA_LIST)
 
   private var shouldUpdateBackdropFromItems = false
 

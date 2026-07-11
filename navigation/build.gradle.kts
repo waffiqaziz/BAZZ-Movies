@@ -16,5 +16,10 @@ android {
 }
 dependencies {
   implementation(project(":core:models"))
+  implementation(libs.androidx.core.ktx)
+
+  testImplementation(project(":feature:list"))
+  testImplementation(libs.mockk)
+  testImplementation(libs.robolectric)
 }
 
