@@ -2,7 +2,9 @@ package com.waffiq.bazz_movies.navigation
 
 import android.content.Intent
 import com.waffiq.bazz_movies.feature.list.ui.ListActivity.Companion.EXTRA_LIST
+import io.mockk.Runs
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -25,6 +27,7 @@ class IntentExtrasTest {
   @Config(sdk = [33])
   fun extractParcelableExtraFromIntent_exceptionThrown_returnsNull() {
     val intent: Intent = mockk()
+    every { intent.setExtrasClassLoader(any()) } just Runs
     every { intent.getParcelableExtra(EXTRA_LIST, ListArgs::class.java) } throws
       ClassCastException("error class cast exception")
 
