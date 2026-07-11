@@ -59,30 +59,30 @@ class MainActivity : AppCompatActivity() {
   private fun setupNavigation() {
     val navHostFragment =
       supportFragmentManager.findFragmentById(nav_host_fragment_activity_home) as NavHostFragment
-    val navController = navHostFragment.navController
 
-    // set up the BottomNavigationView with NavController
     navHostFragment.lifecycle.addObserver(object : DefaultLifecycleObserver {
       override fun onCreate(owner: LifecycleOwner) {
-        binding.bottomNavigation.setupWithNavController(navHostFragment.navController)
+        val navController = navHostFragment.navController
+
+        binding.bottomNavigation.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+          if (destination.id == navigation_search) {
+            binding.bottomNavigation.menu.findItem(navigation_search)
+              ?.let(::animateSearchIcon)
+          }
+        }
+
+        binding.bottomNavigation.setOnItemReselectedListener { menuItem ->
+          if (menuItem.itemId == navigation_search) {
+            animateSearchIcon(menuItem)
+            supportFragmentManager.setFragmentResult("open_search_view", Bundle.EMPTY)
+          }
+        }
+
         navHostFragment.lifecycle.removeObserver(this)
       }
     })
-
-    navController.addOnDestinationChangedListener { _, destination, _ ->
-      if (destination.id == navigation_search) {
-        val menuItem = binding.bottomNavigation.menu.findItem(navigation_search)
-        menuItem?.let { animateSearchIcon(it) }
-      }
-    }
-
-    // handle search button
-    binding.bottomNavigation.setOnItemReselectedListener { menuItem ->
-      if (menuItem.itemId == navigation_search) {
-        animateSearchIcon(menuItem)
-        supportFragmentManager.setFragmentResult("open_search_view", Bundle.EMPTY)
-      }
-    }
   }
 
   private fun animateSearchIcon(item: MenuItem) {
