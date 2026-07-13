@@ -1,55 +1,34 @@
 package com.waffiq.bazz_movies.feature.person.ui
 
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.platform.app.InstrumentationRegistry
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions.clickItemAt
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performSwipeLeft
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performSwipeRight
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNotExist
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.feature.person.R.id.btn_close_dialog
+import com.waffiq.bazz_movies.feature.person.R.id.dots_indicator
 import com.waffiq.bazz_movies.feature.person.R.id.rv_photos
+import com.waffiq.bazz_movies.feature.person.R.id.text_counter_indicator
 import com.waffiq.bazz_movies.feature.person.R.id.view_pager_dialog
 import com.waffiq.bazz_movies.feature.person.testutils.BasePersonActivityTest
 import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testProfileItem
-import com.waffiq.bazz_movies.navigation.INavigator
-import dagger.hilt.android.testing.BindValue
-import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
 class PersonActivityImageDialogTest : BasePersonActivityTest() {
 
-  @get:Rule
-  var hiltRule = HiltAndroidRule(this)
-
-  @BindValue
-  @JvmField
-  val mockPersonViewModel: PersonViewModel = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockNavigator: INavigator = mockk(relaxed = true)
-
   @Before
-  override fun init() {
-    super.init()
-    hiltRule.inject()
-    setupMocks()
-    initializeTest(ApplicationProvider.getApplicationContext())
-  }
-
-  private fun setupMocks() {
-    setupBaseMocks()
-    setupViewModelMocks(mockPersonViewModel)
-    setupNavigatorMocks(mockNavigator)
+  override fun setup() {
+    super.setup()
     loadingStateLiveData.postValue(false)
   }
 
@@ -58,6 +37,10 @@ class PersonActivityImageDialogTest : BasePersonActivityTest() {
     runTest {
       context.launchPersonActivity {
         performClickListPhotos(0)
+
+        // only one images, dot and text indicator is not displayed
+        dots_indicator.isNotDisplayed()
+        text_counter_indicator.isNotDisplayed()
 
         // close dialog
         btn_close_dialog.performClick()
@@ -69,23 +52,43 @@ class PersonActivityImageDialogTest : BasePersonActivityTest() {
     }
 
   @Test
-  fun imageDialog_whenMultipleImages_showsCorrectPosition() =
+  fun imageDialog_whenThreeImages_showsCorrectPosition() =
     runTest {
-      setupMocks()
-
       context.launchPersonActivity {
         InstrumentationRegistry.getInstrumentation().runOnMainSync {
-          imageListLiveData.postValue(listOf(testProfileItem, testProfileItem, testProfileItem))
+          imageListLiveData.postValue(List(3) { testProfileItem })
         }
         performClickListPhotos(1) // at least multiple images
+        dots_indicator.isDisplayed()
+      }
+    }
+
+  @Test
+  fun imageDialog_whenElevenImages_showsTextIndicator() =
+    runTest {
+      context.launchPersonActivity {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+          imageListLiveData.postValue(List(11) { testProfileItem })
+        }
+
+        // click the second image
+        performClickListPhotos(1)
+        text_counter_indicator.isDisplayed()
+
+        // perform swipe action
+        "2 / 11".isDisplayed()
+        view_pager_dialog.performSwipeLeft()
+        "3 / 11".isDisplayed()
+        view_pager_dialog.performSwipeLeft()
+        "4 / 11".isDisplayed()
+        view_pager_dialog.performSwipeRight()
+        "3 / 11".isDisplayed()
       }
     }
 
   @Test
   fun imageDialog_whenBackPressed_dismissesDialog() =
     runTest {
-      setupMocks()
-
       context.launchPersonActivity {
         performClickListPhotos(0)
         pressBack()

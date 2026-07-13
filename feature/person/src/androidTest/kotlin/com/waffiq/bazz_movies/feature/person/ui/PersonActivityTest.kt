@@ -248,7 +248,7 @@ class PersonActivityTest : BasePersonActivityTest() {
 
   @Test
   fun swipeRefresh_whenScroll_runsCorrectly() {
-    context.launchPersonActivity {
+    context.launchPersonActivity { activityScenario ->
       uiAutomator {
         // scroll down so the heigh for scroll up is enough
         device.swipe(
@@ -265,12 +265,14 @@ class PersonActivityTest : BasePersonActivityTest() {
           device.displayWidth / 2,
           device.displayHeight / 3,
           device.displayWidth / 2,
-          device.displayHeight * 1,
-          30,
+          device.displayHeight * 12 / 10,
+          100,
         )
         device.waitForIdle()
+        shortDelay()
 
         onView(withId(swipe_refresh)).check(matches(not(isRefreshing())))
+        verify { mockPersonViewModel.getDetailPerson(any()) }
       }
     }
   }
