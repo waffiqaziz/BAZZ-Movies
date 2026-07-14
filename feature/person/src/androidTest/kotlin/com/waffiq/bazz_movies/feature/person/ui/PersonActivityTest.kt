@@ -6,7 +6,6 @@ import android.content.Intent
 import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents.intended
@@ -18,6 +17,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
+import androidx.test.uiautomator.uiAutomator
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_biography
@@ -25,7 +25,6 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
-import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performSwipeDown
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.hasContentDescription
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
@@ -60,12 +59,8 @@ import com.waffiq.bazz_movies.feature.person.testutils.TestHelper.isRefreshing
 import com.waffiq.bazz_movies.feature.person.testutils.TestHelper.withCollapsingToolbarTitle
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.formatBirthInfo
-import com.waffiq.bazz_movies.navigation.INavigator
-import dagger.hilt.android.testing.BindValue
-import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
-import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.unmockkObject
 import io.mockk.verify
@@ -74,38 +69,11 @@ import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
 import org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertTrue
 
 @HiltAndroidTest
 class PersonActivityTest : BasePersonActivityTest() {
-
-  @get:Rule
-  var hiltRule = HiltAndroidRule(this)
-
-  @BindValue
-  @JvmField
-  val mockNavigator: INavigator = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockPersonViewModel: PersonViewModel = mockk(relaxed = true)
-
-  @Before
-  override fun init() {
-    super.init()
-    hiltRule.inject()
-    setupMocks()
-    initializeTest(ApplicationProvider.getApplicationContext())
-  }
-
-  private fun setupMocks() {
-    setupBaseMocks()
-    setupViewModelMocks(mockPersonViewModel)
-    setupNavigatorMocks(mockNavigator)
-  }
 
   @Test
   fun personScreen_whenAllDataProvided_showsAllViews() =
@@ -279,14 +247,33 @@ class PersonActivityTest : BasePersonActivityTest() {
     }
 
   @Test
-  fun swipeRefresh_whenScroll_runsCorrectly() =
-    runTest {
-      context.launchPersonActivity {
-        rv_known_for.performScrollTo()
-        rv_known_for.performSwipeDown()
+  fun swipeRefresh_whenScroll_runsCorrectly() {
+    context.launchPersonActivity {
+      uiAutomator {
+        // scroll down so the heigh for scroll up is enough
+        device.swipe(
+          device.displayWidth / 2,
+          device.displayHeight * 3 / 4,
+          device.displayWidth / 2,
+          device.displayHeight / 4,
+          20,
+        )
+        device.waitForIdle()
+
+        // perform scroll up till max height to trigger swipe refresh
+        device.swipe(
+          device.displayWidth / 2,
+          device.displayHeight / 3,
+          device.displayWidth / 2,
+          device.displayHeight * 1,
+          30,
+        )
+        device.waitForIdle()
+
         onView(withId(swipe_refresh)).check(matches(not(isRefreshing())))
       }
     }
+  }
 
   @Test
   fun homePageLink_withUrlWhenClicked_opensBrowser() =
