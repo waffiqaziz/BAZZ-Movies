@@ -47,15 +47,14 @@ object DummyData {
       height = 750,
     )
 
-  val testKnownForList =
-    listOf(
-      CastItem(
-        id = 1,
-        title = "Test Movie",
-        character = "Test Character",
-        posterPath = "/test.jpg",
-      ),
-    )
+  val castItem = CastItem(
+    id = 1,
+    title = "Test Movie",
+    character = "Test Character",
+    posterPath = "/test.jpg",
+  )
+
+  val testKnownForList = List(11) { castItem }
 
   val testImagesList =
     listOf(

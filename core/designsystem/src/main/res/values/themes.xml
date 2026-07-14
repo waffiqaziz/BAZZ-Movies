@@ -606,4 +606,19 @@
     <item name="android:textColor">@color/gray_200</item>
     <item name="android:textStyle">bold</item>
   </style>
+
+  <style name="Widget.App.TabLayout.Dot" parent="Widget.MaterialComponents.TabLayout">
+    <item name="tabMinWidth">12dp</item>
+    <item name="tabMaxWidth">12dp</item>
+    <item name="tabPaddingStart">0dp</item>
+    <item name="tabPaddingEnd">0dp</item>
+    <item name="tabPaddingTop">0dp</item>
+    <item name="tabPaddingBottom">0dp</item>
+    <item name="tabRippleColor">@null</item>
+    <item name="tabIndicatorHeight">0dp</item>
+    <item name="tabGravity">center</item>
+    <item name="tabMode">fixed</item>
+    <item name="android:minWidth">8dp</item>
+    <item name="android:minHeight">8dp</item>
+  </style>
 </resources>

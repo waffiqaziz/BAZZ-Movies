@@ -234,7 +234,7 @@
   <string name="tab_selection">tab selection</string>
   <string name="about_us"><u>About Us</u></string>
   <string name="rating_added_successfully">Rating added successfully!</string>
-
+  <string name="image_counter_format">%1$d / %2$d</string>
   <string name="open_in_horizontal_list">Open in horizontal list</string>
 
 </resources>

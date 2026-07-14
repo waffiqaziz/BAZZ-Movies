@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.intent.Intents
 import androidx.test.platform.app.InstrumentationRegistry
 import com.bumptech.glide.Glide
@@ -19,13 +20,25 @@ import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testMediaCastIt
 import com.waffiq.bazz_movies.feature.person.ui.PersonActivity
 import com.waffiq.bazz_movies.feature.person.ui.PersonViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
+import dagger.hilt.android.testing.HiltAndroidRule
 import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
+import javax.inject.Inject
 
 abstract class BasePersonActivityTest {
+
+  @get:Rule
+  var hiltRule = HiltAndroidRule(this)
+
+  @Inject
+  lateinit var mockPersonViewModel: PersonViewModel
+
+  @Inject
+  lateinit var mockNavigator: INavigator
 
   protected val detailPersonLiveData = MutableLiveData<DetailPerson>()
   protected val imageListLiveData = MutableLiveData<List<ProfilesItem>>()
@@ -35,13 +48,22 @@ abstract class BasePersonActivityTest {
   protected lateinit var context: Context
 
   @Before
-  open fun init() {
+  open fun setup() {
     Intents.init()
+    hiltRule.inject()
+    setupMocks()
+    initializeTest(ApplicationProvider.getApplicationContext())
   }
 
   @After
   fun tearDown() {
     Intents.release()
+  }
+
+  private fun setupMocks() {
+    setupBaseMocks()
+    setupViewModelMocks(mockPersonViewModel)
+    setupNavigatorMocks(mockNavigator)
   }
 
   protected fun setupBaseMocks() {
