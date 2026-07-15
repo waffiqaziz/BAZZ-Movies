@@ -8,7 +8,6 @@ import android.text.SpannableStringBuilder
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
-import android.widget.Toast
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -21,7 +20,6 @@ import com.waffiq.bazz_movies.core.designsystem.R.font.nunito_sans_regular
 import com.waffiq.bazz_movies.core.designsystem.R.string.guest_user
 import com.waffiq.bazz_movies.core.designsystem.R.string.login_as_guest_successful
 import com.waffiq.bazz_movies.core.designsystem.R.string.login_as_user_successful
-import com.waffiq.bazz_movies.core.designsystem.R.string.no_browser_installed
 import com.waffiq.bazz_movies.core.designsystem.R.string.please_enter_a_password
 import com.waffiq.bazz_movies.core.designsystem.R.string.please_enter_a_username
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation
@@ -52,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
 
   private lateinit var binding: ActivityLoginBinding
 
-  private val authenticationViewModel: LoginViewModel by viewModels()
+  private val loginViewModel: LoginViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -69,7 +67,7 @@ class LoginActivity : AppCompatActivity() {
   }
 
   private fun stateObserver() {
-    authenticationViewModel.errorState.observe(this) { errorMessage ->
+    loginViewModel.errorState.observe(this) { errorMessage ->
       Animation.fadeOut(
         binding.layoutBackground.bgAlpha,
         ANIM_DURATION,
@@ -77,16 +75,9 @@ class LoginActivity : AppCompatActivity() {
       enableButton(true)
       snackBarWarning(binding.activityLogin, null, errorMessage)
     }
-    authenticationViewModel.loginState.observe(this) { success ->
+    loginViewModel.loginState.observe(this) { success ->
       if (success) goToMainActivity(isGuest = false)
     }
-  }
-
-  private fun launchUri(url: String) {
-    uriLauncher.launch(url)
-      .onFailure {
-        Toast.makeText(this, getString(no_browser_installed), Toast.LENGTH_SHORT).show()
-      }
   }
 
   private fun showPassword() {
@@ -111,15 +102,15 @@ class LoginActivity : AppCompatActivity() {
 
   private fun buttonListener() {
     binding.tvJoinTMDB.setOnClickListener {
-      launchUri(TMDB_LINK_SIGNUP)
+      uriLauncher.launch(TMDB_LINK_SIGNUP)
     }
     binding.btnForgetPassword.setOnClickListener {
-      launchUri(TMDB_LINK_FORGET_PASSWORD)
+      uriLauncher.launch(TMDB_LINK_FORGET_PASSWORD)
     }
 
     // login as guest
     binding.tvGuest.setOnClickListener {
-      authenticationViewModel.saveGuestUserPref(getString(guest_user), getString(guest_user))
+      loginViewModel.saveGuestUserPref(getString(guest_user), getString(guest_user))
       goToMainActivity(isGuest = true)
     }
 
@@ -194,11 +185,11 @@ class LoginActivity : AppCompatActivity() {
   }
 
   private fun loginAsUserRegistered() {
-    authenticationViewModel.loadingState.observe(this) {
+    loginViewModel.loadingState.observe(this) {
       binding.progressBar.isVisible = it
     }
 
-    authenticationViewModel.userLogin(
+    loginViewModel.userLogin(
       binding.etUsername.text.toString(),
       binding.etPass.text.toString(),
     )

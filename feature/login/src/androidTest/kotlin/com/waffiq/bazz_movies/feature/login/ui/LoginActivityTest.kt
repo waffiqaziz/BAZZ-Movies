@@ -1,18 +1,7 @@
 package com.waffiq.bazz_movies.feature.login.ui
 
-import android.content.Context
 import android.content.res.Configuration
-import android.view.View
-import android.widget.EditText
-import androidx.core.net.toUri
 import androidx.lifecycle.MutableLiveData
-import androidx.test.core.app.ActivityScenario
-import androidx.test.espresso.Espresso.closeSoftKeyboard
-import androidx.test.espresso.UiController
-import androidx.test.espresso.ViewAction
-import androidx.test.espresso.action.ViewActions.clearText
-import androidx.test.espresso.intent.rule.IntentsRule
-import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import com.waffiq.bazz_movies.core.designsystem.R.string.guest_user
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomAssertions.isPasswordHidden
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performAction
@@ -38,76 +27,18 @@ import com.waffiq.bazz_movies.feature.login.R.id.layout_bazz_movies
 import com.waffiq.bazz_movies.feature.login.R.id.progress_bar
 import com.waffiq.bazz_movies.feature.login.R.id.tv_guest
 import com.waffiq.bazz_movies.feature.login.R.id.tv_joinTMDB
-import com.waffiq.bazz_movies.feature.login.ui.testutils.FakeUriLauncher
+import com.waffiq.bazz_movies.feature.login.ui.testutils.BaseLoginActivityTest
 import com.waffiq.bazz_movies.feature.login.utils.common.Constants.TMDB_LINK_FORGET_PASSWORD
 import com.waffiq.bazz_movies.feature.login.utils.common.Constants.TMDB_LINK_SIGNUP
-import com.waffiq.bazz_movies.navigation.INavigator
-import dagger.hilt.android.testing.BindValue
-import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import io.mockk.Runs
 import io.mockk.every
-import io.mockk.just
-import io.mockk.mockk
 import io.mockk.verify
-import org.hamcrest.Matcher
-import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import kotlin.random.Random
 
 @HiltAndroidTest
-class LoginActivityTest {
-
-  private val validUsername = "validUsername1234"
-  private val validPassword = "validPassword1234"
-
-  private val loginStateLiveData = MutableLiveData<Boolean>()
-  private val errorStateLiveData = MutableLiveData<String>()
-  private val loadingStateLiveData = MutableLiveData<Boolean>()
-
-  private lateinit var context: Context
-
-  @get:Rule(order = 0)
-  var hiltRule = HiltAndroidRule(this)
-
-  @get:Rule(order = 1)
-  var intentsRule = IntentsRule()
-
-  private lateinit var scenario: ActivityScenario<LoginActivity>
-
-  @BindValue
-  @JvmField
-  val mockNavigator: INavigator = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockLoginViewModel: LoginViewModel = mockk(relaxed = true)
-
-  @Before
-  fun init() {
-    hiltRule.inject()
-
-    every { mockLoginViewModel.errorState } returns errorStateLiveData
-    every { mockLoginViewModel.loginState } returns loginStateLiveData
-    every { mockLoginViewModel.loadingState } returns loadingStateLiveData
-    every { mockLoginViewModel.loadingState } returns loadingStateLiveData
-    every { mockLoginViewModel.userLogin(any(), any()) } just Runs
-    every { mockLoginViewModel.saveGuestUserPref(any(), any()) } just Runs
-
-    scenario = ActivityScenario.launch(LoginActivity::class.java)
-
-    scenario.onActivity { activity ->
-      context = activity.applicationContext
-    }
-  }
-
-  @After
-  fun tearDown() {
-    scenario.close()
-  }
+class LoginActivityTest : BaseLoginActivityTest() {
 
   @Test
   fun loginScreen_whenInitialized_showsAllViewsCorrectly() {
@@ -129,27 +60,19 @@ class LoginActivityTest {
   fun clickForgetPassword_successful_launchesCorrectURI() {
     btn_forget_password.performClick()
 
-    scenario.onActivity { activity ->
-      val fake = activity.uriLauncher as FakeUriLauncher
-      assertEquals(TMDB_LINK_FORGET_PASSWORD.toUri(), fake.launchedUris.first())
-    }
+    assertEquals(1, fakeLauncher.launchedUris.size)
+    assertEquals(TMDB_LINK_FORGET_PASSWORD, fakeLauncher.launchedUris.first())
   }
 
   @Test
   fun clickJoinTMDB_successful_launchesCorrectURI() {
     tv_joinTMDB.performClick()
-
-    scenario.onActivity { activity ->
-      val fake = activity.uriLauncher as FakeUriLauncher
-      assertEquals(TMDB_LINK_SIGNUP.toUri(), fake.launchedUris.first())
-    }
+    assertEquals(TMDB_LINK_SIGNUP, fakeLauncher.launchedUris.first())
   }
 
   @Test
   fun clickJoinTMDB_noBrowser_launchesToast() {
-    scenario.onActivity { activity ->
-      (activity.uriLauncher as FakeUriLauncher).shouldFail = true
-    }
+    fakeLauncher.shouldFail = true
 
     tv_joinTMDB.performClick()
     // Hard to test toast in code, so must check it manually
@@ -358,41 +281,4 @@ class LoginActivityTest {
     et_username.doesHaveText(validUsername)
     et_pass.doesHaveText(validPassword)
   }
-
-  private fun clearForm() {
-    et_username.performAction(clearText())
-    et_pass.performAction(clearText())
-  }
-
-  private fun typeUserName(userName: String) {
-    et_username.performType(userName)
-    closeSoftKeyboard()
-  }
-
-  private fun typePassword(pass: String) {
-    et_pass.performType(pass)
-    closeSoftKeyboard()
-  }
-
-  private fun typeValidCredentials() {
-    typeUserName(validUsername)
-    typePassword(validPassword)
-  }
-
-  private fun performValidLogin() {
-    typeValidCredentials()
-    btn_login.performClick()
-  }
-
-  private fun clickAtPosition(position: Int): ViewAction =
-    object : ViewAction {
-      override fun getConstraints(): Matcher<View> = isAssignableFrom(EditText::class.java)
-
-      override fun getDescription(): String = "Click at position $position"
-
-      override fun perform(uiController: UiController, view: View) {
-        val editText = view as EditText
-        editText.setSelection(position)
-      }
-    }
 }
