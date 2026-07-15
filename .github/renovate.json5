@@ -74,6 +74,12 @@
       ],
     },
     {
+      groupName: 'kotlin',
+      matchPackageNames: [
+        'org.jetbrains.kotlin{/,}**',
+      ],
+    },
+    {
       groupName: 'networking libraries',
       matchPackageNames: [
         '/com.squareup.retrofit2/',
@@ -99,9 +105,10 @@
       groupName: 'android gradle plugin',
       separateMinorPatch: true,
       matchPackageNames: [
-        '/com.android.tools.build/',
+        '/com.android.tools/',
         '/com.android.application/',
         '/com.android.library/',
+        '/com.android.test/',
       ],
     },
     {
