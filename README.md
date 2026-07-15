@@ -81,7 +81,8 @@ BAZZ Movies available downloaded via Google Play Store
 1. **Install Android Studio**
 
    - Download and install [Android Studio](https://developer.android.com/studio).
-   - Minimum required version: **Panda 4 | 2025.3.4**
+   - Use an Android Studio version compatible with the AGP version used by this project. See the [compatibility matrix](https://developer.android.com/studio/releases#android_gradle_plugin_and_android_studio_compatibility) for details.
+
 
 2. **Install JDK 21**
 
