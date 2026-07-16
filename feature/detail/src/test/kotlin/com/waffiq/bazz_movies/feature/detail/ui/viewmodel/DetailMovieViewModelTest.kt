@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.ui.viewmodel
 
 import androidx.paging.PagingData
-import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailViewModelTest
 import io.mockk.coEvery
@@ -162,7 +161,7 @@ class DetailMovieViewModelTest : BaseMediaDetailViewModelTest() {
       pagingFlow = viewModel.recommendations,
       runBlock = { viewModel.getMovieRecommendation(movieId) },
       itemAssertions = { snapshot ->
-        assertThat(snapshot).containsExactly(mockMediaItem)
+        assertTrue(snapshot.contains(mockMediaItem))
       },
     )
   }

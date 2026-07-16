@@ -23,7 +23,6 @@ dependencies {
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.mockk)
   testImplementation(libs.robolectric) // used to test FavoriteViewPagerAdapter
-  testImplementation(libs.truth)
   testImplementation(libs.turbine)
 
   // Allow JUnit4 tests on JUnit5 runner
@@ -35,5 +34,4 @@ dependencies {
   androidTestImplementation(libs.androidx.test.runner)
   androidTestImplementation(libs.kotlinx.coroutines.test)
   androidTestImplementation(libs.mockk.android)
-  androidTestImplementation(libs.truth)
 }

@@ -3,7 +3,6 @@ package com.waffiq.bazz_movies.feature.detail.testutils
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
-import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.data.domain.usecase.composite.MediaStateUseCase
 import com.waffiq.bazz_movies.core.data.domain.usecase.composite.PostActionUseCase
 import com.waffiq.bazz_movies.core.data.domain.usecase.listmovie.GetListMoviesUseCase
@@ -48,6 +47,8 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 
@@ -205,24 +206,18 @@ abstract class BaseMediaDetailViewModelTest {
 
     // Assertions
     expectedStates?.let {
-      assertThat(collectedStates)
-        .containsExactlyElementsIn(it)
-        .inOrder()
+      assertEquals(it, collectedStates)
     }
 
     // first loading state always true because default value
     expectedLoadingStates?.let {
-      assertThat(collectedLoadingStates)
-        .containsExactlyElementsIn(it)
-        .inOrder()
+      assertEquals(it, collectedLoadingStates)
     }
 
     expectedErrors?.let {
-      assertThat(collectedErrors)
-        .containsExactlyElementsIn(it)
-        .inOrder()
+      assertEquals(it, collectedErrors)
     } ?: run {
-      assertThat(collectedErrors).isEmpty()
+      assertTrue(collectedErrors.isEmpty())
     }
 
     verifyBlock()

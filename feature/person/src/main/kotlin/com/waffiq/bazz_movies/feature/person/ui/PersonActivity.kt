@@ -207,7 +207,7 @@ class PersonActivity : AppCompatActivity() {
     binding.tvBorn.text = birthInfo.ifEmpty { getString(no_data) }
   }
 
-  private fun showSocialMediaPerson(externalIds: ExternalIDPerson?){
+  private fun showSocialMediaPerson(externalIds: ExternalIDPerson?) {
     if (externalIds == null) {
       binding.viewGroupSocialMedia.isVisible = false
       return

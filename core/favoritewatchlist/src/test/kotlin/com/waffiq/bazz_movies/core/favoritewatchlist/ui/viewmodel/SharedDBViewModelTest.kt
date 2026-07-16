@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.domain.usecase.FavoriteLocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DbResult
@@ -26,6 +25,7 @@ import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -58,10 +58,10 @@ class SharedDBViewModelTest {
   fun localDatabaseUseCase_whenCalled_returnsFlowCorrectly() {
     // Verify LiveData properties are initialized
     with(viewModel) {
-      assertThat(favoriteTvFromDB).isNotNull()
-      assertThat(favoriteMoviesFromDB).isNotNull()
-      assertThat(watchlistMoviesDB).isNotNull()
-      assertThat(watchlistTvSeriesDB).isNotNull()
+      assertNotNull(favoriteTvFromDB)
+      assertNotNull(favoriteMoviesFromDB)
+      assertNotNull(watchlistMoviesDB)
+      assertNotNull(watchlistTvSeriesDB)
     }
 
     // Verify correct flows are accessed
@@ -83,8 +83,8 @@ class SharedDBViewModelTest {
         viewModel.insertToDB(favorite)
       }
 
-      assertThat(results).hasSize(1)
-      assertThat(results[0].peekContent()).isEqualTo(dbResult)
+      assertEquals(1, results.size)
+      assertEquals(dbResult, results[0].peekContent())
       coVerify { localDatabaseUseCase.insertToDB(favorite) }
     }
 
@@ -165,10 +165,10 @@ class SharedDBViewModelTest {
     operation()
     advanceUntilIdle()
 
-    assertThat(dbResults).hasSize(1)
-    assertThat(dbResults[0].peekContent()).isEqualTo(dbResult)
-    assertThat(undoResults).hasSize(1)
-    assertThat(undoResults[0].peekContent()).isEqualTo(favorite)
+    assertEquals(1, dbResults.size)
+    assertEquals(dbResult, dbResults[0].peekContent())
+    assertEquals(1, undoResults.size)
+    assertEquals(favorite, undoResults[0].peekContent())
 
     verification()
   }

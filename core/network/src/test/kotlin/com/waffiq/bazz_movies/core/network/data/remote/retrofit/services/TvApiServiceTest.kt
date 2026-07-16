@@ -1,14 +1,14 @@
 package com.waffiq.bazz_movies.core.network.data.remote.retrofit.services
 
-import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.network.testutils.BaseApiServiceTest
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
-import kotlin.test.assertEquals
 
 class TvApiServiceTest : BaseApiServiceTest() {
 
-  // This test only to make sure moshi can convert json to data class
+  // This test only to make sure moshi can convert JSON to data class
   // We test only several api service
 
   @Test
@@ -46,6 +46,6 @@ class TvApiServiceTest : BaseApiServiceTest() {
       )
 
       val request = mockWebServer.takeRequest()
-      assertThat(request.path).contains("language=en-US")
+      assertTrue(request.path.orEmpty().contains("language=en-US"))
     }
 }

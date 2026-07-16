@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.feature.person.testutils
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
-import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
@@ -20,6 +19,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 
@@ -111,13 +113,13 @@ abstract class BasePersonViewModelTest {
     advanceUntilIdle()
 
     expectedSuccess?.let {
-      assertThat(successData).containsExactly(it)
-      assertThat(liveData.value).isEqualTo(it)
+      assertTrue(successData.contains(it))
+      assertEquals(liveData.value, it)
     }
 
     expectError?.let {
       val error = personViewModel.errorState.value?.getContentIfNotHandled()
-      assertThat(error).isEqualTo(it)
+      assertEquals(error, it)
     }
 
     if (checkLoading) {
@@ -134,20 +136,20 @@ abstract class BasePersonViewModelTest {
   ) {
     when {
       expectedSuccess != null -> {
-        assertThat(collectedLoadingStates).contains(true)
-        assertThat(collectedLoadingStates.last()).isFalse()
-        assertThat(personViewModel.loadingState.value).isFalse()
+        assertTrue(collectedLoadingStates.contains(true))
+        assertFalse(collectedLoadingStates.last())
+        assertEquals(false, personViewModel.loadingState.value)
       }
 
       expectError != null -> {
-        assertThat(collectedLoadingStates).contains(true)
-        assertThat(collectedLoadingStates.last()).isFalse()
-        assertThat(personViewModel.loadingState.value).isFalse()
+        assertTrue(collectedLoadingStates.contains(true))
+        assertFalse(collectedLoadingStates.last())
+        assertEquals(false, personViewModel.loadingState.value)
       }
 
       else -> {
         if (collectedLoadingStates.isNotEmpty()) {
-          assertThat(collectedLoadingStates).contains(true)
+          assertTrue(collectedLoadingStates.contains(true))
         }
       }
     }

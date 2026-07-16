@@ -7,7 +7,6 @@ import android.widget.FrameLayout
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
-import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
@@ -188,8 +187,7 @@ class ListAdapterTest {
   fun onCreateViewHolder_returnsGridViewHolder_whenViewTypeGrid() {
     setupAdapter()
 
-    val holder = adapter.onCreateViewHolder(parent, ListAdapter.VIEW_TYPE_GRID)
-    assertThat(holder).isInstanceOf(ListAdapter.GridViewHolder::class.java)
+    val holder = getHolder(ListAdapter.VIEW_TYPE_GRID)
     assertTrue(holder is ListAdapter.GridViewHolder)
   }
 
@@ -197,8 +195,7 @@ class ListAdapterTest {
   fun onCreateViewHolder_returnsListViewHolder_whenViewTypeList() {
     setupAdapter()
 
-    val holder = adapter.onCreateViewHolder(parent, ListAdapter.VIEW_TYPE_LIST)
-    assertThat(holder).isInstanceOf(ListAdapter.ListViewHolder::class.java)
+    val holder = getHolder(ListAdapter.VIEW_TYPE_LIST)
     assertTrue(holder is ListAdapter.ListViewHolder)
   }
 
@@ -263,7 +260,7 @@ class ListAdapterTest {
       setupGridLayout()
       submitPagingAndWait(mediaMovieItem)
 
-      val holder = adapter.onCreateViewHolder(parent, ListAdapter.VIEW_TYPE_GRID)
+      val holder = getHolder(ListAdapter.VIEW_TYPE_GRID)
       adapter.onBindViewHolder(holder, 0)
 
       // trigger click to proves bind() was called
@@ -281,7 +278,7 @@ class ListAdapterTest {
       setupListLayout()
       submitPagingAndWait(mediaMovieItem)
 
-      val holder = adapter.onCreateViewHolder(parent, ListAdapter.VIEW_TYPE_LIST)
+      val holder = getHolder(ListAdapter.VIEW_TYPE_LIST)
       adapter.onBindViewHolder(holder, 0)
 
       // perform click to check if its list layout
@@ -290,6 +287,8 @@ class ListAdapterTest {
 
       verify(navigator).openDetails(any(), eq(mediaMovieItem.copy(mediaType = "movie")))
     }
+
+  private fun getHolder(viewType: Int) = adapter.onCreateViewHolder(parent, viewType)
 
   private fun setupListLayout() {
     adapter.setGridMode(false)

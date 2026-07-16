@@ -29,7 +29,6 @@ dependencies {
   testImplementation(libs.mockito.core)
   testImplementation(libs.mockk)
   testImplementation(libs.robolectric)
-  testImplementation(libs.truth)
   testImplementation(libs.turbine)
 
   androidTestImplementation(libs.androidx.uiautomator)

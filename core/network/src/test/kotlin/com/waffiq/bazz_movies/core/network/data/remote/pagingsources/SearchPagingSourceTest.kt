@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.pagingsources
 
 import androidx.paging.PagingSource
-import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.SearchApiService
@@ -19,6 +18,8 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Test
 import retrofit2.HttpException
@@ -85,8 +86,8 @@ class SearchPagingSourceTest {
       val result = pagingSource.load(PagingSource.LoadParams.Refresh(INITIAL_PAGE_INDEX, 2, false))
 
       if (result is PagingSource.LoadResult.Error) {
-        assertThat(result.throwable).isInstanceOf(Exception::class.java)
-        assertThat(result.throwable.message).isEqualTo("Response data is null")
+        assertTrue(result.throwable is Exception)
+        assertEquals(result.throwable.message, "Response data is null")
       } else {
         fail("Expected LoadResult.Error but got $result")
       }

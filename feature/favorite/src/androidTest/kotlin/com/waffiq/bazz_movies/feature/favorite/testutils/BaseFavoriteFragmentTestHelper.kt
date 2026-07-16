@@ -17,7 +17,6 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
-import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
@@ -61,6 +60,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.receiveAsFlow
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import javax.inject.Inject
@@ -230,21 +230,21 @@ abstract class BaseFavoriteFragmentTestHelper {
   protected fun Int.assertViewPagerPosition(expected: Int) {
     onView(withId(this)).check { view, _ ->
       val vp = view as ViewPager2
-      assertThat(vp.currentItem).isEqualTo(expected)
+      assertEquals(expected, vp.currentItem)
     }
   }
 
   protected fun Int.assertViewPagerUserInputEnabled(expected: Boolean) {
     onView(withId(this)).check { view, _ ->
       val vp = view as ViewPager2
-      assertThat(vp.isUserInputEnabled).isEqualTo(expected)
+      assertEquals(expected, vp.isUserInputEnabled)
     }
   }
 
   protected fun Int.assertViewPagerItemCount(expected: Int) {
     onView(withId(this)).check { view, _ ->
       val vp = view as ViewPager2
-      assertThat(vp.adapter?.itemCount).isEqualTo(expected)
+      assertEquals(expected, vp.adapter?.itemCount)
     }
   }
 

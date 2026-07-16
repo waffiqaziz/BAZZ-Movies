@@ -6,7 +6,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
-import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.designsystem.R.string.movies
 import com.waffiq.bazz_movies.core.designsystem.R.string.tv_series
 import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.tabs
@@ -17,6 +16,7 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisp
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.feature.favorite.testutils.BaseFavoriteFragmentTestHelper
 import dagger.hilt.android.testing.HiltAndroidTest
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
@@ -39,7 +39,7 @@ class FavoriteFragmentTest : BaseFavoriteFragmentTestHelper() {
   fun tabLayout_whenCreated_shouldHaveCorrectNumberOfTabs() {
     onView(withId(tabs)).check { view, _ ->
       val tabLayout = view as TabLayout
-      assertThat(tabLayout.tabCount).isEqualTo(2)
+      assertEquals(2, tabLayout.tabCount)
     }
   }
 
@@ -76,7 +76,7 @@ class FavoriteFragmentTest : BaseFavoriteFragmentTestHelper() {
     tv_series.performTextClick()
     onView(withId(view_pager)).check { view, _ ->
       val viewPager = view as ViewPager2
-      assertThat(viewPager.currentItem).isEqualTo(1)
+      assertEquals(1, viewPager.currentItem)
     }
   }
 

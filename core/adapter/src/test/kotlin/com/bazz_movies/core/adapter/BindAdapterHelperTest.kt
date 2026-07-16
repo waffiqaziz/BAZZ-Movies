@@ -4,10 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import androidx.test.core.app.ApplicationProvider
 import com.google.android.material.imageview.ShapeableImageView
-import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemMediaBinding
 import com.waffiq.bazz_movies.core.models.MediaItem
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -48,10 +48,10 @@ class BindAdapterHelperTest {
       binding.bindMetaData(mediaItem)
     }
 
-    assertThat(binding.tvTitle.text.toString()).isEqualTo("The Matrix")
-    assertThat(binding.tvTitle.text.toString()).isNotEmpty()
-    assertThat(binding.tvGenre.text.toString()).isNotEmpty()
-    assertThat(binding.ratingBar.rating).isGreaterThan(0f)
-    assertThat(binding.tvRating.text.toString()).isNotEmpty()
+    assertEquals(binding.tvTitle.text.toString(), "The Matrix")
+    assertTrue(binding.tvTitle.text.toString().isNotEmpty())
+    assertTrue(binding.tvGenre.text.toString().isNotEmpty())
+    assertTrue(binding.ratingBar.rating > 0f)
+    assertTrue(binding.tvRating.text.toString().isNotEmpty())
   }
 }

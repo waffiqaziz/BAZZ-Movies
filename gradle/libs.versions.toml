@@ -85,7 +85,6 @@ mockitoKotlin = "6.3.0"
 mockito = "5.23.0"
 robolectric = "4.16.1"
 androidxTest = "1.7.0"
-truth = "1.4.5"
 turbine = "1.2.1"
 uiautomator = "2.4.0"
 
@@ -204,7 +203,6 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" } # use for unit test
 
 # Other Testing Libraries
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
-truth = { module = "com.google.truth:truth", version.ref = "truth" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
 # Image Loading
