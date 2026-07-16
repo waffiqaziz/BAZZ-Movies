@@ -6,15 +6,16 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
+import javax.inject.Singleton
 
-@Suppress("unused")
+@Module
 @TestInstallIn(
   components = [SingletonComponent::class],
   replaces = [UriLauncherModule::class],
 )
-@Module
-fun interface FakeUriLauncherModule {
+interface FakeUriLauncherModule {
 
   @Binds
+  @Singleton
   fun bindFakeUriLauncher(impl: FakeUriLauncher): UriLauncher
 }
