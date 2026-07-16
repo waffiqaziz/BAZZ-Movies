@@ -90,7 +90,7 @@ turbine = "1.2.1"
 uiautomator = "2.4.0"
 
 # Image Loading
-glide = "5.0.7"
+glide = "5.0.9"
 
 # Third-party Libraries
 expandableTextView = "1.0.7"
