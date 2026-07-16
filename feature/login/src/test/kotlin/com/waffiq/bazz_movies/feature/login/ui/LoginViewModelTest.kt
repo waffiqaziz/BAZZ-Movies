@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.feature.login.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount.AuthTMDbAccountUseCase
@@ -15,6 +14,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -69,8 +69,8 @@ class LoginViewModelTest {
       viewModel.userLogin(TEST_USER, TEST_PASS)
       advanceUntilIdle()
 
-      assertThat(loadingStates).containsExactly(true, false) // loading started, then stopped
-      assertThat(errorStates).contains("Token creation failed") // error message captured
+      assertEquals(listOf(true, false), loadingStates)
+      assertTrue(errorStates.contains("Token creation failed"))
 
       coVerify { mockAuthTMDbAccountUseCase.login(any(), any()) }
     }

@@ -13,8 +13,9 @@ import javax.inject.Singleton
   components = [SingletonComponent::class],
   replaces = [UriLauncherModule::class],
 )
-abstract class FakeUriLauncherModule {
+interface FakeUriLauncherModule {
+
   @Binds
   @Singleton
-  abstract fun bindFakeUriLauncher(impl: FakeUriLauncher): UriLauncher
+  fun bindFakeUriLauncher(impl: FakeUriLauncher): UriLauncher
 }

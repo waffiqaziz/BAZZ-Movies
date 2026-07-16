@@ -39,7 +39,7 @@ class UriLauncherImplTest {
     assertEquals(Intent.ACTION_VIEW, startedIntent.action)
     assertEquals(url, startedIntent.dataString)
 
-    val hasNewTaskFlag = (startedIntent.flags and Intent.FLAG_ACTIVITY_NEW_TASK) != 0
+    val hasNewTaskFlag = startedIntent.flags and Intent.FLAG_ACTIVITY_NEW_TASK != 0
     assertEquals(true, hasNewTaskFlag)
   }
 
