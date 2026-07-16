@@ -5,7 +5,6 @@ import android.content.Context
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlreadyUtils.snackBarAlready
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import io.mockk.every
@@ -27,7 +26,7 @@ class SnackbarAlreadyUtilsTest {
   private val context: Context = mockk(relaxed = true)
   private val mockView: View = mockk(relaxed = true)
   private val mockViewGuide: View = mockk(relaxed = true)
-  private val mockEventMessage: Event<String> = mockk(relaxed = true)
+  private val title: String = "Test Title"
   private val mockSnackBar: Snackbar = mockk(relaxed = true)
 
   @get:Rule
@@ -44,39 +43,7 @@ class SnackbarAlreadyUtilsTest {
   }
 
   @Test
-  fun snackBarAlreadyFavorite_whenContentIsNotHandled_returnsNull() {
-    every { mockEventMessage.getContentIfNotHandled() } returns null
-
-    val result = snackBarAlready(
-      context,
-      mockView,
-      mockViewGuide,
-      mockEventMessage,
-      true,
-    )
-
-    assertEquals(null, result)
-  }
-
-  @Test
-  fun snackBarAlreadyWatchlist_whenContentIsNotHandled_returnsNull() {
-    every { mockEventMessage.getContentIfNotHandled() } returns null
-
-    val result = snackBarAlready(
-      context,
-      mockView,
-      mockViewGuide,
-      mockEventMessage,
-      false,
-    )
-
-    assertEquals(null, result)
-  }
-
-  @Test
   fun snackBarAlreadyFavorite_whenContentIsAvailable_showsSnackbar() {
-    every { mockEventMessage.getContentIfNotHandled() } returns "Test Item"
-
     // directly mock the ContextCompat.getString call
     mockkStatic(ContextCompat::class)
     every { ContextCompat.getString(context, any<Int>()) } returns "is already in your favorites"
@@ -92,7 +59,7 @@ class SnackbarAlreadyUtilsTest {
       context,
       mockView,
       mockViewGuide,
-      mockEventMessage,
+      title,
       true,
     )
 
@@ -107,10 +74,7 @@ class SnackbarAlreadyUtilsTest {
   fun snackBarAlreadyWatchlist_whenContentIsAvailable_showsSnackbar() {
     val view = mockk<View>(relaxed = true)
     val viewGuide = mockk<View>(relaxed = true)
-    val eventMessage = mockk<Event<String>>()
     val mockSnackbar = mockk<Snackbar>(relaxed = true)
-
-    every { eventMessage.getContentIfNotHandled() } returns "Test Item"
 
     // directly mock the ContextCompat.getString call
     mockkStatic(ContextCompat::class)
@@ -127,7 +91,7 @@ class SnackbarAlreadyUtilsTest {
       context,
       view,
       viewGuide,
-      eventMessage,
+      title,
       false,
     )
 

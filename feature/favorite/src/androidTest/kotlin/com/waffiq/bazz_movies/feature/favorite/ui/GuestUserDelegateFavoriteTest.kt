@@ -7,7 +7,6 @@ import androidx.test.espresso.action.ViewActions.swipeRight
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.R.id.snackbar_text
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.designsystem.R.id.chip_sort
 import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_watchlist
@@ -24,11 +23,13 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.perform
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
+import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.setupLoggedUserModel
 import com.waffiq.bazz_movies.feature.favorite.testutils.BaseFavoriteFragmentTestHelper
 import com.waffiq.bazz_movies.feature.favorite.testutils.DummyData.favoriteMovie
 import com.waffiq.bazz_movies.feature.favorite.testutils.DummyData.listOfMovie
 import com.waffiq.bazz_movies.feature.favorite.ui.fragment.FavoriteChildFragment
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 
@@ -109,7 +110,6 @@ class GuestUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
 
     // swipe right delete data already in watchlist
     performSwipeAction(1, swipeRight())
-    mockUndoDB.postValue(Event(data))
     onIdle()
 
     val snackbarText = getString(favoriteFragment.requireActivity(), removed_from_favorite)
@@ -118,7 +118,6 @@ class GuestUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
 
     // swipe right delete data not in watchlist
     performSwipeAction(2, swipeRight())
-    mockUndoDB.postValue(Event(favoriteMovie.copy(id = 4567)))
     onIdle()
     performUndoAction()
   }
@@ -130,7 +129,6 @@ class GuestUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
 
     // swipe right to delete
     performSwipeAction(1, swipeRight())
-    mockUndoDB.postValue(Event(favoriteMovie))
     onIdle()
 
     // scroll down to get better animation visibility
@@ -177,8 +175,6 @@ class GuestUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
 
     // perform undo
     performSwipeAction(1, swipeLeft())
-    val event = Event(data)
-    mockUndoDB.postValue(event)
     onIdle()
     performUndoAction()
 
@@ -192,19 +188,20 @@ class GuestUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
   }
 
   @Test
-  fun dbResult_whenEventAlreadyHandled_doesNothingOnSecondEmission() {
-    mockFavoriteMoviesFromDB.postValue(listOf(favoriteMovie.copy(isWatchlist = false)))
+  fun dbResult_whenEventAlreadyHandled_doesNothingOnSecondEmission() =
+    runTest {
+      mockFavoriteMoviesFromDB.postValue(listOf(favoriteMovie.copy(isWatchlist = false)))
 
-    val event = Event(DbResult.Error("Error Action") as DbResult<*>)
-    mockDbResult.postValue(event)
-    launchFragment()
-    onIdle()
+      val errroResult = DbResult.Error("Error Action") as DbResult<*>
+      mockDbResult.emit(errroResult)
+      launchFragment()
+      onIdle()
 
-    // re-post same already handled event object, triggers observer again,
-    // but getContentIfNotHandled() now returns null
-    mockDbResult.postValue(event)
-    onIdle()
-  }
+      // re-post same already handled event object, triggers observer again,
+      // but getContentIfNotHandled() now returns null
+      mockDbResult.emit(errroResult)
+      onIdle()
+    }
 
   @Test
   fun addToWatchlist_alreadyWatchlist_showAlreadySnackbar() {
@@ -216,8 +213,6 @@ class GuestUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
 
     // swipe left (isWantToDelete = false)
     performSwipeAction(1, swipeLeft())
-
-    mockUndoDB.postValue(Event(data))
     onIdle()
 
     val snackbarText = getString(favoriteFragment.requireActivity(), already_watchlist)
@@ -235,7 +230,6 @@ class GuestUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
 
     // swipe left (isWantToDelete = false)
     performSwipeAction(2, swipeLeft())
-    mockUndoDB.postValue(Event(data))
     onIdle()
 
     val snackbarText = getString(favoriteFragment.requireActivity(), added_to_watchlist)
@@ -244,38 +238,38 @@ class GuestUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
   }
 
   @Test
-  fun addToWatclist_failed_showsErrorToast() {
-    val data = favoriteMovie.copy(isWatchlist = false)
-    mockDbResult.postValue(Event(DbResult.Error("Error Action")))
+  fun addToWatclist_failed_showsErrorToast() =
+    runTest {
+      val data = favoriteMovie.copy(isWatchlist = false)
+      mockDbResult.emit(DbResult.Error("Error Action"))
 
-    // setup item is on watchlist
-    mockFavoriteMoviesFromDB.postValue(listOf(data))
-    launchFragment()
+      // setup item is on watchlist
+      mockFavoriteMoviesFromDB.postValue(listOf(data))
+      launchFragment()
 
-    // swipe left (isWantToDelete = false)
-    performSwipeAction(1, swipeLeft())
-    mockUndoDB.postValue(Event(data))
-    onIdle()
+      // swipe left (isWantToDelete = false)
+      performSwipeAction(1, swipeLeft())
+      onIdle()
 
-    // cant handle toast need manual
-  }
+      // cant handle toast need manual
+    }
 
   @Test
-  fun addToWatchlist_successful_showsAddedSnackbar() {
-    val data = favoriteMovie.copy(isWatchlist = false)
-    mockDbResult.postValue(Event(DbResult.Success(1)))
+  fun addToWatchlist_successful_showsAddedSnackbar() =
+    runTest {
+      val data = favoriteMovie.copy(isWatchlist = false)
+      mockDbResult.emit(DbResult.Success(1))
 
-    // setup item is on watchlist
-    mockFavoriteMoviesFromDB.postValue(listOf(data))
-    launchFragment()
+      // setup item is on watchlist
+      mockFavoriteMoviesFromDB.postValue(listOf(data))
+      launchFragment()
 
-    // swipe left (isWantToDelete = false)
-    performSwipeAction(1, swipeLeft())
-    mockUndoDB.postValue(Event(data))
-    onIdle()
+      // swipe left (isWantToDelete = false)
+      performSwipeAction(1, swipeLeft())
+      onIdle()
 
-    snackbar_text.isDisplayed()
-  }
+      snackbar_text.isDisplayed()
+    }
 
   @Test
   fun openFavorite_onInitial_shouldShowTabMovies() {
@@ -293,6 +287,14 @@ class GuestUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
 
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       moviesFragment.onDestroyView()
+    }
+  }
+
+  @Test
+  fun guestUser_changesPrefToLoggedUser_shouldNoError() {
+    launchFragment()
+    InstrumentationRegistry.getInstrumentation().runOnMainSync {
+      setupLoggedUserModel()
     }
   }
 }

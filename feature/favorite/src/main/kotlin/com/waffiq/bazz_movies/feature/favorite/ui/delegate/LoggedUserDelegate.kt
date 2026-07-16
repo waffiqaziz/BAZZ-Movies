@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ConcatAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.color.yellow_700
 import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_favorite
@@ -159,7 +158,7 @@ class LoggedUserDelegate(
       }
 
       !data.isSuccess -> {
-        showWarningSnackbar(Event(data.title))
+        showWarningSnackbar(data.title)
       }
 
       else -> {
@@ -235,18 +234,18 @@ class LoggedUserDelegate(
     }
   }
 
-  private fun showAlreadySnackbar(event: Event<String>) {
+  private fun showAlreadySnackbar(title: String) {
     currentSnackbar = snackBarAlready(
       fragment.requireContext(),
       fragment.requireActivity().findViewById(snackbarAnchor),
       fragment.requireActivity().findViewById(snackbarAnchor),
-      event,
+      title,
       false,
     )
   }
 
-  private fun showWarningSnackbar(event: Event<String>) {
-    currentSnackbar = iSnackbar.showSnackbarWarning(event)
+  private fun showWarningSnackbar(message: String) {
+    currentSnackbar = iSnackbar.showSnackbarWarning(message)
   }
 
   private fun dismissSnackbar() {
