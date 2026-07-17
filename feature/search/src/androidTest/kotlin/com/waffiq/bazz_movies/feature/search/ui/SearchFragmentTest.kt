@@ -18,7 +18,6 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.android.material.R.id.open_search_view_edit_text
-import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.designsystem.R.id.btn_try_again
 import com.waffiq.bazz_movies.core.designsystem.R.id.progress_circular
 import com.waffiq.bazz_movies.core.designsystem.R.string.clear_all
@@ -58,6 +57,8 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -274,9 +275,9 @@ class SearchFragmentTest : SearchFragmentTestHelper by DefaultFragmentTestHelper
     onView(withId(rv_search))
       .check { view, _ ->
         val recyclerView = view as RecyclerView
-        assertThat(recyclerView.layoutManager).isInstanceOf(LinearLayoutManager::class.java)
+        assertTrue(recyclerView.layoutManager is LinearLayoutManager)
         val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-        assertThat(layoutManager.orientation).isEqualTo(LinearLayoutManager.VERTICAL)
+        assertEquals(layoutManager.orientation, LinearLayoutManager.VERTICAL)
       }
   }
 

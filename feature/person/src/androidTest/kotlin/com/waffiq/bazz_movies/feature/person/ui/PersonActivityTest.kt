@@ -248,7 +248,7 @@ class PersonActivityTest : BasePersonActivityTest() {
 
   @Test
   fun swipeRefresh_whenScroll_runsCorrectly() {
-    context.launchPersonActivity { activityScenario ->
+    context.launchPersonActivity { _ ->
       uiAutomator {
         // scroll down so the heigh for scroll up is enough
         device.swipe(

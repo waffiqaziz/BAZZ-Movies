@@ -3,7 +3,6 @@ package com.waffiq.bazz_movies.core.uihelper.utils
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
-import com.google.common.truth.Truth.assertThat
 import io.mockk.mockk
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -52,9 +51,9 @@ class GenericViewPagerAdapterTest {
 
   @Test
   fun createFragment_whenCalled_returnsCorrectType() {
-    assertThat(adapter.createFragment(0)).isInstanceOf(TestFragment1::class.java)
-    assertThat(adapter.createFragment(1)).isInstanceOf(TestFragment2::class.java)
-    assertThat(adapter.createFragment(2)).isInstanceOf(TestFragment3::class.java)
+    assertTrue(adapter.createFragment(0) is TestFragment1)
+    assertTrue(adapter.createFragment(1) is TestFragment2)
+    assertTrue(adapter.createFragment(2) is TestFragment3)
   }
 
   @Test
@@ -124,7 +123,7 @@ class GenericViewPagerAdapterTest {
     )
 
     assertEquals(1, singleAdapter.itemCount)
-    assertThat(singleAdapter.createFragment(0)).isInstanceOf(TestFragment1::class.java)
+    assertTrue(singleAdapter.createFragment(0) is TestFragment1)
     assertTrue(singleAdapter.containsItem(TestFragment1::class.java.name.hashCode().toLong()))
   }
 

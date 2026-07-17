@@ -38,8 +38,7 @@ coroutines, and assertions.
 ### Assertions
 
 - [JUnit4](https://github.com/junit-team/junit4) → default assertions
-- [Truth](https://github.com/google/truth)
-  and [Kotest assertions](https://github.com/kotest/kotest) → human-readable checks
+- [Kotest assertions](https://github.com/kotest/kotest) → human-readable checks
 
 ## Test Naming Convention
 

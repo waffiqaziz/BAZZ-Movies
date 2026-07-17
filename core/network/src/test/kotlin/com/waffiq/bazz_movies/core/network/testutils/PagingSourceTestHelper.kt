@@ -3,11 +3,11 @@ package com.waffiq.bazz_movies.core.network.testutils
 import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.network.utils.common.Constants.INITIAL_PAGE_INDEX
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import retrofit2.HttpException
 
@@ -64,7 +64,7 @@ object PagingSourceTestHelper {
     // perform load operation and verify results
     val result = pagingSource.load(params)
     if (result is PagingSource.LoadResult.Error) {
-      assertThat(result.throwable).isInstanceOf(expectedException)
+      assertTrue(expectedException.isInstance(result.throwable))
     } else {
       fail("Expected LoadResult.Error but got $result")
     }
@@ -90,9 +90,9 @@ object PagingSourceTestHelper {
 
     // perform load operation and verify results
     val result = pagingSource.load(params)
-    assertThat(result).isInstanceOf(PagingSource.LoadResult.Error::class.java)
+    assertTrue(result is PagingSource.LoadResult.Error)
     val errorResult = result as PagingSource.LoadResult.Error
-    assertThat(errorResult.throwable).isInstanceOf(HttpException::class.java)
+    assertTrue(errorResult.throwable is HttpException)
     assertEquals(errorResult.throwable.message, expectedMessage)
   }
 

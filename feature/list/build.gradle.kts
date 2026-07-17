@@ -24,7 +24,6 @@ dependencies {
   testImplementation(libs.mockk)
   testImplementation(libs.robolectric)
   testImplementation(libs.turbine)
-  testImplementation(libs.truth)
   testRuntimeOnly(libs.junit.vintage)
 
   androidTestImplementation(libs.androidx.junit.ktx)

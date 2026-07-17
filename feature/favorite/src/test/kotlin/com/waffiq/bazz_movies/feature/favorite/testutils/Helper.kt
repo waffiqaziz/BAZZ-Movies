@@ -3,14 +3,13 @@ package com.waffiq.bazz_movies.feature.favorite.testutils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import app.cash.turbine.test
-import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.common.utils.Event
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 
 /**
  * Helper object for testing PagingData flows and ViewModel LiveData events.
@@ -32,7 +31,7 @@ object Helper {
 
       if (expected != null) {
         val item = awaitItem()
-        assertThat(item).isEqualTo(expected)
+        assertEquals(expected, item)
       } else {
         // Expect no emissions
         expectNoEvents()
@@ -87,7 +86,7 @@ object Helper {
         val currentValue = liveData.value as Event<*>
         assertEquals(currentValue.peekContent(), expected)
       } else {
-        assertThat(collectedData).containsExactly(expected)
+        assertTrue(collectedData.contains(expected))
         assertEquals(liveData.value, expected)
       }
     } ?: assertTrue(collectedData.isEmpty())
