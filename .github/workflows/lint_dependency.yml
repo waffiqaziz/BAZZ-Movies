@@ -80,16 +80,6 @@ jobs:
           else
             echo "diff_found=true" >> $GITHUB_OUTPUT
             echo "Lint baseline changes detected"
-          
-            # Create summary
-            echo "## 🔍 Lint Baseline Changes" > lint-summary.md
-            echo "" >> lint-summary.md
-            echo "Updated after Renovate dependency changes." >> lint-summary.md
-            echo "" >> lint-summary.md
-          
-            # List changed files
-            echo "### Files changed:" >> lint-summary.md
-            git diff --name-only -- '**/lint-baseline.xml' | sed 's/^/- `/' | sed 's/$/`/' >> lint-summary.md
           fi
 
       # -------------------------------
@@ -113,48 +103,35 @@ jobs:
           else
             echo "diff_found=true" >> $GITHUB_OUTPUT
             echo "Dependency baseline changes detected"
-          
-            # Create summary
-            echo "## 📦 Dependency Baseline Changes" > dep-summary.md
-            echo "" >> dep-summary.md
-            echo "Updated after Renovate dependency changes." >> dep-summary.md
-            echo "" >> dep-summary.md
-          
-            # List changed files
-            echo "### Files changed:" >> dep-summary.md
-            git diff --name-only -- '**/dependencies/*.txt' | sed 's/^/- `/' | sed 's/$/`/' >> dep-summary.md
           fi
 
       # -------------------------------
       # Create PR only if there are changes
       # -------------------------------
-      # https://github.com/peter-evans/create-pull-request/commit/84ae59a2cdc2258d6fa0732dd66352dddae2a412
-      # v7.0.9
+      # https://github.com/peter-evans/create-pull-request/commit/5f6978faf089d4d20b00c7766989d076bb2fc7f1
+      # v8.1.1
       - name: Create Pull Request
         if: steps.renovate_check.outputs.is_renovate == 'true' && (steps.lint_diff.outputs.diff_found == 'true' || steps.dep_diff.outputs.diff_found == 'true')
-        uses: peter-evans/create-pull-request@84ae59a2cdc2258d6fa0732dd66352dddae2a412
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1
         with:
           token: ${{ secrets.BOT_PAT }}
           commit-message: "chore(ci): update baselines after renovate merge"
           branch: auto/update-baselines
           delete-branch: true
-          title: "🔄 Update baselines after Renovate changes"
+          title: "chore: update baselines after dependency changes"
           body: |
-            ## 🤖 Automated Baseline Updates
+            ## Automated Baseline Updates
             
             This PR was automatically created after Renovate merged dependency updates to `main`.
-            
-            ### Changes included:
-            ${{ steps.lint_diff.outputs.diff_found == 'true' && '- ✅ Updated lint baselines' || '' }}
-            ${{ steps.dep_diff.outputs.diff_found == 'true' && '- ✅ Updated dependency baselines' || '' }}
-            
+
             ### Why this PR exists
+
             After Renovate updates dependencies, the project's lint rules and dependency guard baselines 
             may need updates to reflect the new dependency versions and any new lint issues they introduce.
             
             ### Next steps
             - Review the baseline changes
-            - Merge this PR to keep baselines in sync
+            - Merge this PR to keep baselines in sync (normally before new version)
             
             ---
             
