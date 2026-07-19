@@ -1,15 +1,14 @@
 package com.waffiq.bazz_movies.feature.person.utils.helper
 
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.widget.Button
 import androidx.annotation.VisibleForTesting
-import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.R.string.years_old
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
+import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
 import java.time.LocalDate
 import java.time.Period
 import java.time.temporal.ChronoUnit
@@ -86,18 +85,18 @@ object PersonPageHelper {
       "${dateFormatterStandard(deathday)} ($ageAtDeath ${getString(years_old)})"
     }
 
-  fun Context.setupSocialLink(
+  fun setupSocialLink(
     socialId: String?,
     iconButton: Button,
     baseUrl: String,
+    uriLauncher: UriLauncher,
   ) {
-    if (!socialId.isNullOrEmpty()) {
-      iconButton.isVisible = true
+    iconButton.isVisible = !socialId.isNullOrBlank()
+
+    socialId?.takeIf { it.isNotBlank() }?.let { id ->
       iconButton.setOnClickListener {
-        startActivity(Intent(Intent.ACTION_VIEW, (baseUrl + socialId).toUri()))
+        uriLauncher.launch(baseUrl + id)
       }
-    } else {
-      iconButton.isVisible = false
     }
   }
 }

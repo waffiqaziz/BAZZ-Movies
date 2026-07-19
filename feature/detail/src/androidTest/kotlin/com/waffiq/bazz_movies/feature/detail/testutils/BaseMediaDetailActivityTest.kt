@@ -2,13 +2,9 @@ package com.waffiq.bazz_movies.feature.detail.testutils
 
 import android.content.Context
 import android.content.Intent
-import androidx.core.net.toUri
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
 import androidx.test.core.app.ActivityScenario
-import androidx.test.espresso.intent.Intents.intended
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
 import androidx.test.platform.app.InstrumentationRegistry
 import com.bumptech.glide.Glide
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
@@ -135,11 +131,6 @@ abstract class BaseMediaDetailActivityTest {
     ActivityScenario.launch<MediaDetailActivity>(intent).use { scenario ->
       block(scenario)
     }
-  }
-
-  protected fun checkIntentData(link: String) {
-    intended(hasAction(Intent.ACTION_VIEW))
-    intended(hasData(link.toUri()))
   }
 
   protected fun updateState(block: MediaDetailUiState.() -> MediaDetailUiState) =

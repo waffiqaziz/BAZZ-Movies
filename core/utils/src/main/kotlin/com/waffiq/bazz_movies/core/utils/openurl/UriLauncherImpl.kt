@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.feature.login.utils.openurl
+package com.waffiq.bazz_movies.core.utils.openurl
 
 import android.content.Context
 import android.content.Intent

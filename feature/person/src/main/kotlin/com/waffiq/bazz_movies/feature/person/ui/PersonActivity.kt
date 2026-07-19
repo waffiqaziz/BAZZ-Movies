@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.feature.person.ui
 
 import android.app.Dialog
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
@@ -11,7 +10,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
@@ -42,6 +40,7 @@ import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.uihelper.utils.InsetHelper.setupWindowInsets
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
+import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
 import com.waffiq.bazz_movies.feature.person.R.id.btn_close_dialog
 import com.waffiq.bazz_movies.feature.person.R.id.dots_indicator
 import com.waffiq.bazz_movies.feature.person.R.id.text_counter_indicator
@@ -67,6 +66,9 @@ class PersonActivity : AppCompatActivity() {
 
   @Inject
   lateinit var navigator: INavigator
+
+  @Inject
+  lateinit var uriLauncher: UriLauncher
 
   private lateinit var binding: ActivityPersonBinding
 
@@ -175,8 +177,8 @@ class PersonActivity : AppCompatActivity() {
       if (!detailPerson.homepage.isNullOrEmpty()) {
         binding.btnLink.isVisible = true
         binding.divider1.isVisible = true
-        binding.btnLink.setOnClickListener { _ ->
-          startActivity(Intent(Intent.ACTION_VIEW, detailPerson.homepage.toUri()))
+        binding.btnLink.setOnClickListener {
+          uriLauncher.launch(detailPerson.homepage)
         }
       } else {
         binding.btnLink.isGone = true
@@ -215,14 +217,14 @@ class PersonActivity : AppCompatActivity() {
 
     binding.viewGroupSocialMedia.isVisible = externalIds.hasAnySocialMediaIds()
 
-    setupSocialLink(externalIds.instagramId, binding.btnInstagram, INSTAGRAM_LINK)
-    setupSocialLink(externalIds.twitterId, binding.btnX, X_LINK)
-    setupSocialLink(externalIds.facebookId, binding.btnFacebook, FACEBOOK_LINK)
-    setupSocialLink(externalIds.tiktokId, binding.btnTiktok, TIKTOK_PERSON_LINK)
-    setupSocialLink(externalIds.youtubeId, binding.btnYoutube, YOUTUBE_CHANNEL_LINK)
+    setupSocialLink(externalIds.instagramId, binding.btnInstagram, INSTAGRAM_LINK, uriLauncher)
+    setupSocialLink(externalIds.twitterId, binding.btnX, X_LINK, uriLauncher)
+    setupSocialLink(externalIds.facebookId, binding.btnFacebook, FACEBOOK_LINK, uriLauncher)
+    setupSocialLink(externalIds.tiktokId, binding.btnTiktok, TIKTOK_PERSON_LINK, uriLauncher)
+    setupSocialLink(externalIds.youtubeId, binding.btnYoutube, YOUTUBE_CHANNEL_LINK, uriLauncher)
 
-    setupSocialLink(externalIds.imdbId, binding.btnImdb, IMDB_PERSON_LINK)
-    setupSocialLink(externalIds.wikidataId, binding.btnWikidata, WIKIDATA_PERSON_LINK)
+    setupSocialLink(externalIds.imdbId, binding.btnImdb, IMDB_PERSON_LINK, uriLauncher)
+    setupSocialLink(externalIds.wikidataId, binding.btnWikidata, WIKIDATA_PERSON_LINK, uriLauncher)
   }
 
   private fun showImageDialog(position: Int, imageUrls: List<String>) {

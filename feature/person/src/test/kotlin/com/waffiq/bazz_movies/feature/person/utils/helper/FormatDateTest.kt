@@ -17,7 +17,7 @@ import org.junit.Before
 import org.junit.Test
 import java.time.LocalDate
 
-class PersonPageHelperTest {
+class FormatDateTest {
 
   val fixedNow: LocalDate = LocalDate.of(2025, 5, 15) // use date 15 May 2025
   val context: Context = mockk()

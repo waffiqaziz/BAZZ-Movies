@@ -1,10 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.ui.manager
 
-import android.content.Context
-import android.content.Intent
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +13,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_arrow_down
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_arrow_up
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
+import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding
 import com.waffiq.bazz_movies.feature.detail.databinding.WatchProvidersSectionBinding
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.WatchProvidersAdapter
@@ -29,15 +27,11 @@ import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
  * - Handling expand/collapse behavior for provider sections
  * - Observing and displaying the watch provider state from the ViewModel
  * - Opening external links to TMDB or JustWatch
- *
- * @param binding The view binding for the detail screen layout.
- * @param context A [Context] used for launching intents and accessing resources.
- * @param dataExtra The movie or TV show data being displayed.
  */
 class WatchProvidersManager(
   private val binding: ActivityMediaDetailBinding,
-  private val context: Context,
   private val dataExtra: MediaItem,
+  private val uriLauncher: UriLauncher,
 ) {
   private lateinit var adapterAds: WatchProvidersAdapter
   private lateinit var adapterBuy: WatchProvidersAdapter
@@ -114,11 +108,8 @@ class WatchProvidersManager(
    * Launches the browser with the TMDB "watch" page for the current media item.
    */
   private fun openTMDBWatchPage() {
-    context.startActivity(
-      Intent(
-        Intent.ACTION_VIEW,
-        "$TMDB_LINK_MAIN/${dataExtra.mediaType}/${dataExtra.id}/watch".toUri(),
-      ),
+    uriLauncher.launch(
+      "$TMDB_LINK_MAIN/${dataExtra.mediaType}/${dataExtra.id}/watch",
     )
   }
 
@@ -126,7 +117,7 @@ class WatchProvidersManager(
    * Opens the JustWatch website in the browser.
    */
   private fun openJustWatch() {
-    context.startActivity(Intent(Intent.ACTION_VIEW, JUSTWATCH_LINK_MAIN.toUri()))
+    uriLauncher.launch(JUSTWATCH_LINK_MAIN)
   }
 
   /**

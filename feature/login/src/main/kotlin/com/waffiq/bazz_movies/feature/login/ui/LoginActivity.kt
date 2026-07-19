@@ -26,6 +26,7 @@ import com.waffiq.bazz_movies.core.uihelper.utils.Animation
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeInAlpha50
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
+import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
 import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye
 import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye_off
 import com.waffiq.bazz_movies.feature.login.databinding.ActivityLoginBinding
@@ -34,7 +35,6 @@ import com.waffiq.bazz_movies.feature.login.utils.Helper.loadTypeface
 import com.waffiq.bazz_movies.feature.login.utils.InsetListener.applyWindowInsets
 import com.waffiq.bazz_movies.feature.login.utils.common.Constants.TMDB_LINK_FORGET_PASSWORD
 import com.waffiq.bazz_movies.feature.login.utils.common.Constants.TMDB_LINK_SIGNUP
-import com.waffiq.bazz_movies.feature.login.utils.openurl.UriLauncher
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
