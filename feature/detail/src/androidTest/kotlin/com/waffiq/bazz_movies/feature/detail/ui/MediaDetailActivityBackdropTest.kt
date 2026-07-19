@@ -44,7 +44,7 @@ class MediaDetailActivityBackdropTest : BaseMediaDetailActivityTest() {
   val mockPrefViewModel: DetailUserPrefViewModel = mockk(relaxed = true)
 
   @Before
-  fun setup() {
+  fun init() {
     hiltRule.inject()
     setupMocks()
     Intents.init()

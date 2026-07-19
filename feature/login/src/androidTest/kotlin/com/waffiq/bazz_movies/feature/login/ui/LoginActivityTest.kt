@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.feature.login.ui
 
 import android.content.res.Configuration
 import androidx.lifecycle.MutableLiveData
+import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.designsystem.R.string.guest_user
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomAssertions.isPasswordHidden
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performAction
@@ -16,6 +17,7 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isEnab
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotEnable
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.withDrawable
+import com.waffiq.bazz_movies.core.instrumentationtest.DefaultMockUriLauncherModule
 import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye_off
 import com.waffiq.bazz_movies.feature.login.R.id.activity_login
 import com.waffiq.bazz_movies.feature.login.R.id.btn_eye
@@ -28,9 +30,12 @@ import com.waffiq.bazz_movies.feature.login.R.id.progress_bar
 import com.waffiq.bazz_movies.feature.login.R.id.tv_guest
 import com.waffiq.bazz_movies.feature.login.R.id.tv_joinTMDB
 import com.waffiq.bazz_movies.feature.login.ui.testutils.BaseLoginActivityTest
+import com.waffiq.bazz_movies.feature.login.ui.testutils.FakeUriLauncher
 import com.waffiq.bazz_movies.feature.login.utils.common.Constants.TMDB_LINK_FORGET_PASSWORD
 import com.waffiq.bazz_movies.feature.login.utils.common.Constants.TMDB_LINK_SIGNUP
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import io.mockk.every
 import io.mockk.verify
 import org.junit.Assert.assertEquals
@@ -38,7 +43,12 @@ import org.junit.Test
 import kotlin.random.Random
 
 @HiltAndroidTest
+@UninstallModules(DefaultMockUriLauncherModule::class)
 class LoginActivityTest : BaseLoginActivityTest() {
+
+  @BindValue
+  @JvmField
+  val fakeUriLauncher = FakeUriLauncher(ApplicationProvider.getApplicationContext())
 
   @Test
   fun loginScreen_whenInitialized_showsAllViewsCorrectly() {
@@ -60,19 +70,19 @@ class LoginActivityTest : BaseLoginActivityTest() {
   fun clickForgetPassword_successful_launchesCorrectURI() {
     btn_forget_password.performClick()
 
-    assertEquals(1, fakeLauncher.launchedUris.size)
-    assertEquals(TMDB_LINK_FORGET_PASSWORD, fakeLauncher.launchedUris.first())
+    assertEquals(1, fakeUriLauncher.launchedUris.size)
+    assertEquals(TMDB_LINK_FORGET_PASSWORD, fakeUriLauncher.launchedUris.first())
   }
 
   @Test
   fun clickJoinTMDB_successful_launchesCorrectURI() {
     tv_joinTMDB.performClick()
-    assertEquals(TMDB_LINK_SIGNUP, fakeLauncher.launchedUris.first())
+    assertEquals(TMDB_LINK_SIGNUP, fakeUriLauncher.launchedUris.first())
   }
 
   @Test
   fun clickJoinTMDB_noBrowser_launchesToast() {
-    fakeLauncher.shouldFail = true
+    fakeUriLauncher.shouldFail = true
 
     tv_joinTMDB.performClick()
     // Hard to test toast in code, so must check it manually

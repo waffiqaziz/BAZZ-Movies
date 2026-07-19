@@ -1,17 +1,12 @@
 package com.waffiq.bazz_movies.feature.more.ui
 
-import android.content.Intent
 import android.view.View
 import android.widget.EditText
-import androidx.core.net.toUri
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.intent.Intents.intended
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -32,6 +27,7 @@ import com.waffiq.bazz_movies.core.models.UserModel
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
+import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
 import com.waffiq.bazz_movies.feature.more.R.id.btn_about_us
 import com.waffiq.bazz_movies.feature.more.R.id.btn_country_picker
 import com.waffiq.bazz_movies.feature.more.R.id.btn_faq
@@ -62,6 +58,7 @@ import org.hamcrest.Matcher
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import javax.inject.Inject
 
 @HiltAndroidTest
 class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper() {
@@ -93,6 +90,9 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   @JvmField
   val mockUserPrefViewModel: UserPreferenceViewModel = mockk(relaxed = true)
 
+  @Inject
+  lateinit var mockUriLauncher: UriLauncher
+
   @Before
   override fun setUp() {
     hiltRule.inject()
@@ -109,31 +109,33 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
       mockUserPrefViewModel,
     )
 
+    every { mockUriLauncher.launch(any()) } just Runs
+
     super.setUp()
   }
 
   @Test
   fun buttonFaq_whenClicked_shouldOpenFaqLink() {
     btn_faq.performClick()
-    checkIntentData(FAQ_LINK)
+    checkUriLauncher(FAQ_LINK)
   }
 
   @Test
   fun buttonPrivacyPolicy_whenClicked_shouldOpenPrivacyPolicyLink() {
     btn_privacy_policy.performClick()
-    checkIntentData(PRIVACY_POLICY_LINK)
+    checkUriLauncher(PRIVACY_POLICY_LINK)
   }
 
   @Test
   fun buttonTermsCondition_whenClicked_shouldOpenTermsConditionsLink() {
     btn_terms_condition.performClick()
-    checkIntentData(TERMS_CONDITIONS_LINK)
+    checkUriLauncher(TERMS_CONDITIONS_LINK)
   }
 
   @Test
   fun buttonSuggestion_whenClicked_shouldOpenFormHelperLink() {
     btn_suggestion.performClick()
-    checkIntentData(FORM_HELPER)
+    checkUriLauncher(FORM_HELPER)
   }
 
   @Test
@@ -267,9 +269,8 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
     img_avatar.isDisplayed()
   }
 
-  private fun checkIntentData(link: String) {
-    intended(hasAction(Intent.ACTION_VIEW))
-    intended(hasData(link.toUri()))
+  private fun checkUriLauncher(link: String) {
+    verify { mockUriLauncher.launch(link) }
   }
 
   private fun checkAvatarIsVisible(userModel: UserModel, viewMatcher: Matcher<View>) {

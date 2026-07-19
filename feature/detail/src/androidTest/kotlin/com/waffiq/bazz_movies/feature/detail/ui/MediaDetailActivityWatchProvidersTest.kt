@@ -3,13 +3,13 @@ package com.waffiq.bazz_movies.feature.detail.ui
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.intent.Intents
 import androidx.test.platform.app.InstrumentationRegistry
-import com.waffiq.bazz_movies.core.common.utils.Constants.JUSTWATCH_LINK_MAIN
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions.clickItemAt
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
+import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_justwatch
 import com.waffiq.bazz_movies.feature.detail.R.id.layout_ads
 import com.waffiq.bazz_movies.feature.detail.R.id.layout_buy
@@ -30,12 +30,17 @@ import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import io.mockk.Runs
+import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.flow.update
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import javax.inject.Inject
 
 @HiltAndroidTest
 class MediaDetailActivityWatchProvidersTest : BaseMediaDetailActivityTest() {
@@ -54,6 +59,9 @@ class MediaDetailActivityWatchProvidersTest : BaseMediaDetailActivityTest() {
   @BindValue
   @JvmField
   val mockPrefViewModel: DetailUserPrefViewModel = mockk(relaxed = true)
+
+  @Inject
+  lateinit var mockUriLauncher: UriLauncher
 
   @Before
   fun setup() {
@@ -74,6 +82,8 @@ class MediaDetailActivityWatchProvidersTest : BaseMediaDetailActivityTest() {
     setupPreferencesViewModelMocks(mockPrefViewModel)
     setupMediaDetailViewModelMocks(mockMediaDetailViewModel)
     setupNavigatorMocks(mockNavigator)
+
+    every { mockUriLauncher.launch(any()) } just Runs
   }
 
   @Test
@@ -116,7 +126,7 @@ class MediaDetailActivityWatchProvidersTest : BaseMediaDetailActivityTest() {
       btn_justwatch.performScrollTo()
       tv_summary_header.performScrollTo()
       btn_justwatch.performClick()
-      checkIntentData(JUSTWATCH_LINK_MAIN)
+      verify { mockUriLauncher.launch(any()) }
     }
   }
 

@@ -152,7 +152,7 @@
             app:layout_constraintTop_toTopOf="@+id/iv_picture_backdrop">
 
             <ImageButton
-              android:id="@+id/ib_play"
+              android:id="@+id/btn_play"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:background="@android:color/transparent"

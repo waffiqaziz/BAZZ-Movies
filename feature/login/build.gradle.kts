@@ -9,6 +9,7 @@ dependencies {
   implementation(project(":core:common"))
   implementation(project(":core:models"))
   implementation(project(":core:uihelper"))
+  implementation(project(":core:utils"))
   implementation(project(":core:user"))
 
   implementation(libs.androidx.appcompat)

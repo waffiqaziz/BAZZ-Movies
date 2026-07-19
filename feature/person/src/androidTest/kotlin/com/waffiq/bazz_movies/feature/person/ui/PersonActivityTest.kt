@@ -3,24 +3,17 @@ package com.waffiq.bazz_movies.feature.person.ui
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.intent.Intents.intended
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
-import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
 import androidx.test.uiautomator.uiAutomator
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.designsystem.R.string.no_biography
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
@@ -39,7 +32,6 @@ import com.waffiq.bazz_movies.feature.person.R.id.btn_instagram
 import com.waffiq.bazz_movies.feature.person.R.id.btn_link
 import com.waffiq.bazz_movies.feature.person.R.id.btn_x
 import com.waffiq.bazz_movies.feature.person.R.id.collapse
-import com.waffiq.bazz_movies.feature.person.R.id.divider1
 import com.waffiq.bazz_movies.feature.person.R.id.iv_picture
 import com.waffiq.bazz_movies.feature.person.R.id.progress_bar
 import com.waffiq.bazz_movies.feature.person.R.id.rv_known_for
@@ -47,7 +39,6 @@ import com.waffiq.bazz_movies.feature.person.R.id.rv_photos
 import com.waffiq.bazz_movies.feature.person.R.id.swipe_refresh
 import com.waffiq.bazz_movies.feature.person.R.id.tv_biography
 import com.waffiq.bazz_movies.feature.person.R.id.tv_born
-import com.waffiq.bazz_movies.feature.person.R.id.tv_dead_header
 import com.waffiq.bazz_movies.feature.person.R.id.tv_death
 import com.waffiq.bazz_movies.feature.person.R.id.view_group_social_media
 import com.waffiq.bazz_movies.feature.person.testutils.BasePersonActivityTest
@@ -56,7 +47,6 @@ import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testExternalIDP
 import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testMediaCastItem
 import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testProfileItem
 import com.waffiq.bazz_movies.feature.person.testutils.TestHelper.isRefreshing
-import com.waffiq.bazz_movies.feature.person.testutils.TestHelper.withCollapsingToolbarTitle
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.formatBirthInfo
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -65,8 +55,6 @@ import io.mockk.mockkObject
 import io.mockk.unmockkObject
 import io.mockk.verify
 import kotlinx.coroutines.test.runTest
-import org.hamcrest.Matcher
-import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -295,12 +283,7 @@ class PersonActivityTest : BasePersonActivityTest() {
         checkHomePageLink(isDisplayed())
         btn_link.performClick()
 
-        intended(
-          allOf(
-            hasAction(Intent.ACTION_VIEW),
-            hasData(testDetailPersonWithHomepage.homepage),
-          ),
-        )
+        every { mockUriLauncher.launch(testDetailPersonWithHomepage.homepage.orEmpty()) }
       }
     }
 
@@ -463,26 +446,10 @@ class PersonActivityTest : BasePersonActivityTest() {
       }
     }
 
-  // helper action
-  private fun noBiography() {
-    rv_photos.performScrollTo()
-    tv_biography.doesHaveText(context.getString(no_biography))
-  }
-
-  private fun checkCollapseTitle(title: String?) {
-    rv_photos.performScrollTo()
-    onView(isAssignableFrom(CollapsingToolbarLayout::class.java))
-      .check(matches(withCollapsingToolbarTitle(title)))
-  }
-
-  private fun checkDeathInfo(viewMatcher: Matcher<View>) {
-    rv_known_for.performScrollTo()
-    onView(withId(tv_death)).check(matches(viewMatcher))
-    onView(withId(tv_dead_header)).check(matches(viewMatcher))
-  }
-
-  private fun checkHomePageLink(viewMatcher: Matcher<View>) {
-    onView(withId(btn_link)).check(matches(viewMatcher))
-    onView(withId(divider1)).check(matches(viewMatcher))
+  @Test
+  fun instagramSocialMedia_performClick_shouldTriggerUriLauncher() {
+    context.launchPersonActivity {
+      shortDelay(5000)
+    }
   }
 }

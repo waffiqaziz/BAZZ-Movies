@@ -18,6 +18,7 @@ import com.waffiq.bazz_movies.core.uihelper.utils.InsetHelper.setupWindowInsets
 import com.waffiq.bazz_movies.core.uihelper.utils.ScrollActionBarUtils.scrollActionBarBehavior
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectFlow
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectPagingData
+import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding
 import com.waffiq.bazz_movies.feature.detail.ui.manager.DetailDataManager
 import com.waffiq.bazz_movies.feature.detail.ui.manager.DetailUIManager
@@ -36,6 +37,9 @@ class MediaDetailActivity : AppCompatActivity() {
 
   @Inject
   lateinit var navigator: INavigator
+
+  @Inject
+  lateinit var uriLauncher: UriLauncher
 
   private lateinit var binding: ActivityMediaDetailBinding
   private lateinit var dataExtra: MediaItem
@@ -92,12 +96,13 @@ class MediaDetailActivity : AppCompatActivity() {
       binding = binding,
       activity = this,
       navigator = navigator,
+      uriLauncher = uriLauncher,
     )
 
     watchProvidersManager = WatchProvidersManager(
       binding = binding,
-      context = this,
       dataExtra = dataExtra,
+      uriLauncher = uriLauncher,
     )
 
     dataManager = DetailDataManager(

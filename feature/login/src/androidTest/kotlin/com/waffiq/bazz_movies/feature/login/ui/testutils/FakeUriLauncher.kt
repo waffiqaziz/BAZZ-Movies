@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.feature.login.ui.testutils
 import android.content.Context
 import android.widget.Toast
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_browser_installed
-import com.waffiq.bazz_movies.feature.login.utils.openurl.UriLauncher
+import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton

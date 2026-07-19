@@ -1,7 +1,5 @@
 package com.waffiq.bazz_movies.feature.detail.ui.manager
 
-import android.content.ActivityNotFoundException
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
@@ -19,13 +17,13 @@ import com.google.android.material.sidesheet.SideSheetBehavior
 import com.google.android.material.sidesheet.SideSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_LONG
+import com.waffiq.bazz_movies.core.common.utils.Constants.YOUTUBE_LINK_VIDEO
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_backdrops
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.R.string.total_episodes
-import com.waffiq.bazz_movies.core.designsystem.R.string.yt_not_installed
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeOut
@@ -33,6 +31,7 @@ import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWith
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.dateOf
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
+import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding
 import com.waffiq.bazz_movies.feature.detail.databinding.SideSheetContentBinding
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
@@ -44,7 +43,6 @@ import com.waffiq.bazz_movies.feature.detail.ui.adapter.CastAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.GenreAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.KeywordsAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.RecommendationAdapter
-import com.waffiq.bazz_movies.feature.detail.ui.launcher.DefaultTrailerLauncher
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.CreateTableViewHelper.createTable
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.backdropOriginalSource
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.isBackdropNotAvailable
@@ -71,10 +69,6 @@ import com.waffiq.bazz_movies.navigation.MediaSource
  * - Recommendations and trailers
  * - External ratings from TMDb and OMDb
  * - UI state handling (loading, error messages, etc.)
- *
- * @param binding The binding object for the detail activity layout.
- * @param activity The parent activity for accessing lifecycle, resources, and context.
- * @param navigator A navigation interface used for handling item clicks.
  */
 
 @Suppress("TooManyFunctions")
@@ -82,6 +76,7 @@ class DetailUIManager(
   private val binding: ActivityMediaDetailBinding,
   private val activity: AppCompatActivity,
   private val navigator: INavigator,
+  private val uriLauncher: UriLauncher,
 ) {
   private lateinit var adapterCast: CastAdapter
   private lateinit var adapterGenre: GenreAdapter
@@ -95,9 +90,6 @@ class DetailUIManager(
 
   private var mSnackbar: Snackbar? = null
   private var toast: Toast? = null
-
-  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  var trailerLauncher = DefaultTrailerLauncher()
 
   init {
     setupSideSheet()
@@ -378,24 +370,12 @@ class DetailUIManager(
    */
   fun setupTrailerButton(videoLink: String?) {
     val hasTrailer = !videoLink.isNullOrBlank()
-    binding.ibPlay.isVisible = hasTrailer
+    binding.btnPlay.isVisible = hasTrailer
 
     if (hasTrailer) {
-      binding.ibPlay.setOnClickListener {
-        playTrailer(videoLink)
+      binding.btnPlay.setOnClickListener {
+        uriLauncher.launch("$YOUTUBE_LINK_VIDEO$videoLink")
       }
-    }
-  }
-
-  /**
-   * Open trailer in YouTube link.
-   */
-  fun playTrailer(link: String) {
-    try {
-      trailerLauncher.launch(activity, link)
-    } catch (e: ActivityNotFoundException) {
-      Log.e(TAG, "YouTube app not installed", e)
-      showSnackbarWarning(activity.getString(yt_not_installed))
     }
   }
 
@@ -480,9 +460,5 @@ class DetailUIManager(
     mSnackbar = null
     toast?.cancel()
     toast = null
-  }
-
-  companion object {
-    private const val TAG = "DetailMovieUIManager"
   }
 }

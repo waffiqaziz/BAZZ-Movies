@@ -14,22 +14,22 @@ import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performAction
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performType
+import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
 import com.waffiq.bazz_movies.feature.login.R.id.btn_login
 import com.waffiq.bazz_movies.feature.login.R.id.et_pass
 import com.waffiq.bazz_movies.feature.login.R.id.et_username
 import com.waffiq.bazz_movies.feature.login.ui.LoginActivity
 import com.waffiq.bazz_movies.feature.login.ui.LoginViewModel
-import com.waffiq.bazz_movies.feature.login.utils.openurl.UriLauncher
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.HiltAndroidRule
 import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
-import jakarta.inject.Inject
 import org.hamcrest.Matcher
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
+import javax.inject.Inject
 
 abstract class BaseLoginActivityTest {
 
@@ -44,7 +44,7 @@ abstract class BaseLoginActivityTest {
   protected lateinit var scenario: ActivityScenario<LoginActivity>
 
   protected val fakeLauncher: FakeUriLauncher
-    get() = uriLauncher as FakeUriLauncher
+    get() = mockUriLauncher as FakeUriLauncher
 
   @get:Rule(order = 0)
   var hiltRule = HiltAndroidRule(this)
@@ -53,7 +53,7 @@ abstract class BaseLoginActivityTest {
   var intentsRule = IntentsRule()
 
   @Inject
-  lateinit var uriLauncher: UriLauncher
+  lateinit var mockUriLauncher: UriLauncher
 
   @Inject
   lateinit var mockNavigator: INavigator

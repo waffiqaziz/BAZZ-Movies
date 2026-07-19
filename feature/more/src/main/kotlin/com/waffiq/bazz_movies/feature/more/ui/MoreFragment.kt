@@ -3,7 +3,6 @@
 package com.waffiq.bazz_movies.feature.more.ui
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.VisibleForTesting
-import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -45,6 +43,7 @@ import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeOut
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
+import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
 import com.waffiq.bazz_movies.feature.more.databinding.FragmentMoreBinding
 import com.waffiq.bazz_movies.feature.more.ui.viewmodel.MoreLocalViewModel
 import com.waffiq.bazz_movies.feature.more.ui.viewmodel.MoreUserViewModel
@@ -63,6 +62,9 @@ class MoreFragment : Fragment() {
 
   @Inject
   lateinit var snackbar: ISnackbar
+
+  @Inject
+  lateinit var uriLauncher: UriLauncher
 
   private var _binding: FragmentMoreBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
@@ -329,7 +331,7 @@ class MoreFragment : Fragment() {
   }
 
   private fun openUrl(url: String) {
-    startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
+    uriLauncher.launch(url)
   }
 
   override fun onResume() {
