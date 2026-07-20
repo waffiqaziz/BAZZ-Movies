@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.instrumentationtest
+package com.waffiq.bazz_movies.core.instrumentationtest.module
 
 import com.waffiq.bazz_movies.core.utils.di.UriLauncherModule
 import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher

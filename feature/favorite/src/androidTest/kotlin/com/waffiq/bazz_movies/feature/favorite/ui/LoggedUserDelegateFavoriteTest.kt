@@ -17,7 +17,6 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.oldest_added
 import com.waffiq.bazz_movies.core.designsystem.R.string.recently_added
 import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.tv_series
-import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.snackbar_anchor_test
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performTextClick
@@ -42,8 +41,6 @@ class LoggedUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
   @Before
   override fun baseSetup() {
     super.baseSetup()
-    every { mockNavigator.snackbarAnchor() } returns snackbar_anchor_test
-    setupSnackbar()
     loggedUser(mockFavoriteViewModel)
   }
 

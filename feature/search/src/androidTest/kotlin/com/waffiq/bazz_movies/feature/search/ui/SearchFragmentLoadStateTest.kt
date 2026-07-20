@@ -8,54 +8,20 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
-import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_error
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_search_no_result_view
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_search_view
 import com.waffiq.bazz_movies.feature.search.R.id.rv_search
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
-import com.waffiq.bazz_movies.feature.search.testutils.DefaultFragmentTestHelper
-import com.waffiq.bazz_movies.feature.search.testutils.SearchFragmentTestHelper
+import com.waffiq.bazz_movies.feature.search.testutils.BaseSearchFragmentTest
 import com.waffiq.bazz_movies.feature.search.ui.adapter.SearchAdapter
-import com.waffiq.bazz_movies.feature.search.ui.viewmodel.SearchViewModel
-import com.waffiq.bazz_movies.navigation.INavigator
-import dagger.hilt.android.testing.BindValue
-import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
-import io.mockk.mockk
 import io.mockk.spyk
-import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class SearchFragmentLoadStateTest : SearchFragmentTestHelper by DefaultFragmentTestHelper() {
-
-  @get:Rule
-  var hiltRule = HiltAndroidRule(this)
-
-  @BindValue
-  @JvmField
-  val mockNavigator: INavigator = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockSnackbar: ISnackbar = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockSearchViewModel: SearchViewModel = mockk(relaxed = true)
-
-  @Before
-  fun setUp() {
-    hiltRule.inject()
-
-    setupViewModelMocks(mockSearchViewModel)
-    setupSnackbarMocks(mockSnackbar)
-    setupFragment(mockNavigator)
-    setupToolbar()
-  }
+class SearchFragmentLoadStateTest : BaseSearchFragmentTest() {
 
   @Test
   fun handleRefreshState_whenErrorOccurs_shouldHiddenRecyclerView() {

@@ -23,17 +23,10 @@ import com.waffiq.bazz_movies.feature.favorite.ui.fragment.FavoriteFragment
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
 import org.junit.Test
 
 @HiltAndroidTest
 class EmptyCaseFavoriteFragmentTest : BaseFavoriteFragmentTestHelper() {
-
-  @Before
-  override fun baseSetup() {
-    super.baseSetup()
-    setupSnackbar()
-  }
 
   @Test
   fun loggedUser_noFavorite_showEmptyIllustration() =

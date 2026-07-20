@@ -101,7 +101,7 @@ abstract class BaseFavoriteFragmentTestHelper {
   @Before
   open fun baseSetup() {
     hiltRule.inject()
-    setupMocks(mockUserPrefViewModel)
+    setupMocks()
   }
 
   protected lateinit var favoriteFragment: FavoriteFragment
@@ -118,14 +118,17 @@ abstract class BaseFavoriteFragmentTestHelper {
   protected var mockSnackBarAdded: Flow<SnackBarUserLoginData> =
     mockSnackBarChannel.receiveAsFlow()
 
-  protected fun setupMocks(userPreferenceViewModel: UserPreferenceViewModel) {
+  private fun setupMocks() {
     mockUserModel = MutableLiveData()
     mockFavoriteMoviesFromDB = MutableLiveData()
     mockFavoriteTvFromDB = MutableLiveData()
     mockUndoDB = MutableLiveData()
     mockDbResult = MutableLiveData()
 
-    every { userPreferenceViewModel.getUserPref() } returns mockUserModel
+    every { mockNavigator.snackbarAnchor() } returns snackbar_anchor_test
+    every { mockUserPrefViewModel.getUserPref() } returns mockUserModel
+
+    setupSnackbar()
   }
 
   protected fun loggedUser(favoriteViewModel: FavoriteViewModel) {
@@ -174,7 +177,7 @@ abstract class BaseFavoriteFragmentTestHelper {
     every { sharedDBViewModel.updateSort(any()) } just Runs
   }
 
-  protected fun setupSnackbar() {
+  private fun setupSnackbar() {
     every { mockSnackbar.showSnackbarWarning(any<String>()) } answers {
       val message = firstArg<String>()
       try {

@@ -8,57 +8,29 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
-import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_error
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_search_view
 import com.waffiq.bazz_movies.feature.search.R.id.rv_search
-import com.waffiq.bazz_movies.feature.search.testutils.DefaultFragmentTestHelper
-import com.waffiq.bazz_movies.feature.search.testutils.SearchFragmentTestHelper
-import com.waffiq.bazz_movies.feature.search.ui.viewmodel.SearchViewModel
-import com.waffiq.bazz_movies.navigation.INavigator
-import dagger.hilt.android.testing.BindValue
-import dagger.hilt.android.testing.HiltAndroidRule
+import com.waffiq.bazz_movies.feature.search.testutils.BaseSearchFragmentTest
 import dagger.hilt.android.testing.HiltAndroidTest
-import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class SearchFragmentAdapterLoadStateListenerTest :
-  SearchFragmentTestHelper by DefaultFragmentTestHelper() {
-
-  @get:Rule
-  var hiltRule = HiltAndroidRule(this)
-
-  @BindValue
-  @JvmField
-  val mockNavigator: INavigator = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockSnackbar: ISnackbar = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockSearchViewModel: SearchViewModel = mockk(relaxed = true)
+class SearchFragmentAdapterLoadStateListenerTest : BaseSearchFragmentTest() {
 
   private val fakeLoadStateFlow = MutableStateFlow(idleLoadStates())
 
   @Before
-  fun setUp() {
-    hiltRule.inject()
+  override fun setup() {
+    super.setup()
 
-    setupViewModelMocks(mockSearchViewModel)
-    setupSnackbarMocks(mockSnackbar)
-    setupFragment(mockNavigator)
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       searchFragment.loadStateFlowProvider = fakeLoadStateFlow
       searchFragment.adapterLoadStateListener()
     }
-    setupToolbar()
   }
 
   @Test

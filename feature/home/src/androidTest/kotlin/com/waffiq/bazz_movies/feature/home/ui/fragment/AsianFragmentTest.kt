@@ -12,9 +12,6 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisp
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitUntilVisible
-import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
-import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
-import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.home.R.id.btn_anime_all_time
 import com.waffiq.bazz_movies.feature.home.R.id.btn_anime_this_season
 import com.waffiq.bazz_movies.feature.home.R.id.btn_more_anime
@@ -29,64 +26,15 @@ import com.waffiq.bazz_movies.feature.home.R.id.shimmer_layout_asian
 import com.waffiq.bazz_movies.feature.home.R.id.swipe_refresh_asian
 import com.waffiq.bazz_movies.feature.home.testutils.BaseHomeFragmentTest
 import com.waffiq.bazz_movies.feature.home.ui.domain.AnimePeriod
-import com.waffiq.bazz_movies.feature.home.ui.viewmodel.AsianViewModel
-import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
-import com.waffiq.bazz_movies.feature.home.ui.viewmodel.TvSeriesViewModel
-import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListType
-import dagger.hilt.android.testing.BindValue
-import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
-import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.MutableStateFlow
-import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
 class AsianFragmentTest : BaseHomeFragmentTest() {
-
-  @get:Rule
-  var hiltRule = HiltAndroidRule(this)
-
-  @BindValue
-  @JvmField
-  val mockNavigator: INavigator = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockSnackbar: ISnackbar = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockAsianViewModel: AsianViewModel = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockMovieViewModel: MovieViewModel = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockTvSeriesViewModel: TvSeriesViewModel = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockUserPreferenceViewModel: UserPreferenceViewModel = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockRegionViewModel: RegionViewModel = mockk(relaxed = true)
-
-  @Before
-  fun setUp() {
-    hiltRule.inject()
-    setupMockNavigator(mockNavigator)
-    setupMockRegion(mockUserPreferenceViewModel, mockRegionViewModel)
-    setupMockViewModel(mockMovieViewModel, mockTvSeriesViewModel)
-    setupMockAnimeViewModel(mockAsianViewModel)
-  }
 
   @Test
   fun setData_whenLoadSuccess_shouldShowContentAndHideError() {

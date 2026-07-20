@@ -11,8 +11,11 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
 import com.waffiq.bazz_movies.core.models.MediaItem
+import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
+import com.waffiq.bazz_movies.feature.home.testutils.pagingsource.NeverLoadingPagingSource
+import com.waffiq.bazz_movies.feature.home.testutils.pagingsource.TestPagingSource
 import com.waffiq.bazz_movies.feature.home.ui.domain.AnimePeriod
 import com.waffiq.bazz_movies.feature.home.ui.domain.TrendingPeriod
 import com.waffiq.bazz_movies.feature.home.ui.fragment.HomeFragment
@@ -23,20 +26,46 @@ import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType
 import com.waffiq.bazz_movies.navigation.MediaSource
+import dagger.hilt.android.testing.HiltAndroidRule
 import io.mockk.Runs
-import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.just
 import io.mockk.verify
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.After
+import org.junit.Before
 import org.junit.Rule
+import javax.inject.Inject
 
 abstract class BaseHomeFragmentTest {
 
   @get:Rule
   val instantTaskExecutorRule = InstantTaskExecutorRule()
+
+  @get:Rule
+  var hiltRule = HiltAndroidRule(this)
+
+  @Inject
+  lateinit var mockNavigator: INavigator
+
+  @Inject
+  lateinit var mockSnackbar: ISnackbar
+
+  @Inject
+  lateinit var mockAsianViewModel: AsianViewModel
+
+  @Inject
+  lateinit var mockMovieViewModel: MovieViewModel
+
+  @Inject
+  lateinit var mockTvSeriesViewModel: TvSeriesViewModel
+
+  @Inject
+  lateinit var mockUserPreferenceViewModel: UserPreferenceViewModel
+
+  @Inject
+  lateinit var mockRegionViewModel: RegionViewModel
 
   lateinit var scenario: ActivityScenario<*>
 
@@ -59,22 +88,6 @@ abstract class BaseHomeFragmentTest {
       pagingSourceFactory = { TestPagingSource(items) },
     ).flow
 
-  protected fun createSuccessThenErrorFlow(
-    items: List<MediaItem> = listOf(mediaItem, mediaItem.copy(id = 2)),
-  ): Flow<PagingData<MediaItem>> =
-    Pager(
-      config = PagingConfig(pageSize = 10, enablePlaceholders = false),
-      pagingSourceFactory = { SuccessThenErrorPagingSource(items) },
-    ).flow
-
-  protected fun createSuccessThenStuckFlow(
-    items: List<MediaItem> = listOf(mediaItem, mediaItem.copy(id = 2)),
-  ): Flow<PagingData<MediaItem>> =
-    Pager(
-      config = PagingConfig(pageSize = 10, enablePlaceholders = false),
-      pagingSourceFactory = { SuccessThenStuckPagingSource(items) },
-    ).flow
-
   protected fun createErrorPagingFlow(): Flow<PagingData<MediaItem>> =
     Pager(
       config = PagingConfig(pageSize = 10, enablePlaceholders = false),
@@ -89,46 +102,39 @@ abstract class BaseHomeFragmentTest {
 
   private val trendingPeriodFlow = MutableStateFlow(TrendingPeriod.WEEK)
 
-  protected fun setupMockViewModel(
-    movieViewModel: MovieViewModel,
-    tvSeriesViewModel: TvSeriesViewModel,
-  ) {
-    every { movieViewModel.getTopRatedMovies() } returns createPagingFlow()
-    every { movieViewModel.getPopularMovies() } returns createPagingFlow()
-    every { movieViewModel.trendingPeriod } returns trendingPeriodFlow
-    every { movieViewModel.trending } returns createPagingFlow()
-    every { movieViewModel.getUpcomingMovies() } returns createPagingFlow()
-    every { movieViewModel.getPlayingNowMovies() } returns createPagingFlow()
-    every { movieViewModel.setTrendingPeriod(any()) } just Runs
-    every { tvSeriesViewModel.getPopularTv() } returns createPagingFlow()
-    every { tvSeriesViewModel.getAiringThisWeekTv() } returns createPagingFlow()
-    every { tvSeriesViewModel.getAiringTodayTv() } returns createPagingFlow()
-    every { tvSeriesViewModel.getTopRatedTv() } returns createPagingFlow()
+  protected fun setupMockViewModel() {
+    every { mockMovieViewModel.getTopRatedMovies() } returns createPagingFlow()
+    every { mockMovieViewModel.getPopularMovies() } returns createPagingFlow()
+    every { mockMovieViewModel.trendingPeriod } returns trendingPeriodFlow
+    every { mockMovieViewModel.trending } returns createPagingFlow()
+    every { mockMovieViewModel.getUpcomingMovies() } returns createPagingFlow()
+    every { mockMovieViewModel.getPlayingNowMovies() } returns createPagingFlow()
+    every { mockMovieViewModel.setTrendingPeriod(any()) } just Runs
+    every { mockTvSeriesViewModel.getPopularTv() } returns createPagingFlow()
+    every { mockTvSeriesViewModel.getAiringThisWeekTv() } returns createPagingFlow()
+    every { mockTvSeriesViewModel.getAiringTodayTv() } returns createPagingFlow()
+    every { mockTvSeriesViewModel.getTopRatedTv() } returns createPagingFlow()
   }
 
   private val animePeriodFlow = MutableStateFlow(AnimePeriod.THIS_SEASON)
 
-  protected fun setupMockAnimeViewModel(asianViewModel: AsianViewModel) {
-    every { asianViewModel.animePeriod } returns animePeriodFlow
-    every { asianViewModel.anime } returns createPagingFlow()
-    every { asianViewModel.getAsianRomance() } returns createPagingFlow()
-    every { asianViewModel.getCostumeDrama() } returns createPagingFlow()
-    every { asianViewModel.getDonghua() } returns createPagingFlow()
+  protected fun setupMockAnimeViewModel() {
+    every { mockAsianViewModel.animePeriod } returns animePeriodFlow
+    every { mockAsianViewModel.anime } returns createPagingFlow()
+    every { mockAsianViewModel.getAsianRomance() } returns createPagingFlow()
+    every { mockAsianViewModel.getCostumeDrama() } returns createPagingFlow()
+    every { mockAsianViewModel.getDonghua() } returns createPagingFlow()
   }
 
-  protected fun setupMockNavigator(navigator: INavigator) {
-    every { navigator.openList(any(), any()) } just Runs
+  protected fun setupMockNavigator() {
+    every { mockNavigator.openList(any(), any()) } just Runs
   }
 
-  protected fun setupMockRegion(
-    userPreferenceViewModel: UserPreferenceViewModel,
-    regionViewModel: RegionViewModel,
-    region: String = "US",
-  ) {
-    every { userPreferenceViewModel.getUserRegionPref() } returns MutableLiveData(region)
-    every { userPreferenceViewModel.saveRegionPref(any()) } just Runs
-    every { regionViewModel.getCountryCode() } just Runs
-    every { regionViewModel.countryCode } returns MutableLiveData("US")
+  private fun setupMockRegion() {
+    every { mockUserPreferenceViewModel.getUserRegionPref() } returns MutableLiveData("US")
+    every { mockUserPreferenceViewModel.saveRegionPref(any()) } just Runs
+    every { mockRegionViewModel.getCountryCode() } just Runs
+    every { mockRegionViewModel.countryCode } returns MutableLiveData("US")
   }
 
   protected fun launchFragment() {
@@ -147,9 +153,17 @@ abstract class BaseHomeFragmentTest {
   protected fun movieArgs(listType: ListType) =
     ListArgs(listType, MediaSource.Typed(MOVIE_MEDIA_TYPE), "")
 
+  @Before
+  open fun setup() {
+    hiltRule.inject()
+    setupMockNavigator()
+    setupMockRegion()
+    setupMockViewModel()
+    setupMockAnimeViewModel()
+  }
+
   @After
   fun tearDown() {
     scenario.close()
-    clearAllMocks()
   }
 }

@@ -23,8 +23,12 @@ import io.mockk.every
 import io.mockk.just
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import javax.inject.Inject
 
 abstract class BaseListActivityTest {
+
+  @Inject
+  lateinit var mockNavigator: INavigator
 
   private val tvArgs = ListArgs(
     listType = ListType.BY_GENRE,

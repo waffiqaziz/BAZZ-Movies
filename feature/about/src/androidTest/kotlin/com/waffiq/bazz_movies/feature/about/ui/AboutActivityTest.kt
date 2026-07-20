@@ -78,13 +78,4 @@ class AboutActivityTest {
     iv_tmdb_logo.isClickable()
     btn_about_us.isClickable()
   }
-
-//  @Test
-//  fun activity_whenRecreation_maintainsTheState() {
-//    scenarioRule.scenario.recreate()
-//    iv_tmdb_logo.isDisplayed()
-//    btn_about_us.isDisplayed()
-//    tv_tmdb_attribute.isDisplayed()
-//    tv_about_text.isDisplayed()
-//  }
 }

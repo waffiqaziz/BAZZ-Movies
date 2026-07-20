@@ -31,7 +31,6 @@ import com.waffiq.bazz_movies.feature.list.R.id.loading_indicator
 import com.waffiq.bazz_movies.feature.list.R.id.rv_list
 import com.waffiq.bazz_movies.feature.list.testutils.BaseListActivityTest
 import com.waffiq.bazz_movies.feature.list.ui.viewmodel.ListViewModel
-import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -51,10 +50,6 @@ class ListActivityTest : BaseListActivityTest() {
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)
-
-  @BindValue
-  @JvmField
-  val mockNavigator: INavigator = mockk(relaxed = true)
 
   @BindValue
   @JvmField

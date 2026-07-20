@@ -14,7 +14,6 @@ import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performAction
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performType
-import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
 import com.waffiq.bazz_movies.feature.login.R.id.btn_login
 import com.waffiq.bazz_movies.feature.login.R.id.et_pass
 import com.waffiq.bazz_movies.feature.login.R.id.et_username
@@ -43,17 +42,11 @@ abstract class BaseLoginActivityTest {
   protected lateinit var context: Context
   protected lateinit var scenario: ActivityScenario<LoginActivity>
 
-  protected val fakeLauncher: FakeUriLauncher
-    get() = mockUriLauncher as FakeUriLauncher
-
   @get:Rule(order = 0)
   var hiltRule = HiltAndroidRule(this)
 
   @get:Rule(order = 1)
   var intentsRule = IntentsRule()
-
-  @Inject
-  lateinit var mockUriLauncher: UriLauncher
 
   @Inject
   lateinit var mockNavigator: INavigator
@@ -62,7 +55,7 @@ abstract class BaseLoginActivityTest {
   lateinit var mockLoginViewModel: LoginViewModel
 
   @Before
-  fun init() {
+  open fun setup() {
     hiltRule.inject()
 
     every { mockLoginViewModel.errorState } returns errorStateLiveData
@@ -77,8 +70,6 @@ abstract class BaseLoginActivityTest {
     scenario.onActivity { activity ->
       context = activity.applicationContext
     }
-
-    fakeLauncher.reset()
   }
 
   @After

@@ -24,10 +24,6 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisp
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.models.UserModel
-import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
-import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
-import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
 import com.waffiq.bazz_movies.feature.more.R.id.btn_about_us
 import com.waffiq.bazz_movies.feature.more.R.id.btn_country_picker
 import com.waffiq.bazz_movies.feature.more.R.id.btn_faq
@@ -40,79 +36,18 @@ import com.waffiq.bazz_movies.feature.more.R.id.img_avatar
 import com.waffiq.bazz_movies.feature.more.R.id.progress_bar
 import com.waffiq.bazz_movies.feature.more.R.id.tv_fullName
 import com.waffiq.bazz_movies.feature.more.R.id.tv_username
-import com.waffiq.bazz_movies.feature.more.testutils.DefaultMoreFragmentTestHelper
+import com.waffiq.bazz_movies.feature.more.testutils.BaseMoreFragmentTest
 import com.waffiq.bazz_movies.feature.more.testutils.Helper.userModel
-import com.waffiq.bazz_movies.feature.more.testutils.MoreFragmentTestHelper
-import com.waffiq.bazz_movies.feature.more.ui.viewmodel.MoreLocalViewModel
-import com.waffiq.bazz_movies.feature.more.ui.viewmodel.MoreUserViewModel
-import com.waffiq.bazz_movies.navigation.INavigator
-import dagger.hilt.android.testing.BindValue
-import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
-import io.mockk.mockk
 import io.mockk.verify
 import org.hamcrest.Matcher
-import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
-import javax.inject.Inject
 
 @HiltAndroidTest
-class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper() {
-
-  @get:Rule
-  var hiltRule = HiltAndroidRule(this)
-
-  @BindValue
-  @JvmField
-  val mockNavigator: INavigator = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockSnackbar: ISnackbar = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockMoreLocalViewModel: MoreLocalViewModel = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockUserViewModel: MoreUserViewModel = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockRegionViewModel: RegionViewModel = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockUserPrefViewModel: UserPreferenceViewModel = mockk(relaxed = true)
-
-  @Inject
-  lateinit var mockUriLauncher: UriLauncher
-
-  @Before
-  override fun setUp() {
-    hiltRule.inject()
-
-    setupMocks(
-      mockNavigator,
-      mockSnackbar,
-    )
-
-    setupViewModelMocks(
-      mockMoreLocalViewModel,
-      mockUserViewModel,
-      mockRegionViewModel,
-      mockUserPrefViewModel,
-    )
-
-    every { mockUriLauncher.launch(any()) } just Runs
-
-    super.setUp()
-  }
+class MoreFragmentTest : BaseMoreFragmentTest() {
 
   @Test
   fun buttonFaq_whenClicked_shouldOpenFaqLink() {

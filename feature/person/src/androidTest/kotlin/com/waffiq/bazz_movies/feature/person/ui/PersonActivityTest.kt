@@ -13,6 +13,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
 import androidx.test.uiautomator.uiAutomator
+import com.waffiq.bazz_movies.core.common.utils.Constants.INSTAGRAM_LINK
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
@@ -449,7 +450,8 @@ class PersonActivityTest : BasePersonActivityTest() {
   @Test
   fun instagramSocialMedia_performClick_shouldTriggerUriLauncher() {
     context.launchPersonActivity {
-      shortDelay(5000)
+      btn_instagram.performClick()
+      verify { mockUriLauncher.launch(INSTAGRAM_LINK + testExternalIDPerson.instagramId) }
     }
   }
 }
