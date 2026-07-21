@@ -1,48 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="6" by="lint 9.2.1" type="baseline" client="gradle" dependencies="false" name="AGP (9.2.1)" variant="all" version="9.2.1">
+<issues format="6" by="lint 9.3.0" type="baseline" client="gradle" dependencies="false" name="AGP (9.3.0)" variant="all" version="9.3.0">
 
     <issue
-        id="OldTargetApi"
-        message="Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the `android.os.Build.VERSION_CODES` javadoc for details."
-        errorLine1="targetSdk = &quot;36&quot;"
-        errorLine2="            ~~~~">
+        id="NewerVersionAvailable"
+        message="A newer version of org.jetbrains.kotlin.jvm than 2.4.0 is available: 2.4.10"
+        errorLine1="kotlin = &quot;2.4.0&quot;"
+        errorLine2="         ~~~~~~~">
         <location
             file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
-            line="3"
-            column="13"/>
+            line="15"
+            column="10"/>
     </issue>
 
     <issue
-        id="GradleDependency"
-        message="A newer version of `compileSdk` than 36 is available: 37"
-        errorLine1="compileSdk = &quot;36&quot;"
-        errorLine2="             ~~~~">
+        id="NewerVersionAvailable"
+        message="A newer version of org.jetbrains.kotlin.plugin.serialization than 2.4.0 is available: 2.4.10"
+        errorLine1="kotlin = &quot;2.4.0&quot;"
+        errorLine2="         ~~~~~~~">
         <location
             file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
-            line="4"
-            column="14"/>
+            line="15"
+            column="10"/>
     </issue>
 
     <issue
-        id="GradleDependency"
-        message="A newer version of androidx.core:core than 1.18.0 is available: 1.19.0"
-        errorLine1="coreKtx = &quot;1.18.0&quot;"
-        errorLine2="          ~~~~~~~~">
+        id="NewerVersionAvailable"
+        message="A newer version of org.jetbrains.kotlinx.kover than 0.9.8 is available: 0.9.9"
+        errorLine1="kotlinxKover = &quot;0.9.8&quot;"
+        errorLine2="               ~~~~~~~">
         <location
             file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
-            line="36"
-            column="11"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of androidx.core:core-ktx than 1.18.0 is available: 1.19.0"
-        errorLine1="coreKtx = &quot;1.18.0&quot;"
-        errorLine2="          ~~~~~~~~">
-        <location
-            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
-            line="36"
-            column="11"/>
+            line="82"
+            column="16"/>
     </issue>
 
     <issue
