@@ -1,7 +1,5 @@
 package com.waffiq.bazz_movies.feature.detail.ui
 
-import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.intent.Intents
 import androidx.test.platform.app.InstrumentationRegistry
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions.clickItemAt
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
@@ -9,7 +7,6 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.perform
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
-import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_justwatch
 import com.waffiq.bazz_movies.feature.detail.R.id.layout_ads
 import com.waffiq.bazz_movies.feature.detail.R.id.layout_buy
@@ -22,69 +19,15 @@ import com.waffiq.bazz_movies.feature.detail.R.id.rv_streaming
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_summary_header
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_toggle_watch_providers
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_watch_providers_message
-import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailActivityTest
+import com.waffiq.bazz_movies.feature.detail.testutils.basetest.BaseMediaDetailActivityTest
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
-import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
-import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
-import com.waffiq.bazz_movies.navigation.INavigator
-import dagger.hilt.android.testing.BindValue
-import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import io.mockk.Runs
-import io.mockk.every
-import io.mockk.just
-import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.update
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
-import javax.inject.Inject
 
 @HiltAndroidTest
 class MediaDetailActivityWatchProvidersTest : BaseMediaDetailActivityTest() {
-
-  @get:Rule
-  var hiltRule = HiltAndroidRule(this)
-
-  @BindValue
-  @JvmField
-  val mockNavigator: INavigator = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockMediaDetailViewModel: MediaDetailViewModel = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockPrefViewModel: DetailUserPrefViewModel = mockk(relaxed = true)
-
-  @Inject
-  lateinit var mockUriLauncher: UriLauncher
-
-  @Before
-  fun setup() {
-    hiltRule.inject()
-    setupMocks()
-    Intents.init()
-    initializeTest(ApplicationProvider.getApplicationContext())
-  }
-
-  @After
-  fun tearDown() {
-    Intents.release()
-  }
-
-  private fun setupMocks() {
-    setupBaseMocks()
-    setupObservables(mockMediaDetailViewModel)
-    setupPreferencesViewModelMocks(mockPrefViewModel)
-    setupMediaDetailViewModelMocks(mockMediaDetailViewModel)
-    setupNavigatorMocks(mockNavigator)
-
-    every { mockUriLauncher.launch(any()) } just Runs
-  }
 
   @Test
   fun expandWatchProvider_whenClicked_opensWatchProvider() {

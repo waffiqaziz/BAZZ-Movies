@@ -1,26 +1,15 @@
 package com.waffiq.bazz_movies.feature.detail.ui
 
-import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.intent.Intents
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_imdb
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_rotten_tomatoes
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.RatingsItem
-import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailActivityTest
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testOMDbDetails
-import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
-import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
-import com.waffiq.bazz_movies.navigation.INavigator
-import dagger.hilt.android.testing.BindValue
-import dagger.hilt.android.testing.HiltAndroidRule
+import com.waffiq.bazz_movies.feature.detail.testutils.basetest.BaseMediaDetailActivityTest
 import dagger.hilt.android.testing.HiltAndroidTest
-import io.mockk.mockk
 import kotlinx.coroutines.flow.update
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
 /**
@@ -29,42 +18,6 @@ import org.junit.Test
  */
 @HiltAndroidTest
 class MediaDetailActivityOMDbScoreTest : BaseMediaDetailActivityTest() {
-
-  @get:Rule
-  var hiltRule = HiltAndroidRule(this)
-
-  @BindValue
-  @JvmField
-  val mockNavigator: INavigator = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockMediaDetailViewModel: MediaDetailViewModel = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockPrefViewModel: DetailUserPrefViewModel = mockk(relaxed = true)
-
-  @Before
-  fun setup() {
-    hiltRule.inject()
-    setupMocks()
-    Intents.init()
-    initializeTest(ApplicationProvider.getApplicationContext())
-  }
-
-  @After
-  fun tearDown() {
-    Intents.release()
-  }
-
-  private fun setupMocks() {
-    setupBaseMocks()
-    setupObservables(mockMediaDetailViewModel)
-    setupPreferencesViewModelMocks(mockPrefViewModel)
-    setupMediaDetailViewModelMocks(mockMediaDetailViewModel)
-    setupNavigatorMocks(mockNavigator)
-  }
 
   @Test
   fun omdbScoreValue_withEmptyValue_hidesTheScore() {

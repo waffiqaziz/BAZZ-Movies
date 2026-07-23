@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.feature.home.testutils
+package com.waffiq.bazz_movies.feature.home.testutils.pagingsource
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState

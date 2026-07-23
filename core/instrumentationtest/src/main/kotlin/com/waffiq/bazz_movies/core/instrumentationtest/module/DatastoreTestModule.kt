@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.feature.more.di
+package com.waffiq.bazz_movies.core.instrumentationtest.module
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -30,7 +30,7 @@ import javax.inject.Singleton
   components = [SingletonComponent::class],
   replaces = [DatastoreModule::class, UserRepositoryModule::class],
 )
-object TestUserModule {
+object DatastoreTestModule {
 
   @Provides
   @Singleton

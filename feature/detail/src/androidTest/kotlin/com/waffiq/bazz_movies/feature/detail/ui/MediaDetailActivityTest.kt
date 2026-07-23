@@ -2,8 +2,6 @@ package com.waffiq.bazz_movies.feature.detail.ui
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.intent.Intents
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.add_to_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
@@ -32,27 +30,18 @@ import com.waffiq.bazz_movies.feature.detail.R.id.tv_summary_header
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_year_released
 import com.waffiq.bazz_movies.feature.detail.R.id.watch_provider_section
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
-import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailActivityTest
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaCredits
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaDetail
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaItem
+import com.waffiq.bazz_movies.feature.detail.testutils.basetest.BaseMediaDetailActivityTest
 import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
-import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
-import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
-import com.waffiq.bazz_movies.navigation.INavigator
-import dagger.hilt.android.testing.BindValue
-import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
-import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.junit.After
 import org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
 /**
@@ -61,42 +50,6 @@ import org.junit.Test
  */
 @HiltAndroidTest
 class MediaDetailActivityTest : BaseMediaDetailActivityTest() {
-
-  @get:Rule
-  var hiltRule = HiltAndroidRule(this)
-
-  @BindValue
-  @JvmField
-  val mockNavigator: INavigator = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockMediaDetailViewModel: MediaDetailViewModel = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockPrefViewModel: DetailUserPrefViewModel = mockk(relaxed = true)
-
-  @Before
-  fun setup() {
-    hiltRule.inject()
-    setupMocks()
-    Intents.init()
-    initializeTest(ApplicationProvider.getApplicationContext())
-  }
-
-  @After
-  fun tearDown() {
-    Intents.release()
-  }
-
-  private fun setupMocks() {
-    setupBaseMocks()
-    setupObservables(mockMediaDetailViewModel)
-    setupPreferencesViewModelMocks(mockPrefViewModel)
-    setupMediaDetailViewModelMocks(mockMediaDetailViewModel)
-    setupNavigatorMocks(mockNavigator)
-  }
 
   @Test
   fun detailScreen_whenAllDataProvided_showsAllViews() {

@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.ui
 
 import androidx.lifecycle.Lifecycle.State.DESTROYED
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
@@ -32,18 +31,11 @@ import com.waffiq.bazz_movies.feature.detail.R.id.btn_sort
 import com.waffiq.bazz_movies.feature.detail.R.id.header_layout
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_collection_parts
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_genre
-import com.waffiq.bazz_movies.feature.detail.testutils.BaseCollectionDetailActivityTest
-import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.CollectionViewModel
-import com.waffiq.bazz_movies.navigation.INavigator
-import dagger.hilt.android.testing.BindValue
-import dagger.hilt.android.testing.HiltAndroidRule
+import com.waffiq.bazz_movies.feature.detail.testutils.basetest.BaseCollectionDetailActivityTest
 import dagger.hilt.android.testing.HiltAndroidTest
-import io.mockk.mockk
 import io.mockk.verify
 import org.hamcrest.Matchers.allOf
 import org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
 /**
@@ -52,25 +44,6 @@ import org.junit.Test
  */
 @HiltAndroidTest
 class CollectionDetailActivityTest : BaseCollectionDetailActivityTest() {
-
-  @get:Rule
-  var hiltRule = HiltAndroidRule(this)
-
-  @BindValue
-  @JvmField
-  val mockNavigator: INavigator = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockCollectionViewModel: CollectionViewModel = mockk(relaxed = true)
-
-  @Before
-  override fun setup() {
-    hiltRule.inject()
-    setupBaseMocks(mockCollectionViewModel)
-    setupNavigatorMocks(mockNavigator)
-    initializeTest(ApplicationProvider.getApplicationContext())
-  }
 
   @Test
   fun detailScreen_whenAllDataProvided_showsAllViews() {

@@ -18,77 +18,19 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotE
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.textIsDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitUntil
-import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
-import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
-import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.more.R.id.btn_signout
 import com.waffiq.bazz_movies.feature.more.R.id.progress_bar
-import com.waffiq.bazz_movies.feature.more.testutils.DefaultMoreFragmentTestHelper
-import com.waffiq.bazz_movies.feature.more.testutils.MoreFragmentTestHelper
-import com.waffiq.bazz_movies.feature.more.ui.viewmodel.MoreLocalViewModel
-import com.waffiq.bazz_movies.feature.more.ui.viewmodel.MoreUserViewModel
-import com.waffiq.bazz_movies.navigation.INavigator
-import dagger.hilt.android.testing.BindValue
-import dagger.hilt.android.testing.HiltAndroidRule
+import com.waffiq.bazz_movies.feature.more.testutils.BaseMoreFragmentTest
 import dagger.hilt.android.testing.HiltAndroidTest
-import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.core.IsNot.not
-import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class MoreFragmentSignOutTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper() {
-
-  @get:Rule
-  var hiltRule = HiltAndroidRule(this)
-
-  @BindValue
-  @JvmField
-  val mockNavigator: INavigator = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockSnackbar: ISnackbar = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockMoreLocalViewModel: MoreLocalViewModel = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockUserViewModel: MoreUserViewModel = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockRegionViewModel: RegionViewModel = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockUserPrefViewModel: UserPreferenceViewModel = mockk(relaxed = true)
-
-  @Before
-  override fun setUp() {
-    hiltRule.inject()
-
-    setupMocks(
-      mockNavigator,
-      mockSnackbar,
-    )
-
-    setupViewModelMocks(
-      mockMoreLocalViewModel,
-      mockUserViewModel,
-      mockRegionViewModel,
-      mockUserPrefViewModel,
-    )
-
-    super.setUp()
-  }
+class MoreFragmentSignOutTest : BaseMoreFragmentTest() {
 
   @Test
   fun signOut_whenGuestUser_shouldShowGuestModeDialog() {

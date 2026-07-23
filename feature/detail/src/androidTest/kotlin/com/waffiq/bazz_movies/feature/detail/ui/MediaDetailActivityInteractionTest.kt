@@ -1,9 +1,10 @@
 package com.waffiq.bazz_movies.feature.detail.ui
 
+import android.app.Activity
+import android.app.Instrumentation
 import androidx.lifecycle.Lifecycle
-import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
+import androidx.test.espresso.intent.Intents.intending
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
@@ -35,31 +36,22 @@ import com.waffiq.bazz_movies.feature.detail.R.id.score_section
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_your_score
 import com.waffiq.bazz_movies.feature.detail.R.id.your_score_viewGroup
 import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
-import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailActivityTest
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaCredits
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaItem
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaState
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaStateRated
 import com.waffiq.bazz_movies.feature.detail.testutils.SetRatingAction
-import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
-import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
-import com.waffiq.bazz_movies.navigation.INavigator
+import com.waffiq.bazz_movies.feature.detail.testutils.basetest.BaseMediaDetailActivityTest
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType.BY_GENRE
 import com.waffiq.bazz_movies.navigation.MediaSource
-import dagger.hilt.android.testing.BindValue
-import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.After
 import org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
 /** Instrumented test for [MediaDetailActivity] interactions.
@@ -67,42 +59,6 @@ import org.junit.Test
  */
 @HiltAndroidTest
 class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
-
-  @get:Rule
-  var hiltRule = HiltAndroidRule(this)
-
-  @BindValue
-  @JvmField
-  val mockNavigator: INavigator = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockMediaDetailViewModel: MediaDetailViewModel = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockPrefViewModel: DetailUserPrefViewModel = mockk(relaxed = true)
-
-  @Before
-  fun setup() {
-    hiltRule.inject()
-    setupMocks()
-    Intents.init()
-    initializeTest(ApplicationProvider.getApplicationContext())
-  }
-
-  @After
-  fun tearDown() {
-    Intents.release()
-  }
-
-  private fun setupMocks() {
-    setupBaseMocks()
-    setupObservables(mockMediaDetailViewModel)
-    setupPreferencesViewModelMocks(mockPrefViewModel)
-    setupMediaDetailViewModelMocks(mockMediaDetailViewModel)
-    setupNavigatorMocks(mockNavigator)
-  }
 
   @Test
   fun errorState_whenErrorOccur_showsTheToast() =
@@ -280,7 +236,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-          UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = false),
+            UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = false),
         )
       }
 
@@ -289,7 +245,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-          UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = true),
+            UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = true),
         )
       }
 
@@ -300,7 +256,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-          UpdateMediaStateResult(isSuccess = false, isFavorite = false, isDelete = false),
+            UpdateMediaStateResult(isSuccess = false, isFavorite = false, isDelete = false),
         )
       }
 
@@ -309,7 +265,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-          UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = false),
+            UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = false),
         )
       }
 
@@ -318,7 +274,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-          UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = true),
+            UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = true),
         )
       }
 
@@ -327,7 +283,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-          UpdateMediaStateResult(isSuccess = false, isFavorite = true, isDelete = false),
+            UpdateMediaStateResult(isSuccess = false, isFavorite = true, isDelete = false),
         )
       }
 
@@ -389,6 +345,12 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
   fun buttonCollection_whenClicked_shouldOpenCollectionPage() {
     context.launchMediaDetailActivity {
       collection_section.performScrollTo()
+
+      // force Espresso to catch the intent and block the lifecycle creation of
+      // CollectionDetailActivity
+      val dummyResult = Instrumentation.ActivityResult(Activity.RESULT_OK, null)
+      intending(hasComponent(CollectionDetailActivity::class.java.name)).respondWith(dummyResult)
+
       collection_section.performClick()
 
       intended(hasComponent(CollectionDetailActivity::class.java.name))

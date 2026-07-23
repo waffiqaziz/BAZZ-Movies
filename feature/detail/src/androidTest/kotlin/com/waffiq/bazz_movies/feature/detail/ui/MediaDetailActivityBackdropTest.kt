@@ -1,24 +1,13 @@
 package com.waffiq.bazz_movies.feature.detail.ui
 
-import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.intent.Intents
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.NOT_AVAILABLE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.feature.detail.R.id.iv_picture_backdrop
-import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailActivityTest
-import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
-import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
-import com.waffiq.bazz_movies.navigation.INavigator
-import dagger.hilt.android.testing.BindValue
-import dagger.hilt.android.testing.HiltAndroidRule
+import com.waffiq.bazz_movies.feature.detail.testutils.basetest.BaseMediaDetailActivityTest
 import dagger.hilt.android.testing.HiltAndroidTest
-import io.mockk.mockk
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
 /**
@@ -27,42 +16,6 @@ import org.junit.Test
  */
 @HiltAndroidTest
 class MediaDetailActivityBackdropTest : BaseMediaDetailActivityTest() {
-
-  @get:Rule
-  var hiltRule = HiltAndroidRule(this)
-
-  @BindValue
-  @JvmField
-  val mockNavigator: INavigator = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockMediaDetailViewModel: MediaDetailViewModel = mockk(relaxed = true)
-
-  @BindValue
-  @JvmField
-  val mockPrefViewModel: DetailUserPrefViewModel = mockk(relaxed = true)
-
-  @Before
-  fun init() {
-    hiltRule.inject()
-    setupMocks()
-    Intents.init()
-    initializeTest(ApplicationProvider.getApplicationContext())
-  }
-
-  @After
-  fun tearDown() {
-    Intents.release()
-  }
-
-  private fun setupMocks() {
-    setupBaseMocks()
-    setupObservables(mockMediaDetailViewModel)
-    setupPreferencesViewModelMocks(mockPrefViewModel)
-    setupMediaDetailViewModelMocks(mockMediaDetailViewModel)
-    setupNavigatorMocks(mockNavigator)
-  }
 
   @Test
   fun mediaItemValue_withNullValue_showsViewsCorrectly() {

@@ -17,7 +17,6 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.recently_added
 import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.tv_series
 import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.recycler_view
-import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.snackbar_anchor_test
 import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.view_pager
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions.scrollToPosition
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
@@ -30,7 +29,6 @@ import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.favoriteMovie
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.listOfMovie
 import com.waffiq.bazz_movies.feature.favorite.ui.fragment.FavoriteChildFragment
 import dagger.hilt.android.testing.HiltAndroidTest
-import io.mockk.every
 import org.junit.Before
 import org.junit.Test
 
@@ -40,7 +38,6 @@ class GuestUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
   @Before
   override fun baseSetup() {
     super.baseSetup()
-    every { mockNavigator.snackbarAnchor() } returns snackbar_anchor_test
     guestUser(mockSharedDBViewModel)
   }
 

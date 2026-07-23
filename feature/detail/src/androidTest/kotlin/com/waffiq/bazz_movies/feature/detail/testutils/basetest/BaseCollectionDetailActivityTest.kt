@@ -1,8 +1,9 @@
-package com.waffiq.bazz_movies.feature.detail.testutils
+package com.waffiq.bazz_movies.feature.detail.testutils.basetest
 
 import android.content.Context
 import android.content.Intent
 import androidx.test.core.app.ActivityScenario
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.intent.Intents
 import androidx.test.platform.app.InstrumentationRegistry
 import com.bumptech.glide.Glide
@@ -15,6 +16,7 @@ import com.waffiq.bazz_movies.feature.detail.ui.CollectionDetailActivity
 import com.waffiq.bazz_movies.feature.detail.ui.state.CollectionUiState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.CollectionViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
+import dagger.hilt.android.testing.HiltAndroidRule
 import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
@@ -23,6 +25,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
+import javax.inject.Inject
 
 /**
  * Test helper for [CollectionDetailActivity] that provides mock implementations
@@ -34,9 +38,22 @@ abstract class BaseCollectionDetailActivityTest {
   protected val uiState = MutableStateFlow(CollectionUiState())
   protected val sUiState = uiState.asStateFlow()
 
+  @get:Rule
+  var hiltRule = HiltAndroidRule(this)
+
+  @Inject
+  lateinit var mockNavigator: INavigator
+
+  @Inject
+  lateinit var mockCollectionViewModel: CollectionViewModel
+
   @Before
-  open fun setup() {
+  fun setup() {
+    hiltRule.inject()
     Intents.init()
+    setupBaseMocks(mockCollectionViewModel)
+    setupNavigatorMocks(mockNavigator)
+    initializeTest(ApplicationProvider.getApplicationContext())
   }
 
   @After

@@ -17,7 +17,7 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isEnab
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotEnable
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.withDrawable
-import com.waffiq.bazz_movies.core.instrumentationtest.DefaultMockUriLauncherModule
+import com.waffiq.bazz_movies.core.instrumentationtest.module.DefaultMockUriLauncherModule
 import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye_off
 import com.waffiq.bazz_movies.feature.login.R.id.activity_login
 import com.waffiq.bazz_movies.feature.login.R.id.btn_eye
@@ -39,6 +39,7 @@ import dagger.hilt.android.testing.UninstallModules
 import io.mockk.every
 import io.mockk.verify
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
 import kotlin.random.Random
 
@@ -49,6 +50,12 @@ class LoginActivityTest : BaseLoginActivityTest() {
   @BindValue
   @JvmField
   val fakeUriLauncher = FakeUriLauncher(ApplicationProvider.getApplicationContext())
+
+  @Before
+  override fun setup() {
+    super.setup()
+    fakeUriLauncher.reset()
+  }
 
   @Test
   fun loginScreen_whenInitialized_showsAllViewsCorrectly() {

@@ -8,7 +8,10 @@ android.namespace = "com.waffiq.bazz_movies.core.instrumentationtest"
 
 dependencies {
   implementation(project(":core:designsystem"))
+  implementation(project(":core:uihelper"))
+  implementation(project(":core:user"))
   implementation(project(":core:utils"))
+  implementation(project(":navigation"))
 
   implementation(libs.androidx.appcompat)
   implementation(libs.androidx.espresso.core)
