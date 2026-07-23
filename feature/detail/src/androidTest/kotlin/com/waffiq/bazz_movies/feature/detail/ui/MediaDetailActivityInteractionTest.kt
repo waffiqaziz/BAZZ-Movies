@@ -346,7 +346,8 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
     context.launchMediaDetailActivity {
       collection_section.performScrollTo()
 
-      // force Espresso to catch the intent and block the lifecycle creation of CollectionDetailActivity
+      // force Espresso to catch the intent and block the lifecycle creation of
+      // CollectionDetailActivity
       val dummyResult = Instrumentation.ActivityResult(Activity.RESULT_OK, null)
       intending(hasComponent(CollectionDetailActivity::class.java.name)).respondWith(dummyResult)
 
