@@ -74,9 +74,9 @@ abstract class BaseMediaDetailActivityTest {
 
   @Before
   fun setup() {
+    Intents.init()
     hiltRule.inject()
     setupMocks()
-    Intents.init()
     initializeTest(ApplicationProvider.getApplicationContext())
   }
 

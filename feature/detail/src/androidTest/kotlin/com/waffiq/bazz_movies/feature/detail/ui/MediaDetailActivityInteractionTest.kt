@@ -1,7 +1,10 @@
 package com.waffiq.bazz_movies.feature.detail.ui
 
+import android.app.Activity
+import android.app.Instrumentation
 import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.intent.Intents.intended
+import androidx.test.espresso.intent.Intents.intending
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
@@ -233,7 +236,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-          UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = false),
+            UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = false),
         )
       }
 
@@ -242,7 +245,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-          UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = true),
+            UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = true),
         )
       }
 
@@ -253,7 +256,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-          UpdateMediaStateResult(isSuccess = false, isFavorite = false, isDelete = false),
+            UpdateMediaStateResult(isSuccess = false, isFavorite = false, isDelete = false),
         )
       }
 
@@ -262,7 +265,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-          UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = false),
+            UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = false),
         )
       }
 
@@ -271,7 +274,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-          UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = true),
+            UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = true),
         )
       }
 
@@ -280,7 +283,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-          UpdateMediaStateResult(isSuccess = false, isFavorite = true, isDelete = false),
+            UpdateMediaStateResult(isSuccess = false, isFavorite = true, isDelete = false),
         )
       }
 
@@ -342,6 +345,11 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
   fun buttonCollection_whenClicked_shouldOpenCollectionPage() {
     context.launchMediaDetailActivity {
       collection_section.performScrollTo()
+
+      // force Espresso to catch the intent and block the lifecycle creation of CollectionDetailActivity
+      val dummyResult = Instrumentation.ActivityResult(Activity.RESULT_OK, null)
+      intending(hasComponent(CollectionDetailActivity::class.java.name)).respondWith(dummyResult)
+
       collection_section.performClick()
 
       intended(hasComponent(CollectionDetailActivity::class.java.name))
