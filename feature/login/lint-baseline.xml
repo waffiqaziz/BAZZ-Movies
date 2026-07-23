@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="6" by="lint 9.2.0" type="baseline" client="gradle" dependencies="false" name="AGP (9.2.0)" variant="all" version="9.2.0">
-
-    <issue
-        id="QueryPermissionsNeeded"
-        message="Consider adding a `&lt;queries>` declaration to your manifest when calling this method; see https://g.co/dev/packagevisibility for details"
-        errorLine1="      if (intent.resolveActivity(context.packageManager) != null) {"
-        errorLine2="                 ~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/kotlin/com/waffiq/bazz_movies/feature/login/utils/openurl/UriLauncherImpl.kt"
-            line="20"
-            column="18"/>
-    </issue>
+<issues format="6" by="lint 9.3.0" type="baseline" client="gradle" dependencies="false" name="AGP (9.3.0)" variant="all" version="9.3.0">
 
     <issue
         id="Overdraw"
