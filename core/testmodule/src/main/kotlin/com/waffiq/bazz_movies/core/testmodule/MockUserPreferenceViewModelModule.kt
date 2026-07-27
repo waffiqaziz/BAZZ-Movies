@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.instrumentationtest.module
+package com.waffiq.bazz_movies.core.testmodule
 
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import dagger.Module

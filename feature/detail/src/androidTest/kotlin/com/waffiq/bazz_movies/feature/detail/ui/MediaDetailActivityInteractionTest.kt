@@ -236,7 +236,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-            UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = false),
+          UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = false),
         )
       }
 
@@ -245,7 +245,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-            UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = true),
+          UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = true),
         )
       }
 
@@ -256,7 +256,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-            UpdateMediaStateResult(isSuccess = false, isFavorite = false, isDelete = false),
+          UpdateMediaStateResult(isSuccess = false, isFavorite = false, isDelete = false),
         )
       }
 
@@ -265,7 +265,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-            UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = false),
+          UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = false),
         )
       }
 
@@ -274,7 +274,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-            UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = true),
+          UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = true),
         )
       }
 
@@ -283,7 +283,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
       updateState {
         copy(
           mediaStateResult =
-            UpdateMediaStateResult(isSuccess = false, isFavorite = true, isDelete = false),
+          UpdateMediaStateResult(isSuccess = false, isFavorite = true, isDelete = false),
         )
       }
 

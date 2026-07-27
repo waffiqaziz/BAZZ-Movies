@@ -34,7 +34,6 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
       dependencies {
         add("implementation", project(":core:designsystem"))
         add("implementation", project(":navigation"))
-        add("implementation", project(":navigation"))
 
         add("implementation", libs.findLibrary("google.material").get())
 
@@ -44,6 +43,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
         add("androidTestImplementation", kotlin("test"))
         add("androidTestImplementation", libs.findLibrary("androidx.espresso.intents").get())
         add("androidTestImplementation", project(":core:instrumentationtest"))
+        add("androidTestImplementation", project(":core:testmodule"))
       }
     }
   }

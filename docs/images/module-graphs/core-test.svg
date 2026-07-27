@@ -1,12 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="101pt" height="44pt" viewBox="0.00 0.00 100.86 44.00">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 40)">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="278pt" height="116pt" viewBox="0.00 0.00 278.00 116.00">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
 <title>G</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-40 96.86,-40 96.86,4 -4,4"/>
+<polygon fill="white" stroke="none" points="-4,4 -4,-112 273.58,-112 273.58,4 -4,4"/>
 <!-- :core:test -->
 <g id="node1" class="node">
 <title>:core:test</title>
-<ellipse fill="none" stroke="black" cx="46.43" cy="-18" rx="46.43" ry="18"/>
-<text text-anchor="middle" x="46.43" y="-13.8" font-family="Times,serif" font-size="14.00">:core:test</text>
+<ellipse fill="none" stroke="black" cx="132.92" cy="-90" rx="46.43" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="132.92" y="-85.8" font-family="Times,serif" font-size="14.00">:core:test</text>
+</g>
+<!-- :core:models -->
+<g id="node2" class="node">
+<title>:core:models</title>
+<ellipse fill="none" stroke="black" cx="60.92" cy="-18" rx="60.92" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="60.92" y="-13.8" font-family="Times,serif" font-size="14.00">:core:models</text>
+</g>
+<!-- :core:test&#45;&gt;:core:models -->
+<g id="edge1" class="edge">
+<title>:core:test-&gt;:core:models</title>
+<path fill="none" stroke="black" d="M116.22,-72.76C107.26,-64.06 96.04,-53.15 86.05,-43.43"/>
+<polygon fill="black" stroke="black" points="88.72,-41.15 79.11,-36.69 83.84,-46.17 88.72,-41.15"/>
+</g>
+<!-- :core:network -->
+<g id="node3" class="node">
+<title>:core:network</title>
+<ellipse fill="none" stroke="black" cx="204.92" cy="-18" rx="64.66" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="204.92" y="-13.8" font-family="Times,serif" font-size="14.00">:core:network</text>
+</g>
+<!-- :core:test&#45;&gt;:core:network -->
+<g id="edge2" class="edge">
+<title>:core:test-&gt;:core:network</title>
+<path fill="none" stroke="red" stroke-width="2" d="M149.61,-72.76C158.57,-64.06 169.79,-53.15 179.78,-43.43"/>
+<polygon fill="red" stroke="red" stroke-width="2" points="180.91,-47.22 185.64,-37.74 176.03,-42.2 180.91,-47.22"/>
 </g>
 </g>
 </svg>

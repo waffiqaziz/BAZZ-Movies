@@ -2,16 +2,14 @@ plugins {
   alias(libs.plugins.bazzmovies.android.library)
   alias(libs.plugins.bazzmovies.hilt)
   alias(libs.plugins.bazzmovies.shared.test)
+  alias(libs.plugins.module.graph)
 }
 
 android.namespace = "com.waffiq.bazz_movies.core.instrumentationtest"
 
 dependencies {
   implementation(project(":core:designsystem"))
-  implementation(project(":core:uihelper"))
-  implementation(project(":core:user"))
   implementation(project(":core:utils"))
-  implementation(project(":navigation"))
 
   implementation(libs.androidx.appcompat)
   implementation(libs.androidx.espresso.core)

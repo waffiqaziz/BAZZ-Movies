@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.instrumentationtest.module
+package com.waffiq.bazz_movies.core.testmodule
 
 import android.content.Context
 import androidx.datastore.core.DataStore

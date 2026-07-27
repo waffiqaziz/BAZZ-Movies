@@ -17,7 +17,7 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isEnab
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotEnable
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.withDrawable
-import com.waffiq.bazz_movies.core.instrumentationtest.module.DefaultMockUriLauncherModule
+import com.waffiq.bazz_movies.core.testmodule.DefaultMockUriLauncherModule
 import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye_off
 import com.waffiq.bazz_movies.feature.login.R.id.activity_login
 import com.waffiq.bazz_movies.feature.login.R.id.btn_eye
