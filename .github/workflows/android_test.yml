@@ -496,7 +496,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: core/adapter/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-adapter
           token: ${{ secrets.CODECOV_TOKEN }}
           name: core-adapter-coverage
@@ -506,7 +506,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: core/common/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-common
           token: ${{ secrets.CODECOV_TOKEN }}
           name: core-common-coverage
@@ -516,7 +516,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: core/coroutines/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-coroutines
           token: ${{ secrets.CODECOV_TOKEN }}
           name: core-coroutines-coverage
@@ -526,7 +526,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: core/data/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-data
           token: ${{ secrets.CODECOV_TOKEN }}
           name: core-data-coverage
@@ -536,7 +536,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: core/database/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-database
           token: ${{ secrets.CODECOV_TOKEN }}
           name: core-database-coverage
@@ -546,7 +546,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: core/models/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-models
           token: ${{ secrets.CODECOV_TOKEN }}
           name: core-models-coverage
@@ -556,7 +556,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: core/favoritewatchlist/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-favoritewatchlist
           token: ${{ secrets.CODECOV_TOKEN }}
           name: core-favoritewatchlist-coverage
@@ -566,7 +566,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: core/instrumentationtest/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-instrumentationtest
           token: ${{ secrets.CODECOV_TOKEN }}
           name: core-instrumentationtest-coverage
@@ -576,7 +576,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: core/mappers/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-mappers
           token: ${{ secrets.CODECOV_TOKEN }}
           name: core-mappers-coverage
@@ -586,7 +586,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: core/network/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-network
           token: ${{ secrets.CODECOV_TOKEN }}
           name: core-network-coverage
@@ -596,7 +596,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: core/test/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-test
           token: ${{ secrets.CODECOV_TOKEN }}
           name: core-test-coverage
@@ -606,7 +606,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: core/uihelper/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-uihelper
           token: ${{ secrets.CODECOV_TOKEN }}
           name: core-uihelper-coverage
@@ -616,7 +616,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: core/utils/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-utils
           token: ${{ secrets.CODECOV_TOKEN }}
           name: core-utils-coverage
@@ -626,7 +626,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: core/user/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-user
           token: ${{ secrets.CODECOV_TOKEN }}
           name: core-user-coverage
@@ -636,7 +636,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: feature/about/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: feature-about
           token: ${{ secrets.CODECOV_TOKEN }}
           name: feature-about-coverage
@@ -646,7 +646,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: feature/detail/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: feature-detail
           token: ${{ secrets.CODECOV_TOKEN }}
           name: feature-detail-coverage
@@ -656,7 +656,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: feature/favorite/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: feature-favorite
           token: ${{ secrets.CODECOV_TOKEN }}
           name: feature-favorite-coverage
@@ -666,7 +666,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: feature/home/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: feature-home
           token: ${{ secrets.CODECOV_TOKEN }}
           name: feature-home-coverage
@@ -676,7 +676,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: feature/list/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: feature-list
           token: ${{ secrets.CODECOV_TOKEN }}
           name: feature-list-coverage
@@ -686,7 +686,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: feature/login/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: feature-login
           token: ${{ secrets.CODECOV_TOKEN }}
           name: feature-login-coverage
@@ -696,7 +696,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: feature/more/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: feature-more
           token: ${{ secrets.CODECOV_TOKEN }}
           name: feature-more-coverage
@@ -706,7 +706,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: feature/person/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: feature-person
           token: ${{ secrets.CODECOV_TOKEN }}
           name: feature-person-coverage
@@ -716,7 +716,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: feature/search/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: feature-search
           token: ${{ secrets.CODECOV_TOKEN }}
           name: feature-search-coverage
@@ -726,7 +726,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: feature/watchlist/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: feature-watchlist
           token: ${{ secrets.CODECOV_TOKEN }}
           name: feature-watchlist-coverage
@@ -736,7 +736,7 @@ jobs:
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          files: navigation/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: navigation
           token: ${{ secrets.CODECOV_TOKEN }}
           name: navigation-coverage
