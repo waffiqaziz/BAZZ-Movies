@@ -67,8 +67,8 @@ class AsianFragment : BaseHomeFragment() {
     super.onViewCreated(view, savedInstanceState)
 
     showShimmer(true)
-    setData()
     setupAdapter()
+    setData()
     refreshHandle()
     moreButtonAction()
   }
