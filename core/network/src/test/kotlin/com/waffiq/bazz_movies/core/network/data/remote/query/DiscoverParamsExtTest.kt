@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.core.network.data.remote.query
 import com.waffiq.bazz_movies.core.network.data.remote.constants.Genre
 import com.waffiq.bazz_movies.core.network.data.remote.constants.Genre.Companion.toGenreQuery
 import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.Companion.STRICT_KEYWORDS
 import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.Companion.toKeywordQuery
 import com.waffiq.bazz_movies.core.network.data.remote.constants.Region
 import com.waffiq.bazz_movies.core.network.data.remote.constants.Region.Companion.toRegionQuery
@@ -22,6 +23,7 @@ class DiscoverParamsExtTest {
     assertEquals("1", result["page"])
     assertEquals("false", result["include_adult"])
     assertEquals("en-US", result["language"])
+    assertEquals(STRICT_KEYWORDS.toKeywordQuery(), result["without_keywords"])
     assertEquals(SortBy.POPULARITY_DESC, result["sort_by"])
   }
 
@@ -63,15 +65,13 @@ class DiscoverParamsExtTest {
         Keyword.DONGHUA,
         Keyword.ROMANCE,
       ),
+      withoutKeywords = null,
     )
 
     val result = params.toQueryMap()
 
     assertEquals(
-      listOf(
-        Keyword.DONGHUA,
-        Keyword.ROMANCE,
-      ).toKeywordQuery(),
+      listOf(Keyword.DONGHUA, Keyword.ROMANCE).toKeywordQuery(),
       result["with_keywords"],
     )
   }
@@ -143,6 +143,7 @@ class DiscoverParamsExtTest {
         Genre.ANIMATION,
         Genre.DRAMA,
       ),
+      withoutKeywords = null,
     )
 
     val result = params.toQueryMap()
@@ -237,7 +238,6 @@ class DiscoverParamsExtTest {
     assertFalse(result.containsKey("with_keywords"))
     assertFalse(result.containsKey("with_origin_country"))
     assertFalse(result.containsKey("without_genres"))
-    assertFalse(result.containsKey("without_keywords"))
     assertFalse(result.containsKey("first_air_date.gte"))
     assertFalse(result.containsKey("first_air_date.lte"))
     assertFalse(result.containsKey("watch_region"))
