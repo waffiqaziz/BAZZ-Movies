@@ -2,16 +2,15 @@ package com.waffiq.bazz_movies.core.network.data.remote.datasource.asian
 
 import com.waffiq.bazz_movies.core.network.data.remote.constants.Genre.ANIMATION
 import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.COSTUME_DRAMA
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.Companion.STRICT_KEYWORDS
 import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.DONGHUA
 import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.ROMANCE
 import com.waffiq.bazz_movies.core.network.data.remote.constants.Region.JAPAN
-import com.waffiq.bazz_movies.core.network.data.remote.datasource.asian.AsianRemoteDataSource.Companion.ANIME_WITHOUT_KEYWORDS
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.asian.AsianRemoteDataSource.Companion.ASIAN_REGION
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.asian.AsianRemoteDataSource.Companion.ONE_MONTH
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.asian.AsianRemoteDataSource.Companion.REALITY_SHOW_TYPE
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.asian.AsianRemoteDataSource.Companion.ROMANCE_DRAMA_WITHOUT_GENRES
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.asian.AsianRemoteDataSource.Companion.THREE_MONTHS
-import com.waffiq.bazz_movies.core.network.data.remote.datasource.asian.AsianRemoteDataSource.Companion.TV_STRICT_KEYWORDS
 import com.waffiq.bazz_movies.core.network.data.remote.query.DiscoverTvParams
 import com.waffiq.bazz_movies.core.network.data.remote.query.toQueryMap
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
@@ -31,7 +30,7 @@ class AsianRemoteDataSourceTest : BaseMediaDataSourceTest() {
         page = 1,
         firstAirDateGte = THREE_MONTHS.monthsAgo,
         firstAirDateLte = ONE_MONTH.monthsLater,
-        withoutKeywords = ANIME_WITHOUT_KEYWORDS,
+        withoutKeywords = STRICT_KEYWORDS,
       ).toQueryMap()
 
       verifyTvDiscovery(asianRemoteDataSource.getAnimeThisSeason(), query)
@@ -44,7 +43,7 @@ class AsianRemoteDataSourceTest : BaseMediaDataSourceTest() {
         genres = listOf(ANIMATION),
         originCountry = listOf(JAPAN),
         page = 1,
-        withoutKeywords = ANIME_WITHOUT_KEYWORDS,
+        withoutKeywords = STRICT_KEYWORDS,
       ).toQueryMap()
 
       verifyTvDiscovery(asianRemoteDataSource.getAnimeAllTime(), query)
@@ -66,7 +65,7 @@ class AsianRemoteDataSourceTest : BaseMediaDataSourceTest() {
         originCountry = ASIAN_REGION,
         page = 1,
         withoutGenres = ROMANCE_DRAMA_WITHOUT_GENRES,
-        withoutKeywords = TV_STRICT_KEYWORDS,
+        withoutKeywords = STRICT_KEYWORDS,
       ).toQueryMap()
 
       verifyTvDiscovery(asianRemoteDataSource.getAsianRomance(), query)

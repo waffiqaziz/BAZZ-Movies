@@ -4,20 +4,9 @@ import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.coroutines.IoDispatcher
 import com.waffiq.bazz_movies.core.network.data.remote.constants.Genre.ANIMATION
 import com.waffiq.bazz_movies.core.network.data.remote.constants.Genre.REALITY
-import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.BISEXUAL_MAN
-import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.BOYS_LOVE
 import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.COSTUME_DRAMA
 import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.DONGHUA
-import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.ECCHI
-import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.EROTIC
-import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.GAY_RELATIONSHIP
-import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.GAY_ROMANCE
-import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.GIRLS_LOVE
-import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.HENTAI
-import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.LESBIAN
-import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.LESBIAN_RELATIONSHIP
 import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.ROMANCE
-import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.SOFTCORE
 import com.waffiq.bazz_movies.core.network.data.remote.constants.Region.CHINA
 import com.waffiq.bazz_movies.core.network.data.remote.constants.Region.INDONESIA
 import com.waffiq.bazz_movies.core.network.data.remote.constants.Region.JAPAN
@@ -49,7 +38,6 @@ class AsianRemoteDataSource @Inject constructor(
           genres = listOf(ANIMATION),
           originCountry = listOf(JAPAN),
           page = page,
-          withoutKeywords = ANIME_WITHOUT_KEYWORDS,
         ).toQueryMap(),
       ).results
     }.flow.flowOn(ioDispatcher)
@@ -63,7 +51,6 @@ class AsianRemoteDataSource @Inject constructor(
           page = page,
           firstAirDateGte = THREE_MONTHS.monthsAgo,
           firstAirDateLte = ONE_MONTH.monthsLater,
-          withoutKeywords = ANIME_WITHOUT_KEYWORDS,
         ).toQueryMap(),
       ).results
     }.flow.flowOn(ioDispatcher)
@@ -86,7 +73,6 @@ class AsianRemoteDataSource @Inject constructor(
           originCountry = ASIAN_REGION,
           page = page,
           withoutGenres = ROMANCE_DRAMA_WITHOUT_GENRES,
-          withoutKeywords = TV_STRICT_KEYWORDS,
         ).toQueryMap(),
       ).results
     }.flow.flowOn(ioDispatcher)
@@ -119,19 +105,6 @@ class AsianRemoteDataSource @Inject constructor(
     const val REALITY_SHOW_TYPE = "3"
 
     val ASIAN_REGION = listOf(CHINA, INDONESIA, JAPAN, KOREA, MALAYSIA, TAIWAN, THAILAND)
-
-    val TV_STRICT_KEYWORDS = listOf(
-      BISEXUAL_MAN,
-      GAY_ROMANCE,
-      GAY_RELATIONSHIP,
-      BOYS_LOVE,
-      GIRLS_LOVE,
-      LESBIAN,
-      LESBIAN_RELATIONSHIP,
-    )
-
-    val ANIME_WITHOUT_KEYWORDS =
-      (listOf(ECCHI, EROTIC, HENTAI, SOFTCORE) + TV_STRICT_KEYWORDS).distinct()
 
     val ROMANCE_DRAMA_WITHOUT_GENRES = listOf(ANIMATION, REALITY)
   }

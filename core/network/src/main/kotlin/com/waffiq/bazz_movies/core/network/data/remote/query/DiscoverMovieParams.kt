@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.core.network.data.remote.query
 
 import com.waffiq.bazz_movies.core.network.data.remote.constants.Genre
 import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.Companion.STRICT_KEYWORDS
 import com.waffiq.bazz_movies.core.network.data.remote.constants.SortBy
 
 data class DiscoverMovieParams(
@@ -13,6 +14,7 @@ data class DiscoverMovieParams(
   val releaseDateGte: String? = null,
   val releaseDateLte: String? = null,
   val watchRegion: String? = null,
+  val withoutKeywords: List<Keyword>? = STRICT_KEYWORDS,
   val sortBy: String = SortBy.POPULARITY_DESC,
   val includeAdult: Boolean = false,
   val language: String = "en-US",

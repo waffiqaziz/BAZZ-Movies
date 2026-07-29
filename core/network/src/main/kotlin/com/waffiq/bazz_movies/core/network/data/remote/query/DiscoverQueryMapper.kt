@@ -30,6 +30,7 @@ fun DiscoverMovieParams.toQueryMap(): Map<String, String> =
     genre?.let { put(WITH_GENRES, it) }
     keywords?.let { put(WITH_KEYWORDS, it.toKeywordQuery()) }
     keyword?.let { put(WITH_KEYWORDS, it) }
+    withoutKeywords?.let { put(WITHOUT_KEYWORDS, it.toKeywordQuery()) }
 
     releaseDateGte?.let { put(RELEASE_DATE_GTE, it) }
     releaseDateLte?.let { put(RELEASE_DATE_LTE, it) }
