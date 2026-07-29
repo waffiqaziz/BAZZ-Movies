@@ -101,11 +101,19 @@ class ListViewModel @Inject constructor(
       }
       ).cachedIn(viewModelScope)
 
-  fun getCostumeDrama(): Flow<PagingData<MediaItem>> = discoverUseCase.getCostumeDrama()
+  fun getCostumeDrama(): Flow<PagingData<MediaItem>> =
+    discoverUseCase.getCostumeDrama()
+      .cachedIn(viewModelScope)
 
-  fun getAsianRomance(): Flow<PagingData<MediaItem>> = discoverUseCase.getAsianRomance()
+  fun getAsianRomance(): Flow<PagingData<MediaItem>> =
+    discoverUseCase.getAsianRomance()
+      .cachedIn(viewModelScope)
 
-  fun getRealityShow(): Flow<PagingData<MediaItem>> = discoverUseCase.getRealityShow()
+  fun getRealityShow(): Flow<PagingData<MediaItem>> =
+    discoverUseCase.getRealityShow()
+      .cachedIn(viewModelScope)
 
-  fun getDonghua(): Flow<PagingData<MediaItem>> = discoverUseCase.getDonghua()
+  fun getDonghua(): Flow<PagingData<MediaItem>> =
+    discoverUseCase.getDonghua()
+      .cachedIn(viewModelScope)
 }
