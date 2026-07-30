@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.feature.search.testutils
 
-import androidx.appcompat.app.AppCompatActivity
 import androidx.paging.PagingData
 import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
@@ -19,7 +18,6 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
-import io.mockk.mockk
 import io.mockk.spyk
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,21 +26,15 @@ import org.junit.Before
 import org.junit.Rule
 import javax.inject.Inject
 
-/**
- * Default implementation of [SearchFragmentTestHelper] for testing purposes.
- * Provides default mock implementations and setup for the SearchFragment.
- */
 abstract class BaseSearchFragmentTest {
 
   protected lateinit var scenario: ActivityScenario<*>
   protected lateinit var searchFragment: SearchFragment
-  protected lateinit var activity: AppCompatActivity
   protected lateinit var searchAdapter: SearchAdapter
 
-  protected val searchResultsFlow: Flow<PagingData<MultiSearchItem>> = flowOf()
-  protected val testQuery = "test_query"
-
+  private val searchResultsFlow: Flow<PagingData<MultiSearchItem>> = flowOf()
   protected val historyFlow = MutableStateFlow(listOf(history1, history2, history3))
+  protected val testQuery = "test_query"
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)
@@ -60,16 +52,10 @@ abstract class BaseSearchFragmentTest {
   open fun setup() {
     hiltRule.inject()
     setupViewModelMocks()
-    setupSnackbarMocks()
     setupFragment()
-    setupToolbar()
   }
 
-  protected fun setupToolbar() {
-    activity = searchFragment.requireActivity() as AppCompatActivity
-  }
-
-  protected fun setupViewModelMocks() {
+  private fun setupViewModelMocks() {
     every { mockSearchViewModel.searchResults } returns searchResultsFlow
     every { mockSearchViewModel.search(any()) } just Runs
     every { mockSearchViewModel.searchHistory } returns historyFlow
@@ -77,10 +63,7 @@ abstract class BaseSearchFragmentTest {
     every { mockSearchViewModel.deleteAllHistory() } just Runs
   }
 
-  protected fun setupFragment() {
-    every { mockNavigator.openDetails(any(), any()) } just Runs
-    every { mockNavigator.openPersonDetails(any(), any()) } just Runs
-
+  private fun setupFragment() {
     val spyAdapter = spyk(SearchAdapter(mockNavigator))
     searchAdapter = spyAdapter
 
@@ -91,9 +74,5 @@ abstract class BaseSearchFragmentTest {
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       searchFragment.setAdapterForTest(spyAdapter)
     }
-  }
-
-  protected fun setupSnackbarMocks() {
-    every { mockSnackbar.showSnackbarWarning(ofType<String>()) } returns mockk(relaxed = true)
   }
 }

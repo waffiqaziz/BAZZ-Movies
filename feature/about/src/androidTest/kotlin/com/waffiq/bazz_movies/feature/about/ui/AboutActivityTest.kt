@@ -14,9 +14,6 @@ import com.waffiq.bazz_movies.feature.about.R.id.tv_about_text
 import com.waffiq.bazz_movies.feature.about.R.id.tv_tmdb_attribute
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import io.mockk.Runs
-import io.mockk.every
-import io.mockk.just
 import io.mockk.verify
 import org.junit.After
 import org.junit.Before
@@ -39,7 +36,6 @@ class AboutActivityTest {
   fun setup() {
     hiltRule.inject()
     Intents.init()
-    every { mockUriLauncher.launch(any()) } just Runs
 
     ActivityScenario.launch(AboutActivity::class.java).onActivity {
       context = it.applicationContext

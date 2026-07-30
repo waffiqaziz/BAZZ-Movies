@@ -73,20 +73,14 @@ abstract class BasePersonActivityTest {
   open fun setup() {
     Intents.init()
     hiltRule.inject()
-    setupMocks()
+    setupViewModelMocks()
+    setupBaseMocks()
     initializeTest(ApplicationProvider.getApplicationContext())
   }
 
   @After
   fun tearDown() {
     Intents.release()
-  }
-
-  private fun setupMocks() {
-    setupBaseMocks()
-    setupViewModelMocks(mockPersonViewModel)
-    setupNavigatorMocks(mockNavigator)
-    setupUriLauncherMocks(mockUriLauncher)
   }
 
   private fun setupBaseMocks() {
@@ -96,7 +90,7 @@ abstract class BasePersonActivityTest {
     imageListLiveData.postValue(testImagesList)
   }
 
-  private fun setupViewModelMocks(mockPersonViewModel: PersonViewModel) {
+  private fun setupViewModelMocks() {
     every { mockPersonViewModel.detailPerson } returns detailPersonLiveData
     every { mockPersonViewModel.castList } returns creditPersonLiveData
     every { mockPersonViewModel.imageList } returns imageListLiveData
@@ -104,15 +98,6 @@ abstract class BasePersonActivityTest {
     every { mockPersonViewModel.loadingState } returns loadingStateLiveData
 
     every { mockPersonViewModel.getDetailPerson(any()) } just Runs
-  }
-
-  private fun setupNavigatorMocks(mockNavigator: INavigator) {
-    every { mockNavigator.openDetails(any(), any()) } just Runs
-    every { mockNavigator.openPersonDetails(any(), any()) } just Runs
-  }
-
-  private fun setupUriLauncherMocks(mockUriLauncher: UriLauncher) {
-    every { mockUriLauncher.launch(any()) } just Runs
   }
 
   private fun initializeTest(context: Context) {

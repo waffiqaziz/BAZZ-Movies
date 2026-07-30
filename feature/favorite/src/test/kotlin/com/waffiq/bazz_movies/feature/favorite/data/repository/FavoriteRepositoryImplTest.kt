@@ -5,11 +5,11 @@ import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.account.AccountRemoteDataSource
 import com.waffiq.bazz_movies.core.test.PagingFlowHelperTest.testPagingFlowAwaitComplete
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.SESSION_ID
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.SORT_TYPE
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.USER_ID
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.fakeMovieResponsePagingData
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.fakeTvResponsePagingData
+import com.waffiq.bazz_movies.feature.favorite.testutils.DummyData.SESSION_ID
+import com.waffiq.bazz_movies.feature.favorite.testutils.DummyData.SORT_TYPE
+import com.waffiq.bazz_movies.feature.favorite.testutils.DummyData.USER_ID
+import com.waffiq.bazz_movies.feature.favorite.testutils.DummyData.fakeMovieResponsePagingData
+import com.waffiq.bazz_movies.feature.favorite.testutils.DummyData.fakeTvResponsePagingData
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every

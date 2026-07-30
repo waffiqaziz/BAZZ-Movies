@@ -5,6 +5,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.mockk.Runs
+import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import javax.inject.Singleton
 
@@ -14,5 +17,9 @@ object MockBaseViewModelModule {
 
   @Provides
   @Singleton
-  fun provideMockBaseViewModel(): BaseViewModel = mockk(relaxed = true)
+  fun provideMockBaseViewModel(): BaseViewModel =
+    mockk<BaseViewModel>(relaxed = true).apply {
+      every { markSnackbarShown() } just Runs
+      every { resetSnackbarShown() } just Runs
+    }
 }

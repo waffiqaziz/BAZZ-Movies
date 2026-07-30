@@ -62,7 +62,7 @@ class ListActivityTest : BaseListActivityTest() {
     context = ApplicationProvider.getApplicationContext<Context>().apply {
       setTheme(Base_Theme_BAZZ_movies) // set the theme
     }
-    setupMock(mockListViewModel, mockNavigator)
+    setupMock(mockListViewModel)
   }
 
   @After
@@ -271,7 +271,7 @@ class ListActivityTest : BaseListActivityTest() {
   }
 
   @Test
-  fun loadingState_showsIndicatorAndHidesList() {
+  fun activity_whenStateIsLoading_showsIndicatorAndHidesList() {
     context.launchListActivity(movieKeywordsArgs) { scenario ->
       scenario.onActivity { activity ->
         activity.handleRefreshState(UIState.Loading)
@@ -283,7 +283,7 @@ class ListActivityTest : BaseListActivityTest() {
   }
 
   @Test
-  fun successState_showsList() {
+  fun activity_successState_showsList() {
     context.launchListActivity(movieKeywordsArgs) { scenario ->
       scenario.onActivity { activity ->
         activity.handleRefreshState(UIState.Success(Unit))
@@ -294,7 +294,7 @@ class ListActivityTest : BaseListActivityTest() {
   }
 
   @Test
-  fun errorState_showsRetryAndHidesList() {
+  fun activity_onErrorState_showsRetryAndHidesList() {
     context.launchListActivity(movieKeywordsArgs) { scenario ->
       scenario.onActivity { activity ->
         activity.handleRefreshState(UIState.Error("Something went wrong"))

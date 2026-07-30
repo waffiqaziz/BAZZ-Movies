@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritetv
 
 import com.waffiq.bazz_movies.feature.favorite.testutils.BaseFavoriteInteractorTest
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.SORT_TYPE
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.fakeTvMediaItemPagingData
+import com.waffiq.bazz_movies.feature.favorite.testutils.DummyData.SORT_TYPE
+import com.waffiq.bazz_movies.feature.favorite.testutils.DummyData.fakeTvMediaItemPagingData
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import kotlinx.coroutines.flow.flowOf

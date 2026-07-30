@@ -1,10 +1,12 @@
 package com.waffiq.bazz_movies.core.testmodule
 
+import androidx.lifecycle.MutableLiveData
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.mockk.every
 import io.mockk.mockk
 import javax.inject.Singleton
 
@@ -12,7 +14,16 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object MockRegionViewModelModule {
 
+  private val mockCountryCode = MutableLiveData("US")
+
   @Provides
   @Singleton
-  fun provideMockRegionViewModel(): RegionViewModel = mockk(relaxed = true)
+  fun provideMockRegionViewModel(): RegionViewModel =
+    mockk<RegionViewModel>(relaxed = true).apply {
+      every { countryCode } returns mockCountryCode
+    }
+
+  fun setupCountryCode(code: String) {
+    mockCountryCode.postValue(code)
+  }
 }

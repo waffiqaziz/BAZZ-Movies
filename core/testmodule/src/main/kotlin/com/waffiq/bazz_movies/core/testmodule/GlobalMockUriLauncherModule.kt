@@ -7,6 +7,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
+import io.mockk.Runs
+import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import javax.inject.Singleton
 
@@ -25,5 +28,8 @@ object DefaultMockUriLauncherModule {
 
   @Provides
   @Singleton
-  fun provideMockUriLauncher(): UriLauncher = mockk(relaxed = true)
+  fun provideMockUriLauncher(): UriLauncher =
+    mockk<UriLauncher>(relaxed = true).apply {
+      every { launch(any()) } just Runs
+    }
 }

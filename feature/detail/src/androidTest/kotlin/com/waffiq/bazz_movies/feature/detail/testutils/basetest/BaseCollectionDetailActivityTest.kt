@@ -51,8 +51,7 @@ abstract class BaseCollectionDetailActivityTest {
   fun setup() {
     hiltRule.inject()
     Intents.init()
-    setupBaseMocks(mockCollectionViewModel)
-    setupNavigatorMocks(mockNavigator)
+    setupBaseMocks()
     initializeTest(ApplicationProvider.getApplicationContext())
   }
 
@@ -61,7 +60,7 @@ abstract class BaseCollectionDetailActivityTest {
     Intents.release()
   }
 
-  protected fun setupBaseMocks(mockCollectionViewModel: CollectionViewModel) {
+  private fun setupBaseMocks() {
     every { mockCollectionViewModel.uiState } returns sUiState
     every { mockCollectionViewModel.currentSort } returns
       MutableStateFlow(CollectionSortOption.RELEASE_DATE_OLDEST)
@@ -82,12 +81,7 @@ abstract class BaseCollectionDetailActivityTest {
     }
   }
 
-  protected fun setupNavigatorMocks(mockNavigator: INavigator) {
-    every { mockNavigator.openDetails(any(), any()) } just Runs
-    every { mockNavigator.openList(any(), any()) } just Runs
-  }
-
-  protected fun initializeTest(context: Context) {
+  private fun initializeTest(context: Context) {
     this.context = context
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       Glide.get(context).clearMemory()

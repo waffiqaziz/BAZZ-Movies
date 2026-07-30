@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.feature.home.testutils
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -125,18 +124,6 @@ abstract class BaseHomeFragmentTest {
     every { mockAsianViewModel.getCostumeDrama() } returns createPagingFlow()
     every { mockAsianViewModel.getDonghua() } returns createPagingFlow()
   }
-
-  protected fun setupMockNavigator() {
-    every { mockNavigator.openList(any(), any()) } just Runs
-  }
-
-  private fun setupMockRegion() {
-    every { mockUserPreferenceViewModel.getUserRegionPref() } returns MutableLiveData("US")
-    every { mockUserPreferenceViewModel.saveRegionPref(any()) } just Runs
-    every { mockRegionViewModel.getCountryCode() } just Runs
-    every { mockRegionViewModel.countryCode } returns MutableLiveData("US")
-  }
-
   protected fun launchFragment() {
     val result = launchFragmentInHiltContainer<HomeFragment>()
     scenario = result.scenario
@@ -156,8 +143,6 @@ abstract class BaseHomeFragmentTest {
   @Before
   open fun setup() {
     hiltRule.inject()
-    setupMockNavigator()
-    setupMockRegion()
     setupMockViewModel()
     setupMockAnimeViewModel()
   }

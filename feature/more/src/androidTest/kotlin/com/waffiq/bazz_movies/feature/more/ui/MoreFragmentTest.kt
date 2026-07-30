@@ -24,6 +24,10 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisp
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.models.UserModel
+import com.waffiq.bazz_movies.core.testmodule.DummyData.userModel
+import com.waffiq.bazz_movies.core.testmodule.MockRegionViewModelModule.setupCountryCode
+import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.setupRegion
+import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.setupUserModel
 import com.waffiq.bazz_movies.feature.more.R.id.btn_about_us
 import com.waffiq.bazz_movies.feature.more.R.id.btn_country_picker
 import com.waffiq.bazz_movies.feature.more.R.id.btn_faq
@@ -37,7 +41,6 @@ import com.waffiq.bazz_movies.feature.more.R.id.progress_bar
 import com.waffiq.bazz_movies.feature.more.R.id.tv_fullName
 import com.waffiq.bazz_movies.feature.more.R.id.tv_username
 import com.waffiq.bazz_movies.feature.more.testutils.BaseMoreFragmentTest
-import com.waffiq.bazz_movies.feature.more.testutils.Helper.userModel
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.Runs
 import io.mockk.every
@@ -98,7 +101,7 @@ class MoreFragmentTest : BaseMoreFragmentTest() {
 
   @Test
   fun regionSetup_whenCountryCodeSet_shouldSetCountryPickerCorrectly() {
-    mockRegionPref.postValue("AR")
+    setupRegion("AR")
     "AR".isDisplayed()
     // verify country picker is set with the correct country
     btn_country_picker.isDisplayed()
@@ -106,7 +109,7 @@ class MoreFragmentTest : BaseMoreFragmentTest() {
 
   @Test
   fun regionViewModel_whenCountryCodeProvided_shouldUpdateRegionAndCountryPicker() {
-    mockCountryCode.postValue("CA")
+    setupCountryCode("CA")
     shortDelay()
 
     verify(timeout = 2000) { mockUserPrefViewModel.saveRegionPref("CA") }
@@ -114,7 +117,7 @@ class MoreFragmentTest : BaseMoreFragmentTest() {
 
   @Test
   fun regionViewModel_whenCountryCodeEmpty_shouldNotUpdateRegion() {
-    mockCountryCode.postValue("")
+    setupCountryCode("")
     shortDelay()
 
     verify(exactly = 0) { mockUserPrefViewModel.saveRegionPref("") }
@@ -124,7 +127,7 @@ class MoreFragmentTest : BaseMoreFragmentTest() {
   fun regionViewModel_whenCountryNaN_shouldCallsGetCountryCode() {
     every { mockRegionViewModel.getCountryCode() } just Runs
 
-    mockRegionPref.postValue(NAN)
+    setupRegion(NAN)
     verify { mockRegionViewModel.getCountryCode() }
   }
 
@@ -209,7 +212,7 @@ class MoreFragmentTest : BaseMoreFragmentTest() {
   }
 
   private fun checkAvatarIsVisible(userModel: UserModel, viewMatcher: Matcher<View>) {
-    mockUserModel.postValue(userModel)
+    setupUserModel(userModel)
     shortDelay()
 
     onView(withId(img_avatar)).check(matches(viewMatcher))

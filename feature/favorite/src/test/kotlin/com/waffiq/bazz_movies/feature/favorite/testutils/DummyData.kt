@@ -10,10 +10,10 @@ import com.waffiq.bazz_movies.core.models.UserModel
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 
 /**
- * DataDump object provides test data for unit tests in the favorite feature module.
+ * DummyData object provides test data for unit tests in the favorite feature module.
  * It includes constants, media items, user data, and outcomes for testing purposes.
  */
-object DataDump {
+object DummyData {
 
   const val SORT_TYPE = "sort"
   const val SESSION_ID = "test_session_id"

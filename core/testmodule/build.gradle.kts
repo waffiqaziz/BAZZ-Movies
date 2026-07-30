@@ -16,6 +16,7 @@ dependencies {
 
   implementation(libs.hilt.test)
   implementation(libs.mockk.android)
+  implementation(libs.google.material)
 
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.robolectric)

@@ -3,21 +3,8 @@ package com.waffiq.bazz_movies.feature.favorite.testutils
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.models.Favorite
 import com.waffiq.bazz_movies.core.models.MediaItem
-import com.waffiq.bazz_movies.core.models.UserModel
 
-// Placeholder for data dump or test data related utilities
-object DataDump {
-  val userModel = UserModel(
-    userId = 12345678,
-    name = "Test Name",
-    username = "Test Username",
-    password = "",
-    region = "id",
-    token = "Test Token",
-    isLogin = true,
-    gravatarHash = "Gravatar Hast",
-    tmdbAvatar = "TMDB Avatar",
-  )
+object DummyData {
 
   val favoriteMovie = Favorite(
     id = 1,
