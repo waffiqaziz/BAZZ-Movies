@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.movie
 
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.statedResponseDump1
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.statedResponseDump1
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testError404Response
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testErrorResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testGeneralExceptionResponse

@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders
 
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.providerResponse
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.providerResponseItem
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.watchProvidersResponse
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.providerResponse
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.providerResponseItem
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.watchProvidersResponse
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull

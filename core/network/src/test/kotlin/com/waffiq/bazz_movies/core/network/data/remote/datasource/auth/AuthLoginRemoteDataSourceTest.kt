@@ -1,9 +1,9 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.auth
 
 import com.waffiq.bazz_movies.core.network.testutils.BaseAuthDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.authenticationResponseDump
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.createSessionResponseDump
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.postResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.authenticationResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.createSessionResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.postResponseDump
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testError404Response
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testErrorResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testGeneralExceptionResponse

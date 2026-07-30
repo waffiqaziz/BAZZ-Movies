@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv
 
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.lastEpisodeToAirResponse1
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.lastEpisodeToAirResponse1
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

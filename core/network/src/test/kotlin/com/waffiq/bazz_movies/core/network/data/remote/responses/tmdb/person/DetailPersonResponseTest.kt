@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person
 
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.detailPersonResponse
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.detailPersonResponse
 import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assert.assertEquals

@@ -5,8 +5,8 @@ import com.waffiq.bazz_movies.core.network.data.remote.constants.MediaType
 import com.waffiq.bazz_movies.core.network.data.remote.constants.SortBy.CREATED_AT_ASC
 import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.GenericPagingSource
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.tvShowDump2
+import com.waffiq.bazz_movies.core.network.testutils.DummyData
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.tvShowDump2
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.defaultMediaResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingFlow
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingSource
@@ -41,7 +41,7 @@ class AccountRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getFavoriteMovies_pagingFlow_returnsExpectedData() =
     runTest {
-      val expected = listOf(DataDumpManager.movieDump6)
+      val expected = listOf(DummyData.movieDump6)
       coEvery { stubFavoriteMovies() } returns defaultMediaResponse(expected)
       accountRemoteDataSource.getFavoriteMovies(userId, sessionId, CREATED_AT_ASC)
         .testPagingFlow(this, expected)
@@ -51,7 +51,7 @@ class AccountRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getWatchlistMovies_pagingFlow_returnsExpectedData() =
     runTest {
-      val expected = listOf(DataDumpManager.movieDump2)
+      val expected = listOf(DummyData.movieDump2)
       coEvery { stubWatchlistMovies() } returns defaultMediaResponse(expected)
       accountRemoteDataSource.getWatchlistMovies(userId, sessionId, CREATED_AT_ASC)
         .testPagingFlow(this, expected)

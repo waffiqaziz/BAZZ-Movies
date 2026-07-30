@@ -2,9 +2,9 @@ package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv
 
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.GenresResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.ProductionCountriesResponseItem
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.detailTvResponseDump
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.nextEpisodeToAirResponse
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.watchProvidersResultsMap
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.detailTvResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.nextEpisodeToAirResponse
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.watchProvidersResultsMap
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue

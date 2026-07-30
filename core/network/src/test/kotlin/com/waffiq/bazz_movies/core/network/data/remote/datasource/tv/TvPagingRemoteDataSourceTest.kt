@@ -2,9 +2,9 @@ package com.waffiq.bazz_movies.core.network.data.remote.datasource.tv
 
 import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.GenericPagingSource
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.tvShowDump1
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.tvShowDump2
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.tvShowDump3
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.tvShowDump1
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.tvShowDump2
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.tvShowDump3
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.defaultMediaResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingFlow
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingSource
