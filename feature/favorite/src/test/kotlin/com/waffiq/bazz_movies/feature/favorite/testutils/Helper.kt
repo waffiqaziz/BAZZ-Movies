@@ -65,6 +65,7 @@ object Helper {
     assertFalse(collectedData.isEmpty())
     assertTrue(collectedData.contains(expected))
     assertEquals(liveData.value, expected)
+
     verifyBlock()
   }
 }

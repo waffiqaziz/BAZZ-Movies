@@ -242,7 +242,7 @@ class HandlePagingLoadStateTest {
       loadStateFlow.value = createLoadState(refresh = LoadState.Loading)
 
       // wait
-      advanceTimeBy(DEBOUNCE_SHORT.milliseconds)
+      advanceTimeBy((DEBOUNCE_SHORT - 100).milliseconds)
 
       // second state - normal - overwrites the first one before debounce completes
       loadStateFlow.value = createLoadState()

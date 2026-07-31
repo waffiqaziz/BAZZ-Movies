@@ -14,7 +14,6 @@ import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
 import androidx.test.uiautomator.uiAutomator
 import com.waffiq.bazz_movies.core.common.utils.Constants.INSTAGRAM_LINK
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
@@ -201,7 +200,7 @@ class PersonActivityTest : BasePersonActivityTest() {
 
       context.launchPersonActivity { scenario ->
         scenario.onActivity {
-          errorStateLiveData.postValue(Event(errorMessage))
+          errorStateLiveData.postValue(errorMessage)
         }
 
         errorMessage.isDisplayed()

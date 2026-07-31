@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
@@ -33,8 +32,8 @@ class PersonViewModel @Inject constructor(
     it.images?.profiles.orEmpty()
   }
 
-  private val _errorState = MutableLiveData<Event<String>>()
-  val errorState: LiveData<Event<String>> get() = _errorState
+  private val _errorState = MutableLiveData<String>()
+  val errorState: LiveData<String> get() = _errorState
 
   private val _loadingState = MutableLiveData<Boolean>()
   val loadingState: LiveData<Boolean> get() = _loadingState
@@ -67,7 +66,7 @@ class PersonViewModel @Inject constructor(
 
           is Outcome.Error -> {
             _loadingState.value = false
-            _errorState.value = Event(outcome.message)
+            _errorState.value = outcome.message
           }
         }
       }

@@ -166,7 +166,7 @@ class PersonViewModelTest : BasePersonViewModelTest() {
       advanceUntilIdle()
 
       assertFalse(personViewModel.loadingState.value == true)
-      assertEquals(errorMessage, personViewModel.errorState.value?.getContentIfNotHandled())
+      assertEquals(errorMessage, personViewModel.errorState.value)
     }
 
   @Test

@@ -33,7 +33,6 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.color.yellow
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_cross
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_left_icon
@@ -56,6 +55,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.milliseconds
 
 @Suppress("TooManyFunctions")
 @AndroidEntryPoint
@@ -266,7 +266,7 @@ class SearchFragment : Fragment() {
   fun adapterLoadStateListener() {
     lifecycleScope.launch {
       (loadStateFlowProvider ?: searchAdapter.loadStateFlow)
-        .debounce(DEBOUNCE_SHORT)
+        .debounce(DEBOUNCE_SHORT.milliseconds)
         .collectLatest { loadState ->
           val currentRefresh = loadState.source.refresh
 
@@ -335,7 +335,7 @@ class SearchFragment : Fragment() {
     binding.illustrationError.btnTryAgain.isVisible = true
 
     pagingErrorState(loadState)?.let {
-      mSnackbar = snackbar.showSnackbarWarning(Event(pagingErrorHandling(it.error)))
+      mSnackbar = snackbar.showSnackbarWarning(pagingErrorHandling(it.error))
     }
   }
 

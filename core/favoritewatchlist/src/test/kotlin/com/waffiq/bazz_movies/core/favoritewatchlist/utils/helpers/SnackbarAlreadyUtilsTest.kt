@@ -26,8 +26,8 @@ class SnackbarAlreadyUtilsTest {
   private val context: Context = mockk(relaxed = true)
   private val mockView: View = mockk(relaxed = true)
   private val mockViewGuide: View = mockk(relaxed = true)
-  private val title: String = "Test Title"
   private val mockSnackBar: Snackbar = mockk(relaxed = true)
+  private val title: String = "Test Title"
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
