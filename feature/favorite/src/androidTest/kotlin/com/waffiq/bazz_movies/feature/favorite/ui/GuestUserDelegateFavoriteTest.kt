@@ -25,8 +25,8 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHa
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.feature.favorite.testutils.BaseFavoriteFragmentTestHelper
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.favoriteMovie
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.listOfMovie
+import com.waffiq.bazz_movies.feature.favorite.testutils.DummyData.favoriteMovie
+import com.waffiq.bazz_movies.feature.favorite.testutils.DummyData.listOfMovie
 import com.waffiq.bazz_movies.feature.favorite.ui.fragment.FavoriteChildFragment
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
@@ -38,7 +38,7 @@ class GuestUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
   @Before
   override fun baseSetup() {
     super.baseSetup()
-    guestUser(mockSharedDBViewModel)
+    guestUser()
   }
 
   @Test

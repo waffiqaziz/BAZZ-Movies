@@ -107,6 +107,7 @@ Below you can find a list of BAZZ Movies modules.
 | [`:core:mappers`][core-mappers-link]                         | [![Coverage][core-mappers-coverage-badge]][core-mappers-coverage-link]                         |
 | [`:core:network`][core-network-link]                         | [![Coverage][core-network-coverage-badge]][core-network-coverage-link]                         |
 | [`:core:test`][core-test-link]                               | [![Coverage][core-test-coverage-badge]][core-test-coverage-link]                               |
+| [`:core:testmodule`][core-testmodule-link]                   | [![Coverage][core-testmodule-coverage-badge]][core-testmodule-coverage-link]                   |
 | [`:core:uihelper`][core-uihelper-link]                       | [![Coverage][core-uihelper-coverage-badge]][core-uihelper-coverage-link]                       |
 | [`:core:user`][core-user-link]                               | [![Coverage][core-user-coverage-badge]][core-user-coverage-link]                               |
 | [`:core:utils`][core-utils-link]                             | [![Coverage][core-utils-coverage-badge]][core-utils-coverage-link]                             |
@@ -348,6 +349,12 @@ plugins {
 [core-test-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-test
 
 [core-test-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-test
+
+[core-testmodule-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/testmodule
+
+[core-testmodule-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-testmodule
+
+[core-testmodule-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-testmodule
 
 [core-uihelper-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/uihelper
 

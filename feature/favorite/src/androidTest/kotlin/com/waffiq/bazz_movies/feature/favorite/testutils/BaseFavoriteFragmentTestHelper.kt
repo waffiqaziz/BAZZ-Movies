@@ -17,7 +17,6 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.utils.DbResult
@@ -40,13 +39,13 @@ import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
 import com.waffiq.bazz_movies.core.models.Favorite
 import com.waffiq.bazz_movies.core.models.MediaItem
-import com.waffiq.bazz_movies.core.models.UserModel
+import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.setupGuestUserModel
+import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.setupLoggedUserModel
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.favoriteTv
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.listOfMovie
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.testMediaItem
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.userModel
+import com.waffiq.bazz_movies.feature.favorite.testutils.DummyData.favoriteTv
+import com.waffiq.bazz_movies.feature.favorite.testutils.DummyData.listOfMovie
+import com.waffiq.bazz_movies.feature.favorite.testutils.DummyData.testMediaItem
 import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.withCustomConstraints
 import com.waffiq.bazz_movies.feature.favorite.ui.fragment.FavoriteFragment
 import com.waffiq.bazz_movies.feature.favorite.ui.viewmodel.FavoriteViewModel
@@ -102,11 +101,10 @@ abstract class BaseFavoriteFragmentTestHelper {
   open fun baseSetup() {
     hiltRule.inject()
     setupMocks()
+    setupSnackbar()
   }
 
   protected lateinit var favoriteFragment: FavoriteFragment
-
-  protected var mockUserModel = MutableLiveData<UserModel>()
 
   // Mocks for SharedDBViewModel
   protected var mockFavoriteMoviesFromDB = MutableLiveData<List<Favorite>>()
@@ -119,29 +117,23 @@ abstract class BaseFavoriteFragmentTestHelper {
     mockSnackBarChannel.receiveAsFlow()
 
   private fun setupMocks() {
-    mockUserModel = MutableLiveData()
     mockFavoriteMoviesFromDB = MutableLiveData()
     mockFavoriteTvFromDB = MutableLiveData()
     mockUndoDB = MutableLiveData()
     mockDbResult = MutableLiveData()
 
     every { mockNavigator.snackbarAnchor() } returns snackbar_anchor_test
-    every { mockUserPrefViewModel.getUserPref() } returns mockUserModel
-
-    setupSnackbar()
   }
 
-  protected fun loggedUser(favoriteViewModel: FavoriteViewModel) {
-    mockUserModel.postValue(userModel)
+  protected fun loggedUser() {
+    setupLoggedUserModel()
 
-    every { favoriteViewModel.snackBarAlready } returns mockSnackBarAlready
-    every { favoriteViewModel.snackBarAdded } returns mockSnackBarAdded
-    every { favoriteViewModel.currentSort } returns
+    every { mockFavoriteViewModel.snackBarAlready } returns mockSnackBarAlready
+    every { mockFavoriteViewModel.snackBarAdded } returns mockSnackBarAdded
+    every { mockFavoriteViewModel.currentSort } returns
       MutableStateFlow(LoggedFavoriteSortOption.RECENTLY_ADDED)
-    every { mockBaseViewModel.markSnackbarShown() } just Runs
-    every { mockBaseViewModel.resetSnackbarShown() } just Runs
 
-    every { favoriteViewModel.getFavoriteData("movie") } returns
+    every { mockFavoriteViewModel.getFavoriteData("movie") } returns
       flowOf(
         PagingData.from(
           listOf(
@@ -151,7 +143,7 @@ abstract class BaseFavoriteFragmentTestHelper {
         ),
       )
 
-    every { favoriteViewModel.getFavoriteData("tv") } returns
+    every { mockFavoriteViewModel.getFavoriteData("tv") } returns
       flowOf(
         PagingData.from(
           listOf(
@@ -160,21 +152,21 @@ abstract class BaseFavoriteFragmentTestHelper {
           ),
         ),
       )
-    every { favoriteViewModel.updateSort(any()) } just Runs
+    every { mockFavoriteViewModel.updateSort(any()) } just Runs
   }
 
-  protected fun guestUser(sharedDBViewModel: SharedDBViewModel) {
+  protected fun guestUser() {
+    setupGuestUserModel()
     mockFavoriteMoviesFromDB.postValue(listOfMovie)
     mockFavoriteTvFromDB.postValue(listOf(favoriteTv, favoriteTv.copy(id = 12345)))
-    mockUserModel.postValue(userModel.copy(token = NAN))
 
-    every { sharedDBViewModel.favoriteMoviesFromDB } returns mockFavoriteMoviesFromDB
-    every { sharedDBViewModel.favoriteTvFromDB } returns mockFavoriteTvFromDB
-    every { sharedDBViewModel.undoDB } returns mockUndoDB
-    every { sharedDBViewModel.dbResult } returns mockDbResult
-    every { sharedDBViewModel.currentSort } returns
+    every { mockSharedDBViewModel.favoriteMoviesFromDB } returns mockFavoriteMoviesFromDB
+    every { mockSharedDBViewModel.favoriteTvFromDB } returns mockFavoriteTvFromDB
+    every { mockSharedDBViewModel.undoDB } returns mockUndoDB
+    every { mockSharedDBViewModel.dbResult } returns mockDbResult
+    every { mockSharedDBViewModel.currentSort } returns
       MutableStateFlow(GuestFavoriteSortOption.RECENTLY_ADDED)
-    every { sharedDBViewModel.updateSort(any()) } just Runs
+    every { mockSharedDBViewModel.updateSort(any()) } just Runs
   }
 
   private fun setupSnackbar() {

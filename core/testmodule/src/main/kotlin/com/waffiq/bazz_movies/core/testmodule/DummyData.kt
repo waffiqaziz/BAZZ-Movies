@@ -1,8 +1,9 @@
-package com.waffiq.bazz_movies.feature.more.testutils
+package com.waffiq.bazz_movies.core.testmodule
 
 import com.waffiq.bazz_movies.core.models.UserModel
 
-object Helper {
+object DummyData {
+
   val userModel = UserModel(
     userId = 12345678,
     name = "Test Name",

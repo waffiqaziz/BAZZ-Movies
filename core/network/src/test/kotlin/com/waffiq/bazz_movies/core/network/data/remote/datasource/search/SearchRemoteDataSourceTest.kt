@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.core.network.data.remote.datasource.search
 
 import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.SearchPagingSource
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.personDump1
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.personDump1
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.defaultMultiSearchResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingFlowSearch
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingSearchSource

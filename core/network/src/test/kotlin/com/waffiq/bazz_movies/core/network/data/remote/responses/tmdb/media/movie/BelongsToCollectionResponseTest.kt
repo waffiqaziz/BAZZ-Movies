@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie
 
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.belongsToCollectionDeadpoolDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.belongsToCollectionDeadpoolDump
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew
 
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.mediaCastItemResponseDump
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.mediaCrewItemResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.mediaCastItemResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.mediaCrewItemResponseDump
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

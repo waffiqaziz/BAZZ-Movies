@@ -18,6 +18,7 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotE
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.textIsDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitUntil
+import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.setupGuestUserModel
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.feature.more.R.id.btn_signout
 import com.waffiq.bazz_movies.feature.more.R.id.progress_bar
@@ -34,7 +35,7 @@ class MoreFragmentSignOutTest : BaseMoreFragmentTest() {
 
   @Test
   fun signOut_whenGuestUser_shouldShowGuestModeDialog() {
-    setupGuestUser()
+    setupGuestUserModel()
     performSignOutAction()
   }
 
@@ -56,7 +57,7 @@ class MoreFragmentSignOutTest : BaseMoreFragmentTest() {
   @Test
   fun signOutStateGuest_allBranches_shouldBeCovered() =
     runTest {
-      setupGuestUser()
+      setupGuestUserModel()
       performSignOutAction()
       mockUIState.emit(UIState.Loading)
       advanceUntilIdle()
@@ -72,7 +73,7 @@ class MoreFragmentSignOutTest : BaseMoreFragmentTest() {
 
   @Test
   fun signOutDialogGuestUser_whenYesClicked_shouldDeleteLocalData() {
-    setupGuestUser()
+    setupGuestUserModel()
     performSignOutAction()
 
     verify { mockMoreLocalViewModel.deleteAll() }
@@ -112,7 +113,7 @@ class MoreFragmentSignOutTest : BaseMoreFragmentTest() {
   @Test
   fun dbResultGuestUser_whenSuccess_shouldShowSuccessToast() =
     runTest {
-      setupGuestUser()
+      setupGuestUserModel()
       performSignOutAction()
       mockUIState.emit(UIState.Success(Unit))
 
@@ -142,7 +143,7 @@ class MoreFragmentSignOutTest : BaseMoreFragmentTest() {
   @Test
   fun dbResultGuestUser_whenError_shouldShowErrorSnackbar() =
     runTest {
-      setupGuestUser()
+      setupGuestUserModel()
       performSignOutAction()
 
       mockUIState.emit(UIState.Error("Database error"))
@@ -154,7 +155,7 @@ class MoreFragmentSignOutTest : BaseMoreFragmentTest() {
 
   @Test
   fun signOutGuestUser_clickedNoOption_doNothing() {
-    setupGuestUser()
+    setupGuestUserModel()
     btn_signout.performClick()
     no.performTextClick()
 

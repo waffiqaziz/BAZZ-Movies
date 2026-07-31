@@ -90,8 +90,6 @@ abstract class BaseMediaDetailActivityTest {
     setupObservables()
     setupPreferencesViewModelMocks()
     setupMediaDetailViewModelMocks()
-    setupNavigatorMocks()
-    setupUriLauncherMock()
   }
 
   private fun setupBaseMocks() {
@@ -127,16 +125,6 @@ abstract class BaseMediaDetailActivityTest {
     every { mockMediaDetailViewModel.errorEvent } returns sErrorEvent
     every { mockMediaDetailViewModel.toastEvent } returns sToastEvent
     every { mockMediaDetailViewModel.recommendations } returns sRecommendations
-  }
-
-  private fun setupNavigatorMocks() {
-    every { mockNavigator.openDetails(any(), any()) } just Runs
-    every { mockNavigator.openPersonDetails(any(), any()) } just Runs
-    every { mockNavigator.openList(any(), any()) } just Runs
-  }
-
-  private fun setupUriLauncherMock() {
-    every { mockUriLauncher.launch(any()) } just Runs
   }
 
   protected fun initializeTest(context: Context) {

@@ -56,7 +56,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.Medi
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.RatedResponse
 
 @Suppress("LargeClass")
-object DataDumpManager {
+object DummyData {
 
   val movieDump1 = MediaResponseItem(
     id = 278,

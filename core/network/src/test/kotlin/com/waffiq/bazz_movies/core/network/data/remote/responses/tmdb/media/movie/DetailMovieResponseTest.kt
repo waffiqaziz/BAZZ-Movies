@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie
 
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.detailMovieResponseDump
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.watchProvidersResultsMap
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.detailMovieResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.watchProvidersResultsMap
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue

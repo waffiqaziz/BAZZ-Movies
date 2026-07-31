@@ -7,6 +7,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.yes
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performTextClick
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
+import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.setupGuestUserModel
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.feature.more.R.id.btn_backup
 import com.waffiq.bazz_movies.feature.more.R.id.btn_restore
@@ -21,7 +22,7 @@ class MoreFragmentBackupTest : BaseMoreFragmentTest() {
   @Test
   fun buttonBackup_whenClicked_shouldCoverage() =
     runTest {
-      setupGuestUser()
+      setupGuestUserModel()
 
       mockBackupState.emit(UIState.Success(Unit))
       shortDelay()
@@ -35,7 +36,7 @@ class MoreFragmentBackupTest : BaseMoreFragmentTest() {
   @Test
   fun buttonRestore_whenClicked_shouldCoverage() =
     runTest {
-      setupGuestUser()
+      setupGuestUserModel()
 
       mockRestoreState.emit(UIState.Success(Unit))
       shortDelay()
@@ -48,7 +49,7 @@ class MoreFragmentBackupTest : BaseMoreFragmentTest() {
 
   @Test
   fun dialogRestore_performYes_shouldCallCorrectFunction() {
-    setupGuestUser()
+    setupGuestUserModel()
 
     val testUri = Uri.parse("content://test/bazz_movies_backup.json")
     InstrumentationRegistry.getInstrumentation().runOnMainSync {

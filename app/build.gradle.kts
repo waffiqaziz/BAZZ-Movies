@@ -8,6 +8,14 @@ plugins {
   id("kotlin-parcelize")
 }
 
+//android {
+//  packaging {
+//    resources {
+//      excludes += "dispatcher.jar"
+//    }
+//  }
+//}
+
 dependencies {
   implementation(project(":core:designsystem"))
   implementation(project(":core:favoritewatchlist"))
@@ -36,7 +44,7 @@ dependencies {
   implementation(libs.okhttp3.okhttp.tls)
 
   // leakcanary
-  debugImplementation(libs.leakcanary)
+  // debugImplementation(libs.leakcanary)
 
   // third-party library
   implementation(libs.expandable.textview)
@@ -51,9 +59,6 @@ dependencies {
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.test.runner)
   androidTestImplementation(libs.junit)
-  androidTestImplementation(libs.mockito.core)
-  androidTestImplementation(libs.mockito.android)
-  androidTestImplementation(libs.mockito.android.kotlin)
   androidTestImplementation(libs.mockk.android)
 }
 

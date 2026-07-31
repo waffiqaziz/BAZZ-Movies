@@ -16,8 +16,8 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisp
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
 import com.waffiq.bazz_movies.core.models.MediaItem
+import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.setupLoggedUserModel
 import com.waffiq.bazz_movies.feature.favorite.testutils.BaseFavoriteFragmentTestHelper
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.userModel
 import com.waffiq.bazz_movies.feature.favorite.ui.fragment.FavoriteChildFragment
 import com.waffiq.bazz_movies.feature.favorite.ui.fragment.FavoriteFragment
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -31,7 +31,7 @@ class EmptyCaseFavoriteFragmentTest : BaseFavoriteFragmentTestHelper() {
   @Test
   fun loggedUser_noFavorite_showEmptyIllustration() =
     runTest {
-      mockUserModel.postValue(userModel)
+      setupLoggedUserModel()
 
       val pager = Pager(PagingConfig(pageSize = 20, enablePlaceholders = false)) {
         object : PagingSource<Int, MediaItem>() {

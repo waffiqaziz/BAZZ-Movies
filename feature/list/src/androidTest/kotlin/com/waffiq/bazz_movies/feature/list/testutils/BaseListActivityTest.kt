@@ -18,9 +18,7 @@ import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType
 import com.waffiq.bazz_movies.navigation.MediaSource
-import io.mockk.Runs
 import io.mockk.every
-import io.mockk.just
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
@@ -36,8 +34,8 @@ abstract class BaseListActivityTest {
     title = "",
   )
 
-  protected val listResultsFlow: Flow<PagingData<MediaItem>> = flowOf(fakePagingMediaItem)
-  protected val movieGenreArgs = ListArgs(
+  private val listResultsFlow: Flow<PagingData<MediaItem>> = flowOf(fakePagingMediaItem)
+  private val movieGenreArgs = ListArgs(
     listType = ListType.BY_GENRE,
     mediaType = MediaSource.Typed(MOVIE_MEDIA_TYPE),
     title = "title",
@@ -92,7 +90,7 @@ abstract class BaseListActivityTest {
   protected val romanceDramaArgs = tvArgs.copy(listType = ListType.ROMANCE_DRAMA)
   protected val realityShow = tvArgs.copy(listType = ListType.REALITY_SHOW)
 
-  protected fun setupMock(viewModel: ListViewModel, navigator: INavigator) {
+  protected fun setupMock(viewModel: ListViewModel) {
     every { viewModel.getAiringThisWeekTv() } returns listResultsFlow
     every { viewModel.getByGenre(any(), any()) } returns listResultsFlow
     every { viewModel.getByKeyword(any(), any()) } returns listResultsFlow
@@ -101,7 +99,6 @@ abstract class BaseListActivityTest {
     every { viewModel.getTopRated(any()) } returns listResultsFlow
     every { viewModel.getUpcomingMovies() } returns listResultsFlow
     every { viewModel.getPopular(any()) } returns listResultsFlow
-    every { navigator.openDetails(any(), any()) } just Runs
   }
 
   protected fun Context.launchListActivity(block: (ActivityScenario<ListActivity>) -> Unit) {

@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.tv
 
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.detailTvResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.detailTvResponseDump
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper
 import kotlinx.coroutines.test.runTest
 import org.junit.Test

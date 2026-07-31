@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.omdb
 
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.omdbDetailsResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.omdbDetailsResponseDump
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

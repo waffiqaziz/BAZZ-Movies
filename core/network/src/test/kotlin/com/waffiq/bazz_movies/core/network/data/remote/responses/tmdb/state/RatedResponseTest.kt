@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state
 
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.ratedResponse
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.ratedResponse
 import org.junit.Assert.assertSame
 import org.junit.Test
 import kotlin.test.assertEquals

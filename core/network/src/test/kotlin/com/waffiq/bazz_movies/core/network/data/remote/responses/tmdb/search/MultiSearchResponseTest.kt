@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search
 
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.personDump1
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.personDump1
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

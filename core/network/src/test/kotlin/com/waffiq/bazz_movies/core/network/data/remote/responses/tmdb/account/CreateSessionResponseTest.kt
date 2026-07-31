@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account
 
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.createSessionResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.createSessionResponseDump
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test

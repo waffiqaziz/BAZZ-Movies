@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.ui.login
 
 import android.content.Context
+import android.view.autofill.AutofillManager
 import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.typeText
@@ -51,6 +52,7 @@ class LoginActivityTest {
 
     activityRule.scenario.onActivity { activity ->
       context = activity.applicationContext
+      disableAutoFilled()
     }
   }
 
@@ -121,5 +123,9 @@ class LoginActivityTest {
     tv_guest.performClick()
     activity_main.isDisplayed()
     shortDelay()
+  }
+
+  private fun disableAutoFilled() {
+    context.getSystemService(AutofillManager::class.java).disableAutofillServices()
   }
 }

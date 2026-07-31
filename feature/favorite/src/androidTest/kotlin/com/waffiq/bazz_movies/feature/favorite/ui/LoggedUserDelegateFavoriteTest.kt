@@ -41,7 +41,7 @@ class LoggedUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
   @Before
   override fun baseSetup() {
     super.baseSetup()
-    loggedUser(mockFavoriteViewModel)
+    loggedUser()
   }
 
   @Test
@@ -219,7 +219,6 @@ class LoggedUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
   @Test
   fun addToWatchlist_butItemAlreadyOnWatchlis_showsAlreadySnackbar() =
     runTest {
-      loggedUser(mockFavoriteViewModel)
       launchFragment()
 
       performSwipeAction(2, swipeRight())

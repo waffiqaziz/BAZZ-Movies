@@ -15,6 +15,7 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
 import io.mockk.mockk
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -31,18 +32,21 @@ class RoutingActivityTest {
   private val mockLiveData = MutableLiveData<UserModel>()
 
   @Before
-  fun setUp() {
+  fun setup() {
+    Intents.init()
     hiltRule.inject()
 
     mockViewModel = mockk(relaxed = true)
-
     every { mockViewModel.getUserPref() } returns mockLiveData
+  }
+
+  @After
+  fun tearDown() {
+    Intents.release()
   }
 
   @Test
   fun navigatesToMainActivity_success_whenUserIsLoggedIn() {
-    Intents.init()
-
     // provide mock LiveData value
     mockLiveData.postValue(
       UserModel(
@@ -64,14 +68,11 @@ class RoutingActivityTest {
     // verify navigation to MainActivity
     intended(hasComponent(MainActivity::class.java.name))
 
-    Intents.release()
     scenario.close()
   }
 
   @Test
   fun navigatesToMainActivity_fallbackToLogin_whenUserIsNotLoggedIn() {
-    Intents.init()
-
     mockLiveData.postValue(
       UserModel(
         userId = 0,
@@ -89,7 +90,6 @@ class RoutingActivityTest {
     val scenario = ActivityScenario.launch(RoutingActivity::class.java)
     intended(hasComponent(LoginActivity::class.java.name))
 
-    Intents.release()
     scenario.close()
   }
 }

@@ -12,10 +12,10 @@ import com.waffiq.bazz_movies.core.test.KotestInstantExecutorExtension
 import com.waffiq.bazz_movies.feature.favorite.domain.usecase.composite.CheckAndAddToWatchlistInteractor
 import com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritemovie.GetFavoriteMovieUseCase
 import com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritetv.GetFavoriteTvUseCase
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.ERROR_MESSAGE
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.outcomeError
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.outcomeLoading
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.outcomeSuccess
+import com.waffiq.bazz_movies.feature.favorite.testutils.DummyData.ERROR_MESSAGE
+import com.waffiq.bazz_movies.feature.favorite.testutils.DummyData.outcomeError
+import com.waffiq.bazz_movies.feature.favorite.testutils.DummyData.outcomeLoading
+import com.waffiq.bazz_movies.feature.favorite.testutils.DummyData.outcomeSuccess
 import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testViewModelFlow
 import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testViewModelLiveDataEvent
 import io.kotest.core.spec.style.BehaviorSpec

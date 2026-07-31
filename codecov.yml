@@ -93,6 +93,11 @@ flag_management:
       paths:
         - core/test/
       carryforward: true
+
+    - name: core-testmodule
+      paths:
+        - core/testmodule/
+      carryforward: true
         
     - name: core-uihelper
       paths:
