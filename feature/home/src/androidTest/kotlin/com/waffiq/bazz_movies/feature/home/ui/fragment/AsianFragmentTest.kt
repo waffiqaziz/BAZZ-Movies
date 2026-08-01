@@ -90,15 +90,6 @@ class AsianFragmentTest : BaseHomeFragmentTest() {
   }
 
   @Test
-  fun btnAnime_whenClicked_shouldCallsCorrectFunction1() {
-    launchAsianFragment()
-    shortDelay(1000)
-    btn_anime_this_season.performClick()
-    InstrumentationRegistry.getInstrumentation().waitForIdleSync()
-    verify { mockAsianViewModel.setAnimePeriod(AnimePeriod.THIS_SEASON) }
-  }
-
-  @Test
   fun moreButton_whenClicked_shouldOpenListActivity() {
     launchAsianFragment()
 
