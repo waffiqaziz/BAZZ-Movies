@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.domain.usecase.FavoriteLocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.favoritewatchlist.LiveDataCollectors
@@ -11,7 +10,6 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.favorit
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.favoriteTvList
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.watchlistMovieList
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.watchlistTvList
-import com.waffiq.bazz_movies.core.models.Favorite
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -20,6 +18,8 @@ import io.mockk.mockk
 import io.mockk.verifyAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -83,15 +83,15 @@ class SharedDBViewModelTest {
         viewModel.insertToDB(favorite)
       }
 
-      assertEquals(1, results.size)
-      assertEquals(dbResult, results[0].peekContent())
+      assertEquals(results.size, 1)
+      assertEquals(results[0], dbResult)
       coVerify { localDatabaseUseCase.insertToDB(favorite) }
     }
 
   @Test
-  fun deleteFromDB_whenSuccessful_emitsSuccessAndSetsUndo() =
+  fun deleteFromDB_whenSuccessful_emitsSuccess() =
     runTest {
-      testDatabaseOperationWithUndo(
+      testDatabaseOperation(
         mockSetup = {
           coEvery { localDatabaseUseCase.deleteFromDB(any(), any()) } returns DbResult.Success(1)
         },
@@ -102,9 +102,9 @@ class SharedDBViewModelTest {
     }
 
   @Test
-  fun update_whenSuccessful_emitsSuccessAndSetsUndo() =
+  fun update_whenSuccessful_emitsSuccess() =
     runTest {
-      testDatabaseOperationWithUndo(
+      testDatabaseOperation(
         mockSetup = {
           coEvery { localDatabaseUseCase.update(any()) } returns DbResult.Success(Unit)
         },
@@ -140,15 +140,18 @@ class SharedDBViewModelTest {
     assertEquals(GuestFavoriteSortOption.OLDEST_ADDED, viewModel.currentSort.value)
   }
 
-  private fun TestScope.collectDbResults(operation: suspend () -> Unit): List<Event<DbResult<*>>> {
-    val results = mutableListOf<Event<DbResult<*>>>()
-    viewModel.dbResult.observeForever { results.add(it) }
+  private fun TestScope.collectDbResults(operation: suspend () -> Unit): List<DbResult<*>> {
+    val results = mutableListOf<DbResult<*>>()
+    val job = launch { viewModel.dbResult.toList(results) }
+
     runBlocking { operation() }
     advanceUntilIdle()
+    job.cancel()
+
     return results
   }
 
-  private fun testDatabaseOperationWithUndo(
+  private fun testDatabaseOperation(
     mockSetup: () -> Unit,
     operation: suspend () -> Unit,
     verification: () -> Unit,
@@ -156,19 +159,12 @@ class SharedDBViewModelTest {
   ) = runTest {
     mockSetup()
 
-    val dbResults = mutableListOf<Event<DbResult<*>>>()
-    val undoResults = mutableListOf<Event<Favorite>>()
+    val results = collectDbResults {
+      operation()
+    }
 
-    viewModel.dbResult.observeForever { dbResults.add(it) }
-    viewModel.undoDB.observeForever { undoResults.add(it) }
-
-    operation()
-    advanceUntilIdle()
-
-    assertEquals(1, dbResults.size)
-    assertEquals(dbResult, dbResults[0].peekContent())
-    assertEquals(1, undoResults.size)
-    assertEquals(favorite, undoResults[0].peekContent())
+    assertEquals(results.size, 1)
+    assertEquals(results[0], dbResult)
 
     verification()
   }

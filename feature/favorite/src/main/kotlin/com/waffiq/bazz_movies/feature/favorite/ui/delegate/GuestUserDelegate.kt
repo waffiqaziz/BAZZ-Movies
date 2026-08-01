@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.ConcatAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.designsystem.R.color.yellow_700
 import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_watchlist
@@ -23,6 +22,7 @@ import com.waffiq.bazz_movies.core.uihelper.dialog.SingleChoiceDialog
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.SwipeConfig
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
 import com.waffiq.bazz_movies.core.uihelper.utils.SpannableUtils.buildActionMessage
+import com.waffiq.bazz_movies.core.utils.FlowUtils.collectFlow
 import com.waffiq.bazz_movies.navigation.INavigator
 
 /**
@@ -64,7 +64,7 @@ class GuestUserDelegate(
       onDelete = { favorite, position ->
         isWantToDelete = true
         deleteFavorite(favorite)
-        showUndoSnackbar(favorite.title, position)
+        showUndoSnackbar(favorite, position)
       },
       onAddToWatchlist = { favorite, position ->
         isWantToDelete = false
@@ -132,20 +132,20 @@ class GuestUserDelegate(
 
   private fun addToWatchlist(favorite: Favorite, position: Int) {
     if (favorite.isWatchlist) {
-      showAlreadySnackbar(Event(favorite.title))
+      showAlreadySnackbar(favorite.title)
     } else {
       sharedDBViewModel.updateDB(favorite.copy(isWatchlist = true))
-      showUndoSnackbar(favorite.title, position)
+      showUndoSnackbar(favorite, position)
     }
   }
 
-  private fun showUndoSnackbar(title: String, position: Int) {
+  private fun showUndoSnackbar(favorite: Favorite, position: Int) {
     dismissSnackbar()
 
     val message = if (isWantToDelete) {
-      buildActionMessage(title, fragment.getString(removed_from_favorite))
+      buildActionMessage(favorite.title, fragment.getString(removed_from_favorite))
     } else {
-      buildActionMessage(title, fragment.getString(added_to_watchlist))
+      buildActionMessage(favorite.title, fragment.getString(added_to_watchlist))
     }
 
     currentSnackbar = Snackbar.make(
@@ -154,7 +154,7 @@ class GuestUserDelegate(
       Snackbar.LENGTH_LONG,
     ).apply {
       setAction(fragment.getString(undo)) {
-        handleUndo(position)
+        handleUndo(favorite, position)
       }
       anchorView = fragment.requireActivity().findViewById(snackbarAnchor)
       setActionTextColor(context.getColor(yellow_700))
@@ -162,17 +162,17 @@ class GuestUserDelegate(
     }
   }
 
-  private fun handleUndo(position: Int) {
-    sharedDBViewModel.undoDB.value?.getContentIfNotHandled()?.let { favorite ->
-      if (isWantToDelete) {
-        restoreFavorite(favorite, position)
-      } else {
-        sharedDBViewModel.updateDB(favorite.copy(isWatchlist = false))
-      }
+  private fun handleUndo(favorite: Favorite, position: Int) {
+    if (isWantToDelete) {
+      restoreFavorite(favorite, position)
+    } else {
+      // undo add to watchlist
+      sharedDBViewModel.updateDB(favorite.copy(isWatchlist = false))
     }
   }
 
   private fun restoreFavorite(favorite: Favorite, position: Int) {
+    // undo delete from favorite
     if (favorite.isWatchlist) {
       sharedDBViewModel.updateDB(favorite.copy(isFavorite = true))
     } else {
@@ -182,21 +182,17 @@ class GuestUserDelegate(
   }
 
   private fun observeDbOperations() {
-    sharedDBViewModel.dbResult.observe(fragment.viewLifecycleOwner) { eventResult ->
-      eventResult.getContentIfNotHandled()?.let {
-        if (it is DbResult.Error) {
-          context.toastShort(it.errorMessage)
-        }
-      }
+    fragment.collectFlow(sharedDBViewModel.dbResult) {
+      if (it is DbResult.Error) context.toastShort(it.errorMessage)
     }
   }
 
-  private fun showAlreadySnackbar(event: Event<String>) {
+  private fun showAlreadySnackbar(title: String) {
     currentSnackbar = SnackbarAlreadyUtils.snackBarAlready(
       context,
       fragment.requireActivity().findViewById(snackbarAnchor),
       fragment.requireActivity().findViewById(snackbarAnchor),
-      event,
+      title,
       false,
     )
   }

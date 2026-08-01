@@ -18,7 +18,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.designsystem.R.color.red_matte
 import com.waffiq.bazz_movies.core.designsystem.R.string.undo
@@ -56,6 +55,7 @@ import io.mockk.every
 import io.mockk.just
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -109,9 +109,8 @@ abstract class BaseFavoriteFragmentTestHelper {
   // Mocks for SharedDBViewModel
   protected var mockFavoriteMoviesFromDB = MutableLiveData<List<Favorite>>()
   protected var mockFavoriteTvFromDB = MutableLiveData<List<Favorite>>()
-  protected var mockUndoDB = MutableLiveData<Event<Favorite>>()
-  protected var mockDbResult = MutableLiveData<Event<DbResult<*>>>()
-  protected var mockSnackBarAlready = MutableLiveData<Event<String>>()
+  protected var mockDbResult = MutableSharedFlow<DbResult<*>>()
+  protected var mockSnackBarAlready = MutableLiveData<String>()
   protected var mockSnackBarChannel: Channel<SnackBarUserLoginData> = Channel()
   protected var mockSnackBarAdded: Flow<SnackBarUserLoginData> =
     mockSnackBarChannel.receiveAsFlow()
@@ -119,8 +118,7 @@ abstract class BaseFavoriteFragmentTestHelper {
   private fun setupMocks() {
     mockFavoriteMoviesFromDB = MutableLiveData()
     mockFavoriteTvFromDB = MutableLiveData()
-    mockUndoDB = MutableLiveData()
-    mockDbResult = MutableLiveData()
+    mockDbResult = MutableSharedFlow()
 
     every { mockNavigator.snackbarAnchor() } returns snackbar_anchor_test
   }
@@ -162,7 +160,6 @@ abstract class BaseFavoriteFragmentTestHelper {
 
     every { mockSharedDBViewModel.favoriteMoviesFromDB } returns mockFavoriteMoviesFromDB
     every { mockSharedDBViewModel.favoriteTvFromDB } returns mockFavoriteTvFromDB
-    every { mockSharedDBViewModel.undoDB } returns mockUndoDB
     every { mockSharedDBViewModel.dbResult } returns mockDbResult
     every { mockSharedDBViewModel.currentSort } returns
       MutableStateFlow(GuestFavoriteSortOption.RECENTLY_ADDED)
@@ -182,12 +179,6 @@ abstract class BaseFavoriteFragmentTestHelper {
         }
       } catch (_: Exception) {
         null
-      }
-    }
-
-    every { mockSnackbar.showSnackbarWarning(any<Event<String>>()) } answers {
-      firstArg<Event<String>>().getContentIfNotHandled()?.let { errorMessage ->
-        mockSnackbar.showSnackbarWarning(errorMessage)
       }
     }
   }

@@ -2,10 +2,10 @@ package com.waffiq.bazz_movies.core.testmodule
 
 import com.waffiq.bazz_movies.core.models.UserModel
 import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.provideMockUserPreferenceViewModel
-import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.setupLoggedUserModel
 import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.setupGuestUserModel
-import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.setupUserModel
+import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.setupLoggedUserModel
 import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.setupRegion
+import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.setupUserModel
 import org.junit.Assert.assertNotNull
 import org.junit.Test
 

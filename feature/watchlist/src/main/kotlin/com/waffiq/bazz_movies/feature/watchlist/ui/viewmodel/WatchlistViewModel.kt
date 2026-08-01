@@ -8,7 +8,6 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.data.domain.usecase.composite.PostActionUseCase
 import com.waffiq.bazz_movies.core.favoritewatchlist.domain.sort.LoggedFavoriteSortOption
 import com.waffiq.bazz_movies.core.favoritewatchlist.domain.sort.toQueryString
@@ -39,8 +38,8 @@ class WatchlistViewModel @Inject constructor(
   private val checkAndAddToFavoriteUseCase: CheckAndAddToFavoriteUseCase,
 ) : ViewModel() {
 
-  private val _snackBarAlready = MutableLiveData<Event<String>>()
-  val snackBarAlready: LiveData<Event<String>> = _snackBarAlready
+  private val _snackBarAlready = MutableLiveData<String>()
+  val snackBarAlready: LiveData<String> = _snackBarAlready
 
   private val _snackBarAdded = Channel<SnackBarUserLoginData>(Channel.CONFLATED)
   val snackBarAdded = _snackBarAdded.receiveAsFlow()
@@ -118,7 +117,7 @@ class WatchlistViewModel @Inject constructor(
   }
 
   private fun already(title: String) {
-    _snackBarAlready.value = Event(title)
+    _snackBarAlready.value = title
   }
 
   private fun onError(message: String) {

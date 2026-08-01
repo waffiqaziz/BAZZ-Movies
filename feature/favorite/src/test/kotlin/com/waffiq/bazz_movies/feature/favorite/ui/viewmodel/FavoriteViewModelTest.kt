@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.feature.favorite.ui.viewmodel
 
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.data.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.data.domain.usecase.composite.PostActionUseCase
 import com.waffiq.bazz_movies.core.favoritewatchlist.domain.sort.LoggedFavoriteSortOption
@@ -24,7 +23,7 @@ import com.waffiq.bazz_movies.feature.favorite.testutils.DummyData.outcomeError
 import com.waffiq.bazz_movies.feature.favorite.testutils.DummyData.outcomeLoading
 import com.waffiq.bazz_movies.feature.favorite.testutils.DummyData.outcomeSuccess
 import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testViewModelFlow
-import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testViewModelLiveDataEvent
+import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testViewModelLiveData
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
@@ -159,10 +158,10 @@ class FavoriteViewModelTest :
           flowOf(outcomeSuccess(WatchlistActionResult.AlreadyInWatchlist))
 
         Then("it should emit snackBarAlready with title") {
-          testViewModelLiveDataEvent(
+          testViewModelLiveData(
             runBlock = { checkStateTv() },
             liveData = viewModel.snackBarAlready,
-            expected = Event(title),
+            expected = title,
             verifyBlock = { verifyGetStatedTVCalled() },
           )
         }
@@ -347,10 +346,10 @@ class FavoriteViewModelTest :
           flowOf(outcomeSuccess(response))
 
         Then("it should show snackBarAlready with title").config(coroutineTestScope = true) {
-          testViewModelLiveDataEvent(
+          testViewModelLiveData(
             runBlock = { checkStateMovie() },
             liveData = viewModel.snackBarAlready,
-            expected = Event(title),
+            expected = title,
             verifyBlock = { verifyGetStatedMovieCalled() },
           )
         }

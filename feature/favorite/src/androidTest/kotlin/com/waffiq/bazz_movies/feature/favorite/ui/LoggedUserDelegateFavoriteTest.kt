@@ -6,8 +6,8 @@ import androidx.paging.PagingConfig
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.action.ViewActions.swipeRight
+import androidx.test.platform.app.InstrumentationRegistry
 import com.google.android.material.R.id.snackbar_text
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.id.btn_try_again
 import com.waffiq.bazz_movies.core.designsystem.R.id.chip_sort
 import com.waffiq.bazz_movies.core.designsystem.R.id.ic_general_error
@@ -26,6 +26,7 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisp
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.models.FavoriteParams
 import com.waffiq.bazz_movies.core.models.WatchlistParams
+import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.setupGuestUserModel
 import com.waffiq.bazz_movies.feature.favorite.testutils.BaseFavoriteFragmentTestHelper
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.coVerify
@@ -223,7 +224,7 @@ class LoggedUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
 
       performSwipeAction(2, swipeRight())
 
-      mockSnackBarAlready.postValue(Event("This Movie"))
+      mockSnackBarAlready.postValue("This Movie")
       onIdle()
 
       val snackbarText = getString(favoriteFragment.requireActivity(), already_watchlist)
@@ -289,4 +290,12 @@ class LoggedUserDelegateFavoriteTest : BaseFavoriteFragmentTestHelper() {
 
       coVerify(atLeast = 1) { mockFavoriteViewModel.postFavorite(any(), any()) }
     }
+
+  @Test
+  fun loggedUser_changesPrefToGuestUser_shouldNoError() {
+    launchFragment()
+    InstrumentationRegistry.getInstrumentation().runOnMainSync {
+      setupGuestUserModel()
+    }
+  }
 }

@@ -16,7 +16,6 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.illustration_error
 import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.illustration_no_data_view
@@ -37,6 +36,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import java.io.IOException
+import kotlin.time.Duration.Companion.milliseconds
 
 @RunWith(RobolectricTestRunner::class)
 class HandlePagingLoadStateTest {
@@ -48,7 +48,7 @@ class HandlePagingLoadStateTest {
   private lateinit var lifecycleOwner: TestLifecycleOwner
   private lateinit var mockAdapter: PagingDataAdapter<Any, RecyclerView.ViewHolder>
   private lateinit var loadStateFlow: MutableStateFlow<CombinedLoadStates>
-  private lateinit var onErrorCallback: (Event<String>) -> Unit
+  private lateinit var onErrorCallback: (String) -> Unit
   private lateinit var binding: FragmentChildBinding
 
   @get:Rule
@@ -242,7 +242,7 @@ class HandlePagingLoadStateTest {
       loadStateFlow.value = createLoadState(refresh = LoadState.Loading)
 
       // wait
-      advanceTimeBy(DEBOUNCE_SHORT - 100)
+      advanceTimeBy(DEBOUNCE_SHORT.milliseconds)
 
       // second state - normal - overwrites the first one before debounce completes
       loadStateFlow.value = createLoadState()
@@ -264,7 +264,7 @@ class HandlePagingLoadStateTest {
     runTest {
       // track number of calls to a callback
       var callCount = 0
-      val trackingCallback: (Event<String>) -> Unit = { callCount++ }
+      val trackingCallback: (String) -> Unit = { callCount++ }
 
       lifecycleOwner.handlePagingLoadState(
         mockAdapter,
@@ -275,7 +275,7 @@ class HandlePagingLoadStateTest {
 
       // emit loading state
       loadStateFlow.value = createLoadState(refresh = LoadState.Loading)
-      advanceTimeBy(DEBOUNCE_SHORT * 2)
+      advanceTimeBy((DEBOUNCE_SHORT * 2).milliseconds)
 
       // loading state should not trigger error callback
       assertEquals(0, callCount)
@@ -285,14 +285,14 @@ class HandlePagingLoadStateTest {
 
       // emit error state
       loadStateFlow.value = errorState
-      advanceTimeBy(DEBOUNCE_SHORT * 2)
+      advanceTimeBy((DEBOUNCE_SHORT * 2).milliseconds)
 
       // error callback should be called once
       assertEquals(1, callCount)
 
       // emit identical error state again
       loadStateFlow.value = errorState
-      advanceTimeBy(DEBOUNCE_SHORT * 2)
+      advanceTimeBy((DEBOUNCE_SHORT * 2).milliseconds)
 
       // count should still be 1 due to distinctUntilChanged
       assertEquals(1, callCount)

@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.ConcatAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.designsystem.R.color.yellow_700
 import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_favorite
@@ -23,6 +22,7 @@ import com.waffiq.bazz_movies.core.uihelper.dialog.SingleChoiceDialog
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.SwipeConfig
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
 import com.waffiq.bazz_movies.core.uihelper.utils.SpannableUtils.buildActionMessage
+import com.waffiq.bazz_movies.core.utils.FlowUtils.collectFlow
 import com.waffiq.bazz_movies.navigation.INavigator
 
 /**
@@ -64,7 +64,7 @@ class GuestUserDelegate(
       onDelete = { favorite, position ->
         isWantToDelete = true
         deleteWatchlist(favorite)
-        showUndoSnackbar(favorite.title, position)
+        showUndoSnackbar(favorite, position)
       },
       onAddToWatchlist = { favorite, position ->
         isWantToDelete = false
@@ -132,20 +132,20 @@ class GuestUserDelegate(
 
   private fun addToFavorite(watchlistItem: Favorite, position: Int) {
     if (watchlistItem.isFavorite) {
-      showAlreadySnackbar(Event(watchlistItem.title))
+      showAlreadySnackbar(watchlistItem.title)
     } else {
       sharedDBViewModel.updateDB(watchlistItem.copy(isFavorite = true))
-      showUndoSnackbar(watchlistItem.title, position)
+      showUndoSnackbar(watchlistItem, position)
     }
   }
 
-  private fun showUndoSnackbar(title: String, position: Int) {
+  private fun showUndoSnackbar(favorite: Favorite, position: Int) {
     dismissSnackbar()
 
     val message = if (isWantToDelete) {
-      buildActionMessage(title, fragment.getString(removed_from_watchlist))
+      buildActionMessage(favorite.title, fragment.getString(removed_from_watchlist))
     } else {
-      buildActionMessage(title, fragment.getString(added_to_favorite))
+      buildActionMessage(favorite.title, fragment.getString(added_to_favorite))
     }
 
     currentSnackbar = Snackbar.make(
@@ -154,7 +154,7 @@ class GuestUserDelegate(
       Snackbar.LENGTH_LONG,
     ).apply {
       setAction(fragment.getString(undo)) {
-        handleUndo(position)
+        handleUndo(favorite, position)
       }
       anchorView = fragment.requireActivity().findViewById(snackbarAnchor)
       setActionTextColor(context.getColor(yellow_700))
@@ -162,14 +162,12 @@ class GuestUserDelegate(
     }
   }
 
-  private fun handleUndo(position: Int) {
-    sharedDBViewModel.undoDB.value?.getContentIfNotHandled()?.let { watchlistItem ->
-      if (isWantToDelete) {
-        restoreWatchlist(watchlistItem, position)
-      } else {
-        // undo add to favorite
-        sharedDBViewModel.updateDB(watchlistItem.copy(isFavorite = false))
-      }
+  private fun handleUndo(watchlistItem: Favorite, position: Int) {
+    if (isWantToDelete) {
+      restoreWatchlist(watchlistItem, position)
+    } else {
+      // undo add to favorite
+      sharedDBViewModel.updateDB(watchlistItem.copy(isFavorite = false))
     }
   }
 
@@ -184,19 +182,17 @@ class GuestUserDelegate(
   }
 
   private fun observeDbOperations() {
-    sharedDBViewModel.dbResult.observe(fragment.viewLifecycleOwner) { eventResult ->
-      eventResult.getContentIfNotHandled()?.let {
-        if (it is DbResult.Error) context.toastShort(it.errorMessage)
-      }
+    fragment.collectFlow(sharedDBViewModel.dbResult) {
+      if (it is DbResult.Error) context.toastShort(it.errorMessage)
     }
   }
 
-  private fun showAlreadySnackbar(event: Event<String>) {
+  private fun showAlreadySnackbar(title: String) {
     currentSnackbar = SnackbarAlreadyUtils.snackBarAlready(
       context,
       fragment.requireActivity().findViewById(snackbarAnchor),
       fragment.requireActivity().findViewById(snackbarAnchor),
-      event,
+      title,
       true,
     )
   }
