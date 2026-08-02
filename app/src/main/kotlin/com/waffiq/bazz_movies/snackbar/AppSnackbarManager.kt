@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.id.bottom_navigation
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
 import dagger.hilt.android.qualifiers.ActivityContext
@@ -30,11 +29,6 @@ class AppSnackbarManager @Inject constructor(@ActivityContext private val contex
   override fun showSnackbarWarning(message: String): Snackbar? =
     createAndShowSnackbar { rootView, bottomNav ->
       snackBarWarning(rootView, bottomNav, message)
-    }
-
-  override fun showSnackbarWarning(eventMessage: Event<String>): Snackbar? =
-    createAndShowSnackbar { rootView, bottomNav ->
-      snackBarWarning(rootView, bottomNav, eventMessage)
     }
 
   /**

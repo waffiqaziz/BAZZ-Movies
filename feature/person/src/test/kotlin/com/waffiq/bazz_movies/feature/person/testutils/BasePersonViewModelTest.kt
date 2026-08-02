@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.feature.person.testutils
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
@@ -98,11 +97,11 @@ abstract class BasePersonViewModelTest {
     verifyBlock: () -> Unit = {},
   ) = runTest {
     val successData = mutableListOf<T>()
-    val errorEvents = mutableListOf<Event<String>>()
+    val errorState = mutableListOf<String>()
     val loadingStates = mutableListOf<Boolean>()
 
     personViewModel.loadingState.observeForever { loadingStates.add(it) }
-    personViewModel.errorState.observeForever { errorEvents.add(it) }
+    personViewModel.errorState.observeForever { errorState.add(it) }
     liveData.observeForever { data ->
       data?.let {
         successData.add(it)
@@ -118,8 +117,7 @@ abstract class BasePersonViewModelTest {
     }
 
     expectError?.let {
-      val error = personViewModel.errorState.value?.getContentIfNotHandled()
-      assertEquals(error, it)
+      assertEquals(personViewModel.errorState.value, it)
     }
 
     if (checkLoading) {

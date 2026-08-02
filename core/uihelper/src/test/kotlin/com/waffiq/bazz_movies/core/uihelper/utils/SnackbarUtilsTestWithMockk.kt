@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
 import io.mockk.clearMocks
 import io.mockk.every
@@ -22,7 +21,6 @@ import org.junit.Test
 
 class SnackbarUtilsTestWithMockk {
 
-  private lateinit var eventMessage: Event<String>
   private lateinit var parentView: FrameLayout
   private lateinit var anchorView: FrameLayout
   private lateinit var mockSnackbar: Snackbar
@@ -34,7 +32,6 @@ class SnackbarUtilsTestWithMockk {
   fun setup() {
     parentView = mockk(relaxed = true)
     anchorView = mockk(relaxed = true)
-    eventMessage = mockk()
     mockSnackbar = mockk(relaxed = true)
 
     mockkStatic(Snackbar::class)
@@ -51,25 +48,10 @@ class SnackbarUtilsTestWithMockk {
   fun snackBarWarning_whenMessageIsHandled_returnSnackbar() {
     stubParentAttached(true)
     stubColorResolved()
-    stubEventMessage("Test Message")
 
-    val snackbar = snackBarWarning(parentView, anchorView, eventMessage)
+    val snackbar = snackBarWarning(parentView, anchorView, "Message")
     assertNotNull(snackbarShouldNotNull, snackbar)
     assertTrue(snackbar is Snackbar)
-
-    val snackbar2 = snackBarWarning(parentView, anchorView, "Message")
-    assertNotNull(snackbarShouldNotNull, snackbar2)
-    assertTrue(snackbar2 is Snackbar)
-  }
-
-  @Test
-  fun snackBarWarning_whenParentNotAttached_returnNull() {
-    stubParentAttached(false)
-    stubColorResolved()
-    stubEventMessage("Test Message")
-
-    assertNull(snackbarShouldNull, snackBarWarning(parentView, null, eventMessage))
-    assertNull(snackbarShouldNull, snackBarWarning(parentView, null, "Message"))
   }
 
   @Test
@@ -77,60 +59,31 @@ class SnackbarUtilsTestWithMockk {
     stubParentAttached(true)
     stubColorResolved()
 
-    stubEventMessage("")
-    assertNull(snackbarShouldNull, snackBarWarning(parentView, null, eventMessage))
-
-    stubEventMessage(null)
-    assertNull(snackbarShouldNull, snackBarWarning(parentView, null, eventMessage))
-
-    assertNull(snackbarShouldNull, snackBarWarning(parentView, null, " "))
-    assertNull(snackbarShouldNull, snackBarWarning(parentView, null, ""))
+    assertNull(snackbarShouldNull, snackBarWarning(parentView, anchorView, " "))
+    assertNull(snackbarShouldNull, snackBarWarning(parentView, anchorView, ""))
   }
 
   @Test
   fun snackBarWarning_whenAnchorViewNull_returnSnackbar() {
     stubParentAttached(true)
     stubColorResolved()
-    stubEventMessage("Message")
 
-    assertNotNull(snackbarShouldNotNull, snackBarWarning(parentView, null, eventMessage))
-    assertNotNull(snackbarShouldNotNull, snackBarWarning(parentView, null, "Message"))
+    assertNotNull(snackbarShouldNotNull, snackBarWarning(view = parentView, message = "Message"))
   }
 
   @Test
   fun snackBarWarning_whenAnchorViewProvided_returnSnackbar() {
     stubParentAttached(true)
     stubColorResolved()
-    stubEventMessage("Test Message")
     every { parentView.context } returns mockk(relaxed = true)
 
-    snackBarWarning(parentView, anchorView, eventMessage)
+    snackBarWarning(parentView, anchorView, "Message")
     verify { mockSnackbar.anchorView = anchorView }
 
     clearMocks(mockSnackbar)
 
-    snackBarWarning(parentView, null, eventMessage)
-    verify(exactly = 0) { mockSnackbar.anchorView = any() }
-  }
-
-  @Test
-  fun snackBarWarning_whenCalledWithAllParameterVariations_createsSnackbarSuccessfully() {
-    stubParentAttached(true)
-    stubColorResolved()
-    stubEventMessage("Test Message")
-    every { parentView.context } returns mockk(relaxed = true)
-
-    snackBarWarning(parentView, anchorView, eventMessage)
-    snackBarWarning(parentView, null, eventMessage)
-    snackBarWarning(parentView, eventMessage = eventMessage)
-    snackBarWarning(view = parentView, eventMessage = eventMessage)
-
-    snackBarWarning(parentView, anchorView, "Message")
     snackBarWarning(parentView, null, "Message")
-    snackBarWarning(parentView, message = "Message")
-    snackBarWarning(view = parentView, message = "Message")
-
-    verify(exactly = 8) { Snackbar.make(any<View>(), any<String>(), any<Int>()) }
+    verify(exactly = 0) { mockSnackbar.anchorView = any() }
   }
 
   @Test
@@ -150,12 +103,16 @@ class SnackbarUtilsTestWithMockk {
     verify(exactly = 0) { mockSnackbar.anchorView = any() }
   }
 
-  private fun stubParentAttached(attached: Boolean) {
-    every { parentView.isAttachedToWindow } returns attached
+  @Test
+  fun snackBarWarning_whenParentNotAttached_returnNull() {
+    stubParentAttached(false)
+    stubColorResolved()
+
+    assertNull(snackbarShouldNull, snackBarWarning(parentView, null, "Message"))
   }
 
-  private fun stubEventMessage(message: String?) {
-    every { eventMessage.getContentIfNotHandled() } returns message
+  private fun stubParentAttached(attached: Boolean) {
+    every { parentView.isAttachedToWindow } returns attached
   }
 
   private fun stubColorResolved() {

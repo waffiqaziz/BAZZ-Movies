@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.feature.home.utils.helpers
 
 import androidx.paging.LoadState
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.feature.home.testutils.BaseFragmentHelperTest
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.observeLoadState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -104,7 +103,7 @@ class ObserveLoadStateTest : BaseFragmentHelperTest() {
   @Test
   fun observeLoadState_whenRefreshIsError_callsOnError() =
     runTest {
-      var errorEvent: Event<String>? = null
+      var errorMessage: String? = null
       val exception = RuntimeException("network error")
 
       val loadStateFlow = MutableStateFlow(
@@ -115,18 +114,18 @@ class ObserveLoadStateTest : BaseFragmentHelperTest() {
         loadStateFlow = loadStateFlow,
         onLoading = {},
         onSuccess = {},
-        onError = { errorEvent = it },
+        onError = { errorMessage = it },
       )
 
       advanceUntilIdle()
-      assert(errorEvent != null)
+      assert(errorMessage != null)
     }
 
   @Test
   fun observeLoadState_whenAppendIsError_doesNotCallOnSuccessOrOnError() =
     runTest {
       var successCalled = false
-      var errorEvent: Event<String>? = null
+      var errorMessage: String? = null
 
       val loadStateFlow = MutableStateFlow(
         buildCombinedLoadStates(
@@ -140,12 +139,12 @@ class ObserveLoadStateTest : BaseFragmentHelperTest() {
         loadStateFlow = loadStateFlow,
         onLoading = {},
         onSuccess = { successCalled = true },
-        onError = { errorEvent = it },
+        onError = { errorMessage = it },
       )
 
       advanceUntilIdle()
 
       assert(!successCalled) // check if not success
-      assert(errorEvent == null)
+      assert(errorMessage == null)
     }
 }

@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.core.user.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.core.test.MainCoroutineRule
 import com.waffiq.bazz_movies.core.user.domain.model.account.CountryIP
@@ -59,12 +58,12 @@ class RegionViewModelTest {
       val mockResult = Outcome.Error(message = "Network error")
       `when`(getRegionUseCase.getCountryCode()).thenReturn(flow { emit(mockResult) })
 
-      val observer = mock<Observer<Event<String>>>()
+      val observer = mock<Observer<String>>()
       viewModel.errorState.observeForever(observer)
       viewModel.getCountryCode()
       advanceUntilIdle()
 
-      verify(observer).onChanged(argThat { event -> event.peekContent() == "Network error" })
+      verify(observer).onChanged(argThat { event -> event == "Network error" })
       viewModel.errorState.removeObserver(observer)
     }
 

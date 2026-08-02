@@ -14,7 +14,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.CollapsingToolbarLayout
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_biography
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
@@ -65,7 +64,7 @@ abstract class BasePersonActivityTest {
   protected val detailPersonLiveData = MutableLiveData<DetailPerson>()
   protected val imageListLiveData = MutableLiveData<List<ProfilesItem>>()
   protected val creditPersonLiveData = MutableLiveData<List<CastItem>>()
-  protected val errorStateLiveData = MutableLiveData<Event<String>>()
+  protected val errorStateLiveData = MutableLiveData<String>()
   protected val loadingStateLiveData = MutableLiveData<Boolean>()
   protected lateinit var context: Context
 

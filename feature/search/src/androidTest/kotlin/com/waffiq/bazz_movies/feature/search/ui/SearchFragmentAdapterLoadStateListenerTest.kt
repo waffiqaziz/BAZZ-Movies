@@ -5,7 +5,6 @@ import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import androidx.test.platform.app.InstrumentationRegistry
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_error
@@ -56,7 +55,7 @@ class SearchFragmentAdapterLoadStateListenerTest : BaseSearchFragmentTest() {
     illustration_error.isDisplayed()
 
     // but handleRefreshState was NOT called twice (snackbar only called once)
-    verify(exactly = 1) { mockSnackbar.showSnackbarWarning(any<Event<String>>()) }
+    verify(exactly = 1) { mockSnackbar.showSnackbarWarning(any<String>()) }
   }
 
   @Test
@@ -91,7 +90,7 @@ class SearchFragmentAdapterLoadStateListenerTest : BaseSearchFragmentTest() {
     illustration_error.isDisplayed()
 
     // different error message, so it should have been called twice
-    verify(exactly = 2) { mockSnackbar.showSnackbarWarning(any<Event<String>>()) }
+    verify(exactly = 2) { mockSnackbar.showSnackbarWarning(any<String>()) }
   }
 
   @Test

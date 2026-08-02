@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.color.red_matte
 
 /**
@@ -24,25 +23,6 @@ object SnackBarManager {
    */
   fun Context.toastShort(text: String) {
     Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
-  }
-
-  /**
-   * Displays a warning Snackbar message with an event-based message.
-   * This method only displays the Snackbar if the message is valid (non-null and non-empty).
-   * The Snackbar can optionally be anchored to a specific view (guideView).
-   *
-   * @param view The [View] to find the parent layout for the Snackbar.
-   * @param eventMessage The [Event] containing the message to be shown in the Snackbar.
-   * @param anchorView The optional [View] to anchor the Snackbar to (like a guide or button).
-   * @return The displayed [Snackbar], or null if no valid message is available.
-   */
-  fun snackBarWarning(
-    view: View,
-    anchorView: View? = null,
-    eventMessage: Event<String>,
-  ): Snackbar? {
-    val message = eventMessage.getContentIfNotHandled()?.takeIf { it.isNotEmpty() }
-    return if (message != null) snackBarWarning(view, anchorView, message) else null
   }
 
   /**

@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_VERY_LONG
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.databinding.IllustrationErrorBinding
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.uihelper.utils.CustomSnapHelper
@@ -27,6 +26,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Used as loadStateFlow listener on HomeFragment child (Featured, Movie, TvSeries fragments)
@@ -96,28 +96,29 @@ object HomeFragmentHelper {
     loadStateFlow: Flow<CombinedLoadStates>,
     onLoading: () -> Unit,
     onSuccess: () -> Unit,
-    onError: (Event<String>) -> Unit,
+    onError: (String) -> Unit,
   ) {
     lifecycleScope.launch {
-      loadStateFlow.debounce(DEBOUNCE_VERY_LONG).distinctUntilChanged().collectLatest { loadState ->
-        when {
-          loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading -> {
-            onLoading()
-          }
+      loadStateFlow.debounce(DEBOUNCE_VERY_LONG.milliseconds)
+        .distinctUntilChanged().collectLatest { loadState ->
+          when {
+            loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading -> {
+              onLoading()
+            }
 
-          loadState.refresh is LoadState.NotLoading &&
-            loadState.prepend is LoadState.NotLoading &&
-            loadState.append is LoadState.NotLoading -> {
-            delay(DEBOUNCE_SHORT)
-            onSuccess()
-          }
+            loadState.refresh is LoadState.NotLoading &&
+              loadState.prepend is LoadState.NotLoading &&
+              loadState.append is LoadState.NotLoading -> {
+              delay(DEBOUNCE_SHORT)
+              onSuccess()
+            }
 
-          loadState.refresh is LoadState.Error -> {
-            val error = (loadState.refresh as LoadState.Error).error
-            onError(Event(pagingErrorHandling(error)))
+            loadState.refresh is LoadState.Error -> {
+              val error = (loadState.refresh as LoadState.Error).error
+              onError(pagingErrorHandling(error))
+            }
           }
         }
-      }
     }
   }
 
