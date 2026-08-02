@@ -59,8 +59,8 @@ class SnackbarUtilsTestWithMockk {
     stubParentAttached(true)
     stubColorResolved()
 
-    assertNull(snackbarShouldNull, snackBarWarning(parentView, null, " "))
-    assertNull(snackbarShouldNull, snackBarWarning(parentView, null, ""))
+    assertNull(snackbarShouldNull, snackBarWarning(parentView, anchorView, " "))
+    assertNull(snackbarShouldNull, snackBarWarning(parentView, anchorView, ""))
   }
 
   @Test
@@ -68,7 +68,7 @@ class SnackbarUtilsTestWithMockk {
     stubParentAttached(true)
     stubColorResolved()
 
-    assertNotNull(snackbarShouldNotNull, snackBarWarning(parentView, null, "Message"))
+    assertNotNull(snackbarShouldNotNull, snackBarWarning(view = parentView, message = "Message"))
   }
 
   @Test
@@ -101,6 +101,14 @@ class SnackbarUtilsTestWithMockk {
     val result2 = snackBarWarning(parentView, null, "Message")
     assertNotNull(result2)
     verify(exactly = 0) { mockSnackbar.anchorView = any() }
+  }
+
+  @Test
+  fun snackBarWarning_whenParentNotAttached_returnNull() {
+    stubParentAttached(false)
+    stubColorResolved()
+
+    assertNull(snackbarShouldNull, snackBarWarning(parentView, null, "Message"))
   }
 
   private fun stubParentAttached(attached: Boolean) {
