@@ -29,4 +29,11 @@ class UserPreferenceViewModel @Inject constructor(private val userPrefUseCase: U
   fun removeUserDataPref() {
     viewModelScope.launch { userPrefUseCase.removeUserDataPref() }
   }
+
+  fun savePermissionAsked() {
+    viewModelScope.launch { userPrefUseCase.savePermissionAsked() }
+  }
+
+  fun getPermissionAsked(): LiveData<Boolean> =
+    userPrefUseCase.getPermissionAsked().asLiveData()
 }
