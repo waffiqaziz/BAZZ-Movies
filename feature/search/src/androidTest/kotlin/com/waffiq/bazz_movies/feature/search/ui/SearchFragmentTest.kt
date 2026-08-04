@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.feature.search.ui
 
-import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
@@ -11,44 +11,42 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
-import androidx.test.espresso.action.ViewActions.clearText
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.pressImeActionButton
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.android.material.R.id.open_search_view_edit_text
 import com.waffiq.bazz_movies.core.designsystem.R.id.btn_try_again
 import com.waffiq.bazz_movies.core.designsystem.R.id.progress_circular
 import com.waffiq.bazz_movies.core.designsystem.R.string.clear_all
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions.actionOnItemAt
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions.clickItemAt
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performAction
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performSwipeDown
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performTextClick
-import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performType
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.clickChildViewWithId
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNotExist
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
-import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isVisible
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
+import com.waffiq.bazz_movies.feature.search.R.id.browse_genre_container
 import com.waffiq.bazz_movies.feature.search.R.id.btn_delete
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_error
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_search_no_result_view
-import com.waffiq.bazz_movies.feature.search.R.id.illustration_search_view
 import com.waffiq.bazz_movies.feature.search.R.id.rv_search
 import com.waffiq.bazz_movies.feature.search.R.id.rv_search_history
 import com.waffiq.bazz_movies.feature.search.R.id.search_bar
 import com.waffiq.bazz_movies.feature.search.R.id.search_view
 import com.waffiq.bazz_movies.feature.search.R.id.swipe_refresh
 import com.waffiq.bazz_movies.feature.search.testutils.BaseSearchFragmentTest
+import com.waffiq.bazz_movies.feature.search.testutils.DummyData.history1
+import com.waffiq.bazz_movies.feature.search.testutils.DummyData.history2
+import com.waffiq.bazz_movies.feature.search.testutils.DummyData.history3
 import com.waffiq.bazz_movies.feature.search.testutils.Helper.triggerSwipeRefresh
-import com.waffiq.bazz_movies.feature.search.testutils.TestDummy.history1
-import com.waffiq.bazz_movies.feature.search.testutils.TestDummy.history2
-import com.waffiq.bazz_movies.feature.search.testutils.TestDummy.history3
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
-import io.mockk.spyk
+import io.mockk.mockkStatic
+import io.mockk.unmockkStatic
 import io.mockk.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -59,20 +57,21 @@ class SearchFragmentTest : BaseSearchFragmentTest() {
 
   @Test
   fun searchFragment_whenInitialState_displaysViewsCorrectly() {
-    illustration_search_view.isDisplayed()
-    rv_search.isVisible()
+    browse_genre_container.isDisplayed()
+    rv_search.isNotDisplayed()
     illustration_error.isNotDisplayed()
     illustration_search_no_result_view.isNotDisplayed()
   }
 
   @Test
   fun searchView_whenSubmitting_triggersSearch() {
+    stubSearchResult()
     performClickSearchAction()
     performTypeAndSearchAction()
 
     // verify loading state UI
     rv_search.isDisplayed()
-    illustration_search_view.isNotDisplayed()
+    browse_genre_container.isNotDisplayed()
     illustration_error.isNotDisplayed()
 
     verify { mockSearchViewModel.search(testQuery) }
@@ -99,9 +98,7 @@ class SearchFragmentTest : BaseSearchFragmentTest() {
 
     // perform search using history search
     performClickSearchAction()
-    onView(withId(rv_search_history)).perform(
-      RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()),
-    )
+    rv_search_history.clickItemAt(0)
 
     // only perform search once
     verify(exactly = 1) { mockSearchViewModel.search(testQuery) }
@@ -150,13 +147,7 @@ class SearchFragmentTest : BaseSearchFragmentTest() {
     }
 
     // perform delete first history search
-    onView(withId(rv_search_history))
-      .perform(
-        RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-          0,
-          clickChildViewWithId(btn_delete),
-        ),
-      )
+    rv_search_history.actionOnItemAt(0, clickChildViewWithId(btn_delete))
     shortDelay()
 
     "transformers".doesNotExist()
@@ -185,6 +176,8 @@ class SearchFragmentTest : BaseSearchFragmentTest() {
 
   @Test
   fun swipeRefresh_whenSwiped_triggersRefresh() {
+    stubSearchResult()
+
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
       swipe_refresh.performSwipeDown()
     } else {
@@ -192,23 +185,7 @@ class SearchFragmentTest : BaseSearchFragmentTest() {
     }
     shortDelay()
 
-    illustration_search_view.isDisplayed()
     verify(exactly = 1) { searchAdapter.refresh() }
-  }
-
-  @Test
-  fun onConfigurationChanged_whenKeyboardHidden_callsExpandMethod() {
-    val spyFragment = spyk(searchFragment)
-
-    val newConfig = Configuration().apply {
-      keyboardHidden = Configuration.KEYBOARDHIDDEN_YES
-    }
-
-    InstrumentationRegistry.getInstrumentation().runOnMainSync {
-      spyFragment.onConfigurationChanged(newConfig)
-    }
-
-    verify { spyFragment.onKeyboardHidden() }
   }
 
   @Test
@@ -226,7 +203,7 @@ class SearchFragmentTest : BaseSearchFragmentTest() {
   }
 
   @Test
-  fun fragmentResultListener_opensSearchView() {
+  fun fragmentResultListener_successfull_opensSearchView() {
     // simulate fragment result
     searchFragment.parentFragmentManager.setFragmentResult(
       "open_search_view",
@@ -234,6 +211,31 @@ class SearchFragmentTest : BaseSearchFragmentTest() {
     )
     shortDelay()
     search_view.isDisplayed()
+  }
+
+  @Test
+  fun openSearchView_error_catchesIllegalStateException() {
+    mockkStatic(WindowCompat::class)
+    every { WindowCompat.getInsetsController(any(), any()) } throws IllegalStateException("boom")
+
+    searchFragment.parentFragmentManager.setFragmentResult("open_search_view", Bundle())
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+
+    unmockkStatic(WindowCompat::class)
+  }
+
+  @Test
+  fun fragmentResultListener_clearSearch() {
+    // simulate fragment result
+    InstrumentationRegistry.getInstrumentation().runOnMainSync {
+      searchFragment.parentFragmentManager.setFragmentResult(
+        "clear_search_view",
+        Bundle(),
+      )
+    }
+    shortDelay()
+    verify { mockSearchViewModel.clearSearch() }
   }
 
   @Test
@@ -275,18 +277,5 @@ class SearchFragmentTest : BaseSearchFragmentTest() {
     btn_try_again.isNotDisplayed()
     progress_circular.isDisplayed()
     verify(exactly = 1) { searchAdapter.refresh() }
-  }
-
-  private fun performClickSearchAction() {
-    search_bar.performClick()
-    open_search_view_edit_text.isDisplayed()
-  }
-
-  private fun performTypeAndSearchAction() {
-    open_search_view_edit_text.isDisplayed()
-    open_search_view_edit_text.performAction(clearText())
-    shortDelay()
-    open_search_view_edit_text.performType(testQuery)
-    open_search_view_edit_text.performAction(pressImeActionButton())
   }
 }

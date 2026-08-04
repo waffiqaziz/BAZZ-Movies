@@ -3,7 +3,6 @@
 package com.waffiq.bazz_movies.feature.search.ui
 
 import android.content.res.ColorStateList
-import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,12 +25,15 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.R.id.open_search_view_clear_button
 import com.google.android.material.R.id.open_search_view_toolbar
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.core.common.Genre
+import com.waffiq.bazz_movies.core.common.MediaType
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.designsystem.R.color.yellow
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_cross
@@ -42,7 +44,10 @@ import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.utils.LayoutHelper.initLinearLayoutManagerVertical
 import com.waffiq.bazz_movies.core.utils.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.utils.PagingLoadStateHelper.pagingErrorState
+import com.waffiq.bazz_movies.feature.search.R.id.btn_movie
 import com.waffiq.bazz_movies.feature.search.databinding.FragmentSearchBinding
+import com.waffiq.bazz_movies.feature.search.ui.adapter.GenreAdapter
+import com.waffiq.bazz_movies.feature.search.ui.adapter.GridSpacingItemDecoration
 import com.waffiq.bazz_movies.feature.search.ui.adapter.SearchAdapter
 import com.waffiq.bazz_movies.feature.search.ui.adapter.SearchHistoryAdapter
 import com.waffiq.bazz_movies.feature.search.ui.adapter.ShimmerAdapter
@@ -74,6 +79,7 @@ class SearchFragment : Fragment() {
   private lateinit var searchAdapter: SearchAdapter
   private lateinit var shimmerAdapter: ShimmerAdapter
   private lateinit var searchHistoryAdapter: SearchHistoryAdapter
+  private lateinit var genreAdapter: GenreAdapter
 
   private var lastQuery: String? = null
   private var mSnackbar: Snackbar? = null
@@ -100,6 +106,7 @@ class SearchFragment : Fragment() {
         searchViewModel.deleteHistory(item)
       },
     )
+    genreAdapter = GenreAdapter(navigator)
   }
 
   override fun onCreateView(
@@ -119,6 +126,8 @@ class SearchFragment : Fragment() {
 
     setupKeyboardScroll()
     setupAction()
+    setupToggle()
+    setupGenreList(MediaType.MOVIE)
     setupMaterialSearchView()
     adapterLoadStateListener()
     setSearchBarScrollable(false)
@@ -126,12 +135,7 @@ class SearchFragment : Fragment() {
     observeSearchHistory()
 
     // Set up fragment result listener
-    requireActivity().supportFragmentManager.setFragmentResultListener(
-      "open_search_view",
-      viewLifecycleOwner,
-    ) { _, _ ->
-      openSearchView()
-    }
+    setupFragmentResult()
 
     collectAndSubmitData(this, { searchViewModel.searchResults }, searchAdapter)
   }
@@ -151,7 +155,26 @@ class SearchFragment : Fragment() {
     }
   }
 
+  private fun setupGenreList(mediaType: MediaType) {
+    binding.rvGenre.layoutManager = GridLayoutManager(requireContext(), 2)
+    if (binding.rvGenre.itemDecorationCount == 0) {
+      binding.rvGenre.addItemDecoration(GridSpacingItemDecoration(2, GRID_SPACING))
+    }
+    binding.rvGenre.adapter = genreAdapter
+    genreAdapter.setMediaType(mediaType)
+    genreAdapter.submitList(Genre.forMediaType(mediaType))
+  }
+
+  private fun setupToggle() {
+    binding.toggleMediaType.addOnButtonCheckedListener { _, checkedId, isChecked ->
+      if (!isChecked) return@addOnButtonCheckedListener
+      val mediaType = if (checkedId == btn_movie) MediaType.MOVIE else MediaType.TV
+      setupGenreList(mediaType)
+    }
+  }
+
   private fun showShimmer() {
+    binding.browseGenreContainer.isVisible = false
     binding.rvSearch.adapter = shimmerAdapter
   }
 
@@ -212,6 +235,8 @@ class SearchFragment : Fragment() {
   }
 
   private fun showActualData() {
+    binding.browseGenreContainer.isVisible = false
+    binding.swipeRefresh.isVisible = true
     val currentAdapter = binding.rvSearch.adapter
     if (currentAdapter !is ConcatAdapter || !currentAdapter.adapters.contains(searchAdapter)) {
       binding.rvSearch.setupRecyclerView(requireContext(), searchAdapter)
@@ -252,35 +277,37 @@ class SearchFragment : Fragment() {
   }
 
   private fun performSearch(query: String) {
-    lifecycleScope.launch {
+    viewLifecycleOwner.lifecycleScope.launch {
       searchAdapter.submitData(PagingData.empty())
     }
     searchAdapter.refresh()
     lastQuery = query
     searchViewModel.search(query)
-    binding.illustrationSearchView.root.isVisible = false
-    showShimmer()
+    binding.swipeRefresh.isVisible = true
+    binding.browseGenreContainer.isVisible = false
   }
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
   fun adapterLoadStateListener() {
-    lifecycleScope.launch {
-      (loadStateFlowProvider ?: searchAdapter.loadStateFlow)
-        .debounce(DEBOUNCE_SHORT.milliseconds)
-        .collectLatest { loadState ->
-          val currentRefresh = loadState.source.refresh
+    viewLifecycleOwner.lifecycleScope.launch {
+      viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        (loadStateFlowProvider ?: searchAdapter.loadStateFlow)
+          .debounce(DEBOUNCE_SHORT.milliseconds)
+          .collectLatest { loadState ->
+            val currentRefresh = loadState.source.refresh
 
-          if (currentRefresh is LoadState.Error) {
-            val errorMessage = currentRefresh.error.message
-            if (errorMessage != lastRefreshErrorMessage) {
-              lastRefreshErrorMessage = errorMessage
+            if (currentRefresh is LoadState.Error) {
+              val errorMessage = currentRefresh.error.message
+              if (errorMessage != lastRefreshErrorMessage) {
+                lastRefreshErrorMessage = errorMessage
+                handleRefreshState(loadState, currentRefresh)
+              }
+            } else {
+              lastRefreshErrorMessage = null
               handleRefreshState(loadState, currentRefresh)
             }
-          } else {
-            lastRefreshErrorMessage = null
-            handleRefreshState(loadState, currentRefresh)
           }
-        }
+      }
     }
   }
 
@@ -294,7 +321,7 @@ class SearchFragment : Fragment() {
   }
 
   private fun showLoadingState() {
-    binding.illustrationSearchView.root.isVisible = false
+    showShimmer()
     binding.illustrationError.root.isVisible = false
     binding.illustrationSearchNoResultView.root.isVisible = false
     binding.rvSearch.isVisible = true
@@ -308,17 +335,14 @@ class SearchFragment : Fragment() {
       setSearchBarScrollable(false)
       binding.rvSearch.isVisible = false
       binding.illustrationSearchNoResultView.root.isVisible = true
-      binding.illustrationSearchView.root.isVisible = false
     } else if (!loadState.append.endOfPaginationReached && searchAdapter.itemCount < 1) {
       setSearchBarScrollable(false)
       binding.rvSearch.isVisible = false
-      binding.illustrationSearchView.root.isVisible = true
       binding.illustrationSearchNoResultView.root.isVisible = false
     } else {
       showActualData()
       setSearchBarScrollable(true)
       binding.rvSearch.isVisible = true
-      binding.illustrationSearchView.root.isVisible = false
       binding.illustrationSearchNoResultView.root.isVisible = false
     }
   }
@@ -330,7 +354,6 @@ class SearchFragment : Fragment() {
     val hasNoItems = searchAdapter.itemCount < 1
     binding.illustrationError.root.isVisible = hasNoItems
     binding.rvSearch.isVisible = !hasNoItems
-    binding.illustrationSearchView.root.isVisible = false
     binding.illustrationError.progressCircular.isVisible = false
     binding.illustrationError.btnTryAgain.isVisible = true
 
@@ -339,8 +362,25 @@ class SearchFragment : Fragment() {
     }
   }
 
-  fun openSearchView() {
-    if (!isAdded || isDetached || view == null) return
+  private fun setupFragmentResult() {
+    requireActivity().supportFragmentManager.setFragmentResultListener(
+      "open_search_view",
+      viewLifecycleOwner,
+    ) { _, _ ->
+      openSearchView()
+    }
+    requireActivity().supportFragmentManager.setFragmentResultListener(
+      "clear_search_view",
+      viewLifecycleOwner,
+    ) { _, _ ->
+      searchViewModel.clearSearch()
+      lastQuery = null
+      binding.searchBar.setText("")
+    }
+  }
+
+  private fun openSearchView() {
+    if (!isAdded || isDetached) return
 
     @Suppress("TooGenericExceptionCaught")
     viewLifecycleOwner.lifecycleScope.launch {
@@ -356,13 +396,6 @@ class SearchFragment : Fragment() {
           Log.w("SearchFragment", "Illegal state while opening search view.", e)
         }
       }
-    }
-  }
-
-  override fun onConfigurationChanged(newConfig: Configuration) {
-    super.onConfigurationChanged(newConfig)
-    if (newConfig.keyboardHidden == Configuration.KEYBOARDHIDDEN_YES) {
-      onKeyboardHidden()
     }
   }
 
@@ -398,11 +431,6 @@ class SearchFragment : Fragment() {
     binding.searchView.hide()
   }
 
-  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  fun onKeyboardHidden() {
-    binding.appBarLayout.setExpanded(true)
-  }
-
   @VisibleForTesting(otherwise = VisibleForTesting.NONE)
   fun setAdapterForTest(adapter: SearchAdapter) {
     this.searchAdapter = adapter
@@ -412,5 +440,6 @@ class SearchFragment : Fragment() {
   companion object {
     private const val ADDITION_PADDING = 246
     private const val SOFT_KEYBOARD_PERCENTAGE = 0.15
+    private const val GRID_SPACING = 8
   }
 }

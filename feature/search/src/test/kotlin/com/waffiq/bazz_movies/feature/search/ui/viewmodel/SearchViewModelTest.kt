@@ -83,11 +83,15 @@ class SearchViewModelTest {
       searchViewModel.searchResults.test {
         searchViewModel.search("Transformers")
 
-        val result = awaitItem()
-        differ.submitData(result)
+        differ.submitData(awaitItem())
         advanceUntilIdle()
-
         assertEquals(listOf(tv, movie), differ.snapshot().items)
+
+        searchViewModel.clearSearch()
+        differ.submitData(awaitItem())
+        advanceUntilIdle()
+        assertEquals(emptyList<MultiSearchItem>(), differ.snapshot().items)
+
         cancelAndIgnoreRemainingEvents()
       }
 

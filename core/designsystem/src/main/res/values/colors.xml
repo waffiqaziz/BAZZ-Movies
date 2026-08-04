@@ -23,4 +23,54 @@
   <color name="gray_100">#DEDFE4</color>
   <color name="white">#FFFFFFFF</color>
   <color name="green">#80D589</color>
+
+  <array name="genre_tile_colors">
+    <item>#5E81AC</item>
+    <item>#6C91BF</item>
+    <item>#7C9BC2</item>
+    <item>#5D8AA8</item>
+    <item>#6D9DC5</item>
+
+    <item>#6D9F71</item>
+    <item>#7BAE7F</item>
+    <item>#8AA66D</item>
+    <item>#7DAA92</item>
+    <item>#5F9E91</item>
+
+    <item>#6E9CA6</item>
+    <item>#5C8D89</item>
+    <item>#4F8F9D</item>
+    <item>#6FA7B5</item>
+    <item>#7DA8A8</item>
+
+    <item>#9A7BB0</item>
+    <item>#A685C2</item>
+    <item>#B08BB4</item>
+    <item>#9575B3</item>
+    <item>#8E7CC3</item>
+
+    <item>#C07A7A</item>
+    <item>#C98989</item>
+    <item>#D18A73</item>
+    <item>#B86F67</item>
+    <item>#A77C8E</item>
+
+    <item>#C28A6D</item>
+    <item>#D39B73</item>
+    <item>#C08B5C</item>
+    <item>#B58C62</item>
+    <item>#D0A16B</item>
+
+    <item>#9E8D68</item>
+    <item>#A08F7C</item>
+    <item>#8E9C73</item>
+    <item>#97A56F</item>
+    <item>#B4A36D</item>
+
+    <item>#8B98A5</item>
+    <item>#7E8E99</item>
+    <item>#8697A8</item>
+    <item>#8E9AA3</item>
+    <item>#7B8895</item>
+  </array>
 </resources>
