@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.milliseconds
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
@@ -32,7 +33,7 @@ class SearchViewModel @Inject constructor(
     _searchResults.cachedIn(viewModelScope)
 
   val searchHistory: StateFlow<List<SearchHistory>> =
-    searchHistoryUseCase.getSearchHistory().debounce(DEBOUNCE_SHORT)
+    searchHistoryUseCase.getSearchHistory().debounce(DEBOUNCE_SHORT.milliseconds)
       .stateIn(viewModelScope, SharingStarted.WhileSubscribed(TIMEOUT), emptyList())
 
   fun search(query: String) {
@@ -56,6 +57,10 @@ class SearchViewModel @Inject constructor(
     viewModelScope.launch {
       searchHistoryUseCase.deleteAll()
     }
+  }
+
+  fun clearSearch() {
+    _searchResults.value = PagingData.empty()
   }
 
   companion object {

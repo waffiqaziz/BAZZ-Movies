@@ -103,7 +103,9 @@
 
   <!-- SEARCH -->
   <string name="search_results">Search results</string>
-  <string name="search_any">Search any Movies</string>
+  <string name="browse_by_genre">Browse by genre</string>
+  <string name="genre_list">List of genre</string>
+  <string name="search_any">Search Movie &amp; TV-series</string>
   <string name="clear_all">Clear All</string>
   <string name="history_search">History search</string>
   <string name="recent_searches">Recent searches</string>

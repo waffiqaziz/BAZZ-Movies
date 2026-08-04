@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/card_genre"
+  android:layout_width="match_parent"
+  android:layout_height="70dp"
+  tools:background="@color/gray_700"
+  app:cardCornerRadius="12dp"
+  app:cardElevation="0dp"
+  app:strokeWidth="0dp">
+
+  <FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+    <ImageView
+      android:id="@+id/iv_genre_icon"
+      android:layout_width="76dp"
+      android:layout_height="76dp"
+      android:layout_gravity="top|end"
+      android:layout_marginEnd="-10dp"
+      android:alpha="0.35"
+      android:rotation="-12"
+      tools:src="@drawable/ic_bazz_logo"
+      app:tint="@color/white"
+      tools:ignore="ContentDescription" />
+
+    <TextView
+      android:id="@+id/tv_genre_name"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom|start"
+      android:layout_marginStart="12dp"
+      android:layout_marginBottom="12dp"
+      android:layout_marginEnd="55dp"
+      android:maxLines="2"
+      android:gravity="start"
+      android:ellipsize="end"
+      style="@style/TextAppearance.App.Cast"
+      android:textStyle="bold"
+      tools:text="Action &amp; Adventure" />
+
+  </FrameLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -26,7 +26,7 @@ class GetBackdropGenreTest :
           16 to "/kPmE7vEwQWSvhQt5P0ZR8NIwNRN.jpg",
           35 to "/sV49hOlUky6AhVYl4K0d3rergTA.jpg",
           80 to "/xKsnZDERG1dk95wuZ5q9iks3OL3.jpg",
-          99 to "hbqpPucPtkw4vhDYvXTDI75QLN1.jpg",
+          99 to "/hbqpPucPtkw4vhDYvXTDI75QLN1.jpg",
           18 to "/b6HWTOxn1xevvyHU2K9ICvaRU6g.jpg",
           10751 to "/ddfaU3bt27hthphDwCLtQaMEx6g.jpg",
           14 to "/rwcPe582tfTSVLwQzbO25InW3Hi.jpg",

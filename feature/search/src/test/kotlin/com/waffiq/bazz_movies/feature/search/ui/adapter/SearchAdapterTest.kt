@@ -1,63 +1,35 @@
 package com.waffiq.bazz_movies.feature.search.ui.adapter
 
-import android.content.Context
-import android.view.LayoutInflater
-import android.widget.FrameLayout
 import androidx.paging.PagingData
-import androidx.recyclerview.widget.RecyclerView
-import androidx.test.core.app.ApplicationProvider
-import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaNoSwipeBinding
 import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.core.models.MediaItem
-import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.feature.search.domain.model.KnownForItem
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
-import com.waffiq.bazz_movies.navigation.INavigator
+import com.waffiq.bazz_movies.feature.search.testutils.BaseAdapterTest
+import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNotNull
 import junit.framework.TestCase.assertSame
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
-import org.mockito.kotlin.eq
-import org.mockito.kotlin.verify
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class SearchAdapterTest {
-  lateinit var context: Context
-
-  @Mock
-  lateinit var navigator: INavigator
-
-  @Mock
-  lateinit var recyclerView: RecyclerView
+class SearchAdapterTest : BaseAdapterTest() {
 
   private lateinit var adapter: SearchAdapter
-  private lateinit var inflater: LayoutInflater
   private lateinit var binding: ListItemMediaNoSwipeBinding
   private lateinit var viewHolder: SearchAdapter.ViewHolder
-  private lateinit var parent: FrameLayout
-
-  @get:Rule
-  val mainDispatcherRule = MainDispatcherRule()
 
   @Before
   fun setup() {
-    MockitoAnnotations.openMocks(this)
+    super.baseSetup()
     adapter = SearchAdapter(navigator)
     recyclerView.adapter = adapter
-    context = ApplicationProvider.getApplicationContext<Context>().apply {
-      setTheme(Base_Theme_BAZZ_movies) // set the theme
-    }
-    parent = FrameLayout(context)
-    inflater = LayoutInflater.from(context)
     binding = ListItemMediaNoSwipeBinding.inflate(inflater, parent, false)
     viewHolder = adapter.ViewHolder(binding)
   }
@@ -205,7 +177,7 @@ class SearchAdapterTest {
         mediaType = "movie",
       )
 
-      verify(navigator).openDetails(eq(context), eq(expectedItem))
+      verify { navigator.openDetails(eq(context), eq(expectedItem)) }
     }
 
   @Test
@@ -233,7 +205,7 @@ class SearchAdapterTest {
         profilePath = "/profile/path.jpg",
       )
 
-      verify(navigator).openPersonDetails(eq(context), eq(expectedPerson))
+      verify { navigator.openPersonDetails(eq(context), eq(expectedPerson)) }
     }
 
   @Test
