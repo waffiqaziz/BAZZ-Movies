@@ -1,16 +1,14 @@
 package com.waffiq.bazz_movies.feature.search.ui
 
-import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
-import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.test.platform.app.InstrumentationRegistry
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
+import com.waffiq.bazz_movies.feature.search.R.id.browse_genre_container
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_error
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_search_no_result_view
-import com.waffiq.bazz_movies.feature.search.R.id.illustration_search_view
 import com.waffiq.bazz_movies.feature.search.R.id.rv_search
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.feature.search.testutils.BaseSearchFragmentTest
@@ -36,7 +34,7 @@ class SearchFragmentLoadStateTest : BaseSearchFragmentTest() {
     shortDelay()
 
     illustration_error.isDisplayed()
-    illustration_search_view.isNotDisplayed()
+    browse_genre_container.isNotDisplayed()
     rv_search.isNotDisplayed()
     illustration_search_no_result_view.isNotDisplayed()
   }
@@ -47,24 +45,26 @@ class SearchFragmentLoadStateTest : BaseSearchFragmentTest() {
     val loadingState = LoadState.Loading
     val loadStates = setupCombinedLoadStates(loadingState)
 
+    performClickSearchAction()
+    performTypeAndSearchAction()
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       searchFragment.handleRefreshState(loadStates, loadingState)
     }
     shortDelay()
 
     illustration_error.isNotDisplayed()
-    illustration_search_view.isNotDisplayed()
+    browse_genre_container.isNotDisplayed()
     rv_search.isDisplayed()
     illustration_search_no_result_view.isNotDisplayed()
   }
 
   @Test
   fun handleRefreshState_whenReachedEndOfPaging_shouldShowNoResultsView() {
-    val notLoadingState = LoadState.NotLoading(endOfPaginationReached = true)
-    val loadStates = setupCombinedLoadStates(notLoadingState)
-
     val spyAdapter = spyk(SearchAdapter(mockNavigator))
     every { spyAdapter.itemCount } returns 0
+
+    performClickSearchAction()
+    performTypeAndSearchAction()
 
     // set adapter
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
@@ -74,7 +74,7 @@ class SearchFragmentLoadStateTest : BaseSearchFragmentTest() {
     shortDelay()
 
     illustration_error.isNotDisplayed()
-    illustration_search_view.isNotDisplayed()
+    browse_genre_container.isNotDisplayed()
     rv_search.isNotDisplayed()
     illustration_search_no_result_view.isDisplayed()
   }
@@ -83,6 +83,9 @@ class SearchFragmentLoadStateTest : BaseSearchFragmentTest() {
   fun handleRefreshState_whenNotReachedEndOfPaging_shouldShowsViewCorrectly() {
     val notLoadingState = LoadState.NotLoading(endOfPaginationReached = false)
     val loadStates = setupCombinedLoadStates(notLoadingState)
+
+    performClickSearchAction()
+    performTypeAndSearchAction()
     val spyAdapter = spyk(SearchAdapter(mockNavigator))
     every { spyAdapter.itemCount } returns 0
 
@@ -93,16 +96,13 @@ class SearchFragmentLoadStateTest : BaseSearchFragmentTest() {
     shortDelay()
 
     illustration_error.isNotDisplayed()
-    illustration_search_view.isDisplayed()
+    browse_genre_container.isNotDisplayed()
     rv_search.isNotDisplayed()
     illustration_search_no_result_view.isNotDisplayed()
   }
 
   @Test
   fun handleRefreshState_whenHasSearchResults_shouldShowActualData() {
-    val notLoadingState = LoadState.NotLoading(endOfPaginationReached = false)
-    val loadStates = setupCombinedLoadStates(notLoadingState)
-
     // mock search results
     val mockSearchResults = listOf(
       MultiSearchItem(
@@ -139,20 +139,7 @@ class SearchFragmentLoadStateTest : BaseSearchFragmentTest() {
 
     illustration_error.isNotDisplayed()
     rv_search.isDisplayed()
-    illustration_search_view.isNotDisplayed()
+    browse_genre_container.isNotDisplayed()
     illustration_search_no_result_view.isNotDisplayed()
   }
-
-  private fun setupCombinedLoadStates(states: LoadState): CombinedLoadStates =
-    CombinedLoadStates(
-      refresh = states,
-      prepend = LoadState.NotLoading(false),
-      append = states, // needs for endOfPaginationReached = true
-      source = LoadStates(
-        refresh = states,
-        prepend = LoadState.NotLoading(false),
-        append = states,
-      ),
-      mediator = null,
-    )
 }

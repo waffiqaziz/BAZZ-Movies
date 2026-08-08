@@ -16,6 +16,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.waffiq.bazz_movies.R.id.nav_host_fragment_activity_home
 import com.waffiq.bazz_movies.R.id.navigation_search
@@ -26,6 +27,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
   private lateinit var binding: ActivityMainBinding
+
+  private var previousBottomNavItemId: Int = navigation_search
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -78,6 +81,20 @@ class MainActivity : AppCompatActivity() {
             animateSearchIcon(menuItem)
             supportFragmentManager.setFragmentResult("open_search_view", Bundle.EMPTY)
           }
+        }
+
+        binding.bottomNavigation.setOnItemSelectedListener { menuItem ->
+          if (menuItem.itemId != navigation_search &&
+            previousBottomNavItemId == navigation_search
+          ) {
+            supportFragmentManager.setFragmentResult("clear_search_view", Bundle.EMPTY)
+          }
+
+          previousBottomNavItemId = menuItem.itemId
+
+          // must forward manually — setupWithNavController's own
+          // listener got overwritten by this one
+          NavigationUI.onNavDestinationSelected(menuItem, navController)
         }
 
         navHostFragment.lifecycle.removeObserver(this)
