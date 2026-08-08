@@ -81,6 +81,11 @@ class SearchFragmentLoadStateTest : BaseSearchFragmentTest() {
 
   @Test
   fun handleRefreshState_whenNotReachedEndOfPaging_shouldShowsViewCorrectly() {
+    val notLoadingState = LoadState.NotLoading(endOfPaginationReached = false)
+    val loadStates = setupCombinedLoadStates(notLoadingState)
+
+    performClickSearchAction()
+    performTypeAndSearchAction()
     val spyAdapter = spyk(SearchAdapter(mockNavigator))
     every { spyAdapter.itemCount } returns 0
 
@@ -91,7 +96,7 @@ class SearchFragmentLoadStateTest : BaseSearchFragmentTest() {
     shortDelay()
 
     illustration_error.isNotDisplayed()
-    browse_genre_container.isDisplayed()
+    browse_genre_container.isNotDisplayed()
     rv_search.isNotDisplayed()
     illustration_search_no_result_view.isNotDisplayed()
   }

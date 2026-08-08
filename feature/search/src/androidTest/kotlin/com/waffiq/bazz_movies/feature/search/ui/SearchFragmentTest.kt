@@ -183,9 +183,10 @@ class SearchFragmentTest : BaseSearchFragmentTest() {
     } else {
       swipe_refresh.performAction(triggerSwipeRefresh())
     }
-    shortDelay()
 
-    verify(exactly = 1) { searchAdapter.refresh() }
+    verify(timeout = 3_000, exactly = 1) {
+      searchAdapter.refresh()
+    }
   }
 
   @Test
