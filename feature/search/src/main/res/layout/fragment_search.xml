@@ -14,7 +14,7 @@
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:backgroundTint="@color/gray_1000" >
+    android:backgroundTint="@color/gray_1000">
 
     <com.google.android.material.search.SearchBar
       android:id="@+id/search_bar"
@@ -36,13 +36,84 @@
   </com.google.android.material.appbar.AppBarLayout>
 
   <!-- ========================== -->
+  <!--   BROWSE BY GENRE SECTION  -->
+  <!-- ========================== -->
+
+  <androidx.core.widget.NestedScrollView
+    android:id="@+id/browse_genre_container"
+    android:layout_width="match_parent"
+    android:background="@color/gray_1000"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:background="@color/gray_1000"
+      android:visibility="visible"
+      tools:visibility="visible">
+
+      <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggle_media_type"
+        style="@style/Widget.App.ButtonGroup.Filter"
+        android:layout_width="match_parent"
+        android:layout_marginStart="@dimen/default_margin_parent_20"
+        android:layout_marginVertical="@dimen/margin_between_item"
+        app:checkedButton="@id/btn_movie"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <Button
+          android:id="@+id/btn_movie"
+          style="@style/Widget.App.Button.FilterToggle"
+          android:text="@string/movies" />
+
+        <Button
+          android:id="@+id/btn_tv"
+          style="@style/Widget.App.Button.FilterToggle"
+          android:text="@string/tv_series" />
+
+      </com.google.android.material.button.MaterialButtonToggleGroup>
+
+      <TextView
+        style="@style/TextAppearance.App.Cast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginStart="@dimen/default_margin_parent_20"
+        android:layout_marginBottom="8dp"
+        android:text="@string/browse_by_genre"
+        android:textAllCaps="true"
+        android:textColor="@color/gray_700" />
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_genre"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/margin_each_item"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:contentDescription="@string/genre_list"
+        android:paddingHorizontal="8dp"
+        android:paddingBottom="@dimen/bottom_nav_min_height"
+        tools:listitem="@layout/item_genre_list"
+        tools:spanCount="2" />
+
+    </LinearLayout>
+
+  </androidx.core.widget.NestedScrollView>
+
+  <!-- ========================== -->
   <!--   SEARCH RESULT SECTION    -->
   <!-- ========================== -->
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:visibility="gone"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:visibility="gone">
 
     <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/rv_search"
@@ -59,14 +130,6 @@
   <!-- ========================== -->
   <!-- SEARCH STATE ILLUSTRATIONS -->
   <!-- ========================== -->
-  <include
-    android:id="@+id/illustration_search_view"
-    layout="@layout/illustration_search"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    tools:visibility="invisible" />
-
   <include
     android:id="@+id/illustration_search_no_result_view"
     layout="@layout/illustration_search_no_result"

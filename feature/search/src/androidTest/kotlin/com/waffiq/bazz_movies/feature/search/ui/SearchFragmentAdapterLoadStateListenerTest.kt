@@ -1,26 +1,21 @@
 package com.waffiq.bazz_movies.feature.search.ui
 
-import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
-import androidx.paging.LoadStates
 import androidx.test.platform.app.InstrumentationRegistry
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
+import com.waffiq.bazz_movies.feature.search.R.id.browse_genre_container
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_error
-import com.waffiq.bazz_movies.feature.search.R.id.illustration_search_view
 import com.waffiq.bazz_movies.feature.search.R.id.rv_search
 import com.waffiq.bazz_movies.feature.search.testutils.BaseSearchFragmentTest
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.verify
-import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Before
 import org.junit.Test
 
 @HiltAndroidTest
 class SearchFragmentAdapterLoadStateListenerTest : BaseSearchFragmentTest() {
-
-  private val fakeLoadStateFlow = MutableStateFlow(idleLoadStates())
 
   @Before
   override fun setup() {
@@ -42,13 +37,11 @@ class SearchFragmentAdapterLoadStateListenerTest : BaseSearchFragmentTest() {
   }
 
   @Test
-  fun adapterLoadStateListener_whenSameErrorEmittedTwice_shouldUpdateUIOnlyOnce() {
-    val error = Throwable("Same error")
-
-    emitLoadState(LoadState.Error(error))
+  fun adapterLoadStateListener_whenSameErrorMessageEmittedTwice_shouldUpdateUIOnlyOnce() {
+    emitLoadState(LoadState.Error(Throwable("Same error")))
     waitForDebounce()
 
-    emitLoadState(LoadState.Error(error))
+    emitLoadState(LoadState.Error(Throwable("Same error")))
     waitForDebounce()
 
     // error is showing
@@ -76,7 +69,7 @@ class SearchFragmentAdapterLoadStateListenerTest : BaseSearchFragmentTest() {
     waitForDebounce()
 
     illustration_error.isNotDisplayed()
-    illustration_search_view.isDisplayed()
+    browse_genre_container.isDisplayed()
   }
 
   @Test
@@ -95,6 +88,8 @@ class SearchFragmentAdapterLoadStateListenerTest : BaseSearchFragmentTest() {
 
   @Test
   fun adapterLoadStateListener_whenErrorThenSuccess_shouldShowRecoveredState() {
+    performClickSearchAction()
+    performTypeAndSearchAction()
     emitLoadState(LoadState.Error(Throwable("Temporary error")))
     waitForDebounce()
 
@@ -105,11 +100,13 @@ class SearchFragmentAdapterLoadStateListenerTest : BaseSearchFragmentTest() {
 
     // error view should have gone
     illustration_error.isNotDisplayed()
-    illustration_search_view.isDisplayed()
+    browse_genre_container.isNotDisplayed()
   }
 
   @Test
   fun adapterLoadStateListener_whenLoadingEmitted_shouldShowLoadingState() {
+    performClickSearchAction()
+    performTypeAndSearchAction()
     emitLoadState(LoadState.Loading)
     waitForDebounce()
 
@@ -130,7 +127,7 @@ class SearchFragmentAdapterLoadStateListenerTest : BaseSearchFragmentTest() {
 
     // only the final NotLoading state should have been processed
     illustration_error.isNotDisplayed()
-    illustration_search_view.isDisplayed()
+    browse_genre_container.isDisplayed()
   }
 
   private fun emitLoadState(state: LoadState) {
@@ -142,20 +139,4 @@ class SearchFragmentAdapterLoadStateListenerTest : BaseSearchFragmentTest() {
   private fun waitForDebounce() {
     Thread.sleep(DEBOUNCE_SHORT + 200)
   }
-
-  private fun idleLoadStates() =
-    setupCombinedLoadStates(LoadState.NotLoading(endOfPaginationReached = false))
-
-  private fun setupCombinedLoadStates(states: LoadState): CombinedLoadStates =
-    CombinedLoadStates(
-      refresh = states,
-      prepend = LoadState.NotLoading(false),
-      append = states,
-      source = LoadStates(
-        refresh = states,
-        prepend = LoadState.NotLoading(false),
-        append = states,
-      ),
-      mediator = null,
-    )
 }

@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.core.utils
 
 import com.waffiq.bazz_movies.core.models.GenresItem
+import com.waffiq.bazz_movies.core.utils.GenreHelper.getGenreName
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoinName
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinString
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreCode
@@ -12,7 +13,13 @@ import org.junit.Test
 class GenreHelperTest {
 
   @Test
-  fun transformListGenreIdsToJoinName_withValidGenreNames_returnCorrectString() {
+  fun getGenreName_withValidGenreId_returnsCorrectName() {
+    assertEquals("Action", getGenreName(28)) // valid id
+    assertEquals("", getGenreName(313213211)) // invalid id
+  }
+
+  @Test
+  fun transformListGenreIdsToJoinName_withValidGenreNames_returnsCorrectString() {
     val input = listOf(28, 12, 16)
     val expectedOutput = "Action, Adventure, Animation"
     val actualOutput = transformListGenreIdsToJoinName(input)
@@ -20,21 +27,21 @@ class GenreHelperTest {
   }
 
   @Test
-  fun transformListGenreIdsToJoinName_withEmptyList_returnEmptyString() {
+  fun transformListGenreIdsToJoinName_withEmptyList_returnsEmptyString() {
     val input = emptyList<Int>()
     val actualOutput = transformListGenreIdsToJoinName(input)
     assertNull(actualOutput)
   }
 
   @Test
-  fun transformListGenreIdsToJoinName_withValidGenreItems_handleInvalidGenreId() {
+  fun transformListGenreIdsToJoinName_withValidGenreItems_handlesInvalidGenreId() {
     val input = listOf(999) // Non-existent genre ID
     val actualOutput = transformListGenreIdsToJoinName(input)
     assertNull(actualOutput)
   }
 
   @Test
-  fun transformToGenreCode_withNullList_returnCorrectCode() {
+  fun transformToGenreCode_withNullList_returnsCorrectCode() {
     val input = listOf("Action", "Comedy", "Romance")
     val expectedOutput = "28|35|10749"
     val actualOutput = transformToGenreCode(input)
@@ -58,7 +65,7 @@ class GenreHelperTest {
   }
 
   @Test
-  fun transformListGenreToJoinString_withNullList_returnCorrectString() {
+  fun transformListGenreToJoinString_withNullList_returnsCorrectString() {
     val input = listOf(
       GenresItem("Action", 28),
       GenresItem("Mystery", 9648),
@@ -69,7 +76,7 @@ class GenreHelperTest {
   }
 
   @Test
-  fun transformListGenreToJoinString_withNullList_returnNull() {
+  fun transformListGenreToJoinString_withNullList_returnsNull() {
     val input: List<GenresItem>? = null
     val expectedOutput: String? = null
     val actualOutput = transformListGenreToJoinString(input)
@@ -77,21 +84,21 @@ class GenreHelperTest {
   }
 
   @Test
-  fun transformListGenreToJoinString_withEmptyList_returnNull() {
+  fun transformListGenreToJoinString_withEmptyList_returnsNull() {
     val input = emptyList<GenresItem>()
     val actualOutput = transformListGenreToJoinString(input)
     assertNull(actualOutput)
   }
 
   @Test
-  fun transformListGenreToJoinString_withNullGenresItem_returnNull() {
+  fun transformListGenreToJoinString_withNullGenresItem_returnsNull() {
     val input = listOf(null)
     val actualOutput = transformListGenreToJoinString(input)
     assertNull(actualOutput)
   }
 
   @Test
-  fun transformToGenreIDs_withValidGenreList_returnCorrectIds() {
+  fun transformToGenreIDs_withValidGenreList_returnsCorrectIds() {
     val input = listOf(
       GenresItem("News", 10763),
       GenresItem("Talk", 10767),
@@ -103,7 +110,7 @@ class GenreHelperTest {
   }
 
   @Test
-  fun transformToGenreIDs_withNullList_returnEmptyList() {
+  fun transformToGenreIDs_withNullList_returnsEmptyList() {
     val input: List<GenresItem>? = null
     val expectedOutput: List<Int>? = null
     val actualOutput = transformToGenreIDs(input)
@@ -111,7 +118,7 @@ class GenreHelperTest {
   }
 
   @Test
-  fun transformToGenreIDs_withNullGenresItem_returnEmptyList() {
+  fun transformToGenreIDs_withNullGenresItem_returnsEmptyList() {
     val input = listOf(null)
     val actualOutput = transformToGenreIDs(input)
     assertEquals(listOf(0), actualOutput)

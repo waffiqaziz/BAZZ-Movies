@@ -55,7 +55,11 @@ class ListViewModelTest :
       Dispatchers.resetMain()
     }
 
-    data class MediaItemExpectation(val id: Int, val title: String, val overview: String)
+    data class MediaItemExpectation(
+      val id: Int,
+      val title: String,
+      val overview: String,
+    )
 
     val expectedMovie = MediaItemExpectation(1, "Inception", "A mind-bending thriller")
     val expectedTv = MediaItemExpectation(
