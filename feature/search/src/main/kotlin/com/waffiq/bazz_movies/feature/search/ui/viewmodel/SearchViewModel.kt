@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.stateIn
@@ -27,43 +28,48 @@ class SearchViewModel @Inject constructor(
   private val searchHistoryUseCase: SearchHistoryLocalDatabaseUseCase,
 ) : ViewModel() {
 
-  private val _searchResults =
-    MutableStateFlow<PagingData<MultiSearchItem>>(PagingData.Companion.empty())
-  val searchResults: Flow<PagingData<MultiSearchItem>> =
-    _searchResults.cachedIn(viewModelScope)
+  private val _searchResults = MutableStateFlow(PagingData.empty<MultiSearchItem>())
+  val searchResults: Flow<PagingData<MultiSearchItem>> = _searchResults.cachedIn(viewModelScope)
+
+  private val _currentQuery = MutableStateFlow<String?>(null)
+  val currentQuery: StateFlow<String?> = _currentQuery.asStateFlow()
 
   val searchHistory: StateFlow<List<SearchHistory>> =
     searchHistoryUseCase.getSearchHistory().debounce(DEBOUNCE_SHORT.milliseconds)
-      .stateIn(viewModelScope, SharingStarted.WhileSubscribed(TIMEOUT), emptyList())
+      .stateIn(viewModelScope, SharingStarted.WhileSubscribed(HISTORY_TIMEOUT), emptyList())
 
   fun search(query: String) {
-    viewModelScope.launch {
-      searchHistoryUseCase.insert(SearchHistory(1, query, 1L))
-      searchHistoryUseCase.trimHistory()
+    if (query == _currentQuery.value) return
+    _currentQuery.value = query
 
-      multiSearchUseCase.search(query).collectLatest {
-        _searchResults.value = it
+    viewModelScope.launch {
+      searchHistoryUseCase.insert(
+        SearchHistory(id = 0, query = query, createdAt = System.currentTimeMillis()),
+      )
+      searchHistoryUseCase.trimHistory()
+    }
+
+    viewModelScope.launch {
+      multiSearchUseCase.search(query).collectLatest { pagingData ->
+        _searchResults.value = pagingData
       }
     }
   }
 
   fun deleteHistory(item: SearchHistory) {
-    viewModelScope.launch {
-      searchHistoryUseCase.delete(item)
-    }
+    viewModelScope.launch { searchHistoryUseCase.delete(item) }
   }
 
   fun deleteAllHistory() {
-    viewModelScope.launch {
-      searchHistoryUseCase.deleteAll()
-    }
+    viewModelScope.launch { searchHistoryUseCase.deleteAll() }
   }
 
   fun clearSearch() {
+    _currentQuery.value = null
     _searchResults.value = PagingData.empty()
   }
 
-  companion object {
-    private const val TIMEOUT = 5000L
+  private companion object {
+    const val HISTORY_TIMEOUT = 5_000L
   }
 }

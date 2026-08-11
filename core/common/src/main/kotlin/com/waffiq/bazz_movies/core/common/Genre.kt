@@ -35,7 +35,7 @@ enum class Genre(
   WESTERN(37, "Western", setOf(MediaType.MOVIE, MediaType.TV)),
   ;
 
-  companion object {
+    companion object {
     private val byId: Map<Int, Genre> = entries.associateBy { it.id }
     private val byName: Map<String, Genre> = entries.associateBy { it.genreName }
 

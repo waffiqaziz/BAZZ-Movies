@@ -22,16 +22,10 @@ import org.junit.Test
 class SearchFragmentLoadStateTest : BaseSearchFragmentTest() {
 
   @Test
-  fun handleRefreshState_whenErrorOccurs_shouldHiddenRecyclerView() {
-    // get the fragment instance and call the error method directly
-    val errorState = LoadState.Error(Throwable("Test error"))
-    val loadStates = setupCombinedLoadStates(errorState)
-
-    // call the method directly instead of relying on adapter flow
-    InstrumentationRegistry.getInstrumentation().runOnMainSync {
-      searchFragment.handleRefreshState(loadStates, errorState)
-    }
-    shortDelay()
+  fun screenState_whenErrorOccurs_showsErrorIllustrationAndHidesEverythingElse() {
+    setActiveQuery()
+    emitLoadState(LoadState.Error(Throwable("Test error")))
+    waitForDebounce()
 
     illustration_error.isDisplayed()
     browse_genre_container.isNotDisplayed()
@@ -40,17 +34,10 @@ class SearchFragmentLoadStateTest : BaseSearchFragmentTest() {
   }
 
   @Test
-  fun handleRefreshState_whenLoading_shouldShowLoadingState() {
-    // create loading state (not error state for loading test)
-    val loadingState = LoadState.Loading
-    val loadStates = setupCombinedLoadStates(loadingState)
-
-    performClickSearchAction()
-    performTypeAndSearchAction()
-    InstrumentationRegistry.getInstrumentation().runOnMainSync {
-      searchFragment.handleRefreshState(loadStates, loadingState)
-    }
-    shortDelay()
+  fun screenState_whenRefreshLoading_showsShimmerLoadingState() {
+    setActiveQuery()
+    emitLoadState(LoadState.Loading)
+    waitForDebounce()
 
     illustration_error.isNotDisplayed()
     browse_genre_container.isNotDisplayed()
@@ -59,19 +46,16 @@ class SearchFragmentLoadStateTest : BaseSearchFragmentTest() {
   }
 
   @Test
-  fun handleRefreshState_whenReachedEndOfPaging_shouldShowNoResultsView() {
+  fun screenState_whenReachedEndOfPagingWithZeroItems_showsNoResultsView() {
     val spyAdapter = spyk(SearchAdapter(mockNavigator))
     every { spyAdapter.itemCount } returns 0
 
-    performClickSearchAction()
-    performTypeAndSearchAction()
-
-    // set adapter
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       searchFragment.setAdapterForTest(spyAdapter)
-      searchFragment.handleRefreshState(loadStates, notLoadingState)
     }
-    shortDelay()
+    setActiveQuery()
+    emitLoadStates(loadStates)
+    waitForDebounce()
 
     illustration_error.isNotDisplayed()
     browse_genre_container.isNotDisplayed()
@@ -80,20 +64,17 @@ class SearchFragmentLoadStateTest : BaseSearchFragmentTest() {
   }
 
   @Test
-  fun handleRefreshState_whenNotReachedEndOfPaging_shouldShowsViewCorrectly() {
-    val notLoadingState = LoadState.NotLoading(endOfPaginationReached = false)
-    val loadStates = setupCombinedLoadStates(notLoadingState)
-
-    performClickSearchAction()
-    performTypeAndSearchAction()
+  fun screenState_whenStillFetchingMoreWithZeroItems_showsNothingYet() {
     val spyAdapter = spyk(SearchAdapter(mockNavigator))
     every { spyAdapter.itemCount } returns 0
 
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       searchFragment.setAdapterForTest(spyAdapter)
-      searchFragment.handleRefreshState(loadStates, notLoadingState)
     }
-    shortDelay()
+    setActiveQuery()
+    // refresh finished, append still in progress (not end of pagination), no items yet
+    emitLoadState(LoadState.NotLoading(endOfPaginationReached = false))
+    waitForDebounce()
 
     illustration_error.isNotDisplayed()
     browse_genre_container.isNotDisplayed()
@@ -102,8 +83,7 @@ class SearchFragmentLoadStateTest : BaseSearchFragmentTest() {
   }
 
   @Test
-  fun handleRefreshState_whenHasSearchResults_shouldShowActualData() {
-    // mock search results
+  fun screenState_whenHasSearchResults_showsActualData() {
     val mockSearchResults = listOf(
       MultiSearchItem(
         id = 1,
@@ -120,22 +100,18 @@ class SearchFragmentLoadStateTest : BaseSearchFragmentTest() {
         mediaType = "movie",
       ),
     )
-
-    // use PagingData with actual data
     val pagingData = PagingData.from(mockSearchResults)
+
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       val adapter = SearchAdapter(mockNavigator)
       searchFragment.setAdapterForTest(adapter)
-
-      // submit the actual paging data to the adapter
       adapter.submitData(searchFragment.lifecycle, pagingData)
     }
     shortDelay()
 
-    InstrumentationRegistry.getInstrumentation().runOnMainSync {
-      searchFragment.handleRefreshState(loadStates, notLoadingState)
-    }
-    shortDelay()
+    setActiveQuery()
+    emitLoadStates(loadStates)
+    waitForDebounce()
 
     illustration_error.isNotDisplayed()
     rv_search.isDisplayed()
