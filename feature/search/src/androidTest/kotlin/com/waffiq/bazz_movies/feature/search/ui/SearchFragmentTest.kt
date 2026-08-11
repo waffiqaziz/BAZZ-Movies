@@ -4,9 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
-import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
-import androidx.paging.LoadStates
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
@@ -69,7 +67,6 @@ class SearchFragmentTest : BaseSearchFragmentTest() {
     performClickSearchAction()
     performTypeAndSearchAction()
 
-    // verify loading state UI
     rv_search.isDisplayed()
     browse_genre_container.isNotDisplayed()
     illustration_error.isNotDisplayed()
@@ -78,30 +75,27 @@ class SearchFragmentTest : BaseSearchFragmentTest() {
   }
 
   @Test
-  fun searchView_whenSearchWithSameQuery_onlyTriggerSearchOnce() {
+  fun searchView_whenSearchWithSameQuery_callsViewModelSearchEachTime() {
     performClickSearchAction()
     performTypeAndSearchAction()
     performClickSearchAction()
     performTypeAndSearchAction()
 
-    // verify search was only called once
-    verify(exactly = 1) { mockSearchViewModel.search(testQuery) }
+    // verify search was called twice
+    verify(exactly = 2) { mockSearchViewModel.search(testQuery) }
   }
 
   @Test
-  fun searchWithHistory_whenSameQuery_onlyTriggerSearchOnce() {
+  fun searchWithHistory_whenSameQueryAsCurrentSearch_stillDelegatesToViewModel() {
     historyFlow.value = listOf(history1.copy(query = testQuery))
 
-    // perform first search
     performClickSearchAction()
     performTypeAndSearchAction()
 
-    // perform search using history search
     performClickSearchAction()
     rv_search_history.clickItemAt(0)
 
-    // only perform search once
-    verify(exactly = 1) { mockSearchViewModel.search(testQuery) }
+    verify(exactly = 2) { mockSearchViewModel.search(testQuery) }
   }
 
   @Test
@@ -120,11 +114,9 @@ class SearchFragmentTest : BaseSearchFragmentTest() {
   fun searchView_whenSearchWithoutQuery_shouldNotTriggerSearch() {
     performClickSearchAction()
 
-    // perform search without query
     open_search_view_edit_text.isDisplayed()
     open_search_view_edit_text.performAction(pressImeActionButton())
 
-    // verify search not run
     verify(exactly = 0) { mockSearchViewModel.search(testQuery) }
   }
 
@@ -146,7 +138,6 @@ class SearchFragmentTest : BaseSearchFragmentTest() {
       historyFlow.value = listOf(history2, history3)
     }
 
-    // perform delete first history search
     rv_search_history.actionOnItemAt(0, clickChildViewWithId(btn_delete))
     shortDelay()
 
@@ -183,10 +174,6 @@ class SearchFragmentTest : BaseSearchFragmentTest() {
     } else {
       swipe_refresh.performAction(triggerSwipeRefresh())
     }
-
-//    verify(timeout = 3_000, exactly = 1) {
-//      searchAdapter.refresh()
-//    }
   }
 
   @Test
@@ -205,7 +192,6 @@ class SearchFragmentTest : BaseSearchFragmentTest() {
 
   @Test
   fun fragmentResultListener_successfull_opensSearchView() {
-    // simulate fragment result
     searchFragment.parentFragmentManager.setFragmentResult(
       "open_search_view",
       Bundle(),
@@ -227,16 +213,24 @@ class SearchFragmentTest : BaseSearchFragmentTest() {
   }
 
   @Test
-  fun fragmentResultListener_clearSearch() {
-    // simulate fragment result
+  fun fragmentResultListener_clearSearch_delegatesToViewModelAndResetsBrowseState() {
+    // setup fragment after user searching
+    stubSearchResult()
+    performClickSearchAction()
+    performTypeAndSearchAction()
+    rv_search.isDisplayed()
+
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       searchFragment.parentFragmentManager.setFragmentResult(
         "clear_search_view",
         Bundle(),
       )
     }
-    shortDelay()
+    waitForDebounce()
+
+    // verify that back to Browse genre
     verify { mockSearchViewModel.clearSearch() }
+    browse_genre_container.isDisplayed()
   }
 
   @Test
@@ -252,27 +246,13 @@ class SearchFragmentTest : BaseSearchFragmentTest() {
 
   @Test
   fun btnTryAgain_whenClicked_triggersRefreshAndShowsShimmer() {
-    // error state
-    val errorState = LoadState.Error(Exception("Network error"))
-    val combinedLoadStates = CombinedLoadStates(
-      refresh = errorState,
-      prepend = LoadState.NotLoading(endOfPaginationReached = false),
-      append = LoadState.NotLoading(endOfPaginationReached = false),
-      source = LoadStates(
-        refresh = errorState,
-        prepend = LoadState.NotLoading(endOfPaginationReached = false),
-        append = LoadState.NotLoading(endOfPaginationReached = false),
-      ),
-    )
-
-    InstrumentationRegistry.getInstrumentation().runOnMainSync {
-      searchFragment.handleRefreshState(combinedLoadStates, errorState)
-    }
+    setActiveQuery()
+    emitLoadState(LoadState.Error(Exception("Network error")))
+    waitForDebounce()
 
     illustration_error.isDisplayed()
     btn_try_again.isDisplayed()
 
-    // perform button try again click
     btn_try_again.performClick()
 
     btn_try_again.isNotDisplayed()

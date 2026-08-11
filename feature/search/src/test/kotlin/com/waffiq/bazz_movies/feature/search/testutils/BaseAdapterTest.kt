@@ -15,7 +15,6 @@ import io.mockk.mockk
 import org.junit.Before
 import org.junit.Rule
 import org.mockito.Mock
-import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations
 
 abstract class BaseAdapterTest {

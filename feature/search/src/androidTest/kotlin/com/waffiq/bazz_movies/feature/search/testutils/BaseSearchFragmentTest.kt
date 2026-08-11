@@ -9,6 +9,7 @@ import androidx.test.espresso.action.ViewActions.clearText
 import androidx.test.espresso.action.ViewActions.pressImeActionButton
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.android.material.R.id.open_search_view_edit_text
+import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performAction
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performType
@@ -46,7 +47,9 @@ abstract class BaseSearchFragmentTest {
   protected lateinit var searchFragment: SearchFragment
   protected lateinit var searchAdapter: SearchAdapter
   protected lateinit var spyAdapter: SearchAdapter
+
   protected val fakeLoadStateFlow = MutableStateFlow(idleLoadStates())
+  protected val fakeCurrentQueryFlow = MutableStateFlow<String?>(null)
 
   private val searchResultsFlow: Flow<PagingData<MultiSearchItem>> = flowOf(fakeSearchResult)
 
@@ -77,8 +80,15 @@ abstract class BaseSearchFragmentTest {
 
   private fun setupViewModelMocks() {
     every { mockSearchViewModel.searchResults } returns searchResultsFlow
-    every { mockSearchViewModel.search(any()) } just Runs
+    every { mockSearchViewModel.currentQuery } returns fakeCurrentQueryFlow
     every { mockSearchViewModel.searchHistory } returns historyFlow
+
+    every { mockSearchViewModel.search(any()) } answers {
+      fakeCurrentQueryFlow.value = firstArg()
+    }
+    every { mockSearchViewModel.clearSearch() } answers {
+      fakeCurrentQueryFlow.value = null
+    }
     every { mockSearchViewModel.deleteHistory(any<SearchHistory>()) } just Runs
     every { mockSearchViewModel.deleteAllHistory() } just Runs
   }
@@ -93,6 +103,10 @@ abstract class BaseSearchFragmentTest {
 
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       searchFragment.setAdapterForTest(spyAdapter)
+
+      // setup loadStateFlowProvider
+      searchFragment.loadStateFlowProvider = fakeLoadStateFlow
+      searchFragment.observeScreenState()
     }
   }
 
@@ -107,6 +121,28 @@ abstract class BaseSearchFragmentTest {
     shortDelay()
     open_search_view_edit_text.performType(testQuery)
     open_search_view_edit_text.performAction(pressImeActionButton())
+  }
+
+  protected fun emitLoadState(states: LoadState) {
+    InstrumentationRegistry.getInstrumentation().runOnMainSync {
+      fakeLoadStateFlow.value = setupCombinedLoadStates(states)
+    }
+  }
+
+  protected fun emitLoadStates(combined: CombinedLoadStates) {
+    InstrumentationRegistry.getInstrumentation().runOnMainSync {
+      fakeLoadStateFlow.value = combined
+    }
+  }
+
+  protected fun setActiveQuery(query: String = testQuery) {
+    InstrumentationRegistry.getInstrumentation().runOnMainSync {
+      fakeCurrentQueryFlow.value = query
+    }
+  }
+
+  protected fun waitForDebounce() {
+    Thread.sleep(DEBOUNCE_SHORT + 200)
   }
 
   private fun idleLoadStates() =
@@ -129,10 +165,8 @@ abstract class BaseSearchFragmentTest {
     runTest {
       spyAdapter.submitData(fakeSearchResult)
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        searchFragment.loadStateFlowProvider = fakeLoadStateFlow
-        fakeLoadStateFlow.value =
-          setupCombinedLoadStates(notLoadingState)
-        searchFragment.handleRefreshState(loadStates, notLoadingState)
+        fakeCurrentQueryFlow.value = testQuery
+        fakeLoadStateFlow.value = setupCombinedLoadStates(notLoadingState)
       }
       shortDelay(500)
     }

@@ -2,33 +2,23 @@ package com.waffiq.bazz_movies.feature.search.ui
 
 import androidx.paging.LoadState
 import androidx.test.platform.app.InstrumentationRegistry
-import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.feature.search.R.id.browse_genre_container
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_error
+import com.waffiq.bazz_movies.feature.search.R.id.illustration_search_no_result_view
 import com.waffiq.bazz_movies.feature.search.R.id.rv_search
 import com.waffiq.bazz_movies.feature.search.testutils.BaseSearchFragmentTest
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.verify
-import org.junit.Before
 import org.junit.Test
 
 @HiltAndroidTest
-class SearchFragmentAdapterLoadStateListenerTest : BaseSearchFragmentTest() {
-
-  @Before
-  override fun setup() {
-    super.setup()
-
-    InstrumentationRegistry.getInstrumentation().runOnMainSync {
-      searchFragment.loadStateFlowProvider = fakeLoadStateFlow
-      searchFragment.adapterLoadStateListener()
-    }
-  }
+class SearchFragmentScreenStateTest : BaseSearchFragmentTest() {
 
   @Test
-  fun adapterLoadStateListener_whenFirstErrorEmitted_shouldUpdateUI() {
+  fun screenState_whenFirstErrorEmitted_updatesUi() {
+    setActiveQuery()
     emitLoadState(LoadState.Error(Throwable("Network error")))
     waitForDebounce()
 
@@ -37,24 +27,26 @@ class SearchFragmentAdapterLoadStateListenerTest : BaseSearchFragmentTest() {
   }
 
   @Test
-  fun adapterLoadStateListener_whenSameErrorMessageEmittedTwice_shouldUpdateUIOnlyOnce() {
-    emitLoadState(LoadState.Error(Throwable("Same error")))
-    waitForDebounce()
+  fun screenState_whenSameErrorMessageEmittedTwice_emitsSnackbarWarningTwice() {
+    setActiveQuery()
 
     emitLoadState(LoadState.Error(Throwable("Same error")))
     waitForDebounce()
 
-    // error is showing
+    emitLoadState(LoadState.Error(Throwable("Same error")))
+    waitForDebounce()
+
     illustration_error.isDisplayed()
-
-    // but handleRefreshState was NOT called twice (snackbar only called once)
-    verify(exactly = 1) { mockSnackbar.showSnackbarWarning(any<String>()) }
+    verify(exactly = 2) { mockSnackbar.showSnackbarWarning(any<String>()) }
   }
 
   @Test
-  fun adapterLoadStateListener_whenLoadingAfterPreviousError_shouldStillProcess() {
+  fun screenState_whenLoadingAfterPreviousError_stillProcessesNewState() {
+    setActiveQuery()
+
     emitLoadState(LoadState.Error(Throwable("Previous error")))
     waitForDebounce()
+    illustration_error.isDisplayed()
 
     emitLoadState(LoadState.Loading)
     waitForDebounce()
@@ -64,7 +56,8 @@ class SearchFragmentAdapterLoadStateListenerTest : BaseSearchFragmentTest() {
   }
 
   @Test
-  fun adapterLoadStateListener_whenNotLoadingWithNoStoredError_shouldProcess() {
+  fun screenState_whenNoActiveQuery_alwaysShowsBrowse() {
+    // no setActiveQuery() call — currentQuery stays null regardless of load state
     emitLoadState(LoadState.NotLoading(endOfPaginationReached = false))
     waitForDebounce()
 
@@ -73,7 +66,9 @@ class SearchFragmentAdapterLoadStateListenerTest : BaseSearchFragmentTest() {
   }
 
   @Test
-  fun adapterLoadStateListener_whenDifferentErrorEmitted_shouldUpdateUIAgain() {
+  fun screenState_whenDifferentErrorsEmitted_reportsEachToSnackbar() {
+    setActiveQuery()
+
     emitLoadState(LoadState.Error(Throwable("Error A")))
     waitForDebounce()
 
@@ -81,32 +76,29 @@ class SearchFragmentAdapterLoadStateListenerTest : BaseSearchFragmentTest() {
     waitForDebounce()
 
     illustration_error.isDisplayed()
-
-    // different error message, so it should have been called twice
     verify(exactly = 2) { mockSnackbar.showSnackbarWarning(any<String>()) }
   }
 
   @Test
-  fun adapterLoadStateListener_whenErrorThenSuccess_shouldShowRecoveredState() {
-    performClickSearchAction()
-    performTypeAndSearchAction()
+  fun screenState_whenErrorThenBackToNoActiveQuery_showsBrowseAgain() {
+    setActiveQuery()
     emitLoadState(LoadState.Error(Throwable("Temporary error")))
     waitForDebounce()
 
     illustration_error.isDisplayed()
 
-    emitLoadState(LoadState.NotLoading(endOfPaginationReached = false))
+    InstrumentationRegistry.getInstrumentation().runOnMainSync {
+      fakeCurrentQueryFlow.value = null
+    }
     waitForDebounce()
 
-    // error view should have gone
     illustration_error.isNotDisplayed()
-    browse_genre_container.isNotDisplayed()
+    browse_genre_container.isDisplayed()
   }
 
   @Test
-  fun adapterLoadStateListener_whenLoadingEmitted_shouldShowLoadingState() {
-    performClickSearchAction()
-    performTypeAndSearchAction()
+  fun screenState_whenLoadingEmittedWithActiveQuery_showsLoadingState() {
+    setActiveQuery()
     emitLoadState(LoadState.Loading)
     waitForDebounce()
 
@@ -115,7 +107,9 @@ class SearchFragmentAdapterLoadStateListenerTest : BaseSearchFragmentTest() {
   }
 
   @Test
-  fun adapterLoadStateListener_whenRapidEmissions_shouldOnlyProcessLastState() {
+  fun screenState_whenRapidEmissions_onlyProcessesLastState() {
+    setActiveQuery()
+
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       fakeLoadStateFlow.value = setupCombinedLoadStates(LoadState.Loading)
       fakeLoadStateFlow.value = setupCombinedLoadStates(LoadState.Loading)
@@ -125,18 +119,11 @@ class SearchFragmentAdapterLoadStateListenerTest : BaseSearchFragmentTest() {
     }
     waitForDebounce()
 
-    // only the final NotLoading state should have been processed
+    // only the final state should have been processed: refresh finished, still fetching more,
+    // zero items, FetchingMore. So nothing is shown (no error illustration and no browse).
     illustration_error.isNotDisplayed()
-    browse_genre_container.isDisplayed()
-  }
-
-  private fun emitLoadState(state: LoadState) {
-    InstrumentationRegistry.getInstrumentation().runOnMainSync {
-      fakeLoadStateFlow.value = setupCombinedLoadStates(state)
-    }
-  }
-
-  private fun waitForDebounce() {
-    Thread.sleep(DEBOUNCE_SHORT + 200)
+    browse_genre_container.isNotDisplayed()
+    rv_search.isNotDisplayed()
+    illustration_search_no_result_view.isNotDisplayed()
   }
 }

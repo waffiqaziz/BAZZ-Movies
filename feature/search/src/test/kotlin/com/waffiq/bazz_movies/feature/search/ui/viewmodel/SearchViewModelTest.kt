@@ -30,6 +30,7 @@ class SearchViewModelTest {
   private val mockMultiSearchUseCase: MultiSearchUseCase = mockk()
   private val mockSearchHistoryLocalDatabaseUseCase: SearchHistoryLocalDatabaseUseCase = mockk()
   private lateinit var searchViewModel: SearchViewModel
+  private val testQuery = "Transformers"
 
   private val searchHistory = SearchHistory(1, "query", 100L)
   private val tv = MultiSearchItem(
@@ -77,11 +78,14 @@ class SearchViewModelTest {
   @Test
   fun search_fromUseCase_emitsPagingData() =
     runTest {
-      val pagingData = PagingData.from(listOf(tv, movie))
-      coEvery { mockMultiSearchUseCase.search("Transformers") } returns flow { emit(pagingData) }
+      stubSearchResult()
 
       searchViewModel.searchResults.test {
-        searchViewModel.search("Transformers")
+        searchViewModel.search(testQuery)
+
+        searchViewModel.currentQuery.test {
+          assertEquals("Transformers", awaitItem())
+        }
 
         differ.submitData(awaitItem())
         advanceUntilIdle()
@@ -97,6 +101,16 @@ class SearchViewModelTest {
 
       coVerify { mockMultiSearchUseCase.search(any()) }
       coVerify { mockSearchHistoryLocalDatabaseUseCase.trimHistory() }
+    }
+
+  @Test
+  fun search_sameQuery_triggerSearchOnce() =
+    runTest {
+      stubSearchResult()
+      searchViewModel.search(testQuery)
+      searchViewModel.search(testQuery)
+      advanceUntilIdle()
+      coVerify(exactly = 1) { mockMultiSearchUseCase.search(any()) }
     }
 
   @Test
@@ -129,11 +143,11 @@ class SearchViewModelTest {
       val pagingData1 = PagingData.from(listOf(tv))
       val pagingData2 = PagingData.from(listOf(movie))
 
-      coEvery { mockMultiSearchUseCase.search("Transformers") } returns flow { emit(pagingData1) }
+      coEvery { mockMultiSearchUseCase.search(testQuery) } returns flow { emit(pagingData1) }
       coEvery { mockMultiSearchUseCase.search("Transformers 2") } returns flow { emit(pagingData2) }
 
       searchViewModel.searchResults.test {
-        searchViewModel.search("Transformers")
+        searchViewModel.search(testQuery)
         advanceUntilIdle()
 
         searchViewModel.search("Transformers 2")
@@ -152,10 +166,10 @@ class SearchViewModelTest {
   @Test
   fun search_whenEmptyFlow_doesNotUpdateSearchResults() =
     runTest {
-      coEvery { mockMultiSearchUseCase.search("Transformers") } returns emptyFlow()
+      coEvery { mockMultiSearchUseCase.search(testQuery) } returns emptyFlow()
 
       searchViewModel.searchResults.test {
-        searchViewModel.search("Transformers")
+        searchViewModel.search(testQuery)
         advanceUntilIdle()
 
         val result = awaitItem() // should be empty PagingData
@@ -173,7 +187,7 @@ class SearchViewModelTest {
       val pagingData1 = PagingData.from(listOf(tv))
       val pagingData2 = PagingData.from(listOf(movie))
 
-      coEvery { mockMultiSearchUseCase.search("Transformers") } returns flow {
+      coEvery { mockMultiSearchUseCase.search(testQuery) } returns flow {
         emit(pagingData1)
         delay(Long.MAX_VALUE) // keeps collecting so second search cancels it
       }
@@ -182,7 +196,7 @@ class SearchViewModelTest {
       }
 
       searchViewModel.searchResults.test {
-        searchViewModel.search("Transformers")
+        searchViewModel.search(testQuery)
         advanceUntilIdle()
 
         // This triggers the cancellation branch of the first collectLatest
@@ -213,4 +227,9 @@ class SearchViewModelTest {
       advanceUntilIdle()
       coVerify { mockSearchHistoryLocalDatabaseUseCase.deleteAll() }
     }
+
+  private fun stubSearchResult() {
+    val pagingData = PagingData.from(listOf(tv, movie))
+    coEvery { mockMultiSearchUseCase.search(testQuery) } returns flow { emit(pagingData) }
+  }
 }
