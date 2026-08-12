@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.designsystem.databinding.ChipLayoutBinding
 import com.waffiq.bazz_movies.core.utils.GenreHelper.getGenreName
-import com.waffiq.bazz_movies.feature.detail.databinding.ChipGenreBinding
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType.BY_GENRE
@@ -29,7 +29,7 @@ class GenreAdapter(private val navigator: INavigator) :
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-    val binding = ChipGenreBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    val binding = ChipLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     return ViewHolder(binding)
   }
 
@@ -39,7 +39,7 @@ class GenreAdapter(private val navigator: INavigator) :
 
   override fun getItemCount(): Int = genreIdList.size
 
-  inner class ViewHolder(private val binding: ChipGenreBinding) :
+  inner class ViewHolder(private val binding: ChipLayoutBinding) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(id: Int) {
       binding.chip.text = getGenreName(id)

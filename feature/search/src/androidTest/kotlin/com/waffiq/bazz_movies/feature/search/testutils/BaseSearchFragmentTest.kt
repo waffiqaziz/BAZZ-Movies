@@ -24,6 +24,11 @@ import com.waffiq.bazz_movies.feature.search.testutils.DummyData.fakeSearchResul
 import com.waffiq.bazz_movies.feature.search.testutils.DummyData.history1
 import com.waffiq.bazz_movies.feature.search.testutils.DummyData.history2
 import com.waffiq.bazz_movies.feature.search.testutils.DummyData.history3
+import com.waffiq.bazz_movies.feature.search.testutils.DummyData.history4
+import com.waffiq.bazz_movies.feature.search.testutils.DummyData.history5
+import com.waffiq.bazz_movies.feature.search.testutils.DummyData.history6
+import com.waffiq.bazz_movies.feature.search.testutils.DummyData.history7
+import com.waffiq.bazz_movies.feature.search.testutils.DummyData.history8
 import com.waffiq.bazz_movies.feature.search.ui.SearchFragment
 import com.waffiq.bazz_movies.feature.search.ui.adapter.SearchAdapter
 import com.waffiq.bazz_movies.feature.search.ui.viewmodel.SearchViewModel
@@ -53,7 +58,18 @@ abstract class BaseSearchFragmentTest {
 
   private val searchResultsFlow: Flow<PagingData<MultiSearchItem>> = flowOf(fakeSearchResult)
 
-  protected val historyFlow = MutableStateFlow(listOf(history1, history2, history3))
+  protected val historyFlow = MutableStateFlow(
+    listOf(
+      history1,
+      history2,
+      history3,
+      history4,
+      history5,
+      history6,
+      history7,
+      history8,
+    ),
+  )
   protected val testQuery = "test_query"
 
   protected val notLoadingState = LoadState.NotLoading(endOfPaginationReached = true)

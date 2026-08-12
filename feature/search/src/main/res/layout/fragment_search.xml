@@ -42,50 +42,96 @@
   <androidx.core.widget.NestedScrollView
     android:id="@+id/browse_genre_container"
     android:layout_width="match_parent"
-    android:background="@color/gray_1000"
     android:layout_height="match_parent"
+    android:background="@color/gray_1000"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:orientation="vertical"
       android:background="@color/gray_1000"
+      android:orientation="vertical"
       android:visibility="visible"
       tools:visibility="visible">
+
+      <TextView
+        android:id="@+id/tv_last_search_header"
+        style="@style/TextAppearance.App.Metadata"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginStart="@dimen/default_margin_parent_20"
+        android:layout_marginTop="@dimen/margin_between_item"
+        android:layout_marginBottom="8dp"
+        android:text="@string/last_search"
+        android:textAllCaps="true"
+        android:textColor="@color/gray_700" />
+
+      <LinearLayout
+        android:id="@+id/layout_search_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_between_item"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/rv_search_history_row1"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:clipToPadding="false"
+          android:orientation="horizontal"
+          android:overScrollMode="never"
+          android:paddingStart="@dimen/default_margin_parent_20"
+          tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+          tools:listitem="@layout/chip_layout" />
+
+        <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/rv_search_history_row2"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:clipToPadding="false"
+          android:orientation="horizontal"
+          android:overScrollMode="never"
+          android:paddingStart="@dimen/default_margin_parent_20"
+          tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+          tools:listitem="@layout/chip_layout" />
+
+      </LinearLayout>
+
+      <TextView
+        style="@style/TextAppearance.App.Metadata"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="@dimen/margin_each_item"
+        android:layout_marginStart="@dimen/default_margin_parent_20"
+        android:layout_marginBottom="@dimen/margin_between_item"
+        android:text="@string/browse_by_genre"
+        android:textAllCaps="true"
+        android:textColor="@color/gray_700" />
 
       <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/toggle_media_type"
         style="@style/Widget.App.ButtonGroup.Filter"
         android:layout_width="match_parent"
         android:layout_marginStart="@dimen/default_margin_parent_20"
-        android:layout_marginVertical="@dimen/margin_between_item"
+        android:layout_marginBottom="@dimen/margin_between_item"
         app:checkedButton="@id/btn_movie"
         app:selectionRequired="true"
         app:singleSelection="true">
 
         <Button
           android:id="@+id/btn_movie"
-          style="@style/Widget.App.Button.FilterToggle"
+          style="@style/Widget.App.Button.FilterToggle.Small"
+          android:layout_height="match_parent"
           android:text="@string/movies" />
 
         <Button
           android:id="@+id/btn_tv"
-          style="@style/Widget.App.Button.FilterToggle"
+          style="@style/Widget.App.Button.FilterToggle.Small"
           android:text="@string/tv_series" />
 
       </com.google.android.material.button.MaterialButtonToggleGroup>
-
-      <TextView
-        style="@style/TextAppearance.App.Cast"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginStart="@dimen/default_margin_parent_20"
-        android:layout_marginBottom="8dp"
-        android:text="@string/browse_by_genre"
-        android:textAllCaps="true"
-        android:textColor="@color/gray_700" />
 
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_genre"

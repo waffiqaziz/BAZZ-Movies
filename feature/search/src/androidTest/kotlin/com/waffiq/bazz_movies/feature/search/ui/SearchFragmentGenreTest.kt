@@ -22,10 +22,10 @@ class SearchFragmentGenreTest : BaseSearchFragmentTest() {
 
     // check movie genre
     btn_movie.performClick()
-    "Kids".doesNotExist()
-    "Horror".isDisplayed()
+    "Action & Adventure".doesNotExist() // tv-series genre should not show
+    "Horror".isDisplayed() // movie genre should show
 
-    "Music".performClick()
+    "Adventure".performClick()
     verify { mockNavigator.openList(any(), any()) }
   }
 }

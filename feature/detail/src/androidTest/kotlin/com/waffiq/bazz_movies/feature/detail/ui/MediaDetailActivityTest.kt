@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.feature.detail.ui
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.designsystem.R.id.chip
 import com.waffiq.bazz_movies.core.designsystem.R.string.add_to_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
@@ -14,7 +15,6 @@ import com.waffiq.bazz_movies.feature.detail.R.id.btn_back
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_favorite
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_view_all_cast
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_watchlist
-import com.waffiq.bazz_movies.feature.detail.R.id.chip
 import com.waffiq.bazz_movies.feature.detail.R.id.collection_section
 import com.waffiq.bazz_movies.feature.detail.R.id.layout_cast
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_cast

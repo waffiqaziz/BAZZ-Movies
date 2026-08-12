@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.feature.detail.databinding.ChipGenreBinding
+import com.waffiq.bazz_movies.core.designsystem.databinding.ChipLayoutBinding
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getListOfKeywords
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaKeywordsMapper.toValidKeywordOrNull
@@ -25,7 +25,7 @@ class KeywordsAdapter(private val navigator: INavigator) :
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-    val binding = ChipGenreBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    val binding = ChipLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     return ViewHolder(binding)
   }
 
@@ -37,7 +37,7 @@ class KeywordsAdapter(private val navigator: INavigator) :
     super.submitList(getListOfKeywords(list))
   }
 
-  inner class ViewHolder(private var binding: ChipGenreBinding) :
+  inner class ViewHolder(private var binding: ChipLayoutBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(data: MediaKeywordsItem) {

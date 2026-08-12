@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.core.instrumentationtest
 
 import android.view.View
+import androidx.annotation.IdRes
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
@@ -13,11 +14,14 @@ import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.action.ViewActions.swipeRight
 import androidx.test.espresso.action.ViewActions.swipeUp
 import androidx.test.espresso.action.ViewActions.typeText
+import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import org.hamcrest.Matcher
+import org.hamcrest.Matchers.allOf
 
+@Suppress("TooManyFunctions")
 object CustomViewActions {
 
   fun Int.performClick() {
@@ -26,6 +30,19 @@ object CustomViewActions {
 
   fun String.performClick() {
     onView(withText(this)).perform(click())
+  }
+
+  fun String.performClick(@IdRes parentId: Int? = null) {
+    val matcher = if (parentId != null) {
+      allOf(
+        withText(this),
+        isDescendantOfA(withId(parentId)),
+      )
+    } else {
+      withText(this)
+    }
+
+    onView(matcher).perform(click())
   }
 
   fun Int.performTextClick() {

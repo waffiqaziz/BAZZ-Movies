@@ -103,6 +103,7 @@
 
   <!-- SEARCH -->
   <string name="search_results">Search results</string>
+  <string name="last_search">Last Search</string>
   <string name="browse_by_genre">Browse by genre</string>
   <string name="genre_list">List of genre</string>
   <string name="search_any">Search Movie &amp; TV-series</string>
