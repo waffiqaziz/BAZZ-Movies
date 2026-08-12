@@ -53,6 +53,10 @@ object CustomViewActions {
     onView(withId(this)).perform(scrollTo())
   }
 
+  fun String.performScrollTo() {
+    onView(withText(this)).perform(scrollTo())
+  }
+
   fun Int.performSwipeRight() {
     onView(withId(this)).perform(swipeRight())
   }
