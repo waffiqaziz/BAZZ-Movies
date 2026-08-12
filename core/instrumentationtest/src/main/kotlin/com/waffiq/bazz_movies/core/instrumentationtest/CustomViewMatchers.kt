@@ -71,16 +71,7 @@ object CustomViewMatchers {
   }
 
   fun String.isNotDisplayed(@IdRes parentId: Int? = null) {
-    val matcher = if (parentId != null) {
-      allOf(
-        withText(this),
-        isDescendantOfA(withId(parentId)),
-      )
-    } else {
-      withText(this)
-    }
-
-    onView(matcher).check(notExist())
+    onView(getMatchView(parentId)).check(notExist())
   }
 
   // displayed should be on top of the view, should be not covered / clipped / off-screen
@@ -92,21 +83,8 @@ object CustomViewMatchers {
     onView(withText(this)).check(matches(isViewDisplayed()))
   }
 
-  fun String.isDisplayed() {
-    onView(withText(this)).check(matches(isViewDisplayed()))
-  }
-
   fun String.isDisplayed(@IdRes parentId: Int? = null) {
-    val matcher = if (parentId != null) {
-      allOf(
-        withText(this),
-        isDescendantOfA(withId(parentId)),
-      )
-    } else {
-      withText(this)
-    }
-
-    onView(matcher).check(matches(isViewDisplayed()))
+    onView(getMatchView(parentId)).check(matches(isViewDisplayed()))
   }
 
   fun ViewInteraction.isDisplayed(): ViewInteraction = check(matches(isViewDisplayed()))
@@ -161,4 +139,15 @@ object CustomViewMatchers {
         view.findViewById<View>(id).performClick()
       }
     }
+
+  fun String.getMatchView(@IdRes parentId: Int?): Matcher<View> {
+    return if (parentId != null) {
+      allOf(
+        withText(this),
+        isDescendantOfA(withId(parentId)),
+      )
+    } else {
+      withText(this)
+    }
+  }
 }

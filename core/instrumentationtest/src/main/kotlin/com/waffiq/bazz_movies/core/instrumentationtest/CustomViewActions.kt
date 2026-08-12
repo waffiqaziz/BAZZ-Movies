@@ -14,12 +14,11 @@ import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.action.ViewActions.swipeRight
 import androidx.test.espresso.action.ViewActions.swipeUp
 import androidx.test.espresso.action.ViewActions.typeText
-import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.getMatchView
 import org.hamcrest.Matcher
-import org.hamcrest.Matchers.allOf
 
 @Suppress("TooManyFunctions")
 object CustomViewActions {
@@ -33,16 +32,7 @@ object CustomViewActions {
   }
 
   fun String.performClick(@IdRes parentId: Int? = null) {
-    val matcher = if (parentId != null) {
-      allOf(
-        withText(this),
-        isDescendantOfA(withId(parentId)),
-      )
-    } else {
-      withText(this)
-    }
-
-    onView(matcher).perform(click())
+    onView(getMatchView(parentId)).perform(click())
   }
 
   fun Int.performTextClick() {
@@ -91,6 +81,7 @@ object CustomViewActions {
       },
     )
   }
+
   fun Int.performType(text: String) {
     onView(withId(this)).perform(typeText(text))
   }
