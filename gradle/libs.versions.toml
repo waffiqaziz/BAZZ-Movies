@@ -30,7 +30,7 @@ dependencyGuard = "0.5.0"
 
 # AndroidX Libraries
 activityKtx = "1.13.0"
-appcompat = "1.7.1"
+appcompat = "1.8.0"
 annotationExperimental = "1.6.0"
 cardview = "1.0.0"
 coreKtx = "1.19.0"
