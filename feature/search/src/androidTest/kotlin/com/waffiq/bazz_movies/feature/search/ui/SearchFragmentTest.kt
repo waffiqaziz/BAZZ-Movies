@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.pressImeActionButton
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.android.material.R.id.open_search_view_edit_text
@@ -21,9 +23,9 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performAction
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performSwipeDown
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performSwipeLeft
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performTextClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.clickChildViewWithId
-import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNotExist
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
@@ -33,6 +35,7 @@ import com.waffiq.bazz_movies.feature.search.R.id.illustration_error
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_search_no_result_view
 import com.waffiq.bazz_movies.feature.search.R.id.rv_search
 import com.waffiq.bazz_movies.feature.search.R.id.rv_search_history
+import com.waffiq.bazz_movies.feature.search.R.id.rv_search_history_row1
 import com.waffiq.bazz_movies.feature.search.R.id.search_bar
 import com.waffiq.bazz_movies.feature.search.R.id.search_view
 import com.waffiq.bazz_movies.feature.search.R.id.swipe_refresh
@@ -124,7 +127,7 @@ class SearchFragmentTest : BaseSearchFragmentTest() {
   fun clickSearchHistory_whenHistoryAvailable_shouldSearchWithSelectedQuery() {
     performClickSearchAction()
 
-    "dear".performClick()
+    "dear".performClick(search_view)
     verify { mockSearchViewModel.search("dear") }
   }
 
@@ -132,7 +135,7 @@ class SearchFragmentTest : BaseSearchFragmentTest() {
   fun deleteSearchHistory_whenHistoryAvailable_shouldDeleteTheSelected() {
     performClickSearchAction()
 
-    "transformers".isDisplayed()
+    "transformers".isDisplayed(search_view)
 
     every { mockSearchViewModel.deleteHistory(any()) } answers {
       historyFlow.value = listOf(history2, history3)
@@ -141,12 +144,10 @@ class SearchFragmentTest : BaseSearchFragmentTest() {
     rv_search_history.actionOnItemAt(0, clickChildViewWithId(btn_delete))
     shortDelay()
 
-    "transformers".doesNotExist()
+    "transformers".isNotDisplayed(search_view)
 
     verify {
-      mockSearchViewModel.deleteHistory(
-        match { it.query == "transformers" },
-      )
+      mockSearchViewModel.deleteHistory(match { it.query == "transformers" })
     }
   }
 
@@ -154,15 +155,30 @@ class SearchFragmentTest : BaseSearchFragmentTest() {
   fun clearAllHistory_whenHistoryAvailable_shouldDeleteAllTheHistory() {
     performClickSearchAction()
 
+    // check initial history inside the search view
+    "transformers".isDisplayed(search_view)
+
+    // perform clear all
     every { mockSearchViewModel.deleteAllHistory() } answers {
       historyFlow.value = emptyList()
     }
-
     clear_all.performTextClick()
     shortDelay()
 
-    "transformers".doesNotExist()
+    // check the history is cleared
+    "transformers".isNotDisplayed()
+
+    // also check the history on browse page
+    onView(withContentDescription("Back")).perform(click())
+    shortDelay()
+    "transformers".isNotDisplayed()
+
     verify { mockSearchViewModel.deleteAllHistory() }
+  }
+
+  @Test
+  fun horizontalHistory_whenSwiping_shouldSwipeTogether() {
+    rv_search_history_row1.performSwipeLeft()
   }
 
   @Test

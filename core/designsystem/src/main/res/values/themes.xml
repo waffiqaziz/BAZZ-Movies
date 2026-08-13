@@ -51,6 +51,18 @@
     <item name="backgroundTint">@color/toggle_button_bg</item>
   </style>
 
+  <style name="Widget.App.Button.FilterToggle.Small" parent="Widget.App.Button.FilterToggle">
+    <item name="android:minWidth">80dp</item>
+    <item name="android:paddingTop">2dp</item>
+    <item name="android:paddingBottom">2dp</item>
+    <item name="android:paddingEnd">2dp</item>
+    <item name="android:paddingStart">2dp</item>
+    <item name="android:textColor">@color/radio_button_state</item>
+    <item name="android:fontFamily">@font/nunito_sans_regular</item>
+    <item name="android:checkable">true</item>
+    <item name="backgroundTint">@color/toggle_button_bg</item>
+  </style>
+
   <style name="Widget.App.ButtonGroup.Filter" parent="Widget.Material3.MaterialButtonGroup.Connected">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>

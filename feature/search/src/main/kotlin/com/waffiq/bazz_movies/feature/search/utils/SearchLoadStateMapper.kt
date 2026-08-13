@@ -25,12 +25,15 @@ object SearchLoadStateMapper {
   }
 
   private fun mapNotLoading(loadState: CombinedLoadStates, itemCount: Int): SearchScreenState {
+    val isEmpty = itemCount < 1
     val pendingError = pagingError(loadState)
+    val paginationExhausted = loadState.append.endOfPaginationReached
+
     return when {
-      pendingError != null && itemCount < 1 -> SearchScreenState.Error(pendingError.error)
-      loadState.append.endOfPaginationReached && itemCount < 1 -> SearchScreenState.NoResults
-      itemCount < 1 -> SearchScreenState.FetchingMore
-      else -> SearchScreenState.Content
+      !isEmpty -> SearchScreenState.Content
+      pendingError != null -> SearchScreenState.Error(pendingError.error)
+      paginationExhausted -> SearchScreenState.NoResults
+      else -> SearchScreenState.FetchingMore
     }
   }
 

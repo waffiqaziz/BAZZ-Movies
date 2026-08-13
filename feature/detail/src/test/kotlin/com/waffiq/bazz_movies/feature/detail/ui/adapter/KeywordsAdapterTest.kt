@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.ui.adapter
 
 import android.os.Looper
-import com.waffiq.bazz_movies.feature.detail.databinding.ChipGenreBinding
+import com.waffiq.bazz_movies.core.designsystem.databinding.ChipLayoutBinding
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseAdapterTest
 import io.mockk.verify
@@ -18,7 +18,7 @@ class KeywordsAdapterTest : BaseAdapterTest() {
 
   private lateinit var adapter: KeywordsAdapter
   private lateinit var viewHolder: KeywordsAdapter.ViewHolder
-  private lateinit var binding: ChipGenreBinding
+  private lateinit var binding: ChipLayoutBinding
 
   private val mediaKeywordsItemList = listOf(
     MediaKeywordsItem(name = "war", id = 21),
@@ -31,7 +31,7 @@ class KeywordsAdapterTest : BaseAdapterTest() {
     adapter = KeywordsAdapter(navigator)
     recyclerView.adapter = adapter
     viewHolder = adapter.onCreateViewHolder(parent, 0)
-    binding = ChipGenreBinding.bind(viewHolder.itemView)
+    binding = ChipLayoutBinding.bind(viewHolder.itemView)
   }
 
   @Test
@@ -92,7 +92,7 @@ class KeywordsAdapterTest : BaseAdapterTest() {
   fun bind_whenIdIsNull_doesNotBindData() {
     viewHolder.bind(MediaKeywordsItem(id = null, name = "war"))
 
-    val binding = ChipGenreBinding.bind(viewHolder.itemView)
+    val binding = ChipLayoutBinding.bind(viewHolder.itemView)
     assertEquals("", binding.chip.text.toString())
   }
 

@@ -26,6 +26,7 @@ import androidx.paging.CombinedLoadStates
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.R.id.open_search_view_clear_button
 import com.google.android.material.R.id.open_search_view_toolbar
 import com.google.android.material.appbar.AppBarLayout
@@ -48,6 +49,7 @@ import com.waffiq.bazz_movies.feature.search.ui.adapter.GenreAdapter
 import com.waffiq.bazz_movies.feature.search.ui.adapter.GridSpacingItemDecoration
 import com.waffiq.bazz_movies.feature.search.ui.adapter.SearchAdapter
 import com.waffiq.bazz_movies.feature.search.ui.adapter.SearchHistoryAdapter
+import com.waffiq.bazz_movies.feature.search.ui.adapter.SearchHistoryHorizontalAdapter
 import com.waffiq.bazz_movies.feature.search.ui.adapter.ShimmerAdapter
 import com.waffiq.bazz_movies.feature.search.ui.viewmodel.SearchViewModel
 import com.waffiq.bazz_movies.feature.search.utils.SearchHelper.setupRecyclerView
@@ -79,6 +81,9 @@ class SearchFragment : Fragment() {
   private lateinit var searchAdapter: SearchAdapter
   private lateinit var shimmerAdapter: ShimmerAdapter
   private lateinit var searchHistoryAdapter: SearchHistoryAdapter
+  private lateinit var adapterRow1: SearchHistoryHorizontalAdapter
+  private lateinit var adapterRow2: SearchHistoryHorizontalAdapter
+  private var isSyncingScroll = false
   private lateinit var genreAdapter: GenreAdapter
 
   private var mSnackbar: Snackbar? = null
@@ -95,6 +100,9 @@ class SearchFragment : Fragment() {
       onItemClick = ::onHistoryItemClicked,
       onDeleteClick = searchViewModel::deleteHistory,
     )
+    adapterRow1 = SearchHistoryHorizontalAdapter(::onHistoryItemClicked)
+    adapterRow2 = SearchHistoryHorizontalAdapter(::onHistoryItemClicked)
+
     genreAdapter = GenreAdapter(navigator)
   }
 
@@ -143,6 +151,7 @@ class SearchFragment : Fragment() {
         binding.searchView,
         open_search_view_toolbar,
       )
+      toolbar.navigationContentDescription = "Back"
       toolbar.navigationIcon = ContextCompat.getDrawable(requireContext(), ic_left_icon)
       toolbar.setNavigationIconTint(ContextCompat.getColor(requireContext(), yellow))
     }
@@ -171,9 +180,9 @@ class SearchFragment : Fragment() {
   // region genre browsing
 
   private fun setupGenreList(mediaType: MediaType) {
-    binding.rvGenre.layoutManager = GridLayoutManager(requireContext(), GENRE_SPAN_COUNT)
+    binding.rvGenre.layoutManager = GridLayoutManager(requireContext(), SPAN_COUNT)
     if (binding.rvGenre.itemDecorationCount == 0) {
-      binding.rvGenre.addItemDecoration(GridSpacingItemDecoration(GENRE_SPAN_COUNT, GRID_SPACING))
+      binding.rvGenre.addItemDecoration(GridSpacingItemDecoration(SPAN_COUNT, GRID_SPACING))
     }
     binding.rvGenre.adapter = genreAdapter
     genreAdapter.setMediaType(mediaType)
@@ -192,17 +201,56 @@ class SearchFragment : Fragment() {
   // region search history
 
   private fun setupSearchHistoryRecyclerView() {
-    binding.rvSearchHistory.layoutManager = LinearLayoutManager(requireContext())
+    binding.rvSearchHistory.layoutManager = initLinearLayoutManagerVertical(requireContext())
     binding.rvSearchHistory.adapter = searchHistoryAdapter
     binding.btnClearAll.setOnClickListener { searchViewModel.deleteAllHistory() }
+
+    binding.rvSearchHistoryRow1.apply {
+      layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+      adapter = adapterRow1
+    }
+
+    binding.rvSearchHistoryRow2.apply {
+      layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+      adapter = adapterRow2
+    }
+
+    syncScroll(binding.rvSearchHistoryRow1, binding.rvSearchHistoryRow2)
+    syncScroll(binding.rvSearchHistoryRow2, binding.rvSearchHistoryRow1)
+  }
+
+  private fun syncScroll(source: RecyclerView, target: RecyclerView) {
+    source.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+      override fun onScrolled(
+        recyclerView: RecyclerView,
+        dx: Int,
+        dy: Int,
+      ) {
+        if (isSyncingScroll) return
+        isSyncingScroll = true
+        target.scrollBy(dx, 0)
+        isSyncingScroll = false
+      }
+    })
   }
 
   private fun observeSearchHistory() {
     viewLifecycleOwner.lifecycleScope.launch {
       viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
         searchViewModel.searchHistory.collect { history ->
+          val show = history.isNotEmpty()
+
           searchHistoryAdapter.submitList(history)
-          binding.historyHeader.isVisible = history.isNotEmpty()
+          binding.historyHeader.isVisible = show
+
+          // horizontal history
+          val row1 = history.filterIndexed { index, _ -> index % 2 == 0 }
+          val row2 = history.filterIndexed { index, _ -> index % 2 == 1 }
+
+          adapterRow1.submitList(row1)
+          adapterRow2.submitList(row2)
+          binding.tvLastSearchHeader.isVisible = show
+          binding.layoutSearchHistory.isVisible = show
         }
       }
     }
@@ -291,7 +339,7 @@ class SearchFragment : Fragment() {
   private fun renderError(cause: Throwable) {
     val hasNoItems = searchAdapter.itemCount < 1
     binding.illustrationError.root.isVisible = hasNoItems
-    binding.rvSearch.isVisible = !hasNoItems
+    binding.rvSearch.isVisible = false
     binding.browseGenreContainer.isVisible = false
     binding.illustrationError.progressCircular.isVisible = false
     binding.illustrationError.btnTryAgain.isVisible = true
@@ -437,6 +485,6 @@ class SearchFragment : Fragment() {
     const val DEFAULT_HISTORY_BOTTOM_PADDING = 246
     const val GRID_SPACING = 8
     const val SOFT_KEYBOARD_PERCENTAGE = 0.15
-    const val GENRE_SPAN_COUNT = 2
+    const val SPAN_COUNT = 2
   }
 }

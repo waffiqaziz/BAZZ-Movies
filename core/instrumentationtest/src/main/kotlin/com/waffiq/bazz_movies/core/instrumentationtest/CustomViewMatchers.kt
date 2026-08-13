@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.core.instrumentationtest
 
 import android.view.View
 import android.widget.ImageView
+import androidx.annotation.IdRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
 import androidx.test.espresso.Espresso.onView
@@ -10,6 +11,7 @@ import androidx.test.espresso.ViewAction
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.BoundedMatcher
+import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.isEnabled
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -68,6 +70,10 @@ object CustomViewMatchers {
     onView(withText(this)).check(matches(not(isViewDisplayed())))
   }
 
+  fun String.isNotDisplayed(@IdRes parentId: Int? = null) {
+    onView(getMatchView(parentId)).check(notExist())
+  }
+
   // displayed should be on top of the view, should be not covered / clipped / off-screen
   fun Int.isDisplayed() {
     onView(withId(this)).check(matches(isViewDisplayed()))
@@ -77,8 +83,8 @@ object CustomViewMatchers {
     onView(withText(this)).check(matches(isViewDisplayed()))
   }
 
-  fun String.isDisplayed() {
-    onView(withText(this)).check(matches(isViewDisplayed()))
+  fun String.isDisplayed(@IdRes parentId: Int? = null) {
+    onView(getMatchView(parentId)).check(matches(isViewDisplayed()))
   }
 
   fun ViewInteraction.isDisplayed(): ViewInteraction = check(matches(isViewDisplayed()))
@@ -133,4 +139,15 @@ object CustomViewMatchers {
         view.findViewById<View>(id).performClick()
       }
     }
+
+  fun String.getMatchView(@IdRes parentId: Int?): Matcher<View> {
+    return if (parentId != null) {
+      allOf(
+        withText(this),
+        isDescendantOfA(withId(parentId)),
+      )
+    } else {
+      withText(this)
+    }
+  }
 }

@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.core.instrumentationtest
 
 import android.view.View
+import androidx.annotation.IdRes
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
@@ -16,8 +17,10 @@ import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.getMatchView
 import org.hamcrest.Matcher
 
+@Suppress("TooManyFunctions")
 object CustomViewActions {
 
   fun Int.performClick() {
@@ -28,12 +31,20 @@ object CustomViewActions {
     onView(withText(this)).perform(click())
   }
 
+  fun String.performClick(@IdRes parentId: Int? = null) {
+    onView(getMatchView(parentId)).perform(click())
+  }
+
   fun Int.performTextClick() {
     onView(withText(this)).perform(click())
   }
 
   fun Int.performScrollTo() {
     onView(withId(this)).perform(scrollTo())
+  }
+
+  fun String.performScrollTo() {
+    onView(withText(this)).perform(scrollTo())
   }
 
   fun Int.performSwipeRight() {
@@ -70,6 +81,7 @@ object CustomViewActions {
       },
     )
   }
+
   fun Int.performType(text: String) {
     onView(withId(this)).perform(typeText(text))
   }
