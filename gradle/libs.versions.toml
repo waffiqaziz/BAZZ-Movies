@@ -7,7 +7,7 @@ ndkVersion = "28.2.13676358"
 
 # App Version
 versionCode = "42"
-versionName = "1.6.1-dev"
+versionName = "1.7.0"
 
 # Plugin Versions
 agp = "9.3.1"

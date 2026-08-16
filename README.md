@@ -189,7 +189,7 @@ Licensed under [Open Font License](https://openfontlicense.org/):
 [PLAY-STORE]: https://play.google.com/store/apps/details?id=com.bazz.bazz_movies
 [FAQ]: https://docs.google.com/document/d/1HNrj5i3Rnpr50Ldwgfz5ODpaJoWF17TXIop7xwtXkiU/edit?usp=sharing
 
-[BADGE-ANDROID-SDK]: https://img.shields.io/badge/Android%20SDK-23%20→%2036-brightgreen
+[BADGE-ANDROID-SDK]: https://img.shields.io/badge/Android%20SDK-23%20→%2037-brightgreen
 [BADGE-UI]: https://img.shields.io/badge/View%20Binding-using-green?logo=android
 [BADGE-HILT]: https://img.shields.io/badge/Hilt-DI-blue?logo=dagger
 [BADGE-ROOM]: https://img.shields.io/badge/Room-DB-FF6F00?logo=android
