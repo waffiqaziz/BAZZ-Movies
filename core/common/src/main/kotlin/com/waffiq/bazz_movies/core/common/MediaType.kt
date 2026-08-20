@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.core.common
 
 enum class MediaType {
+  MULTI,
   MOVIE,
   TV,
   PERSON,

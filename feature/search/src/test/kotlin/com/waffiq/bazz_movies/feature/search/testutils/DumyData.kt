@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.feature.search.testutils
 
+import com.waffiq.bazz_movies.core.common.MediaType
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponse
@@ -7,7 +8,9 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.Mul
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 
-object SearchTestVariables {
+object DumyData {
+
+  val filters = setOf(MediaType.MULTI)
 
   const val QUERY = "transformers"
   val multiSearchResponseItem = MultiSearchResponseItem(

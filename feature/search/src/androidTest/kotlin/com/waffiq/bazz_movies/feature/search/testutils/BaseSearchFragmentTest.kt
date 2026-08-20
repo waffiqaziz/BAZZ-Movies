@@ -9,6 +9,7 @@ import androidx.test.espresso.action.ViewActions.clearText
 import androidx.test.espresso.action.ViewActions.pressImeActionButton
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.android.material.R.id.open_search_view_edit_text
+import com.waffiq.bazz_movies.core.common.MediaType
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performAction
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
@@ -70,6 +71,8 @@ abstract class BaseSearchFragmentTest {
       history8,
     ),
   )
+  protected val filterFLow = MutableStateFlow(setOf(MediaType.MULTI))
+
   protected val testQuery = "test_query"
 
   protected val notLoadingState = LoadState.NotLoading(endOfPaginationReached = true)
@@ -98,6 +101,7 @@ abstract class BaseSearchFragmentTest {
     every { mockSearchViewModel.searchResults } returns searchResultsFlow
     every { mockSearchViewModel.currentQuery } returns fakeCurrentQueryFlow
     every { mockSearchViewModel.searchHistory } returns historyFlow
+    every { mockSearchViewModel.selectedFilters } returns filterFLow
 
     every { mockSearchViewModel.search(any()) } answers {
       fakeCurrentQueryFlow.value = firstArg()
@@ -107,6 +111,7 @@ abstract class BaseSearchFragmentTest {
     }
     every { mockSearchViewModel.deleteHistory(any<SearchHistory>()) } just Runs
     every { mockSearchViewModel.deleteAllHistory() } just Runs
+    every { mockSearchViewModel.setFilters(any()) } just Runs
   }
 
   private fun setupFragment() {

@@ -115,6 +115,10 @@
   <string name="sorry_no_result">Sorry no result!</string>
   <string name="no_result_explanation">We cannot find item you are searching for, maybe a little mistake?</string>
   <string name="search_illustration">search illustration</string>
+  <string name="apply">Apply</string>
+  <string name="filter">Filter by</string>
+  <string name="person">Person</string>
+  <string name="movie">Movie</string>
 
   <string name="no_data_illustration">no data illustration</string>
   <string name="no_data_found">No data found!</string>

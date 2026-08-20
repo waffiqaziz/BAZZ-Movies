@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.core.network.testutils
 
+import com.waffiq.bazz_movies.core.common.MediaType
 import com.waffiq.bazz_movies.core.network.data.remote.responses.countryip.CountryIPResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.RatingsItemResponse
@@ -57,6 +58,11 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.Rate
 
 @Suppress("LargeClass")
 object DummyData {
+
+  val personMediaTypeSet = setOf(MediaType.PERSON)
+  val movieMediaTypeSet = setOf(MediaType.MOVIE)
+  val tvMediaTypeSet = setOf(MediaType.TV)
+  val multiMediaTypeSet = setOf(MediaType.MULTI)
 
   val movieDump1 = MediaResponseItem(
     id = 278,

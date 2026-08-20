@@ -27,6 +27,7 @@ dependencies {
   testImplementation(libs.androidx.core.testing)
   testImplementation(libs.androidx.test.core)
   testImplementation(libs.kotlinx.coroutines.test)
+  testImplementation(libs.androidx.paging.testing)
   testImplementation(libs.mockito.core)
   testImplementation(libs.mockito.android.kotlin)
   testImplementation(libs.mockk)

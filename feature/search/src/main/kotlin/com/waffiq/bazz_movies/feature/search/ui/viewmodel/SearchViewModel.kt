@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.waffiq.bazz_movies.core.common.MediaType
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.database.domain.usecase.SearchHistoryLocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.models.SearchHistory
@@ -15,8 +16,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,11 +32,25 @@ class SearchViewModel @Inject constructor(
   private val searchHistoryUseCase: SearchHistoryLocalDatabaseUseCase,
 ) : ViewModel() {
 
-  private val _searchResults = MutableStateFlow(PagingData.empty<MultiSearchItem>())
-  val searchResults: Flow<PagingData<MultiSearchItem>> = _searchResults.cachedIn(viewModelScope)
-
   private val _currentQuery = MutableStateFlow<String?>(null)
   val currentQuery: StateFlow<String?> = _currentQuery.asStateFlow()
+
+  private val _selectedFilters = MutableStateFlow(setOf(MediaType.MULTI))
+  val selectedFilters: StateFlow<Set<MediaType>> = _selectedFilters.asStateFlow()
+
+  // any change to query OR filters cancels pager and starts a fresh one
+  val searchResults: Flow<PagingData<MultiSearchItem>> =
+    combine(_currentQuery, _selectedFilters) { query, filters -> query?.let { it to filters } }
+      .distinctUntilChanged()
+      .flatMapLatest { pair ->
+        if (pair == null) {
+          flowOf(PagingData.empty())
+        } else {
+          val (query, filters) = pair
+          multiSearchUseCase.search(query, filters)
+        }
+      }
+      .cachedIn(viewModelScope)
 
   val searchHistory: StateFlow<List<SearchHistory>> =
     searchHistoryUseCase.getSearchHistory().debounce(DEBOUNCE_SHORT.milliseconds)
@@ -48,12 +66,10 @@ class SearchViewModel @Inject constructor(
       )
       searchHistoryUseCase.trimHistory()
     }
+  }
 
-    viewModelScope.launch {
-      multiSearchUseCase.search(query).collectLatest { pagingData ->
-        _searchResults.value = pagingData
-      }
-    }
+  fun setFilters(filters: Set<MediaType>) {
+    _selectedFilters.value = filters.ifEmpty { setOf(MediaType.MULTI) }
   }
 
   fun deleteHistory(item: SearchHistory) {
@@ -66,7 +82,7 @@ class SearchViewModel @Inject constructor(
 
   fun clearSearch() {
     _currentQuery.value = null
-    _searchResults.value = PagingData.empty()
+    _selectedFilters.value = setOf(MediaType.MULTI)
   }
 
   private companion object {

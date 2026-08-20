@@ -1,43 +1,35 @@
 package com.waffiq.bazz_movies.feature.search.data.repository
 
 import androidx.paging.PagingData
-import androidx.paging.PagingSource
-import androidx.paging.PagingSource.LoadResult
-import app.cash.turbine.test
+import androidx.paging.testing.asSnapshot
+import com.waffiq.bazz_movies.core.common.MediaType
+import com.waffiq.bazz_movies.core.common.value
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.search.SearchRemoteDataSource
-import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.SearchPagingSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
-import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.SearchApiService
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
-import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.QUERY
-import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.differ
-import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.multiSearchResponse
-import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.multiSearchResponseItem
-import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.multiSearchResponseItem2
-import io.mockk.coEvery
-import io.mockk.coVerify
+import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
+import com.waffiq.bazz_movies.feature.search.testutils.DumyData.multiSearchResponseItem
+import com.waffiq.bazz_movies.feature.search.testutils.DumyData.multiSearchResponseItem2
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.io.IOException
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class SearchRepositoryImplTest {
-
-  private lateinit var repository: SearchRepositoryImpl
-  private val mockSearchRemoteDataSource: SearchRemoteDataSource = mockk()
-  private val mockSearchApiService: SearchApiService = mockk()
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
+
+  private val mockSearchRemoteDataSource: SearchRemoteDataSource = mockk()
+  private lateinit var repository: SearchRepositoryImpl
 
   @Before
   fun setUp() {
@@ -45,142 +37,80 @@ class SearchRepositoryImplTest {
   }
 
   @Test
-  fun movieDataSource_whenSearching_returnsCorrectPageData() =
-    runTest {
-      coEvery { mockSearchApiService.search(QUERY, 1) } returns multiSearchResponse
-      val pagingSource = SearchPagingSource(mockSearchApiService, QUERY)
-
-      val result = pagingSource.load(
-        PagingSource.LoadParams.Refresh(key = 1, loadSize = 2, placeholdersEnabled = false),
-      )
-
-      advanceUntilIdle()
-
-      assert(result is LoadResult.Page)
-      val page = result as LoadResult.Page
-      assertEquals(2, page.data.size)
-      assertEquals("Transformers TV-series", page.data[0].title)
-      assertEquals("Transformers 2", page.data[1].title)
-      assertEquals(null, page.prevKey)
-      assertEquals(2, page.nextKey) // expect nextKey to be the next page index
-      coVerify { mockSearchApiService.search(query = QUERY, page = 1) }
-    }
-
-  @Test
-  fun movieDataSource_whenSearchFailsWithIOException_returnsLoadError() =
-    runTest {
-      coEvery { mockSearchApiService.search(QUERY, 1) } throws IOException("Network Error")
-      val pagingSource = SearchPagingSource(mockSearchApiService, QUERY)
-
-      val result = pagingSource.load(
-        PagingSource.LoadParams.Refresh(key = 1, loadSize = 2, placeholdersEnabled = false),
-      )
-
-      advanceUntilIdle()
-
-      assert(result is LoadResult.Error)
-      val error = result as LoadResult.Error
-      assertTrue(error.throwable is IOException)
-      assertEquals("Network Error", error.throwable.message)
-      coVerify { mockSearchApiService.search(query = QUERY, page = 1) }
-    }
-
-  @Test
   fun search_whenSuccessful_returnsDataCorrectly() =
     runTest {
+      val filters = setOf(MediaType.MULTI)
       val fakePagingData =
         PagingData.from(listOf(multiSearchResponseItem, multiSearchResponseItem2))
-      every { mockSearchRemoteDataSource.search(QUERY) } returns flowOf(fakePagingData)
 
-      repository.search(QUERY).test {
-        val pagingData = awaitItem() // collect first item
-        val job = launch { differ.submitData(pagingData) }
-        advanceUntilIdle()
+      every { mockSearchRemoteDataSource.search(QUERY, filters) } returns flowOf(fakePagingData)
 
-        val listMediaItemSearch = differ.snapshot().items
-        assertTrue(listMediaItemSearch.isEmpty().not())
-        job.cancel()
+      val items: List<MultiSearchItem> = repository.search(QUERY, filters).asSnapshot()
 
-        cancelAndIgnoreRemainingEvents()
-      }
-
-      verify { mockSearchRemoteDataSource.search(QUERY) }
+      assertTrue(items.isNotEmpty())
+      assertEquals(2, items.size)
+      verify { mockSearchRemoteDataSource.search(QUERY, filters) }
     }
 
   @Test
-  fun search_whenSuccessful_returnsPagedData() =
+  fun search_whenEmpty_returnsEmptyPagedData() =
     runTest {
+      val filters = setOf(MediaType.MOVIE)
       val emptyPagingData = PagingData.from(emptyList<MultiSearchResponseItem>())
-      every { mockSearchRemoteDataSource.search(QUERY) } returns flowOf(emptyPagingData)
 
-      repository.search(QUERY).test {
-        val pagingData = awaitItem()
-        val job = launch { differ.submitData(pagingData) }
-        advanceUntilIdle()
+      every { mockSearchRemoteDataSource.search(QUERY, filters) } returns flowOf(emptyPagingData)
 
-        assertTrue(differ.snapshot().items.isEmpty())
-        job.cancel()
+      val items: List<MultiSearchItem> = repository.search(QUERY, filters).asSnapshot()
 
-        cancelAndIgnoreRemainingEvents()
-      }
-
-      verify { mockSearchRemoteDataSource.search(QUERY) }
+      assertTrue(items.isEmpty())
+      verify { mockSearchRemoteDataSource.search(QUERY, filters) }
     }
 
   @Test
-  fun search_whenSearchItemIsNull_returnsNonEmptyPagingData() =
+  fun search_withSingleSpecificFilter_passesKnownTypeToMapping() =
     runTest {
-      val invalidItem = mockk<MultiSearchResponseItem>(relaxed = true)
-      val pagingDataWithNull = PagingData.from(listOf(invalidItem))
+      val filters = setOf(MediaType.MOVIE)
+      val fakePagingData = PagingData.from(listOf(multiSearchResponseItem2))
 
-      every { mockSearchRemoteDataSource.search(QUERY) } returns flowOf(pagingDataWithNull)
+      every { mockSearchRemoteDataSource.search(QUERY, filters) } returns flowOf(fakePagingData)
 
-      repository.search(QUERY).test {
-        val pagingData = awaitItem()
-        val job = launch { differ.submitData(pagingData) }
-        advanceUntilIdle()
+      val items: List<MultiSearchItem> = repository.search(QUERY, filters).asSnapshot()
 
-        assertTrue(differ.snapshot().items.isEmpty().not())
-        job.cancel()
-
-        cancelAndIgnoreRemainingEvents()
-      }
-
-      verify { mockSearchRemoteDataSource.search(QUERY) }
+      assertEquals(1, items.size)
+      // verify 'knownType' (MediaType.MOVIE) was applied
+      assertEquals(MediaType.MOVIE.value, items.first().mediaType)
+      verify { mockSearchRemoteDataSource.search(QUERY, filters) }
     }
 
   @Test
-  fun search_whenItemHasNulls_setsDefaultValues() =
+  fun search_withSingleMultiFilter_passesNullKnownTypeToMapping() =
     runTest {
-      val responseWithNulls = MultiSearchResponseItem(
-        mediaType = null, // should default to MOVIE_MEDIA_TYPE
-        popularity = null, // should default to 0.0
-        id = null, // should default to 0
-        adult = null, // should default to false
-        video = null, // should default to false
-        voteAverage = null, // should default to 0.0
-        voteCount = null, // should default to 0.0
-      )
-      val pagingDataWithNulls = PagingData.from(listOf(responseWithNulls))
-      every { mockSearchRemoteDataSource.search(QUERY) } returns flowOf(pagingDataWithNulls)
+      val filters = setOf(MediaType.MULTI)
+      val fakePagingData = PagingData.from(listOf(multiSearchResponseItem))
 
-      repository.search(QUERY).test {
-        val pagingData = awaitItem()
-        val job = launch { differ.submitData(pagingData) }
-        advanceUntilIdle()
+      every { mockSearchRemoteDataSource.search(QUERY, filters) } returns flowOf(fakePagingData)
 
-        val result = differ.snapshot().items.first()
-        assertEquals("movie", result.mediaType)
-        assertEquals(0.0, result.popularity)
-        assertEquals(0, result.id)
-        assertEquals(false, result.adult)
-        assertEquals(false, result.video)
-        assertEquals(0.0, result.voteAverage)
-        assertEquals(0.0, result.voteCount)
+      val items: List<MultiSearchItem> = repository.search(QUERY, filters).asSnapshot()
 
-        job.cancel()
-        cancelAndIgnoreRemainingEvents()
-      }
-      verify { mockSearchRemoteDataSource.search(QUERY) }
+      assertEquals(1, items.size)
+      verify { mockSearchRemoteDataSource.search(QUERY, filters) }
     }
+
+  @Test
+  fun search_withMultipleFilters_passesNullKnownTypeToMapping() =
+    runTest {
+      val filters = setOf(MediaType.MOVIE, MediaType.TV)
+      val fakePagingData = PagingData.from(listOf(multiSearchResponseItem))
+
+      every { mockSearchRemoteDataSource.search(QUERY, filters) } returns flowOf(fakePagingData)
+
+      val items: List<MultiSearchItem> = repository.search(QUERY, filters).asSnapshot()
+
+      assertEquals(1, items.size)
+      verify { mockSearchRemoteDataSource.search(QUERY, filters) }
+    }
+
+  companion object {
+    private const val QUERY = "Transformers"
+  }
 }

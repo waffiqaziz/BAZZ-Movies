@@ -34,45 +34,6 @@
     <item name="postSplashScreenTheme">@style/Base.Theme.BAZZ_movies</item>
   </style>
 
-  <style name="Widget.App.Button.FilterToggle" parent="Widget.Material3Expressive.Button.OutlinedButton">
-    <item name="android:layout_width">wrap_content</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:minHeight">0dp</item>
-    <item name="android:minWidth">120dp</item>
-    <item name="android:insetTop">0dp</item>
-    <item name="android:insetBottom">0dp</item>
-    <item name="android:paddingTop">4dp</item>
-    <item name="android:paddingBottom">4dp</item>
-    <item name="android:paddingEnd">4dp</item>
-    <item name="android:paddingStart">4dp</item>
-    <item name="android:textColor">@color/radio_button_state</item>
-    <item name="android:fontFamily">@font/nunito_sans_bold</item>
-    <item name="android:checkable">true</item>
-    <item name="backgroundTint">@color/toggle_button_bg</item>
-  </style>
-
-  <style name="Widget.App.Button.FilterToggle.Small" parent="Widget.App.Button.FilterToggle">
-    <item name="android:minWidth">80dp</item>
-    <item name="android:paddingTop">2dp</item>
-    <item name="android:paddingBottom">2dp</item>
-    <item name="android:paddingEnd">2dp</item>
-    <item name="android:paddingStart">2dp</item>
-    <item name="android:textColor">@color/radio_button_state</item>
-    <item name="android:fontFamily">@font/nunito_sans_regular</item>
-    <item name="android:checkable">true</item>
-    <item name="backgroundTint">@color/toggle_button_bg</item>
-  </style>
-
-  <style name="Widget.App.ButtonGroup.Filter" parent="Widget.Material3.MaterialButtonGroup.Connected">
-    <item name="android:layout_width">wrap_content</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="fontFamily">@font/nunito_sans_bold</item>
-    <item name="android:insetTop">0dp</item>
-    <item name="android:insetBottom">0dp</item>
-    <item name="selectionRequired">true</item>
-    <item name="singleSelection">true</item>
-  </style>
-
   <style name="Widget.App.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
     <item name="android:color">@color/gray_900</item>
   </style>
@@ -123,6 +84,46 @@
     <item name="android:visibility">visible</item>
   </style>
 
+
+  <style name="Widget.App.Button.FilterToggle" parent="Widget.Material3Expressive.Button.OutlinedButton">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:minHeight">0dp</item>
+    <item name="android:minWidth">120dp</item>
+    <item name="android:insetTop">0dp</item>
+    <item name="android:insetBottom">0dp</item>
+    <item name="android:paddingTop">4dp</item>
+    <item name="android:paddingBottom">4dp</item>
+    <item name="android:paddingEnd">4dp</item>
+    <item name="android:paddingStart">4dp</item>
+    <item name="android:textColor">@color/radio_button_state</item>
+    <item name="android:fontFamily">@font/nunito_sans_bold</item>
+    <item name="android:checkable">true</item>
+    <item name="backgroundTint">@color/toggle_button_bg</item>
+  </style>
+
+  <style name="Widget.App.Button.FilterToggle.Small" parent="Widget.App.Button.FilterToggle">
+    <item name="android:minWidth">80dp</item>
+    <item name="android:paddingTop">2dp</item>
+    <item name="android:paddingBottom">2dp</item>
+    <item name="android:paddingEnd">2dp</item>
+    <item name="android:paddingStart">2dp</item>
+    <item name="android:textColor">@color/radio_button_state</item>
+    <item name="android:fontFamily">@font/nunito_sans_regular</item>
+    <item name="android:checkable">true</item>
+    <item name="backgroundTint">@color/toggle_button_bg</item>
+  </style>
+
+  <style name="Widget.App.ButtonGroup.Filter" parent="Widget.Material3.MaterialButtonGroup.Connected">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="fontFamily">@font/nunito_sans_bold</item>
+    <item name="android:insetTop">0dp</item>
+    <item name="android:insetBottom">0dp</item>
+    <item name="selectionRequired">true</item>
+    <item name="singleSelection">true</item>
+  </style>
+
   <style name="Widget.App.Button.Login.Portrait" parent="Widget.Material3Expressive.Button">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
@@ -133,6 +134,17 @@
     <item name="android:textColor">@color/gray_900</item>
     <item name="backgroundColor">@color/yellow</item>
     <item name="backgroundTint">@color/yellow</item>
+  </style>
+
+  <style name="Widget.App.Button.Login.Land" parent="Widget.Material3.Button">
+    <item name="android:layout_width">450dp</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginBottom">4dp</item>
+    <item name="android:fontFamily">@font/nunito_sans_bold</item>
+    <item name="android:textAppearance">@style/TextAppearance.Material3.TitleMedium</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textColor">@color/gray_900</item>
+    <item name="android:backgroundTint">@color/yellow</item>
   </style>
 
   <style name="Widget.App.Button.Transparent" parent="Widget.Material3.Button.TextButton">
@@ -146,15 +158,63 @@
     <item name="cornerRadius">@dimen/button_radius</item>
   </style>
 
-  <style name="Widget.App.Button.Login.Land" parent="Widget.Material3.Button">
-    <item name="android:layout_width">450dp</item>
+  <style name="Widget.App.Button.Compact" parent="">
+    <item name="textAllCaps">false</item>
+    <item name="android:minHeight">39dp</item>
+    <item name="android:textColor">?attr/colorOnPrimary</item>
+  </style>
+
+  <style name="Widget.App.Button.Circle" parent="Widget.Material3Expressive.Button.IconButton.Filled">
+    <item name="android:layout_width">@dimen/button_size</item>
+    <item name="android:layout_height">@dimen/button_size</item>
+    <item name="android:insetLeft">0dp</item>
+    <item name="android:insetTop">0dp</item>
+    <item name="android:insetRight">0dp</item>
+    <item name="android:insetBottom">0dp</item>
+    <item name="android:minWidth">0dp</item>
+    <item name="android:minHeight">0dp</item>
+    <item name="android:theme">@style/ThemeOverlay.App.Button</item>
+    <item name="iconPadding">0dp</item>
+    <item name="iconTint">@color/yellow</item>
+  </style>
+
+  <style name="Widget.App.Button.Circle.Back" parent="Widget.App.Button.Circle">
+    <item name="android:paddingBottom">8dp</item>
+    <item name="android:paddingTop">8dp</item>
+    <item name="android:paddingLeft">8.25dp</item>
+    <item name="android:contentDescription">@string/back</item>
+    <item name="icon">@drawable/ic_left_icon</item>
+    <item name="iconSize">28dp</item>
+  </style>
+
+  <style name="Widget.App.Button.IconButton" parent="ThemeOverlay.Material3Expressive.Button.IconButton.Standard">
+    <item name="materialIconButtonStyle">
+      @style/Widget.Material3Expressive.Button.IconButton.Standard
+    </item>
+    <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_marginBottom">4dp</item>
-    <item name="android:fontFamily">@font/nunito_sans_bold</item>
-    <item name="android:textAppearance">@style/TextAppearance.Material3.TitleMedium</item>
-    <item name="android:textAllCaps">false</item>
-    <item name="android:textColor">@color/gray_900</item>
-    <item name="android:backgroundTint">@color/yellow</item>
+    <item name="android:insetLeft">0dp</item>
+    <item name="android:insetTop">0dp</item>
+    <item name="android:insetRight">0dp</item>
+    <item name="android:insetBottom">0dp</item>
+    <item name="android:minHeight">0dp</item>
+    <item name="android:minWidth">0dp</item>
+    <item name="android:paddingRight">8dp</item>
+    <item name="android:paddingLeft">9dp</item>
+    <item name="android:paddingTop">8dp</item>
+    <item name="android:paddingBottom">8dp</item>
+    <item name="iconPadding">0dp</item>
+    <item name="iconSize">32dp</item>
+    <item name="iconTint">?attr/colorAccent</item>
+    <item name="colorContainer">@android:color/transparent</item>
+    <item name="colorOnContainer">@color/gray_400</item>
+    <item name="materialSizeOverlay">
+      @style/SizeOverlay.Material3Expressive.Button.IconButton.Medium
+    </item>
+  </style>
+
+  <style name="Widget.App.Button" parent="ThemeOverlay.Material3.Button">
+
   </style>
 
   <style name="Widget.App.Button.TryAgain" parent="ThemeOverlay.Material3.Button">
@@ -309,23 +369,7 @@
     <item name="android:visibility">gone</item>
   </style>
 
-  <style name="Widget.App.Button.More" parent="">
-    <item name="android:paddingStart">20dp</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_width">match_parent</item>
-    <item name="android:background">?attr/selectableItemBackground</item>
-    <item name="android:gravity">start|center_vertical</item>
-    <item name="android:textAllCaps">false</item>
-    <item name="android:textAppearance">@style/TextAppearance.Material3.TitleSmall</item>
-    <item name="android:textColor">?attr/colorOnPrimary</item>
-    <item name="fontFamily">@font/nunito_sans_regular</item>
-  </style>
 
-  <style name="Widget.App.Button.Compact" parent="">
-    <item name="textAllCaps">false</item>
-    <item name="android:minHeight">39dp</item>
-    <item name="android:textColor">?attr/colorOnPrimary</item>
-  </style>
 
   <style name="ShapeAppearance.App.ImageView.Rounded" parent="">
     <item name="cornerFamily">rounded</item>
@@ -368,32 +412,6 @@
 
   <style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
     <item name="bottomSheetStyle">@style/ModalBottomSheetDialog</item>
-  </style>
-
-  <style name="Widget.App.Button.IconButton" parent="ThemeOverlay.Material3Expressive.Button.IconButton.Standard">
-    <item name="materialIconButtonStyle">
-      @style/Widget.Material3Expressive.Button.IconButton.Standard
-    </item>
-    <item name="android:layout_width">wrap_content</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:insetLeft">0dp</item>
-    <item name="android:insetTop">0dp</item>
-    <item name="android:insetRight">0dp</item>
-    <item name="android:insetBottom">0dp</item>
-    <item name="android:minHeight">0dp</item>
-    <item name="android:minWidth">0dp</item>
-    <item name="android:paddingRight">8dp</item>
-    <item name="android:paddingLeft">9dp</item>
-    <item name="android:paddingTop">8dp</item>
-    <item name="android:paddingBottom">8dp</item>
-    <item name="iconPadding">0dp</item>
-    <item name="iconSize">32dp</item>
-    <item name="iconTint">?attr/colorAccent</item>
-    <item name="colorContainer">@android:color/transparent</item>
-    <item name="colorOnContainer">@color/gray_400</item>
-    <item name="materialSizeOverlay">
-      @style/SizeOverlay.Material3Expressive.Button.IconButton.Medium
-    </item>
   </style>
 
   <style name="ShapeAppearance.App.Button.Rounded" parent="">
@@ -474,10 +492,6 @@
     <item name="android:hyphenationFrequency">none</item>
   </style>
 
-  <style name="Widget.App.Button" parent="Widget.Material3.Button">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.App.Button</item>
-  </style>
-
   <style name="ThemeOverlay.App.Button" parent="ThemeOverlay.Material3.Button">
     <item name="colorContainer">@color/gray_600_alpha</item>
     <item name="colorOnContainer">@color/gray_400</item>
@@ -535,29 +549,6 @@
     <item name="contentDescription">@null</item>
     <item name="srcCompat">@drawable/ic_chevron_right</item>
     <item name="iconTint">@color/yellow</item>
-  </style>
-
-  <style name="Widget.App.Button.Circle" parent="Widget.Material3Expressive.Button.IconButton.Filled">
-    <item name="android:layout_width">@dimen/button_size</item>
-    <item name="android:layout_height">@dimen/button_size</item>
-    <item name="android:insetLeft">0dp</item>
-    <item name="android:insetTop">0dp</item>
-    <item name="android:insetRight">0dp</item>
-    <item name="android:insetBottom">0dp</item>
-    <item name="android:minWidth">0dp</item>
-    <item name="android:minHeight">0dp</item>
-    <item name="android:theme">@style/ThemeOverlay.App.Button</item>
-    <item name="iconPadding">0dp</item>
-    <item name="iconTint">@color/yellow</item>
-  </style>
-
-  <style name="Widget.App.Button.Circle.Back" parent="Widget.App.Button.Circle">
-    <item name="android:paddingBottom">8dp</item>
-    <item name="android:paddingTop">8dp</item>
-    <item name="android:paddingLeft">8.25dp</item>
-    <item name="android:contentDescription">@string/back</item>
-    <item name="icon">@drawable/ic_left_icon</item>
-    <item name="iconSize">28dp</item>
   </style>
 
   <style name="Widget.App.AppBarLayout" parent="">
@@ -632,5 +623,14 @@
     <item name="tabMode">fixed</item>
     <item name="android:minWidth">8dp</item>
     <item name="android:minHeight">8dp</item>
+  </style>
+
+  <style name="ThemeOverlay.App.AppBarWithSearch" parent="ThemeOverlay.Material3Expressive.AppBarWithSearch">
+    <item name="materialSearchBarStyle">@style/Widget.App.SearchBar.Expressive</item>
+  </style>
+
+  <style name="Widget.App.SearchBar.Expressive" parent="Widget.Material3Expressive.SearchBar">
+    <item name="contentInsetEnd">0dp</item>
+    <item name="contentInsetEndWithActions">0dp</item>
   </style>
 </resources>

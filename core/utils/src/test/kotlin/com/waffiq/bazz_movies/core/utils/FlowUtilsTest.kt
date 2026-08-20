@@ -2,6 +2,8 @@ package com.waffiq.bazz_movies.core.utils
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.testing.TestLifecycleOwner
 import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -10,6 +12,7 @@ import com.waffiq.bazz_movies.core.test.LifecycleOwnerRule
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectFlow
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectPagingData
+import com.waffiq.bazz_movies.core.utils.FlowUtils.launchOnStarted
 import com.waffiq.bazz_movies.core.utils.FlowUtils.load
 import com.waffiq.bazz_movies.core.utils.testutils.FakePagingAdapter
 import io.mockk.coVerify
@@ -24,10 +27,13 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -37,28 +43,32 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class FlowUtilsTest {
 
-  val samplePagingData = PagingData.from(listOf("Item 1", "Item 2"))
+  private lateinit var lifecycleOwner: TestLifecycleOwner
+
+  private val samplePagingData = PagingData.from(listOf("Item 1", "Item 2"))
+  private val emptyPagingDataFlow = MutableStateFlow<PagingData<String>>(PagingData.empty())
+
+  private val mockFragment = mockk<Fragment>(relaxed = true)
+  private val adapter = mockk<PagingDataAdapter<String, RecyclerView.ViewHolder>>(relaxed = true)
 
   @get:Rule
   val lifecycleOwnerRule = LifecycleOwnerRule()
 
-  private val adapter = mockk<PagingDataAdapter<String, RecyclerView.ViewHolder>>(relaxed = true)
-  private val pagingDataFlow = MutableStateFlow<PagingData<String>>(PagingData.empty())
+  @Before
+  fun setup() {
+    every { mockFragment.viewLifecycleOwner } returns lifecycleOwnerRule.lifecycleOwner
+  }
 
   @Test
   fun collectAndSubmitData_whenLifecycleCreated_shouldSubmitPagingData() =
     runTest {
-      val mockFragment = mockk<Fragment>(relaxed = true) {
-        every { viewLifecycleOwner } returns lifecycleOwnerRule.lifecycleOwner
-      }
-
       collectAndSubmitData(
         fragment = mockFragment,
-        flowProvider = { pagingDataFlow },
+        flowProvider = { emptyPagingDataFlow },
         adapter = adapter,
       )
 
-      pagingDataFlow.value = samplePagingData
+      emptyPagingDataFlow.value = samplePagingData
       advanceUntilIdle()
 
       // verify submitData was called with correct data
@@ -68,10 +78,6 @@ class FlowUtilsTest {
   @Test
   fun collectAndSubmitData_whenFlowIsEmpty_shouldNotSubmitData() =
     runTest {
-      val mockFragment = mockk<Fragment>(relaxed = true) {
-        every { viewLifecycleOwner } returns lifecycleOwnerRule.lifecycleOwner
-      }
-
       val emptyFlowProvider: () -> Flow<PagingData<String>> = { emptyFlow() }
 
       collectAndSubmitData(
@@ -87,10 +93,6 @@ class FlowUtilsTest {
   @Test
   fun collectAndSubmitData_whenRunningSimultaneously_shouldHandleMultipleEmissions() =
     runTest {
-      val mockFragment = mockk<Fragment>(relaxed = true) {
-        every { viewLifecycleOwner } returns lifecycleOwnerRule.lifecycleOwner
-      }
-
       val pagingDataFlow = MutableSharedFlow<PagingData<String>>()
       val flowProvider: () -> Flow<PagingData<String>> = { pagingDataFlow }
 
@@ -113,17 +115,13 @@ class FlowUtilsTest {
   @Test
   fun collectAndSubmitData_withLifecycle_shouldSubmitPagingData() =
     runTest {
-      val mockFragment = mockk<Fragment>(relaxed = true) {
-        every { viewLifecycleOwner } returns lifecycleOwnerRule.lifecycleOwner
-      }
-
       collectAndSubmitData(
         lifecycleOwner = mockFragment.viewLifecycleOwner,
-        flowProvider = { pagingDataFlow },
+        flowProvider = { emptyPagingDataFlow },
         adapter = adapter,
       )
 
-      pagingDataFlow.value = samplePagingData
+      emptyPagingDataFlow.value = samplePagingData
       advanceUntilIdle()
 
       coVerify(atLeast = 1) { adapter.submitData(any()) }
@@ -137,7 +135,7 @@ class FlowUtilsTest {
 
       activity.setTheme(Base_Theme_BAZZ_movies)
       controller.setup()
-      activity.load(pagingDataFlow, adapter)
+      activity.load(emptyPagingDataFlow, adapter)
 
       advanceUntilIdle()
 
@@ -157,11 +155,11 @@ class FlowUtilsTest {
 
       collectAndSubmitData(
         fragment = mockFragment,
-        flowProvider = { pagingDataFlow },
+        flowProvider = { emptyPagingDataFlow },
         adapter = fakeAdapter,
       )
 
-      pagingDataFlow.value = PagingData.from(listOf("Item 1", "Item 2"))
+      emptyPagingDataFlow.value = PagingData.from(listOf("Item 1", "Item 2"))
       advanceUntilIdle()
 
       assertEquals(listOf("Item 1", "Item 2"), fakeAdapter.snapshot().items)
@@ -205,14 +203,13 @@ class FlowUtilsTest {
   @Test
   fun collectPagingData_shouldReceivePagingData() =
     runTest {
-      val pagingDataFlow = MutableStateFlow<PagingData<String>>(PagingData.empty())
       val received = mutableListOf<PagingData<String>>()
 
-      lifecycleOwnerRule.lifecycleOwner.collectPagingData(pagingDataFlow) {
+      lifecycleOwnerRule.lifecycleOwner.collectPagingData(emptyPagingDataFlow) {
         received.add(it)
       }
 
-      pagingDataFlow.value = PagingData.from(listOf("A", "B"))
+      emptyPagingDataFlow.value = PagingData.from(listOf("A", "B"))
       advanceUntilIdle()
 
       assertTrue(received.isNotEmpty())
@@ -221,15 +218,37 @@ class FlowUtilsTest {
   @Test
   fun collectPagingData_withAdapter_shouldSubmitData() =
     runTest {
-      val pagingDataFlow = MutableStateFlow<PagingData<String>>(PagingData.empty())
-
-      lifecycleOwnerRule.lifecycleOwner.collectPagingData(pagingDataFlow) { pagingData ->
+      lifecycleOwnerRule.lifecycleOwner.collectPagingData(emptyPagingDataFlow) { pagingData ->
         adapter.submitData(pagingData)
       }
 
-      pagingDataFlow.value = samplePagingData
+      emptyPagingDataFlow.value = samplePagingData
       advanceUntilIdle()
 
       coVerify(atLeast = 1) { adapter.submitData(any()) }
+    }
+
+  @Test
+  fun launchOnStarted_started_runsBlock() =
+    runTest {
+      var called = false
+
+      lifecycleOwner = TestLifecycleOwner(
+        initialState = Lifecycle.State.CREATED,
+      )
+
+      every { mockFragment.viewLifecycleOwner } returns lifecycleOwner
+
+      mockFragment.launchOnStarted {
+        called = true
+      }
+
+      runCurrent()
+      assertFalse(called)
+
+      lifecycleOwner.currentState = Lifecycle.State.STARTED
+
+      runCurrent()
+      assertTrue(called)
     }
 }

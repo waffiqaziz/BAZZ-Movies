@@ -95,6 +95,8 @@ class GenericPagingSourceTest {
         },
         page = 2,
         expectedData = listOf(MediaResponseItem("item1"), MediaResponseItem("item2")),
+        expectedPrevKey = 1,
+        expectedNextKey = 3,
       )
     }
 
