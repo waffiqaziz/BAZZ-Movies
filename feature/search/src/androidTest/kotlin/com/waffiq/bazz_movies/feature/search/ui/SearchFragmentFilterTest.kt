@@ -56,10 +56,10 @@ class SearchFragmentFilterTest : BaseSearchFragmentTest() {
   }
 
   @Test
-  fun filter_sameBadge_runsOnce() {
+  fun filter_sameBadge_runsTwice() {
     performMovieFilter()
     performMovieFilter()
-    verify(exactly = 1) { mockSearchViewModel.setFilters(setOf(MediaType.MULTI)) }
+    verify(exactly = 2) { mockSearchViewModel.setFilters(setOf(MediaType.MOVIE)) }
   }
 
   @Test

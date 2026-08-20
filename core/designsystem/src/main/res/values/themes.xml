@@ -369,8 +369,6 @@
     <item name="android:visibility">gone</item>
   </style>
 
-
-
   <style name="ShapeAppearance.App.ImageView.Rounded" parent="">
     <item name="cornerFamily">rounded</item>
     <item name="cornerSize">@dimen/button_radius</item>

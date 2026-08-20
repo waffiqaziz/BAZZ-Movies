@@ -42,10 +42,7 @@ class SearchFilterBottomSheet : BottomSheetDialogFragment() {
 
   override fun onStart() {
     super.onStart()
-
-    dialog?.window?.let { window ->
-      enableEdgeToEdge(window)
-    }
+    dialog?.window?.let { enableEdgeToEdge(it) }
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -89,7 +86,6 @@ class SearchFilterBottomSheet : BottomSheetDialogFragment() {
       rippleColor = getColor(yellow_alpha_20)
 
       checkedIcon = ContextCompat.getDrawable(requireContext(), ic_tick)
-      checkedIconTint = checkedIconTint
 
       setTextColor(getColor(selector_chip_text))
       typeface = ResourcesCompat.getFont(requireContext(), nunito_sans_bold)
