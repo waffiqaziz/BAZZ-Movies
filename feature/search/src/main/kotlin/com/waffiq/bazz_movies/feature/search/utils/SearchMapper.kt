@@ -1,15 +1,16 @@
 package com.waffiq.bazz_movies.feature.search.utils
 
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.MediaType
+import com.waffiq.bazz_movies.core.common.value
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.KnownForItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
 import com.waffiq.bazz_movies.feature.search.domain.model.KnownForItem
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 
 object SearchMapper {
-  fun MultiSearchResponseItem.toMultiSearchItem() =
+  fun MultiSearchResponseItem.toMultiSearchItem(knownType: MediaType? = null) =
     MultiSearchItem(
-      mediaType = mediaType ?: MOVIE_MEDIA_TYPE,
+      mediaType = mediaType ?: knownType?.value ?: MediaType.MOVIE.value,
       listKnownFor = listKnownFor?.map { it.toKnownForItem() },
       knownForDepartment = knownForDepartment,
       popularity = popularity ?: 0.0,

@@ -3,27 +3,32 @@ package com.waffiq.bazz_movies.feature.search.ui.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.PagingData
 import app.cash.turbine.test
+import com.waffiq.bazz_movies.core.common.MediaType
 import com.waffiq.bazz_movies.core.database.domain.usecase.SearchHistoryLocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.models.SearchHistory
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.feature.search.domain.usecase.MultiSearchUseCase
-import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.differ
+import com.waffiq.bazz_movies.feature.search.testutils.DumyData.differ
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import kotlin.time.Duration.Companion.milliseconds
 
 class SearchViewModelTest {
 
@@ -81,7 +86,13 @@ class SearchViewModelTest {
       stubSearchResult()
 
       searchViewModel.searchResults.test {
+        // peform search and filtering
         searchViewModel.search(testQuery)
+        searchViewModel.setFilters(setOf(MediaType.MOVIE))
+
+        // assert the changes
+        assertEquals(testQuery, searchViewModel.currentQuery.value)
+        assertEquals(setOf(MediaType.MOVIE), searchViewModel.selectedFilters.value)
 
         searchViewModel.currentQuery.test {
           assertEquals("Transformers", awaitItem())
@@ -96,10 +107,14 @@ class SearchViewModelTest {
         advanceUntilIdle()
         assertEquals(emptyList<MultiSearchItem>(), differ.snapshot().items)
 
+        // should clear filter and last query
+        assertEquals(setOf(MediaType.MULTI), searchViewModel.selectedFilters.value)
+        assertNull(searchViewModel.currentQuery.value)
+
         cancelAndIgnoreRemainingEvents()
       }
 
-      coVerify { mockMultiSearchUseCase.search(any()) }
+      coVerify { mockMultiSearchUseCase.search(any(), any()) }
       coVerify { mockSearchHistoryLocalDatabaseUseCase.trimHistory() }
     }
 
@@ -107,10 +122,21 @@ class SearchViewModelTest {
   fun search_sameQuery_triggerSearchOnce() =
     runTest {
       stubSearchResult()
+
+      val job = launch {
+        searchViewModel.searchResults.collect()
+      }
+
       searchViewModel.search(testQuery)
       searchViewModel.search(testQuery)
+
       advanceUntilIdle()
-      coVerify(exactly = 1) { mockMultiSearchUseCase.search(any()) }
+
+      coVerify(exactly = 1) {
+        mockMultiSearchUseCase.search(testQuery, any())
+      }
+
+      job.cancel()
     }
 
   @Test
@@ -166,13 +192,34 @@ class SearchViewModelTest {
   @Test
   fun search_whenEmptyFlow_doesNotUpdateSearchResults() =
     runTest {
-      coEvery { mockMultiSearchUseCase.search(testQuery) } returns emptyFlow()
+      coEvery { mockMultiSearchUseCase.search(testQuery, any()) } returns
+        emptyFlow()
 
       searchViewModel.searchResults.test {
+        awaitItem() // initial PagingData.empty()
+
         searchViewModel.search(testQuery)
         advanceUntilIdle()
 
-        val result = awaitItem() // should be empty PagingData
+        expectNoEvents()
+        cancelAndIgnoreRemainingEvents()
+      }
+    }
+
+  @Test
+  fun search_whenEmptyResult_updatesSearchResultsWithEmptyPagingData() =
+    runTest {
+      coEvery { mockMultiSearchUseCase.search(testQuery, any()) } returns
+        flowOf(PagingData.empty())
+
+      searchViewModel.searchResults.test {
+        awaitItem() // initial empty PagingData
+
+        searchViewModel.search(testQuery)
+        advanceUntilIdle()
+
+        val result = awaitItem()
+
         differ.submitData(result)
         advanceUntilIdle()
 
@@ -189,7 +236,7 @@ class SearchViewModelTest {
 
       coEvery { mockMultiSearchUseCase.search(testQuery) } returns flow {
         emit(pagingData1)
-        delay(Long.MAX_VALUE) // keeps collecting so second search cancels it
+        delay(Long.MAX_VALUE.milliseconds) // keeps collecting so second search cancels it
       }
       coEvery { mockMultiSearchUseCase.search("Transformers 2") } returns flow {
         emit(pagingData2)
@@ -213,6 +260,18 @@ class SearchViewModelTest {
     }
 
   @Test
+  fun setFilters_whenEmpty_setMultiType() {
+    searchViewModel.setFilters(setOf(MediaType.PERSON))
+    assertEquals(setOf(MediaType.PERSON), searchViewModel.selectedFilters.value)
+  }
+
+  @Test
+  fun setFilters_setAsPerson_setPersonType() {
+    searchViewModel.setFilters(setOf())
+    assertEquals(setOf(MediaType.MULTI), searchViewModel.selectedFilters.value)
+  }
+
+  @Test
   fun deleteHistory_whenCalled_shouldCallsCorrectFunction() =
     runTest {
       searchViewModel.deleteHistory(SearchHistory(1, "query", 100L))
@@ -230,6 +289,6 @@ class SearchViewModelTest {
 
   private fun stubSearchResult() {
     val pagingData = PagingData.from(listOf(tv, movie))
-    coEvery { mockMultiSearchUseCase.search(testQuery) } returns flow { emit(pagingData) }
+    coEvery { mockMultiSearchUseCase.search(any(), any()) } returns flow { emit(pagingData) }
   }
 }

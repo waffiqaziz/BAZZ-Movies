@@ -1,9 +1,11 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.account
 
 import androidx.paging.PagingData
+import com.waffiq.bazz_movies.core.common.MediaType
+import com.waffiq.bazz_movies.core.common.value
 import com.waffiq.bazz_movies.core.coroutines.IoDispatcher
 import com.waffiq.bazz_movies.core.network.data.remote.constants.AccountMediaCategory
-import com.waffiq.bazz_movies.core.network.data.remote.constants.MediaType
+import com.waffiq.bazz_movies.core.network.data.remote.constants.value
 import com.waffiq.bazz_movies.core.network.data.remote.models.FavoriteRequest
 import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistRequest
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
@@ -30,7 +32,7 @@ class AccountRemoteDataSource @Inject constructor(
     userId = userId,
     sessionId = sessionId,
     category = AccountMediaCategory.FAVORITE,
-    mediaType = MediaType.MOVIES,
+    mediaType = MediaType.MOVIE,
     sortBy = sortBy,
   )
 
@@ -66,7 +68,7 @@ class AccountRemoteDataSource @Inject constructor(
     userId = userId,
     sessionId = sessionId,
     category = AccountMediaCategory.WATCHLIST,
-    mediaType = MediaType.MOVIES,
+    mediaType = MediaType.MOVIE,
     sortBy = sortBy,
   )
 
@@ -101,8 +103,8 @@ class AccountRemoteDataSource @Inject constructor(
       accountApiService.getMediaList(
         accountId = userId,
         sessionId = sessionId,
-        category = category.asApiValue(),
-        mediaType = mediaType.asApiValue(),
+        category = category.value,
+        mediaType = mediaType.value,
         sortBy = sortBy,
         page = page,
       ).results

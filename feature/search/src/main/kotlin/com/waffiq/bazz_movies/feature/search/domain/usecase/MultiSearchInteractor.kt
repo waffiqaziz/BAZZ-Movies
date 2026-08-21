@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.feature.search.domain.usecase
 
 import androidx.paging.PagingData
 import androidx.paging.filter
+import com.waffiq.bazz_movies.core.common.MediaType
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.feature.search.domain.repository.ISearchRepository
 import kotlinx.coroutines.flow.Flow
@@ -10,8 +11,9 @@ import javax.inject.Inject
 
 class MultiSearchInteractor @Inject constructor(private val searchRepository: ISearchRepository) :
   MultiSearchUseCase {
-  override fun search(query: String): Flow<PagingData<MultiSearchItem>> =
-    searchRepository.search(query)
+
+  override fun search(query: String, filters: Set<MediaType>): Flow<PagingData<MultiSearchItem>> =
+    searchRepository.search(query, filters)
       .map { pagingData ->
         pagingData.filter { data ->
           !data.backdropPath.isNullOrEmpty() ||

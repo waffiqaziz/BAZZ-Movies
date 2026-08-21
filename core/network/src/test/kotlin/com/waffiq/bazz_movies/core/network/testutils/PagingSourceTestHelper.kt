@@ -93,7 +93,7 @@ object PagingSourceTestHelper {
     assertTrue(result is PagingSource.LoadResult.Error)
     val errorResult = result as PagingSource.LoadResult.Error
     assertTrue(errorResult.throwable is HttpException)
-    assertEquals(errorResult.throwable.message, expectedMessage)
+    assertEquals(expectedMessage, errorResult.throwable.message)
   }
 
   /**
@@ -105,11 +105,14 @@ object PagingSourceTestHelper {
    * @param page The page index to test
    * @param expectedData Expected data that should be returned in the page
    */
+  @Suppress("LongParameterList")
   fun <T : Any> testLoadReturnsPageWithNonNullPrevKeyOnSubsequentPage(
     pagingSourceFactory: () -> PagingSource<Int, T>,
     setupMock: suspend (Int) -> Unit,
     page: Int,
     expectedData: List<T>,
+    expectedPrevKey: Int?,
+    expectedNextKey: Int?,
   ) = runTest {
     // create paging source and setup mocks
     val pagingSource = pagingSourceFactory()
@@ -117,10 +120,14 @@ object PagingSourceTestHelper {
 
     // perform load operation and verify results
     val result = pagingSource.load(PagingSource.LoadParams.Refresh(page, 2, false))
+
+    assertTrue(result is PagingSource.LoadResult.Page)
+
     val pageResult = result as PagingSource.LoadResult.Page
-    assertEquals(pageResult.data, expectedData)
-    assertEquals(pageResult.prevKey, page - 1) // verify prevKey for the subsequent page
-    assertEquals(pageResult.nextKey, page + 1) // verify nextKey for the subsequent page
+
+    assertEquals(expectedData, pageResult.data)
+    assertEquals(expectedPrevKey, pageResult.prevKey)
+    assertEquals(expectedNextKey, pageResult.nextKey)
   }
 
   /**

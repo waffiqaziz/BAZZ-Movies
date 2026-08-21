@@ -8,10 +8,11 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.Mul
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.feature.search.domain.repository.ISearchRepository
-import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.QUERY
-import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.differ
-import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.multiSearchResponseItem
-import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.multiSearchResponseItem2
+import com.waffiq.bazz_movies.feature.search.testutils.DumyData.QUERY
+import com.waffiq.bazz_movies.feature.search.testutils.DumyData.differ
+import com.waffiq.bazz_movies.feature.search.testutils.DumyData.filters
+import com.waffiq.bazz_movies.feature.search.testutils.DumyData.multiSearchResponseItem
+import com.waffiq.bazz_movies.feature.search.testutils.DumyData.multiSearchResponseItem2
 import com.waffiq.bazz_movies.feature.search.utils.SearchMapper.toMultiSearchItem
 import io.mockk.every
 import io.mockk.mockk
@@ -90,11 +91,11 @@ class MultiSearchInteractorTest {
   }
 
   private fun mockSearchPagingData(pagingData: PagingData<MultiSearchItem>) {
-    every { mockRepository.search(QUERY) } returns flowOf(pagingData)
+    every { mockRepository.search(QUERY, filters) } returns flowOf(pagingData)
   }
 
   private fun verifyPagingSearch() {
-    verify { mockRepository.search(QUERY) }
+    verify { mockRepository.search(QUERY, filters) }
   }
 
   /**

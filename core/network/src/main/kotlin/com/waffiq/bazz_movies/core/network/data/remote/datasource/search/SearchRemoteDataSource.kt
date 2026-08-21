@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.core.network.data.remote.datasource.search
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.waffiq.bazz_movies.core.common.MediaType
 import com.waffiq.bazz_movies.core.coroutines.IoDispatcher
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.movie.MovieRemoteDataSource.Companion.PAGE_SIZE
 import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.SearchPagingSource
@@ -20,9 +21,12 @@ class SearchRemoteDataSource @Inject constructor(
   @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : SearchRemoteDataSourceInterface {
 
-  override fun search(query: String): Flow<PagingData<MultiSearchResponseItem>> =
+  override fun search(
+    query: String,
+    filters: Set<MediaType>,
+  ): Flow<PagingData<MultiSearchResponseItem>> =
     Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
-      pagingSourceFactory = { SearchPagingSource(searchApiService, query) },
+      pagingSourceFactory = { SearchPagingSource(searchApiService, query, filters) },
     ).flow.flowOn(ioDispatcher)
 }

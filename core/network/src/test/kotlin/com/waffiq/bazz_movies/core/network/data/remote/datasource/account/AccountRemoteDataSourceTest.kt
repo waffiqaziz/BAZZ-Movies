@@ -1,8 +1,10 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.account
 
+import com.waffiq.bazz_movies.core.common.MediaType
+import com.waffiq.bazz_movies.core.common.value
 import com.waffiq.bazz_movies.core.network.data.remote.constants.AccountMediaCategory
-import com.waffiq.bazz_movies.core.network.data.remote.constants.MediaType
 import com.waffiq.bazz_movies.core.network.data.remote.constants.SortBy.CREATED_AT_ASC
+import com.waffiq.bazz_movies.core.network.data.remote.constants.value
 import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.GenericPagingSource
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
 import com.waffiq.bazz_movies.core.network.testutils.DummyData
@@ -22,19 +24,19 @@ class AccountRemoteDataSourceTest : BaseMediaDataSourceTest() {
     mockAccountApiService.getMediaList(
       accountId = userId,
       sessionId = sessionId,
-      category = category.asApiValue(),
-      mediaType = mediaType.asApiValue(),
+      category = category.value,
+      mediaType = mediaType.value,
       sortBy = CREATED_AT_ASC,
       page = 1,
     )
 
   private suspend fun stubFavoriteMovies() =
-    stubGeneral(AccountMediaCategory.FAVORITE, MediaType.MOVIES)
+    stubGeneral(AccountMediaCategory.FAVORITE, MediaType.MOVIE)
 
   private suspend fun stubFavoriteTv() = stubGeneral(AccountMediaCategory.FAVORITE, MediaType.TV)
 
   private suspend fun stubWatchlistMovies() =
-    stubGeneral(AccountMediaCategory.WATCHLIST, MediaType.MOVIES)
+    stubGeneral(AccountMediaCategory.WATCHLIST, MediaType.MOVIE)
 
   private suspend fun stubWatchlistTv() = stubGeneral(AccountMediaCategory.WATCHLIST, MediaType.TV)
 

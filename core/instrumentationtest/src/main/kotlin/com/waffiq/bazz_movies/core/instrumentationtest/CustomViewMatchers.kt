@@ -140,8 +140,8 @@ object CustomViewMatchers {
       }
     }
 
-  fun String.getMatchView(@IdRes parentId: Int?): Matcher<View> {
-    return if (parentId != null) {
+  fun String.getMatchView(@IdRes parentId: Int?): Matcher<View> =
+    if (parentId != null) {
       allOf(
         withText(this),
         isDescendantOfA(withId(parentId)),
@@ -149,5 +149,4 @@ object CustomViewMatchers {
     } else {
       withText(this)
     }
-  }
 }

@@ -16,6 +16,7 @@ dependencies {
   implementation(libs.androidx.paging.runtime)
 
   testImplementation(project(":core:test"))
+  testImplementation(libs.androidx.lifecycle.runtime.testing)
   testImplementation(libs.androidx.test.core)
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.mockk)

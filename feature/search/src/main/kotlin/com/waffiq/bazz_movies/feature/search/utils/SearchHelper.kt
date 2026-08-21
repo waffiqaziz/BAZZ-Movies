@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.feature.search.utils
 
 import android.content.Context
 import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
 import com.waffiq.bazz_movies.core.common.Genre
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W185
@@ -44,6 +45,7 @@ object SearchHelper {
   fun RecyclerView.setupRecyclerView(context: Context, pagingAdapter: PagingDataAdapter<*, *>) {
     this.apply {
       layoutManager = initLinearLayoutManagerVertical(context)
+      itemAnimator = DefaultItemAnimator()
       adapter = pagingAdapter.withLoadStateFooter(
         footer = LoadingStateAdapter { pagingAdapter.retry() },
       )

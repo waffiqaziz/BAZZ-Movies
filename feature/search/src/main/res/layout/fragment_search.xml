@@ -14,25 +14,35 @@
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:backgroundTint="@color/gray_1000">
+    android:backgroundTint="@color/gray_1000"
+    app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.AppBarWithSearch">
 
-    <com.google.android.material.search.SearchBar
-      android:id="@+id/search_bar"
+    <com.google.android.material.appbar.MaterialToolbar
+      android:id="@+id/toolbar"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="4dp"
-      android:layout_marginBottom="8dp"
-      android:backgroundTint="@color/gray_950"
-      android:fitsSystemWindows="false"
-      android:hint="@string/search_any"
-      android:theme="@style/ThemeOverlay.App.SearchBar"
-      app:layout_scrollEffect="compress"
-      app:layout_scrollFlags="scroll|enterAlways|snap"
-      app:liftOnScroll="false"
-      app:navigationIcon="@drawable/ic_search"
-      app:navigationIconTint="@color/yellow"
-      app:textCentered="true" />
+      app:layout_scrollFlags="enterAlways|scroll|snap"
+      app:materialThemeOverlay="@style/ThemeOverlay.App.AppBarWithSearch">
 
+      <com.google.android.material.search.SearchBar
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/gray_950"
+        android:fitsSystemWindows="false"
+        android:hint="@string/search_any"
+        android:theme="@style/ThemeOverlay.App.SearchBar"
+        app:layout_scrollEffect="compress"
+        app:layout_scrollFlags="scroll|enterAlways|snap"
+        app:liftOnScroll="false"
+        app:menu="@menu/search_bar_menu"
+        app:navigationIcon="@drawable/ic_search"
+        app:navigationIconTint="@color/yellow"
+        app:textCentered="true" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
   </com.google.android.material.appbar.AppBarLayout>
 
   <!-- ========================== -->
@@ -103,8 +113,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:layout_marginTop="@dimen/margin_each_item"
         android:layout_marginStart="@dimen/default_margin_parent_20"
+        android:layout_marginTop="@dimen/margin_each_item"
         android:layout_marginBottom="@dimen/margin_between_item"
         android:text="@string/browse_by_genre"
         android:textAllCaps="true"
@@ -161,16 +171,26 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:visibility="gone">
 
-    <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/rv_search"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:clipToPadding="false"
-      android:contentDescription="@string/search_results"
-      android:visibility="visible"
-      tools:listitem="@layout/list_item_media_no_swipe"
-      tools:visibility="visible" />
+      android:layout_height="wrap_content">
 
+      <include
+        android:id="@+id/shimmer"
+        layout="@layout/shimmer_layout" />
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:contentDescription="@string/search_results"
+        android:paddingBottom="@dimen/bottom_nav_min_height"
+        android:visibility="visible"
+        tools:listitem="@layout/list_item_media_no_swipe"
+        tools:visibility="visible" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
   <!-- ========================== -->

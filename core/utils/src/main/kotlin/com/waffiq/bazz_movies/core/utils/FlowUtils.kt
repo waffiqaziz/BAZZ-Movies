@@ -9,6 +9,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
 import androidx.paging.cachedIn
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -87,6 +88,12 @@ object FlowUtils {
       repeatOnLifecycle(Lifecycle.State.STARTED) {
         cachedFlow.collectLatest(block)
       }
+    }
+  }
+
+  fun Fragment.launchOnStarted(block: suspend CoroutineScope.() -> Unit) {
+    viewLifecycleOwner.lifecycleScope.launch {
+      viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED, block)
     }
   }
 }
