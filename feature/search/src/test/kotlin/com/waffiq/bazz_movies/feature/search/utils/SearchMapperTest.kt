@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.feature.search.utils
 
+import com.waffiq.bazz_movies.core.common.MediaType
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.KnownForItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
 import com.waffiq.bazz_movies.feature.search.utils.SearchMapper.toMultiSearchItem
@@ -10,36 +11,37 @@ import org.junit.Test
 
 class SearchMapperTest {
 
+  private val response = MultiSearchResponseItem(
+    mediaType = "movie",
+    listKnownFor = listOf(
+      KnownForItemResponse(title = "Known Movie 1"),
+      KnownForItemResponse(title = "Known Movie 2"),
+    ),
+    knownForDepartment = "Acting",
+    popularity = 8.5,
+    name = "John Doe",
+    profilePath = "/profile.jpg",
+    id = 123,
+    adult = false,
+    overview = "Sample Overview",
+    originalLanguage = "en",
+    originalTitle = "Original Title",
+    video = true,
+    title = "Movie Title",
+    listGenreIds = listOf(1, 2, 3),
+    posterPath = "/poster.jpg",
+    backdropPath = "/backdrop.jpg",
+    releaseDate = "2024-01-01",
+    voteAverage = 7.8,
+    voteCount = 1500.0,
+    firstAirDate = "2023-12-01",
+    listOriginCountry = listOf("US"),
+    originalName = "Original Movie Name",
+  )
+  val nullMediaType = response.copy(mediaType = null)
+
   @Test
   fun toMultiSearchItem_whenResponseIsValid_mapsAllFieldsCorrectly() {
-    val response = MultiSearchResponseItem(
-      mediaType = "movie",
-      listKnownFor = listOf(
-        KnownForItemResponse(title = "Known Movie 1"),
-        KnownForItemResponse(title = "Known Movie 2"),
-      ),
-      knownForDepartment = "Acting",
-      popularity = 8.5,
-      name = "John Doe",
-      profilePath = "/profile.jpg",
-      id = 123,
-      adult = false,
-      overview = "Sample Overview",
-      originalLanguage = "en",
-      originalTitle = "Original Title",
-      video = true,
-      title = "Movie Title",
-      listGenreIds = listOf(1, 2, 3),
-      posterPath = "/poster.jpg",
-      backdropPath = "/backdrop.jpg",
-      releaseDate = "2024-01-01",
-      voteAverage = 7.8,
-      voteCount = 1500.0,
-      firstAirDate = "2023-12-01",
-      listOriginCountry = listOf("US"),
-      originalName = "Original Movie Name",
-    )
-
     val result = response.toMultiSearchItem()
 
     assertEquals("movie", result.mediaType)
@@ -66,5 +68,17 @@ class SearchMapperTest {
     assertEquals("2023-12-01", result.firstAirDate)
     assertEquals(listOf("US"), result.listOriginCountry)
     assertEquals("Original Movie Name", result.originalName)
+  }
+
+  @Test
+  fun toMultiSearchItem_whenSetMediaTypeToPerson_mapsToPersonMediaType() {
+    val result = nullMediaType.toMultiSearchItem(MediaType.PERSON)
+    assertEquals("person", result.mediaType)
+  }
+
+  @Test
+  fun toMultiSearchItem_whenMediaTypeIsNull_mapsToMovieMediaType() {
+    val result = nullMediaType.toMultiSearchItem(MediaType.PERSON)
+    assertEquals("person", result.mediaType) // default value is movie type
   }
 }
