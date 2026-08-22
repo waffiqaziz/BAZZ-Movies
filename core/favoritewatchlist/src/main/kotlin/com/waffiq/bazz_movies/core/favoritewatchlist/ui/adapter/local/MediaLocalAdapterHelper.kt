@@ -13,6 +13,7 @@ import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaSwipeBi
 import com.waffiq.bazz_movies.core.models.Favorite
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
+import com.waffiq.bazz_movies.core.utils.GenreHelper.toListGenreIds
 import com.waffiq.bazz_movies.core.utils.RatingHelper.ratingHandler
 import com.waffiq.bazz_movies.core.utils.RatingHelper.setRatingBar
 import com.waffiq.bazz_movies.navigation.INavigator
@@ -56,6 +57,7 @@ object MediaLocalAdapterHelper {
           voteAverage = fav.rating,
           originalTitle = fav.title,
           mediaType = fav.mediaType,
+          listGenreIds = fav.genre.toListGenreIds(),
           id = fav.mediaId,
         ),
       )

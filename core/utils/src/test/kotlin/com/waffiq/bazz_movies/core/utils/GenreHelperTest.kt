@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.core.utils
 
 import com.waffiq.bazz_movies.core.models.GenresItem
 import com.waffiq.bazz_movies.core.utils.GenreHelper.getGenreName
+import com.waffiq.bazz_movies.core.utils.GenreHelper.toListGenreIds
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoinName
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinString
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreCode
@@ -95,6 +96,14 @@ class GenreHelperTest {
     val input = listOf(null)
     val actualOutput = transformListGenreToJoinString(input)
     assertNull(actualOutput)
+  }
+
+  @Test
+  fun toListGenreIds_stringValue_returnsCorrectGenreId(){
+    assertEquals("Action".toListGenreIds(),listOf(28))
+    assertEquals("Fantasy, History".toListGenreIds(),listOf(14,36))
+    assertEquals("".toListGenreIds(),emptyList<Int>())
+    assertEquals("222222222".toListGenreIds(),emptyList<Int>())
   }
 
   @Test

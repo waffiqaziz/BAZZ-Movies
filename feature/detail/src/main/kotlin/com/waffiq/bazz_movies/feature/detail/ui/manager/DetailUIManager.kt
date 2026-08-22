@@ -219,6 +219,7 @@ class DetailUIManager(
       tvYearReleased.text = tvYearReleased.context.dateOf(dataExtra)
       tvOverview.text = tvOverview.context.getOverview(dataExtra.overview)
     }
+    adapterGenre.setGenre(dataExtra.listGenreIds ?: emptyList())
 
     // side sheet
     sideSheetBinding.tvTitle.text = sideSheetBinding.tvTitle.context.titleHandler(dataExtra)
