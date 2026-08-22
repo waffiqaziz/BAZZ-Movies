@@ -35,6 +35,14 @@ object GenreHelper {
       ?.joinToString(", ")
 
   /**
+   * Transforms a string of genre into list of int (genre id).
+   */
+  fun String.toListGenreIds(): List<Int> =
+    this.split(",").mapNotNull { name ->
+      Genre.entries.find { it.genreName == name.trim() }?.id
+    }
+
+  /**
    * Transforms a list of genre IDs into genre names, or a fallback "not available" string.
    */
   fun Context.getGenre(data: List<Int>?): String =

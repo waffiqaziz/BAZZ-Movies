@@ -60,6 +60,8 @@ class MediaDetailActivityTest : BaseMediaDetailActivityTest() {
       rv_genre.isDisplayed()
       score_section.isDisplayed()
       watch_provider_section.isDisplayed()
+      watch_provider_section.isDisplayed()
+      "Action".isDisplayed()
 
       tv_summary_header.performScrollTo()
       tv_summary_header.isDisplayed()
@@ -76,6 +78,14 @@ class MediaDetailActivityTest : BaseMediaDetailActivityTest() {
 
       rv_recommendation.performScrollTo()
       rv_recommendation.isDisplayed()
+    }
+  }
+
+  @Test
+  fun detailScreen_whenGenreNull_notShowingGenre() {
+    context.launchMediaDetailActivity(data = testMediaItem.copy(listGenreIds = null)) {
+      updateState { copy(detail = testMediaDetail.copy(genre = "", genreId = null)) }
+      "Action".doesNotExist()
     }
   }
 
