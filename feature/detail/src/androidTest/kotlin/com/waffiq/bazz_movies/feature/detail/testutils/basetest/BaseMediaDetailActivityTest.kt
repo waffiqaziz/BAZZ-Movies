@@ -3,6 +3,8 @@ package com.waffiq.bazz_movies.feature.detail.testutils.basetest
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.LoadState
+import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
@@ -41,7 +43,7 @@ import javax.inject.Inject
 abstract class BaseMediaDetailActivityTest {
 
   protected val recommendations = MutableStateFlow(
-    value = PagingData.from(listOf(testMediaItem)),
+    value = pagingDataOf(listOf(testMediaItem)),
   )
   protected val errorEvent = MutableSharedFlow<String>(extraBufferCapacity = 1)
   protected val toastEvent = MutableSharedFlow<Int>(extraBufferCapacity = 1)
@@ -172,4 +174,14 @@ abstract class BaseMediaDetailActivityTest {
 
   protected fun updateState(block: MediaDetailUiState.() -> MediaDetailUiState) =
     uiState.update { it.block() }
+
+  protected fun pagingDataOf(items: List<MediaItem>) =
+    PagingData.from(
+      data = items,
+      sourceLoadStates = LoadStates(
+        refresh = LoadState.NotLoading(endOfPaginationReached = true),
+        prepend = LoadState.NotLoading(endOfPaginationReached = true),
+        append = LoadState.NotLoading(endOfPaginationReached = true),
+      ),
+    )
 }

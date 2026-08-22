@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.ui.state
 
+import com.waffiq.bazz_movies.core.designsystem.R.string.no_watch_providers
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.Provider
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -33,10 +34,8 @@ class WatchProvidersUiStateTest {
 
   @Test
   fun watchProvidersUiState_withError_setsCorrectMessage() {
-    val message = "Something went wrong"
-    val state = WatchProvidersUiState.Error(message)
-
-    assertEquals(message, state.message)
+    val state = WatchProvidersUiState.Error(no_watch_providers)
+    assertEquals(no_watch_providers, state.message)
   }
 
   @Test
@@ -64,7 +63,7 @@ class WatchProvidersUiStateTest {
   fun watchProvidersUiState_whenUsingExhaustive_whenCoversAllStates() {
     val states: List<WatchProvidersUiState> = listOf(
       WatchProvidersUiState.Loading,
-      WatchProvidersUiState.Error("Error"),
+      WatchProvidersUiState.Error(no_watch_providers),
       WatchProvidersUiState.Success(
         ads = emptyList(),
         buy = emptyList(),

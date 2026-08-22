@@ -14,5 +14,5 @@ sealed class WatchProvidersUiState {
     val rent: List<Provider>,
   ) : WatchProvidersUiState()
 
-  data class Error(val message: String) : WatchProvidersUiState()
+  data class Error(val message: Int) : WatchProvidersUiState()
 }

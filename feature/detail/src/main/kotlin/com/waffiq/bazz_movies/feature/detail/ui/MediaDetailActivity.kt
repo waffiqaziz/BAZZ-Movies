@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.designsystem.R.color.gray_900
@@ -47,8 +48,7 @@ class MediaDetailActivity : AppCompatActivity() {
   private val detailViewModel: MediaDetailViewModel by viewModels()
   private val prefViewModel: DetailUserPrefViewModel by viewModels()
 
-  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  lateinit var uiManager: DetailUIManager
+  private lateinit var uiManager: DetailUIManager
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
   lateinit var userInteractionHandler: UserInteractionHandler
@@ -94,9 +94,9 @@ class MediaDetailActivity : AppCompatActivity() {
   private fun initializeManagers() {
     uiManager = DetailUIManager(
       binding = binding,
-      activity = this,
       navigator = navigator,
       uriLauncher = uriLauncher,
+      lifecycleScope = lifecycleScope,
     )
 
     watchProvidersManager = WatchProvidersManager(

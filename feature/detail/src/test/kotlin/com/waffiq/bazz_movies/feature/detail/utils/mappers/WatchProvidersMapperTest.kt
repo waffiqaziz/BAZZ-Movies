@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
+import com.waffiq.bazz_movies.core.designsystem.R.string.no_watch_providers
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.ProviderResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponseItem
@@ -20,6 +21,8 @@ import org.junit.Assert.assertNull
 import org.junit.Test
 
 class WatchProvidersMapperTest {
+
+  private val errorWatchProvidersUiState = WatchProvidersUiState.Error(no_watch_providers)
 
   @Test
   fun toWatchProviders_withValidValues_returnsWatchProviders() {
@@ -91,13 +94,13 @@ class WatchProvidersMapperTest {
   @Test
   fun toWatchProvidersState_whenWatchProvidersIsNull_expectedErrorState() {
     val result = (null as WatchProviders?).toWatchProvidersState("US")
-    assertEquals(WatchProvidersUiState.Error("No watch providers available"), result)
+    assertEquals(errorWatchProvidersUiState, result)
   }
 
   @Test
   fun toWatchProvidersState_whenRegionDoesNotExist_expectedErrorState() {
     val result = watchProviders.toWatchProvidersState("ID")
-    assertEquals(WatchProvidersUiState.Error("No watch providers available"), result)
+    assertEquals(errorWatchProvidersUiState, result)
   }
 
   @Test
@@ -107,7 +110,7 @@ class WatchProvidersMapperTest {
     )
 
     val result = watchProviders.toWatchProvidersState("US")
-    assertEquals(WatchProvidersUiState.Error("No watch providers available"), result)
+    assertEquals(errorWatchProvidersUiState, result)
   }
 
   @Test

@@ -1,10 +1,10 @@
 package com.waffiq.bazz_movies.feature.detail.ui.manager
 
+import android.view.LayoutInflater
 import android.widget.Toast
-import androidx.annotation.VisibleForTesting
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.bumptech.glide.Glide
@@ -44,15 +44,17 @@ import com.waffiq.bazz_movies.feature.detail.ui.adapter.GenreAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.KeywordsAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.RecommendationAdapter
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.CreateTableViewHelper.createTable
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.CrewJobHelper.extractCrewDisplayNames
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.backdropOriginalSource
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.isBackdropNotAvailable
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.posterDetailSource
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.extractCrewDisplayNames
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.formatRating
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getEpisodesFormatted
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getOverview
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getScoreFromOMDB
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.isBackReleased
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.showDuration
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.PagingDataHelper.observeEmptyState
 import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.CustomZoomAndPan
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
@@ -74,22 +76,22 @@ import com.waffiq.bazz_movies.navigation.MediaSource
 @Suppress("TooManyFunctions")
 class DetailUIManager(
   private val binding: ActivityMediaDetailBinding,
-  private val activity: AppCompatActivity,
   private val navigator: INavigator,
   private val uriLauncher: UriLauncher,
+  private val lifecycleScope: LifecycleCoroutineScope,
 ) {
   private lateinit var adapterCast: CastAdapter
   private lateinit var adapterGenre: GenreAdapter
   private lateinit var adapterKeywords: KeywordsAdapter
-
-  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  lateinit var adapterRecommendation: RecommendationAdapter
+  private lateinit var adapterRecommendation: RecommendationAdapter
 
   private lateinit var sideSheetDialog: SideSheetDialog
   private lateinit var sideSheetBinding: SideSheetContentBinding
 
   private var mSnackbar: Snackbar? = null
   private var toast: Toast? = null
+
+  private val context = binding.constraintLayoutUpper.context
 
   init {
     setupSideSheet()
@@ -138,11 +140,17 @@ class DetailUIManager(
         footer = LoadingStateAdapter { adapterRecommendation.retry() },
       )
     }
+
+    adapterRecommendation.observeEmptyState(lifecycleScope) { isEmpty ->
+      binding.layoutRecommendation.isVisible = !isEmpty
+      binding.dividerCast.isVisible = !isEmpty
+    }
   }
 
   fun setupSideSheet() {
-    sideSheetDialog = SideSheetDialog(activity)
-    sideSheetBinding = SideSheetContentBinding.inflate(activity.layoutInflater)
+    val inflater = LayoutInflater.from(binding.root.context)
+    sideSheetDialog = SideSheetDialog(context)
+    sideSheetBinding = SideSheetContentBinding.inflate(inflater)
     sideSheetDialog.apply {
       setContentView(sideSheetBinding.root)
       setCanceledOnTouchOutside(true)
@@ -237,25 +245,28 @@ class DetailUIManager(
         scoreSection.tvScoreTmdb.text = formatRating(details.tmdbScore.toDouble())
         scoreSection.tmdbViewGroup.isVisible = true
       }
-
-      // set duration for movie and status for tv-series
-      tvDuration.text = if (isMovie) {
-        details.duration ?: activity.getString(not_available)
-      } else {
-        if (details.status.isNullOrEmpty()) {
-          activity.getString(not_available)
-        } else {
-          details.status
-        }
-      }
     }
 
+    updateSpecificInfo(details, isMovie)
     updateSideSheetInfo(details, isMovie)
     setupTrailerButton(details.trailer)
     updateAgeRating(details.ageRating)
     updateReleaseInfo(details.releaseDateRegion)
     updateCollection(details.belongsToCollection)
     showLoadingDim(false)
+  }
+
+  // update duration for movie and status for tv-series
+  private fun updateSpecificInfo(details: MediaDetail, isMovie: Boolean) {
+    val isShow = showDuration(details.duration, details.status)
+    binding.tvDuration.isVisible = isShow
+    binding.divider2.isVisible = isShow
+
+    if (isMovie) {
+      binding.tvDuration.text = details.duration ?: context.getString(not_available)
+    } else {
+      binding.tvDuration.text = details.status
+    }
   }
 
   /**
@@ -341,7 +352,9 @@ class DetailUIManager(
    * Updates the cast and crew credits section.
    */
   fun updateCreditsUI(credits: MediaCredits) {
-    createTable(activity, extractCrewDisplayNames(credits.crew), binding.table)
+    binding.layoutCast.isVisible = true
+
+    createTable(context, extractCrewDisplayNames(credits.crew), binding.table)
     adapterCast.submitList(credits.cast)
 
     val hasCast = credits.cast.isNotEmpty()
@@ -354,6 +367,7 @@ class DetailUIManager(
    */
   fun updateOMDbScores(omdbDetails: OMDbDetails) {
     val rottenTomatoes = omdbDetails.ratings?.firstOrNull { it.source == "Rotten Tomatoes" }?.value
+    binding.scoreSection.root.isVisible = true
 
     binding.scoreSection.apply {
       imdbViewGroup.isVisible = getScoreFromOMDB(omdbDetails.imdbRating)
@@ -397,7 +411,7 @@ class DetailUIManager(
     mediaId: Int,
   ) {
     navigator.openList(
-      activity,
+      context,
       ListArgs(
         listType = RECOMMENDATION,
         mediaType = MediaSource.Typed(mediaType),
@@ -431,11 +445,7 @@ class DetailUIManager(
    */
   fun showToast(text: String) {
     toast?.cancel()
-    toast = Toast.makeText(
-      activity.applicationContext,
-      text,
-      Toast.LENGTH_SHORT,
-    )
+    toast = Toast.makeText(context, text, Toast.LENGTH_SHORT)
     toast?.show()
   }
 

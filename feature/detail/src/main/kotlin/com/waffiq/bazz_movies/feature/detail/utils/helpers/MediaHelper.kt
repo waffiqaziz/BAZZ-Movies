@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.KeyEvent
 import com.waffiq.bazz_movies.core.designsystem.R.plurals
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_overview
-import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.video.Videos
 import kotlin.math.roundToInt
@@ -21,31 +20,6 @@ object MediaHelper {
     val hours: Int = t / SIXTY
     val minutes: Int = t % SIXTY
     return "${hours}h ${minutes}m"
-  }
-
-  fun extractCrewDisplayNames(crew: List<MediaCrewItem>): Pair<List<String>, List<String>> {
-    // Map of job titles to their display names
-    // Key: actual job title in data, Value: user-friendly display name
-    val jobToNamesMap = mapOf(
-      "Director" to "Director",
-      "Story" to "Story",
-      "Characters" to "Characters",
-      "Executive Producer" to "Creator",
-      "Writer" to "Writer",
-      "Author" to "Author",
-      "Screenplay" to "Screenplay",
-      "Novel" to "Novel",
-    )
-
-    // Group crew members by their job title for efficient lookup
-    // This avoids filtering the entire crew list multiple times
-    val crewByJob = crew.groupBy { it.job }
-
-    // Process each job title and create pairs of (displayName, joinedNames)
-    return jobToNamesMap.mapNotNull { (jobTitle, displayName) ->
-      val members = crewByJob[jobTitle].orEmpty().filter { !it.name.isNullOrEmpty() }
-      if (members.isNotEmpty()) displayName to members.joinToString { it.name.toString() } else null
-    }.unzip() // Split pairs into two separate lists: [displayNames], [joinedNames]
   }
 
   fun Videos.toLink(): String {
@@ -90,4 +64,7 @@ object MediaHelper {
     val seasonsText = resources.getQuantityString(plurals.seasons, seasons, seasons)
     return "$episodesText ($seasonsText)"
   }
+
+  fun showDuration(duration: String?, status: String?) =
+    !duration.isNullOrEmpty() && !status.isNullOrEmpty()
 }
