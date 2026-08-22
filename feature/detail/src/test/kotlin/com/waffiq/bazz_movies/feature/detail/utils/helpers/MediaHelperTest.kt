@@ -9,17 +9,14 @@ import android.view.KeyEvent.KEYCODE_BACK
 import androidx.annotation.PluralsRes
 import com.waffiq.bazz_movies.core.designsystem.R.plurals
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_overview
-import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.extractCrewDisplayNames
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.formatRating
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getEpisodesFormatted
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getListOfKeywords
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getOverview
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getScoreFromOMDB
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformDuration
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformTMDBScore
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.isBackReleased
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.showDuration
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.assertEquals
@@ -33,8 +30,6 @@ class MediaHelperTest {
 
   private val context: Context = mockk()
   private val noOverview = "Theres no overview translated in English"
-
-  private fun crew(job: String, name: String?) = MediaCrewItem(job = job, name = name)
 
   private fun mockPlural(
     @PluralsRes resId: Int,
@@ -69,54 +64,6 @@ class MediaHelperTest {
   fun convertRuntime_withNullInput_returnsNull() {
     val result = getTransformDuration(null)
     assertNull(result)
-  }
-
-  @Test
-  fun detailCrew_withValidCrewList_returnsCorrectNamesAndRoles() {
-    val crew = listOf(
-      crew("Director", "John Doe"),
-      crew("Writer", "Jane Smith"),
-      crew("Producer", "Bob Wilson"),
-    )
-
-    val (displayNames, joinedNames) = extractCrewDisplayNames(crew)
-
-    assertEquals(listOf("Director", "Writer"), displayNames)
-    assertEquals(listOf("John Doe", "Jane Smith"), joinedNames)
-  }
-
-  @Test
-  fun detailCrew_withEmptyNullName_filtersOut() {
-    val crew = listOf(
-      crew("Writer", null),
-      crew("Writer", ""),
-      crew("Writer", "Jane Smith"),
-      crew("Writer", "Bob Jones"),
-    )
-    val (displayNames, joinedNames) = extractCrewDisplayNames(crew)
-
-    assertEquals(listOf("Writer"), displayNames)
-    assertEquals(listOf("Jane Smith, Bob Jones"), joinedNames)
-  }
-
-  @Test
-  fun detailCrew_empty_returnsEmpty() {
-    val (displayNames, joinedNames) = extractCrewDisplayNames(emptyList())
-
-    assertEquals(emptyList<String>(), displayNames)
-    assertEquals(emptyList<String>(), joinedNames)
-  }
-
-  @Test
-  fun detailCrew_withMultipleNamesSameJob_returnsJoinedNames() {
-    val crew = listOf(
-      MediaCrewItem(job = "Writer", name = "Jane Smith"),
-      MediaCrewItem(job = "Writer", name = "John Doe"),
-    )
-    val (displayNames, joinedNames) = extractCrewDisplayNames(crew)
-
-    assertEquals(listOf("Writer"), displayNames)
-    assertEquals(listOf("Jane Smith, John Doe"), joinedNames)
   }
 
   @Test
@@ -164,68 +111,6 @@ class MediaHelperTest {
   }
 
   @Test
-  fun getListOfKeywords_whenListIsNull_returnsNull() {
-    val result = getListOfKeywords(null)
-    assertNull(result)
-  }
-
-  @Test
-  fun getListOfKeywords_whenListIsEmpty_returnsEmptyList() {
-    val result = getListOfKeywords(emptyList())
-    assertEquals(emptyList<MediaKeywordsItem>(), result)
-  }
-
-  @Test
-  fun getListOfKeywords_whenItemIsNull_returnsEmptyList() {
-    val result = getListOfKeywords(listOf(null))
-    assertEquals(emptyList<MediaKeywordsItem>(), result)
-  }
-
-  @Test
-  fun getListOfKeywords_whenIdIsNull_returnsEmptyList() {
-    val item = MediaKeywordsItem(id = null, name = "action")
-    val result = getListOfKeywords(listOf(item))
-    assertEquals(emptyList<MediaKeywordsItem>(), result)
-  }
-
-  @Test
-  fun getListOfKeywords_whenNameIsNull_returnsEmptyList() {
-    val item = MediaKeywordsItem(id = 1, name = null)
-    val result = getListOfKeywords(listOf(item))
-    assertEquals(emptyList<MediaKeywordsItem>(), result)
-  }
-
-  @Test
-  fun getListOfKeywords_whenNameIsEmpty_returnsEmptyList() {
-    val item = MediaKeywordsItem(id = 1, name = "")
-    val result = getListOfKeywords(listOf(item))
-    assertEquals(emptyList<MediaKeywordsItem>(), result)
-  }
-
-  @Test
-  fun getListOfKeywords_whenIdAndNameAreValid_returnsFilteredList() {
-    val item = MediaKeywordsItem(id = 1, name = "action")
-    val result = getListOfKeywords(listOf(item))
-    assertEquals(listOf(item), result)
-  }
-
-  @Test
-  fun getListOfKeywords_whenMixedValidAndInvalidItems_returnsOnlyValidItems() {
-    val validItem1 = MediaKeywordsItem(id = 1, name = "action")
-    val validItem2 = MediaKeywordsItem(id = 2, name = "comedy")
-    val nullItem = null
-    val nullIdItem = MediaKeywordsItem(id = null, name = "drama")
-    val nullNameItem = MediaKeywordsItem(id = 4, name = null)
-    val emptyNameItem = MediaKeywordsItem(id = 5, name = "")
-
-    val result = getListOfKeywords(
-      listOf(validItem1, nullItem, nullIdItem, nullNameItem, emptyNameItem, validItem2),
-    )
-
-    assertEquals(listOf(validItem1, validItem2), result)
-  }
-
-  @Test
   fun getOverview_whenOverviewIsAvailable_returnsOverview() {
     assertEquals("data overview", context.getOverview("data overview"))
   }
@@ -259,5 +144,18 @@ class MediaHelperTest {
 
     // valid episodes plural
     assertEquals("36 episodes (3 seasons)", context.getEpisodesFormatted(36, 3))
+  }
+
+  @Test
+  fun showDuration_allCondition_returnsCorrectly() {
+    assertFalse(showDuration(null, null))
+    assertFalse(showDuration(null, "released"))
+    assertFalse(showDuration("1h", null))
+    assertFalse(showDuration("", ""))
+    assertFalse(showDuration(null, ""))
+    assertFalse(showDuration("", null))
+    assertFalse(showDuration("", "released"))
+    assertFalse(showDuration("1h", ""))
+    assertTrue(showDuration("1h", "released"))
   }
 }

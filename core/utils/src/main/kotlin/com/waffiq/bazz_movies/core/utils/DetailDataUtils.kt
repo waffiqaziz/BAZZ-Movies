@@ -13,6 +13,7 @@ import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.models.Nameable
 import com.waffiq.bazz_movies.core.models.Titleable
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
+import com.waffiq.bazz_movies.core.utils.DateFormatter.formatDate
 import java.text.NumberFormat
 import java.time.LocalDate
 import java.util.Locale
@@ -187,9 +188,7 @@ object DetailDataUtils {
    * @return date if available, otherwise a fallback text.
    */
   fun Context.dateOf(item: Dateable): String =
-    item.displayDate
-      ?.takeIf { it.isValidDate() }
-      ?: getString(not_available)
+    formatDate(item.displayDate?.takeIf { it.isValidDate() }, "yyyy-MM-dd")
 
   /**
    * Provides characters or department of the cast or crew.

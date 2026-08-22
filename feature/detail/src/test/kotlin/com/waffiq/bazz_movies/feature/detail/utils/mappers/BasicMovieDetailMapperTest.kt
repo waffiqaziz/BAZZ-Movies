@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
+import com.waffiq.bazz_movies.core.designsystem.R.string.no_watch_providers
 import com.waffiq.bazz_movies.core.models.GenresItem
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.ads
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.buy
@@ -80,7 +81,7 @@ class BasicMovieDetailMapperTest {
     assertEquals(0f, result.popularity)
     assertNull(result.trailer)
     assertEquals(
-      WatchProvidersUiState.Error("No watch providers available"),
+      WatchProvidersUiState.Error(no_watch_providers),
       result.watchProviders,
     )
     assertEquals("", result.releaseDate)

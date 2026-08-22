@@ -44,15 +44,17 @@ import com.waffiq.bazz_movies.feature.detail.ui.adapter.GenreAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.KeywordsAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.RecommendationAdapter
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.CreateTableViewHelper.createTable
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.CrewJobHelper.extractCrewDisplayNames
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.backdropOriginalSource
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.isBackdropNotAvailable
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.posterDetailSource
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.extractCrewDisplayNames
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.formatRating
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getEpisodesFormatted
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getOverview
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getScoreFromOMDB
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.isBackReleased
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.showDuration
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.PagingDataHelper.observeEmptyState
 import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.CustomZoomAndPan
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
@@ -237,25 +239,28 @@ class DetailUIManager(
         scoreSection.tvScoreTmdb.text = formatRating(details.tmdbScore.toDouble())
         scoreSection.tmdbViewGroup.isVisible = true
       }
-
-      // set duration for movie and status for tv-series
-      tvDuration.text = if (isMovie) {
-        details.duration ?: activity.getString(not_available)
-      } else {
-        if (details.status.isNullOrEmpty()) {
-          activity.getString(not_available)
-        } else {
-          details.status
-        }
-      }
     }
 
+    updateSpecificInfo(details, isMovie)
     updateSideSheetInfo(details, isMovie)
     setupTrailerButton(details.trailer)
     updateAgeRating(details.ageRating)
     updateReleaseInfo(details.releaseDateRegion)
     updateCollection(details.belongsToCollection)
     showLoadingDim(false)
+  }
+
+  // update duration for movie and status for tv-series
+  private fun updateSpecificInfo(details: MediaDetail, isMovie: Boolean) {
+    val isShow = showDuration(details.duration, details.status)
+    binding.tvDuration.isVisible = isShow
+    binding.divider2.isVisible = isShow
+
+    if (isMovie) {
+      binding.tvDuration.text = details.duration ?: activity.getString(not_available)
+    } else {
+      binding.tvDuration.text = details.status
+    }
   }
 
   /**
@@ -341,6 +346,8 @@ class DetailUIManager(
    * Updates the cast and crew credits section.
    */
   fun updateCreditsUI(credits: MediaCredits) {
+    binding.layoutCast.isVisible = true
+
     createTable(activity, extractCrewDisplayNames(credits.crew), binding.table)
     adapterCast.submitList(credits.cast)
 
@@ -354,6 +361,7 @@ class DetailUIManager(
    */
   fun updateOMDbScores(omdbDetails: OMDbDetails) {
     val rottenTomatoes = omdbDetails.ratings?.firstOrNull { it.source == "Rotten Tomatoes" }?.value
+    binding.scoreSection.root.isVisible = true
 
     binding.scoreSection.apply {
       imdbViewGroup.isVisible = getScoreFromOMDB(omdbDetails.imdbRating)
@@ -384,6 +392,11 @@ class DetailUIManager(
    * Updates the recommendation list with paginated data.
    */
   fun updateRecommendations(recommendations: PagingData<MediaItem>, lifecycle: Lifecycle) {
+    adapterRecommendation.observeEmptyState { isEmpty ->
+      binding.layoutRecommendation.isVisible = !isEmpty
+      binding.dividerCast.isVisible = !isEmpty
+    }
+
     adapterRecommendation.submitData(lifecycle, recommendations)
   }
 
