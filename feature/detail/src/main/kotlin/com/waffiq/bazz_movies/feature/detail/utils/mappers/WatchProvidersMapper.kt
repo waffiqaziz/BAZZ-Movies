@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
+import com.waffiq.bazz_movies.core.designsystem.R.string.no_watch_providers
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.ProviderResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponseItem
@@ -44,5 +45,5 @@ object WatchProvidersMapper {
         free = provider.free.orEmpty(),
         rent = provider.rent.orEmpty(),
       )
-    } ?: WatchProvidersUiState.Error("No watch providers available")
+    } ?: WatchProvidersUiState.Error(no_watch_providers)
 }

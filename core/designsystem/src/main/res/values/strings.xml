@@ -130,6 +130,7 @@
   <string name="backdrop_not_found">*Official backdrop has not been released yet</string>
   <string name="data_powered_by">*Data powered by</string>
   <string name="where_to_watch">Where to watch</string>
+  <string name="no_watch_providers">No watch providers available</string>
   <string name="ads">Ads</string>
   <string name="buy">Buy</string>
   <string name="rent">Rent</string>

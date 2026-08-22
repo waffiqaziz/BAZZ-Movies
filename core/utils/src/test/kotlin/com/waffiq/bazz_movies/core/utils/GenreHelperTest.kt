@@ -99,11 +99,11 @@ class GenreHelperTest {
   }
 
   @Test
-  fun toListGenreIds_stringValue_returnsCorrectGenreId(){
-    assertEquals("Action".toListGenreIds(),listOf(28))
-    assertEquals("Fantasy, History".toListGenreIds(),listOf(14,36))
-    assertEquals("".toListGenreIds(),emptyList<Int>())
-    assertEquals("222222222".toListGenreIds(),emptyList<Int>())
+  fun toListGenreIds_stringValue_returnsCorrectGenreId() {
+    assertEquals("Action".toListGenreIds(), listOf(28))
+    assertEquals("Fantasy, History".toListGenreIds(), listOf(14, 36))
+    assertEquals("".toListGenreIds(), emptyList<Int>())
+    assertEquals("222222222".toListGenreIds(), emptyList<Int>())
   }
 
   @Test

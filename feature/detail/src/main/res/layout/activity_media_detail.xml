@@ -230,13 +230,15 @@
             android:maxLines="1"
             android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
             android:textColor="@color/gray_200"
+            android:visibility="gone"
             app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="@+id/tv_region_release"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toEndOf="@+id/tv_region_release"
             app:layout_constraintTop_toTopOf="@+id/tv_region_release"
-            tools:text="PG-A" />
+            tools:text="PG-A"
+            tools:visibility="visible" />
 
           <!-- TV/Movie -->
           <TextView
@@ -256,10 +258,12 @@
             android:layout_marginVertical="4dp"
             android:layout_marginStart="@dimen/margin_detail_info"
             android:importantForAccessibility="no"
+            android:visibility="gone"
             app:dividerColor="@color/gray_700"
             app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
             app:layout_constraintStart_toEndOf="@+id/tv_mediaType"
-            app:layout_constraintTop_toTopOf="@+id/tv_mediaType" />
+            app:layout_constraintTop_toTopOf="@+id/tv_mediaType"
+            tools:visibility="visible" />
 
           <!-- Duration -->
           <TextView
@@ -273,11 +277,13 @@
             android:gravity="start"
             android:maxLines="1"
             android:text="@string/not_available"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/divider2"
             app:layout_constraintTop_toTopOf="@+id/tv_mediaType"
-            tools:text="1H 22m" />
+            tools:text="1H 22m"
+            tools:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <!--     End of UPPER SECTION   -->
@@ -295,7 +301,9 @@
 
         <include
           android:id="@+id/score_section"
-          layout="@layout/score_section" />
+          layout="@layout/score_section"
+          android:visibility="gone"
+          tools:visibility="visible" />
 
         <com.google.android.material.divider.MaterialDivider
           android:id="@+id/divider_score"
@@ -383,7 +391,9 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/default_margin_parent_20"
-          android:layout_marginTop="16dp">
+          android:layout_marginTop="16dp"
+          android:visibility="gone"
+          tools:visibility="visible">
 
           <TextView
             android:id="@+id/tv_cast_header"
@@ -421,6 +431,7 @@
           tools:orientation="horizontal" />
 
         <com.google.android.material.divider.MaterialDivider
+          android:id="@+id/divider_cast"
           android:layout_width="match_parent"
           android:layout_height="1dp"
           android:layout_marginHorizontal="@dimen/default_margin_parent_20"
@@ -438,7 +449,9 @@
           android:id="@+id/layout_recommendation"
           style="@style/LayoutHeaderTheme"
           android:layout_marginHorizontal="@dimen/default_margin_parent_20"
-          android:layout_marginTop="4dp">
+          android:layout_marginTop="4dp"
+          android:visibility="gone"
+          tools:visibility="visible">
 
           <TextView
             android:id="@+id/tv_recommendation_header"

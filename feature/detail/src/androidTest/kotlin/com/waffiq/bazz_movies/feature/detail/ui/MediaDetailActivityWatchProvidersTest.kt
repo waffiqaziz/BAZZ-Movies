@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.ui
 
 import androidx.test.platform.app.InstrumentationRegistry
+import com.waffiq.bazz_movies.core.designsystem.R.string.no_watch_providers
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions.clickItemAt
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
@@ -119,7 +120,7 @@ class MediaDetailActivityWatchProvidersTest : BaseMediaDetailActivityTest() {
         uiState.update { state ->
           state.copy(
             detail = state.detail?.copy(
-              watchProviders = WatchProvidersUiState.Error("Error fetching watch providers"),
+              watchProviders = WatchProvidersUiState.Error(no_watch_providers),
             ),
           )
         }

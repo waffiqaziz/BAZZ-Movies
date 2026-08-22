@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
+import com.waffiq.bazz_movies.core.designsystem.R.string.no_watch_providers
 import com.waffiq.bazz_movies.core.models.Favorite
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.toUsd
@@ -36,7 +37,7 @@ object BasicMediaDetailMapper {
       tmdbScore = getTransformTMDBScore(voteAverage),
       trailer = videos?.toLink(),
       watchProviders = watchProviders?.toWatchProvidersState(userRegion)
-        ?: WatchProvidersUiState.Error("No watch providers available"),
+        ?: WatchProvidersUiState.Error(no_watch_providers),
 
       // tv related
       totalEpisodes = numberOfEpisodes,
@@ -66,7 +67,7 @@ object BasicMediaDetailMapper {
       tmdbScore = getTransformTMDBScore(voteAverage),
       trailer = videos?.toLink(),
       watchProviders = watchProviders?.toWatchProvidersState(releaseDateRegion.regionRelease)
-        ?: WatchProvidersUiState.Error("No watch providers available"),
+        ?: WatchProvidersUiState.Error(no_watch_providers),
 
       // movie related
       budget = toUsd(budget),

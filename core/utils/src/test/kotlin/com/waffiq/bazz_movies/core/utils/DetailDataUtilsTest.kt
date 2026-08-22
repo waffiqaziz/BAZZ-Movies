@@ -326,42 +326,45 @@ class DetailDataUtilsTest {
   @Test
   fun dateOf_whenAllDateFieldAvailable_returnsReleaseDate() {
     val data = context.dateOf(MediaItem(releaseDate = "2023-05-15", firstAirDate = "2010-10-10"))
-    assertEquals("2023-05-15", data)
+    assertEquals("May 15, 2023", data)
   }
 
   @Test
   fun dateOf_whenDateIsMissing_returnsCorrectValue() {
+    val formattedDate = "May 15, 2023"
+    val rawDate = "2023-05-15"
+
     // all date is null
     val data1 = context.dateOf(MediaItem())
-    assertEquals("N/A", data1)
+    assertEquals("", data1)
 
     // releaseDate is null
-    val data2 = context.dateOf(MediaItem(firstAirDate = "2023-05-15"))
-    assertEquals("2023-05-15", data2)
+    val data2 = context.dateOf(MediaItem(firstAirDate = rawDate))
+    assertEquals(formattedDate, data2)
 
     // releaseDate is empty
-    val data3 = context.dateOf(MediaItem(releaseDate = "", firstAirDate = "2023-05-15"))
-    assertEquals("2023-05-15", data3)
+    val data3 = context.dateOf(MediaItem(releaseDate = "", firstAirDate = rawDate))
+    assertEquals(formattedDate, data3)
 
     // releaseDate is blank
-    val data4 = context.dateOf(MediaItem(releaseDate = " ", firstAirDate = "2023-05-15"))
-    assertEquals("2023-05-15", data4)
+    val data4 = context.dateOf(MediaItem(releaseDate = " ", firstAirDate = rawDate))
+    assertEquals(formattedDate, data4)
 
     // firstAirDate is null
-    val data5 = context.dateOf(MediaItem(firstAirDate = "2023-05-15"))
-    assertEquals("2023-05-15", data5)
+    val data5 = context.dateOf(MediaItem(firstAirDate = rawDate))
+    assertEquals(formattedDate, data5)
 
     // firstAirDate is empty
-    val data6 = context.dateOf(MediaItem(firstAirDate = "", releaseDate = "2023-05-15"))
-    assertEquals("2023-05-15", data6)
+    val data6 = context.dateOf(MediaItem(firstAirDate = "", releaseDate = rawDate))
+    assertEquals(formattedDate, data6)
 
     // firstAirDate is blank
-    val data7 = context.dateOf(MediaItem(firstAirDate = " ", releaseDate = "2023-05-15"))
-    assertEquals("2023-05-15", data7)
+    val data7 = context.dateOf(MediaItem(firstAirDate = " ", releaseDate = rawDate))
+    assertEquals(formattedDate, data7)
 
     // invalid date
     val data8 = context.dateOf(MediaItem(firstAirDate = " ", releaseDate = "2023-e05-15"))
-    assertEquals("N/A", data8)
+    assertEquals("", data8)
   }
 
   @Test
