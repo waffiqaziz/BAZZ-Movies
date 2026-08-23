@@ -11,6 +11,7 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.JUSTWATCH_LINK_MAIN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_LINK_MAIN
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_arrow_down
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_arrow_up
+import com.waffiq.bazz_movies.core.designsystem.R.string.no_watch_providers
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
@@ -43,6 +44,7 @@ class WatchProvidersManager(
   private var isExpanded = false
 
   init {
+    setupInitial()
     setupWatchProvidersUI()
     setupClickListeners()
   }
@@ -67,6 +69,13 @@ class WatchProvidersManager(
       setupRecyclerView(rvRent, adapterRent)
       setupRecyclerView(rvStreaming, adapterStreaming)
     }
+  }
+
+  private fun setupInitial() {
+    provider.tvWatchProvidersMessage.isVisible = true
+    provider.layoutJustwatch.isVisible = false
+    provider.tvWatchProvidersMessage.text =
+      provider.tvWatchProvidersMessage.context.getString(no_watch_providers)
   }
 
   private fun setupRecyclerView(recyclerView: RecyclerView, adapter: WatchProvidersAdapter) {
@@ -167,10 +176,10 @@ class WatchProvidersManager(
    *
    * @param message The error message to display.
    */
-  private fun showError(message: String) {
+  private fun showError(message: Int) {
     provider.apply {
       tvWatchProvidersMessage.apply {
-        text = message
+        text = tvWatchProvidersMessage.context.getString(message)
         isVisible = true
       }
       layoutJustwatch.isVisible = false

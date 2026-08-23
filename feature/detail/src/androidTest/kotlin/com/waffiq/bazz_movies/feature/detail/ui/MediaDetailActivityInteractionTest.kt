@@ -6,6 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.Intents.intending
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
+import androidx.test.platform.app.InstrumentationRegistry
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.cancel
@@ -18,8 +19,9 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.perform
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performSwipeLeft
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performTextClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
-import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNotExist
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNotHaveText
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isVisible
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_back
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_favorite
@@ -27,9 +29,11 @@ import com.waffiq.bazz_movies.feature.detail.R.id.btn_more_recommendation
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_view_all_cast
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_watchlist
 import com.waffiq.bazz_movies.feature.detail.R.id.collection_section
+import com.waffiq.bazz_movies.feature.detail.R.id.divider_cast
 import com.waffiq.bazz_movies.feature.detail.R.id.iv_poster
 import com.waffiq.bazz_movies.feature.detail.R.id.layout_recommendation
 import com.waffiq.bazz_movies.feature.detail.R.id.rating_bar_action
+import com.waffiq.bazz_movies.feature.detail.R.id.rv_cast
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_genre
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_recommendation
 import com.waffiq.bazz_movies.feature.detail.R.id.score_section
@@ -342,6 +346,45 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
   }
 
   @Test
+  fun recommendation_whenEmpty_hideRecommendationLayout() {
+    context.launchMediaDetailActivity {
+      recommendations.value = pagingDataOf(emptyList())
+
+      layout_recommendation.isNotDisplayed()
+      divider_cast.isNotDisplayed()
+    }
+  }
+
+  @Test
+  fun recommendationNonEmpty_shouldShowRecommendationLayoutAndDivider() {
+    context.launchMediaDetailActivity {
+      recommendations.value = pagingDataOf(listOf(testMediaItem.copy(name = "1")))
+
+      rv_recommendation.performScrollTo()
+      layout_recommendation.isDisplayed()
+      divider_cast.isDisplayed()
+    }
+  }
+
+  @Test
+  fun recommendation_toggleEmptyAndNonEmpty_hitsBothBranches() {
+    context.launchMediaDetailActivity {
+      recommendations.value = pagingDataOf(emptyList())
+      InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+
+      layout_recommendation.isNotDisplayed()
+      divider_cast.isNotDisplayed()
+
+      recommendations.value = pagingDataOf(listOf(testMediaItem))
+      InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+
+      rv_recommendation.performScrollTo()
+      layout_recommendation.isDisplayed()
+      divider_cast.isDisplayed()
+    }
+  }
+
+  @Test
   fun buttonCollection_whenClicked_shouldOpenCollectionPage() {
     context.launchMediaDetailActivity {
       collection_section.performScrollTo()
@@ -391,10 +434,9 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
           detail = state.detail?.copy(credits = null),
         )
       }
-      performOpenBottomSheet()
 
-      "Cast".doesNotExist()
-      "Crew".doesNotExist()
+      rv_cast.isNotDisplayed()
+      btn_view_all_cast.isNotDisplayed()
     }
   }
 

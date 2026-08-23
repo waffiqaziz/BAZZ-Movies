@@ -39,7 +39,7 @@ object HomeFragmentHelper {
     vararg toggleViews: View,
   ) {
     this.lifecycleScope.launch {
-      adapter.loadStateFlow.debounce(DEBOUNCE_SHORT)
+      adapter.loadStateFlow.debounce(DEBOUNCE_SHORT.milliseconds)
         .distinctUntilChanged().collectLatest { loadState ->
           val isEmpty =
             loadState.source.refresh is LoadState.NotLoading &&
@@ -109,7 +109,7 @@ object HomeFragmentHelper {
             loadState.refresh is LoadState.NotLoading &&
               loadState.prepend is LoadState.NotLoading &&
               loadState.append is LoadState.NotLoading -> {
-              delay(DEBOUNCE_SHORT)
+              delay(DEBOUNCE_SHORT.milliseconds)
               onSuccess()
             }
 

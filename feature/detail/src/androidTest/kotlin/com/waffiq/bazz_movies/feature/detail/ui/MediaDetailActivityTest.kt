@@ -5,9 +5,7 @@ import androidx.lifecycle.lifecycleScope
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.id.chip
 import com.waffiq.bazz_movies.core.designsystem.R.string.add_to_favorite
-import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
-import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNotExist
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
@@ -134,27 +132,27 @@ class MediaDetailActivityTest : BaseMediaDetailActivityTest() {
     // status
     context.launchMediaDetailActivity(testMediaItem.copy(mediaType = TV_MEDIA_TYPE)) {
       updateState { copy(detail = testMediaDetail.copy(status = null)) }
-      tv_duration.doesHaveText(context.getString(not_available))
+      tv_duration.isNotDisplayed()
     }
 
     context.launchMediaDetailActivity(testMediaItem.copy(mediaType = TV_MEDIA_TYPE)) {
       updateState { copy(detail = testMediaDetail.copy(status = "")) }
-      tv_duration.doesHaveText(context.getString(not_available))
+      tv_duration.isNotDisplayed()
     }
 
     // movie duration null
     context.launchMediaDetailActivity {
       updateState { copy(detail = testMediaDetail.copy(duration = null)) }
-      tv_duration.doesHaveText(context.getString(not_available))
+      tv_duration.isNotDisplayed()
     }
 
     // tv status null or empty
     context.launchMediaDetailActivity(data = testMediaItem.copy(mediaType = TV_MEDIA_TYPE)) {
       updateState { copy(detail = testMediaDetail.copy(status = null)) }
-      tv_duration.doesHaveText(context.getString(not_available))
+      tv_duration.isNotDisplayed()
 
       updateState { copy(detail = testMediaDetail.copy(status = "")) }
-      tv_duration.doesHaveText(context.getString(not_available))
+      tv_duration.isNotDisplayed()
     }
 
     // tmdb score hidden
