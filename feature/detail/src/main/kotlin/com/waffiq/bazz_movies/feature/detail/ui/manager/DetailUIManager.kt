@@ -358,8 +358,8 @@ class DetailUIManager(
     adapterCast.submitList(credits.cast)
 
     val hasCast = credits.cast.isNotEmpty()
+    binding.layoutCast.isVisible = hasCast
     binding.rvCast.isVisible = hasCast
-    binding.tvCastHeader.isVisible = hasCast
   }
 
   /**

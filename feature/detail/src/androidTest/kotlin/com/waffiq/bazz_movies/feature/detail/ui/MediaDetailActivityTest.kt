@@ -203,7 +203,7 @@ class MediaDetailActivityTest : BaseMediaDetailActivityTest() {
   }
 
   @Test
-  fun creditsValue_withEmptyValue_showsReleaseDateCorrectly() {
+  fun creditsValue_withEmptyValue_hidesTheLayout() {
     context.launchMediaDetailActivity {
       uiState.update { state ->
         state.copy(
@@ -215,6 +215,7 @@ class MediaDetailActivityTest : BaseMediaDetailActivityTest() {
           ),
         )
       }
+      btn_view_all_cast.isNotDisplayed()
       rv_cast.isNotDisplayed()
     }
   }

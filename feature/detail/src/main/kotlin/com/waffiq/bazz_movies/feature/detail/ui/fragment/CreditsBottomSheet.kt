@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.tabs.TabLayout
@@ -59,8 +58,8 @@ class CreditsBottomSheet : BottomSheetDialogFragment() {
 
   private fun setupBottomSheetBehavior() {
     (dialog as BottomSheetDialog).behavior.apply {
-      state = BottomSheetBehavior.STATE_HALF_EXPANDED
-      skipCollapsed = false
+      isFitToContents = true
+      skipCollapsed = true
     }
   }
 
