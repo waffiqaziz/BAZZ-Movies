@@ -17,6 +17,7 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.MediaAdap
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.SwipeConfig
 import com.waffiq.bazz_movies.navigation.INavigator
+import com.waffiq.bazz_movies.navigation.utils.toMediaArgs
 
 class MediaPagingAdapter(
   private val navigator: INavigator,
@@ -54,7 +55,10 @@ class MediaPagingAdapter(
       binding.bindContent(config)
 
       binding.containerResult.setOnClickListener {
-        navigator.openDetails(itemView.context, mediaItem.copy(mediaType = mediaType))
+        navigator.openDetails(
+          itemView.context,
+          mediaItem.copy(mediaType = mediaType).toMediaArgs(),
+        )
       }
 
       binding.content.bindMetaData(mediaItem)

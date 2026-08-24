@@ -22,6 +22,7 @@ import com.waffiq.bazz_movies.feature.home.utils.helpers.Helper.backdropSource
 import com.waffiq.bazz_movies.feature.home.utils.helpers.Helper.rating
 import com.waffiq.bazz_movies.feature.home.utils.helpers.Helper.year
 import com.waffiq.bazz_movies.navigation.INavigator
+import com.waffiq.bazz_movies.navigation.utils.toMediaArgs
 
 class ItemWIdeAdapter(private val navigator: INavigator) :
   PagingDataAdapter<MediaItem, ItemWIdeAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -55,7 +56,7 @@ class ItemWIdeAdapter(private val navigator: INavigator) :
 
       // image OnClickListener
       itemView.setOnClickListener {
-        navigator.openDetails(itemView.context, data)
+        navigator.openDetails(itemView.context, data.toMediaArgs())
       }
     }
 

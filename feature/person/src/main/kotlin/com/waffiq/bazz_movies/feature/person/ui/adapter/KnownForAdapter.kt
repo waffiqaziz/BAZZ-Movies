@@ -19,6 +19,7 @@ import com.waffiq.bazz_movies.core.utils.DetailDataUtils.posterSource
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.navigation.INavigator
+import com.waffiq.bazz_movies.navigation.utils.toMediaArgs
 
 class KnownForAdapter(private val navigator: INavigator) :
   RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
@@ -69,7 +70,7 @@ class KnownForAdapter(private val navigator: INavigator) :
       binding.tvCastName.text = titleHandler(cast)
       binding.tvCastCharacter.text = cast.character ?: itemView.context.getString(not_available)
 
-      val mediaItem = MediaItem(
+      val mediaArgs = MediaItem(
         overview = cast.overview,
         title = cast.title,
         name = cast.name,
@@ -85,11 +86,11 @@ class KnownForAdapter(private val navigator: INavigator) :
         voteCount = cast.voteCount,
         posterPath = cast.posterPath,
         backdropPath = cast.backdropPath,
-      )
+      ).toMediaArgs()
 
       // OnClickListener
       binding.container.setOnClickListener {
-        navigator.openDetails(itemView.context, mediaItem)
+        navigator.openDetails(itemView.context, mediaArgs)
       }
     }
   }

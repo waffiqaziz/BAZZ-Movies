@@ -2,11 +2,10 @@ package com.waffiq.bazz_movies.navigation
 
 import android.content.Context
 import com.waffiq.bazz_movies.core.models.MediaCastItem
-import com.waffiq.bazz_movies.core.models.MediaItem
 
 interface INavigator {
   fun openPersonDetails(context: Context, cast: MediaCastItem)
-  fun openDetails(context: Context, mediaItem: MediaItem)
+  fun openDetails(context: Context, args: MediaArgs)
   fun openMainActivity(context: Context)
   fun openLoginActivity(context: Context)
   fun openAboutActivity(context: Context)

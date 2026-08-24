@@ -7,5 +7,7 @@ plugins {
 android.namespace = "com.waffiq.bazz_movies.core.models"
 
 dependencies {
+  implementation(project(":core:common"))
+
   testImplementation(libs.robolectric)
 }

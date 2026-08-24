@@ -14,7 +14,7 @@ enum class MediaType {
      * Parses a TMDB `media_type` field ("movie", "tv", "person") into a [MediaType].
      * Returns null for unknown/blank values.
      */
-    fun fromValue(value: String?): MediaType? = value?.let { byValue[it.lowercase()] }
+    fun fromValue(value: String?): MediaType = value?.let { byValue[it.lowercase()] } ?: MOVIE
   }
 }
 

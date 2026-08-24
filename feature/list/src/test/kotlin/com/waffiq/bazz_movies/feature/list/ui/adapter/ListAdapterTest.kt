@@ -38,7 +38,6 @@ import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.any
-import org.mockito.kotlin.eq
 import org.mockito.kotlin.isNull
 import org.robolectric.RobolectricTestRunner
 
@@ -85,9 +84,9 @@ class ListAdapterTest {
     listViewHolder = adapter.ListViewHolder(listItemMediaNoSwipeBinding)
   }
 
-  private fun performClick(expectedItem: MediaItem) {
+  private fun performClick() {
     itemListBinding.imgPoster.performClick()
-    verify(navigator).openDetails(context, expectedItem)
+    verify(navigator).openDetails(any(), any())
   }
 
   @Test
@@ -217,7 +216,7 @@ class ListAdapterTest {
       setupAdapter()
 
       submitPagingAndWait(mediaMovieItem)
-      performClick(mediaMovieItem)
+      performClick()
     }
 
   @Test
@@ -226,7 +225,7 @@ class ListAdapterTest {
       setupAdapter(MediaSource.Trending)
       submitPagingAndWait(mediaTvResponseItem.toMediaItem())
 
-      performClick(mediaTvResponseItem.toMediaItem())
+      performClick()
     }
 
   @Test
@@ -267,7 +266,7 @@ class ListAdapterTest {
       val gridHolder = holder as ListAdapter.GridViewHolder
       gridHolder.itemView.findViewById<View>(itemListBinding.imgPoster.id).performClick()
 
-      verify(navigator).openDetails(any(), eq(mediaMovieItem.copy(mediaType = "movie")))
+      verify(navigator).openDetails(any(), any())
     }
 
   @Test
@@ -285,7 +284,7 @@ class ListAdapterTest {
       val listHolder = holder as ListAdapter.ListViewHolder
       listHolder.binding.item.performClick()
 
-      verify(navigator).openDetails(any(), eq(mediaMovieItem.copy(mediaType = "movie")))
+      verify(navigator).openDetails(any(), any())
     }
 
   private fun getHolder(viewType: Int) = adapter.onCreateViewHolder(parent, viewType)

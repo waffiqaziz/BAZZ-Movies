@@ -28,8 +28,11 @@ import com.waffiq.bazz_movies.feature.detail.ui.manager.WatchProvidersManager
 import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getOverview
 import com.waffiq.bazz_movies.navigation.INavigator
+import com.waffiq.bazz_movies.navigation.MediaArgs
 import com.waffiq.bazz_movies.navigation.extractParcelableExtraFromIntent
+import com.waffiq.bazz_movies.navigation.utils.toMediaItem
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -85,13 +88,16 @@ class MediaDetailActivity : AppCompatActivity() {
   }
 
   private fun extractDataFromIntent(): Boolean {
-    val item = extractParcelableExtraFromIntent<MediaItem>(intent, EXTRA_MOVIE)
+    val item = extractParcelableExtraFromIntent<MediaArgs>(intent, EXTRA_MOVIE)
       ?: return false
-    dataExtra = item
+    dataExtra = item.toMediaItem()
     return true
   }
 
   private fun initializeManagers() {
+    // the less and read more text doesn't show if put inside Ui manager so, we put in here
+    binding.tvOverview.text = this.getOverview(dataExtra.overview)
+
     uiManager = DetailUIManager(
       binding = binding,
       navigator = navigator,

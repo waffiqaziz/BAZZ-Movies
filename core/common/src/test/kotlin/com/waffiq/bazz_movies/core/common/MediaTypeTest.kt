@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.core.common
 
 import com.waffiq.bazz_movies.core.common.MediaType.Companion.fromValue
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
+import org.junit.Assert.assertNotNull
 import org.junit.Test
 
 class MediaTypeTest {
@@ -10,8 +10,8 @@ class MediaTypeTest {
   @Test
   fun fromValue_withValidValue_returnsCorrectly() {
     assertEquals(fromValue("person"), MediaType.PERSON)
-    assertNull(fromValue(null))
-    assertNull(fromValue("unknown"))
+    assertNotNull(fromValue(null))
+    assertNotNull(fromValue("unknown"))
   }
 
   @Test

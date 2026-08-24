@@ -21,6 +21,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.Provider
 import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
+import com.waffiq.bazz_movies.navigation.utils.toMediaArgs
 
 object DataDumb {
 
@@ -237,6 +238,8 @@ object DataDumb {
     releaseDate = "2025-07-09",
     originCountry = null,
   )
+
+  val mediaArgs = testMediaItem.toMediaArgs()
 
   val mediaDetailUiState = MediaDetailUiState(
     detail = testMediaDetail,

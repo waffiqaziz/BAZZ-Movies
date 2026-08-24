@@ -15,6 +15,7 @@ import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaNoSwipe
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.MediaSource
+import com.waffiq.bazz_movies.navigation.utils.toMediaArgs
 
 class ListAdapter(private val navigator: INavigator, private val source: MediaSource) :
   PagingDataAdapter<MediaItem, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
@@ -52,7 +53,7 @@ class ListAdapter(private val navigator: INavigator, private val source: MediaSo
       is MediaSource.Trending -> mediaItem
       is MediaSource.Typed -> mediaItem.copy(mediaType = source.mediaType)
     }
-    navigator.openDetails(this, item)
+    navigator.openDetails(this, item.toMediaArgs())
   }
 
   inner class GridViewHolder(private val binding: ItemListBinding) :

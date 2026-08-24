@@ -5,6 +5,7 @@ import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.feature.home.databinding.ItemWideBinding
 import com.waffiq.bazz_movies.feature.home.testutils.BaseAdapterTest
+import com.waffiq.bazz_movies.navigation.utils.toMediaArgs
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -77,7 +78,7 @@ class ItemWIdeAdapterTest : BaseAdapterTest() {
       submitPagingAndWait(mediaMovieItem)
       binding.container.performClick()
 
-      val expectedItem = mediaMovieItem
+      val expectedItem = mediaMovieItem.toMediaArgs()
       verify(navigator).openDetails(context, expectedItem)
     }
 

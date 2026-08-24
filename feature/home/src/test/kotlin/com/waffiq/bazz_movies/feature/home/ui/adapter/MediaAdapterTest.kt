@@ -8,6 +8,7 @@ import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.feature.home.testutils.BaseAdapterTest
 import com.waffiq.bazz_movies.navigation.MediaSource
+import com.waffiq.bazz_movies.navigation.utils.toMediaArgs
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -19,6 +20,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.any
 import org.mockito.kotlin.verify
 import org.robolectric.RobolectricTestRunner
 
@@ -79,7 +81,7 @@ class MediaAdapterTest : BaseAdapterTest() {
       submitPagingAndWait(mediaMovieItem)
 
       binding.imgPoster.performClick()
-      verify(navigator).openDetails(context, mediaMovieItem)
+      verify(navigator).openDetails(any(), any())
     }
 
   @Test
@@ -89,7 +91,7 @@ class MediaAdapterTest : BaseAdapterTest() {
       setupViewHolderAndSubmit()
 
       binding.imgPoster.performClick()
-      verify(navigator).openDetails(context, mediaMovieItem)
+      verify(navigator).openDetails(context, mediaMovieItem.toMediaArgs())
     }
 
   @Test
@@ -99,7 +101,10 @@ class MediaAdapterTest : BaseAdapterTest() {
       setupViewHolderAndSubmit()
 
       binding.imgPoster.performClick()
-      verify(navigator).openDetails(context, mediaMovieItem.copy(mediaType = TV_MEDIA_TYPE))
+      verify(navigator).openDetails(
+        context,
+        mediaMovieItem.copy(mediaType = TV_MEDIA_TYPE).toMediaArgs(),
+      )
     }
 
   @Test

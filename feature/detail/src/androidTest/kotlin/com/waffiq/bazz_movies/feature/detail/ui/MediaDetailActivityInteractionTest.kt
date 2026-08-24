@@ -7,8 +7,8 @@ import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.Intents.intending
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.platform.app.InstrumentationRegistry
+import com.waffiq.bazz_movies.core.common.MediaType
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.cancel
 import com.waffiq.bazz_movies.core.designsystem.R.string.submit
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions.clickItemAt
@@ -40,6 +40,7 @@ import com.waffiq.bazz_movies.feature.detail.R.id.score_section
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_your_score
 import com.waffiq.bazz_movies.feature.detail.R.id.your_score_viewGroup
 import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
+import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.mediaArgs
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaCredits
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaItem
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaState
@@ -123,7 +124,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
   @Test
   fun swipeRefreshTv_whenScroll_runsCorrectly() {
     context.launchMediaDetailActivity(
-      data = testMediaItem.copy(mediaType = TV_MEDIA_TYPE),
+      data = mediaArgs.copy(mediaType = MediaType.TV),
     ) {
       iv_poster.performSwipeDown()
     }
@@ -132,7 +133,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
   @Test
   fun swipeRefresh_whenUnknownMediaType_runsCorrectly() {
     context.launchMediaDetailActivity(
-      data = testMediaItem.copy(mediaType = "NAN"),
+      data = mediaArgs.copy(mediaType = MediaType.MULTI),
     ) {
       iv_poster.performSwipeDown()
     }
@@ -160,7 +161,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
   @Test
   fun dialogRatting_submitRatingSuccessful_showsNewUserRating() {
     context.launchMediaDetailActivity(
-      data = testMediaItem.copy(mediaType = TV_MEDIA_TYPE),
+      data = mediaArgs.copy(mediaType = MediaType.TV),
     ) {
       updateState { copy(itemState = testMediaStateRated) }
       setupLoginUser()
@@ -194,7 +195,7 @@ class MediaDetailActivityInteractionTest : BaseMediaDetailActivityTest() {
   @Test
   fun dialogRatting_submitRatingUnsuccessful_notShowsTheRating() {
     context.launchMediaDetailActivity(
-      data = testMediaItem.copy(mediaType = TV_MEDIA_TYPE),
+      data = mediaArgs.copy(mediaType = MediaType.TV),
     ) {
       updateState { copy(itemState = testMediaStateRated) }
       errorEvent.tryEmit("error") // ← tryEmit, not emit
