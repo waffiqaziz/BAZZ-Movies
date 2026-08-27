@@ -5,18 +5,19 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.listitem.ListItemCardView
+import com.waffiq.bazz_movies.core.common.MediaType.Companion.fromValue
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaSwipeBinding
 import com.waffiq.bazz_movies.core.models.Favorite
-import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
 import com.waffiq.bazz_movies.core.utils.GenreHelper.toListGenreIds
 import com.waffiq.bazz_movies.core.utils.RatingHelper.ratingHandler
 import com.waffiq.bazz_movies.core.utils.RatingHelper.setRatingBar
 import com.waffiq.bazz_movies.navigation.INavigator
+import com.waffiq.bazz_movies.navigation.MediaArgs
 
 object MediaLocalAdapterHelper {
 
@@ -48,15 +49,14 @@ object MediaLocalAdapterHelper {
     setOnClickListener {
       navigator.openDetails(
         context,
-        MediaItem(
+        MediaArgs(
           backdropPath = fav.backDrop,
           posterPath = fav.poster,
           releaseDate = fav.releaseDate,
           overview = fav.overview,
           title = fav.title,
-          voteAverage = fav.rating,
           originalTitle = fav.title,
-          mediaType = fav.mediaType,
+          mediaType = fromValue(fav.mediaType),
           listGenreIds = fav.genre.toListGenreIds(),
           id = fav.mediaId,
         ),

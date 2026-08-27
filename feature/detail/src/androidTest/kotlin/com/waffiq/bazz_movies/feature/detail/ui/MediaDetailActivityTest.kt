@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.detail.ui
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.MediaType
 import com.waffiq.bazz_movies.core.designsystem.R.id.chip
 import com.waffiq.bazz_movies.core.designsystem.R.string.add_to_favorite
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
@@ -28,9 +28,9 @@ import com.waffiq.bazz_movies.feature.detail.R.id.tv_summary_header
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_year_released
 import com.waffiq.bazz_movies.feature.detail.R.id.watch_provider_section
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
+import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.mediaArgs
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaCredits
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaDetail
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaItem
 import com.waffiq.bazz_movies.feature.detail.testutils.basetest.BaseMediaDetailActivityTest
 import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -81,7 +81,7 @@ class MediaDetailActivityTest : BaseMediaDetailActivityTest() {
 
   @Test
   fun detailScreen_whenGenreNull_notShowingGenre() {
-    context.launchMediaDetailActivity(data = testMediaItem.copy(listGenreIds = null)) {
+    context.launchMediaDetailActivity(data = mediaArgs.copy(listGenreIds = null)) {
       updateState { copy(detail = testMediaDetail.copy(genre = "", genreId = null)) }
       "Action".doesNotExist()
     }
@@ -130,12 +130,12 @@ class MediaDetailActivityTest : BaseMediaDetailActivityTest() {
     }
 
     // status
-    context.launchMediaDetailActivity(testMediaItem.copy(mediaType = TV_MEDIA_TYPE)) {
+    context.launchMediaDetailActivity(mediaArgs.copy(mediaType = MediaType.TV)) {
       updateState { copy(detail = testMediaDetail.copy(status = null)) }
       tv_duration.isNotDisplayed()
     }
 
-    context.launchMediaDetailActivity(testMediaItem.copy(mediaType = TV_MEDIA_TYPE)) {
+    context.launchMediaDetailActivity(mediaArgs.copy(mediaType = MediaType.TV)) {
       updateState { copy(detail = testMediaDetail.copy(status = "")) }
       tv_duration.isNotDisplayed()
     }
@@ -147,7 +147,7 @@ class MediaDetailActivityTest : BaseMediaDetailActivityTest() {
     }
 
     // tv status null or empty
-    context.launchMediaDetailActivity(data = testMediaItem.copy(mediaType = TV_MEDIA_TYPE)) {
+    context.launchMediaDetailActivity(data = mediaArgs.copy(mediaType = MediaType.TV)) {
       updateState { copy(detail = testMediaDetail.copy(status = null)) }
       tv_duration.isNotDisplayed()
 

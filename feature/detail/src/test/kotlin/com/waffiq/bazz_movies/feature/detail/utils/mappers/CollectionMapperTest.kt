@@ -1,11 +1,11 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.MediaType
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailCollectionsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.PartsResponseItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.PartsItem
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toDetailCollections
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toMediaItem
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toMediaArgs
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -45,7 +45,7 @@ class CollectionMapperTest {
 
     val detailCollection = detailCollectionsResponse.toDetailCollections()
 
-    assertEquals(emptyList<PartsResponseItem>(), detailCollection.parts)
+    assertEquals(emptyList<PartsItem>(), detailCollection.parts)
   }
 
   @Test
@@ -68,7 +68,7 @@ class CollectionMapperTest {
   }
 
   @Test
-  fun toMediaItem_nonNull_returnsCorrectly() {
+  fun toMediaArgs_nonNull_returnsCorrectly() {
     val partsItem = PartsItem(
       id = 131,
       video = true,
@@ -78,27 +78,21 @@ class CollectionMapperTest {
       voteCount = 434,
     )
 
-    val mediaItem = partsItem.toMediaItem()
+    val mediaItem = partsItem.toMediaArgs()
 
     assertEquals(131, mediaItem.id)
     assertTrue(mediaItem.video)
-    assertEquals("tv", mediaItem.mediaType)
-    assertEquals(5.0, mediaItem.popularity)
-    assertTrue(mediaItem.adult)
-    assertEquals(434, mediaItem.voteCount)
+    assertEquals(MediaType.TV, mediaItem.mediaType)
   }
 
   @Test
-  fun toMediaItem_nullValue_returnsDefault() {
+  fun toMediaArgs_nullValue_returnsDefault() {
     val partsItem = PartsItem()
 
-    val mediaItem = partsItem.toMediaItem()
+    val mediaItem = partsItem.toMediaArgs()
 
-    assertNull(mediaItem.popularity)
     assertEquals(0, mediaItem.id)
     assertFalse(mediaItem.video)
-    assertEquals(MOVIE_MEDIA_TYPE, mediaItem.mediaType)
-    assertFalse(mediaItem.adult)
-    assertEquals(0, mediaItem.voteCount)
+    assertEquals(MediaType.MOVIE, mediaItem.mediaType)
   }
 }

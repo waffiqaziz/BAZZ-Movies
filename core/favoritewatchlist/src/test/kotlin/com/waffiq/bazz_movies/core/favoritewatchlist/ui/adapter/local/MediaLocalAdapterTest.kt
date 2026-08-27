@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local
 import android.os.Looper
 import android.widget.FrameLayout
 import com.google.android.material.listitem.SwipeableListItem
+import com.waffiq.bazz_movies.core.common.MediaType.Companion.fromValue
 import com.waffiq.bazz_movies.core.designsystem.R.id.container_result
 import com.waffiq.bazz_movies.core.designsystem.R.id.reveal_layout_end
 import com.waffiq.bazz_movies.core.designsystem.R.id.reveal_layout_start
@@ -10,7 +11,7 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.BaseMediaLocalAda
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.INA_MOVIE_TITLE
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.INA_MOVIE_TITLE2
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.favorite
-import com.waffiq.bazz_movies.core.models.MediaItem
+import com.waffiq.bazz_movies.navigation.MediaArgs
 import io.mockk.slot
 import io.mockk.verify
 import junit.framework.TestCase.assertEquals
@@ -97,7 +98,7 @@ class MediaLocalAdapterTest : BaseMediaLocalAdapterTest() {
     adapter.submitList(listOf(favorite))
     adapter.onBindViewHolder(viewHolder, 0)
 
-    val resultSlot = slot<MediaItem>()
+    val resultSlot = slot<MediaArgs>()
     binding.containerResult.performClick()
 
     // wait hte UI
@@ -113,7 +114,7 @@ class MediaLocalAdapterTest : BaseMediaLocalAdapterTest() {
     assertEquals(favorite.poster, capturedResult.posterPath)
     assertEquals(favorite.overview, capturedResult.overview)
     assertEquals(favorite.title, capturedResult.originalTitle)
-    assertEquals(favorite.mediaType, capturedResult.mediaType)
+    assertEquals(fromValue(favorite.mediaType), capturedResult.mediaType)
     assertEquals(favorite.releaseDate, capturedResult.releaseDate)
   }
 

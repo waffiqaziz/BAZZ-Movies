@@ -17,8 +17,9 @@ import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.RatingHelper.ratingHandler
 import com.waffiq.bazz_movies.feature.detail.databinding.ItemCollectionPartBinding
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.PartsItem
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toMediaItem
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toMediaArgs
 import com.waffiq.bazz_movies.navigation.INavigator
+import com.waffiq.bazz_movies.navigation.utils.toMediaArgs
 
 class CollectionPartsAdapter(private val navigator: INavigator) :
   ListAdapter<PartsItem, CollectionPartsAdapter.ViewHolder>(CollectionsDiffCallback()) {
@@ -63,7 +64,7 @@ class CollectionPartsAdapter(private val navigator: INavigator) :
           .into(ivMoviePoster)
 
         container.setOnClickListener {
-          navigator.openDetails(itemView.context, item.toMediaItem())
+          navigator.openDetails(itemView.context, item.toMediaArgs())
         }
       }
     }

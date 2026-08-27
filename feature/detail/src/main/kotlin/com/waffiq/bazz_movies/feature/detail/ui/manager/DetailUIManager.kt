@@ -50,7 +50,6 @@ import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.isBackdro
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.posterDetailSource
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.formatRating
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getEpisodesFormatted
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getOverview
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getScoreFromOMDB
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.isBackReleased
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.showDuration
@@ -225,7 +224,6 @@ class DetailUIManager(
       tvTitle.text = tvTitle.context.titleHandler(dataExtra)
       tvMediaType.text = dataExtra.mediaType.uppercase()
       tvYearReleased.text = tvYearReleased.context.dateOf(dataExtra)
-      tvOverview.text = tvOverview.context.getOverview(dataExtra.overview)
     }
     adapterGenre.setGenre(dataExtra.listGenreIds ?: emptyList())
 

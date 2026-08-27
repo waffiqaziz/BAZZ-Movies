@@ -1,10 +1,12 @@
 package com.waffiq.bazz_movies.feature.detail.ui.adapter
 
 import androidx.paging.PagingData
+import com.waffiq.bazz_movies.core.common.MediaType
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPosterBinding
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseAdapterTest
+import com.waffiq.bazz_movies.navigation.MediaArgs
 import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
@@ -136,12 +138,12 @@ class RecommendationAdapterTest : BaseAdapterTest() {
       )
       binding.imgPoster.performClick()
 
-      val expectedItem = MediaItem(
+      val expectedItem = MediaArgs(
         id = 1,
         title = "Test Movie",
         overview = "Test Overview",
         name = "Test Name",
-        mediaType = "movie",
+        mediaType = MediaType.MOVIE,
       )
 
       verify { navigator.openDetails(eq(context), eq(expectedItem)) }

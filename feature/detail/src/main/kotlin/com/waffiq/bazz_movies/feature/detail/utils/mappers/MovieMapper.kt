@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.models.MediaItem
+import com.waffiq.bazz_movies.core.common.MediaType.Companion.fromValue
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.BelongsToCollectionResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailCollectionsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse
@@ -24,6 +23,7 @@ import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toS
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toVideo
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaKeywordsMapper.toMediaKeywords
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.WatchProvidersMapper.toWatchProviders
+import com.waffiq.bazz_movies.navigation.MediaArgs
 
 object MovieMapper {
 
@@ -127,8 +127,8 @@ object MovieMapper {
       voteCount = voteCount,
     )
 
-  fun PartsItem.toMediaItem() =
-    MediaItem(
+  fun PartsItem.toMediaArgs() =
+    MediaArgs(
       id = id ?: 0,
       overview = overview,
       originalLanguage = originalLanguage,
@@ -136,13 +136,9 @@ object MovieMapper {
       listGenreIds = genreIds,
       posterPath = posterPath,
       backdropPath = backdropPath,
-      mediaType = mediaType ?: MOVIE_MEDIA_TYPE,
+      mediaType = fromValue(mediaType),
       releaseDate = releaseDate,
       originalName = originalTitle,
-      popularity = popularity?.toDouble(),
-      voteAverage = voteAverage,
       name = title,
-      adult = adult == true,
-      voteCount = voteCount ?: 0,
     )
 }

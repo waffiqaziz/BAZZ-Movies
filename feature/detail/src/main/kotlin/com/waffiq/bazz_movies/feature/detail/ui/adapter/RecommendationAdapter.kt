@@ -17,6 +17,7 @@ import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.posterSource
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.navigation.INavigator
+import com.waffiq.bazz_movies.navigation.utils.toMediaArgs
 
 class RecommendationAdapter(private val navigator: INavigator) :
   PagingDataAdapter<MediaItem, RecommendationAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -52,7 +53,7 @@ class RecommendationAdapter(private val navigator: INavigator) :
 
       // image OnClickListener
       binding.imgPoster.setOnClickListener {
-        navigator.openDetails(itemView.context, movie)
+        navigator.openDetails(itemView.context, movie.toMediaArgs())
       }
     }
   }

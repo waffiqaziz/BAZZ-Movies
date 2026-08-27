@@ -1,12 +1,11 @@
 package com.waffiq.bazz_movies.feature.detail.ui
 
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.MediaType
 import com.waffiq.bazz_movies.core.common.utils.Constants.NOT_AVAILABLE
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
-import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.feature.detail.R.id.iv_picture_backdrop
 import com.waffiq.bazz_movies.feature.detail.testutils.basetest.BaseMediaDetailActivityTest
+import com.waffiq.bazz_movies.navigation.MediaArgs
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Test
 
@@ -20,9 +19,9 @@ class MediaDetailActivityBackdropTest : BaseMediaDetailActivityTest() {
   @Test
   fun mediaItemValue_withNullValue_showsViewsCorrectly() {
     context.launchMediaDetailActivity(
-      data = MediaItem(
+      data = MediaArgs(
         originalName = "original name",
-        mediaType = MOVIE_MEDIA_TYPE,
+        mediaType = MediaType.MOVIE,
         backdropPath = null,
         posterPath = null,
         releaseDate = null,
@@ -37,9 +36,9 @@ class MediaDetailActivityBackdropTest : BaseMediaDetailActivityTest() {
   @Test
   fun mediaItemValue_withEmptyValue_showsViewsCorrectly() {
     context.launchMediaDetailActivity(
-      data = MediaItem(
+      data = MediaArgs(
         title = "title",
-        mediaType = TV_MEDIA_TYPE,
+        mediaType = MediaType.TV,
         backdropPath = "",
         posterPath = "",
         releaseDate = "",
@@ -54,9 +53,9 @@ class MediaDetailActivityBackdropTest : BaseMediaDetailActivityTest() {
   @Test
   fun mediaItemValue_withNotAvailableValue_showsViewsCorrectly() {
     context.launchMediaDetailActivity(
-      data = MediaItem(
+      data = MediaArgs(
         originalTitle = "original title",
-        mediaType = TV_MEDIA_TYPE,
+        mediaType = MediaType.TV,
         backdropPath = NOT_AVAILABLE,
         posterPath = NOT_AVAILABLE,
         releaseDate = null,
@@ -71,9 +70,9 @@ class MediaDetailActivityBackdropTest : BaseMediaDetailActivityTest() {
   @Test
   fun mediaItemValue_withOneNotAvailableValue_showsViewsCorrectly() {
     context.launchMediaDetailActivity(
-      data = MediaItem(
+      data = MediaArgs(
         originalTitle = "original title",
-        mediaType = MOVIE_MEDIA_TYPE,
+        mediaType = MediaType.MOVIE,
         backdropPath = NOT_AVAILABLE,
         posterPath = null,
         releaseDate = "2025-07-09",
@@ -87,9 +86,9 @@ class MediaDetailActivityBackdropTest : BaseMediaDetailActivityTest() {
   @Test
   fun mediaItemValue_withOneNullAvailableValue_showsViewsCorrectly() {
     context.launchMediaDetailActivity(
-      data = MediaItem(
+      data = MediaArgs(
         originalTitle = "original title",
-        mediaType = MOVIE_MEDIA_TYPE,
+        mediaType = MediaType.MOVIE,
         backdropPath = null,
         posterPath = NOT_AVAILABLE,
         releaseDate = "2025-07-09",
@@ -103,9 +102,9 @@ class MediaDetailActivityBackdropTest : BaseMediaDetailActivityTest() {
   @Test
   fun mediaItemValue_withMixedValue_showsViewsCorrectly() {
     context.launchMediaDetailActivity(
-      data = MediaItem(
+      data = MediaArgs(
         originalTitle = "original title",
-        mediaType = TV_MEDIA_TYPE,
+        mediaType = MediaType.TV,
         backdropPath = null,
         posterPath = "",
       ),
@@ -114,9 +113,9 @@ class MediaDetailActivityBackdropTest : BaseMediaDetailActivityTest() {
     }
 
     context.launchMediaDetailActivity(
-      data = MediaItem(
+      data = MediaArgs(
         originalTitle = "original title",
-        mediaType = TV_MEDIA_TYPE,
+        mediaType = MediaType.TV,
         backdropPath = "",
         posterPath = null,
       ),
@@ -128,9 +127,9 @@ class MediaDetailActivityBackdropTest : BaseMediaDetailActivityTest() {
   @Test
   fun mediaItemValue_withValidBackdropPath_showsViewsCorrectly() {
     context.launchMediaDetailActivity(
-      data = MediaItem(
+      data = MediaArgs(
         originalTitle = "original title",
-        mediaType = MOVIE_MEDIA_TYPE,
+        mediaType = MediaType.MOVIE,
         backdropPath = "/valid_backdrop_path.jpg",
         posterPath = NOT_AVAILABLE,
         releaseDate = "2025-07-09",
@@ -144,9 +143,9 @@ class MediaDetailActivityBackdropTest : BaseMediaDetailActivityTest() {
   @Test
   fun mediaItemValue_withValidPosterPathOnly_showsViewsCorrectly() {
     context.launchMediaDetailActivity(
-      data = MediaItem(
+      data = MediaArgs(
         originalTitle = "original title",
-        mediaType = MOVIE_MEDIA_TYPE,
+        mediaType = MediaType.MOVIE,
         backdropPath = null,
         posterPath = "/valid_poster_path.jpg",
         releaseDate = "2025-07-09",
@@ -160,9 +159,9 @@ class MediaDetailActivityBackdropTest : BaseMediaDetailActivityTest() {
   @Test
   fun mediaItemValue_withInvalidPosterPath_showsViewsCorrectly() {
     context.launchMediaDetailActivity(
-      data = MediaItem(
+      data = MediaArgs(
         originalTitle = "original title",
-        mediaType = MOVIE_MEDIA_TYPE,
+        mediaType = MediaType.MOVIE,
         backdropPath = "",
         posterPath = null,
         releaseDate = "2025-07-09",
@@ -176,9 +175,9 @@ class MediaDetailActivityBackdropTest : BaseMediaDetailActivityTest() {
   @Test
   fun mediaItemValue_withEmptyPosterPath_showsViewsCorrectly() {
     context.launchMediaDetailActivity(
-      data = MediaItem(
+      data = MediaArgs(
         originalTitle = "original title",
-        mediaType = MOVIE_MEDIA_TYPE,
+        mediaType = MediaType.MOVIE,
         backdropPath = null,
         posterPath = "",
         releaseDate = "2025-07-09",

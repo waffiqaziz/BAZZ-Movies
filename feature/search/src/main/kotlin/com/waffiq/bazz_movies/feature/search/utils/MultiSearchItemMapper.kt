@@ -1,13 +1,14 @@
 package com.waffiq.bazz_movies.feature.search.utils
 
+import com.waffiq.bazz_movies.core.common.MediaType.Companion.fromValue
 import com.waffiq.bazz_movies.core.models.MediaCastItem
-import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
+import com.waffiq.bazz_movies.navigation.MediaArgs
 
 object MultiSearchItemMapper {
 
-  fun MultiSearchItem.toMediaItem() =
-    MediaItem(
+  fun MultiSearchItem.toMediaArgs() =
+    MediaArgs(
       posterPath = posterPath,
       backdropPath = backdropPath,
       firstAirDate = firstAirDate,
@@ -15,10 +16,9 @@ object MultiSearchItemMapper {
       overview = overview,
       title = title,
       name = name,
-      voteAverage = voteAverage.toFloat(),
       originalTitle = originalTitle,
       originalName = originalName,
-      mediaType = mediaType,
+      mediaType = fromValue(mediaType),
       listGenreIds = listGenreIds,
       id = id,
     )

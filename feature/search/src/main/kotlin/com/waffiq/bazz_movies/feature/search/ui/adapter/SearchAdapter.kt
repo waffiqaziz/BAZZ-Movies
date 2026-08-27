@@ -26,8 +26,8 @@ import com.waffiq.bazz_movies.core.utils.RatingHelper.ratingHandler
 import com.waffiq.bazz_movies.core.utils.RatingHelper.setRatingBar
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.feature.search.utils.Constants.PERSON_MEDIA_TYPE
+import com.waffiq.bazz_movies.feature.search.utils.MultiSearchItemMapper.toMediaArgs
 import com.waffiq.bazz_movies.feature.search.utils.MultiSearchItemMapper.toMediaCastItem
-import com.waffiq.bazz_movies.feature.search.utils.MultiSearchItemMapper.toMediaItem
 import com.waffiq.bazz_movies.feature.search.utils.SearchHelper.getKnownFor
 import com.waffiq.bazz_movies.feature.search.utils.SearchHelper.profileImageSource
 import com.waffiq.bazz_movies.navigation.INavigator
@@ -68,7 +68,7 @@ class SearchAdapter(private val navigator: INavigator) :
       binding.content.setupPerson(false)
       binding.content.showMediaData(data)
       binding.item.setOnClickListener {
-        navigator.openDetails(itemView.context, data.toMediaItem())
+        navigator.openDetails(itemView.context, data.toMediaArgs())
       }
     }
   }

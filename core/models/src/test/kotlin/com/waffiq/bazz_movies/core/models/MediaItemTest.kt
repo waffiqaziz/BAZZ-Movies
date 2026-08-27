@@ -1,7 +1,5 @@
 package com.waffiq.bazz_movies.core.models
 
-import android.os.Parcel
-import android.os.Parcelable
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertNull
@@ -80,58 +78,5 @@ class MediaItemTest {
     assertNull(mediaItemNull.title)
     assertNull(mediaItemNull.releaseDate)
     assertNull(mediaItemNull.originCountry)
-  }
-
-  @Test
-  fun parcelable_whenAllFieldsAreValid_readsAndWritesCorrectly() {
-    // obtain the CREATOR field
-    @Suppress("UNCHECKED_CAST")
-    val creator =
-      MediaItem::class.java.getField("CREATOR").get(null) as Parcelable.Creator<MediaItem>
-    val parcel = Parcel.obtain()
-    mediaItemValid.writeToParcel(parcel, 0)
-
-    parcel.setDataPosition(0)
-
-    val fromParcel = creator.createFromParcel(parcel)
-    assertEquals(mediaItemValid, fromParcel)
-    parcel.recycle()
-  }
-
-  @Test
-  fun parcelable_whenAllFieldsAreNull_readsAndWritesCorrectly() {
-    @Suppress("UNCHECKED_CAST")
-    val creator =
-      MediaItem::class.java.getField("CREATOR").get(null) as Parcelable.Creator<MediaItem>
-    val parcel = Parcel.obtain()
-    mediaItemNull.writeToParcel(parcel, 0)
-
-    parcel.setDataPosition(0)
-    val fromParcel = creator.createFromParcel(parcel)
-
-    assertEquals(mediaItemNull, fromParcel)
-    parcel.recycle()
-  }
-
-  @Test
-  fun writeToParcel_whenCalledWithValidValue_performsWriteWithoutCrash() {
-    val parcel = Parcel.obtain()
-    mediaItemValid.writeToParcel(parcel, 0)
-    parcel.recycle()
-  }
-
-  @Test
-  fun writeToParcel_whenCalledWithNullValue_performsWriteWithoutCrash() {
-    val parcel = Parcel.obtain()
-    mediaItemNull.writeToParcel(parcel, 0)
-    parcel.recycle()
-  }
-
-  @Test
-  fun describeContents_whenCalled_returnsZero() {
-    val contentsValue = mediaItemValid.describeContents()
-
-    // assert the typical return value for describeContents
-    assertEquals(0, contentsValue)
   }
 }

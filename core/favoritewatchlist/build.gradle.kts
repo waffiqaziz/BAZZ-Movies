@@ -30,6 +30,7 @@ dependencies {
   api(libs.androidx.paging.runtime)
 
   testImplementation(project(":core:test"))
+  testImplementation(project(":core:common"))
   testImplementation(libs.androidx.core.testing)
   testImplementation(libs.androidx.test.core)
   testImplementation(libs.kotlinx.coroutines.test)

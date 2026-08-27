@@ -23,6 +23,8 @@ import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
+import com.waffiq.bazz_movies.navigation.MediaArgs
+import com.waffiq.bazz_movies.navigation.utils.toMediaArgs
 import dagger.hilt.android.testing.HiltAndroidRule
 import io.mockk.Runs
 import io.mockk.every
@@ -139,11 +141,11 @@ abstract class BaseMediaDetailActivityTest {
   protected fun Context.launchMediaDetailActivity(
     block: (ActivityScenario<MediaDetailActivity>) -> Unit,
   ) {
-    this.launchMediaDetailActivity(testMediaItem) { block(it) }
+    this.launchMediaDetailActivity(testMediaItem.toMediaArgs()) { block(it) }
   }
 
   protected fun Context.launchMediaDetailActivity(
-    data: MediaItem,
+    data: MediaArgs,
     block: (ActivityScenario<MediaDetailActivity>) -> Unit,
   ) {
     val intent = Intent(this, MediaDetailActivity::class.java).apply {
@@ -158,7 +160,7 @@ abstract class BaseMediaDetailActivityTest {
   }
 
   protected fun Context.launchNullMediaDetailActivity(
-    data: MediaItem?,
+    data: MediaArgs?,
     block: (ActivityScenario<MediaDetailActivity>) -> Unit,
   ) {
     val intent = Intent(this, MediaDetailActivity::class.java).apply {

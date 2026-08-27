@@ -18,6 +18,7 @@ import com.waffiq.bazz_movies.core.utils.DetailDataUtils.posterSource
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.MediaSource
+import com.waffiq.bazz_movies.navigation.utils.toMediaArgs
 
 class MediaAdapter(private val navigator: INavigator, private val source: MediaSource) :
   PagingDataAdapter<MediaItem, MediaAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -57,7 +58,7 @@ class MediaAdapter(private val navigator: INavigator, private val source: MediaS
           is MediaSource.Trending -> mediaItem
           is MediaSource.Typed -> mediaItem.copy(mediaType = source.mediaType)
         }
-        navigator.openDetails(itemView.context, item)
+        navigator.openDetails(itemView.context, item.toMediaArgs())
       }
     }
   }
