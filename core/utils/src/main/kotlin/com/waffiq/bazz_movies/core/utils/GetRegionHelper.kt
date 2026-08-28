@@ -1,10 +1,8 @@
 package com.waffiq.bazz_movies.core.utils
 
 import android.content.Context
-import android.os.Build
 import android.os.LocaleList
 import android.telephony.TelephonyManager
-import androidx.annotation.RequiresApi
 import androidx.annotation.VisibleForTesting
 import java.util.Locale
 
@@ -44,7 +42,7 @@ object GetRegionHelper {
   }
 
   /**
-   * Retrieves the most accurate available location for the user.
+   * Retrieves available location for the user.
    *
    * This function tries to determine the user's location using network data first.
    * If no network location can be derived, it falls back to the primary device locale
@@ -54,17 +52,8 @@ object GetRegionHelper {
    * @return A string representing the user's region in lowercase.
    */
   fun getLocation(context: Context): String {
-    // Attempt to get network-based location, fall back to device locale if empty.
     return getNetworkLocation(context).ifEmpty {
-      val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        // For Android Nougat (API level 24) and above, support multiple locales;
-        // use the first locale as the highest-priority locale selected by the user.
-        context.resources.configuration.locales.getOrNull(0)
-      } else { // for android API 23 a.k.a Marshmallow
-        @Suppress("DEPRECATION")
-        // Fallback to the single locale for older Android versions.
-        context.resources.configuration.locale
-      }
+      val locale = context.resources.configuration.locales.getOrNull(0)
       locale?.country?.lowercase(Locale.getDefault()).orEmpty()
     }
   }
@@ -72,7 +61,6 @@ object GetRegionHelper {
   /**
    * Helper extension for getting a locale safely for API 24 and up
    */
-  @RequiresApi(Build.VERSION_CODES.N)
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
   fun LocaleList.getOrNull(index: Int): Locale? = if (index in 0 until size()) get(index) else null
 }
