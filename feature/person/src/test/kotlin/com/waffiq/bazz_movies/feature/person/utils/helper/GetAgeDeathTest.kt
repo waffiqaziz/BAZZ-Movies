@@ -26,7 +26,7 @@ class GetAgeDeathTest {
   }
 
   @Test
-  @Config(sdk = [Build.VERSION_CODES.M])
+  @Config(sdk = [Build.VERSION_CODES.N])
   fun getAgeDeath_whenApiLevelIsBelow26_returnsCorrectAge() {
     val age = getAgeDeath(dateBirth = "1990-05-15", dateDeath = "2024-10-10")
     assertEquals(34, age)

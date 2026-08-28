@@ -117,82 +117,7 @@ class GetRegionHelperTest {
   }
   // endregion locale fallback scenarios
 
-  // region API 23 specific tests
-  @Test
-  @Config(sdk = [23])
-  fun getLocation_api23_whenNoSimAndNoLocale_returnsEmpty() {
-    mockTimeZoneHelper()
-    mockSimState(TelephonyManager.SIM_STATE_ABSENT)
-    mockLocaleApi23(null)
-
-    assertEquals("", GetRegionHelper.getLocation(context))
-  }
-
-  @Test
-  @Config(sdk = [23])
-  fun getLocation_api23_withLocale_returnsLowercaseCountry() {
-    mockTimeZoneHelper()
-    mockSimState(TelephonyManager.SIM_STATE_ABSENT)
-    mockLocaleApi23(Locale.of("es", "ES"))
-
-    assertEquals("es", GetRegionHelper.getLocation(context))
-  }
-
-  @Test
-  @Config(sdk = [23])
-  fun getLocation_api23_withEmptyCountry_returnsEmptyString() {
-    mockTimeZoneHelper()
-    mockSimState(TelephonyManager.SIM_STATE_ABSENT)
-    mockLocaleApi23(Locale.of("", ""))
-
-    assertEquals("", GetRegionHelper.getLocation(context))
-  }
-
-  @Test
-  @Config(sdk = [23])
-  fun getLocation_api23_withBlankCountry_returnsBlankString() {
-    mockTimeZoneHelper()
-    mockSimState(TelephonyManager.SIM_STATE_ABSENT)
-    mockLocaleApi23(Locale.of("en", "   "))
-
-    assertEquals("   ", GetRegionHelper.getLocation(context))
-  }
-
-  @Test
-  @Config(sdk = [23])
-  fun getLocation_api23_normalizesCountryToLowercase() {
-    mockTimeZoneHelper()
-    mockSimState(TelephonyManager.SIM_STATE_ABSENT)
-
-    val testCases = listOf("Us", "uS", "US", "DE")
-    val expected = listOf("us", "us", "us", "de")
-
-    testCases.zip(expected).forEach { (country, expectedResult) ->
-      mockLocaleApi23(Locale.of("en", country))
-      assertEquals(expectedResult, GetRegionHelper.getLocation(context))
-    }
-  }
-
-  @Test
-  @Config(sdk = [23])
-  fun getLocation_api23_independentOfDefaultLocale() {
-    mockTimeZoneHelper()
-    mockSimState(TelephonyManager.SIM_STATE_ABSENT)
-    mockLocaleApi23(Locale.of("en", "JP"))
-
-    val originalDefault = Locale.getDefault()
-    try {
-      listOf(Locale.FRANCE, Locale.ROOT).forEach { defaultLocale ->
-        Locale.setDefault(defaultLocale)
-        assertEquals("jp", GetRegionHelper.getLocation(context))
-      }
-    } finally {
-      Locale.setDefault(originalDefault)
-    }
-  }
-  // endregion API 23 specific tests
-
-  // region API 24+ specific tests
+  // region getLocation
   @Test
   @Config(sdk = [24])
   fun getLocation_api24_whenNoSimAndNoLocale_returnsEmpty() {
@@ -222,7 +147,7 @@ class GetRegionHelperTest {
 
     assertEquals("", GetRegionHelper.getLocation(context))
   }
-  // endregion API 24+ specific tests
+  // endregion getLocation
 
   // LocaleList utility tests
   @Test

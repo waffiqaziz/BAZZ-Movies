@@ -12,7 +12,6 @@ class GlideConventionPlugin : Plugin<Project> {
       dependencies {
         add("ksp", libs.findLibrary("glide-compiler").get())
         add("implementation", libs.findLibrary("glide").get())
-        add("implementation", libs.findLibrary("glide-okhttp3").get())
       }
     }
   }
