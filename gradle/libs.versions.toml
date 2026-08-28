@@ -2,7 +2,7 @@
 # SDK Versions
 targetSdk = "37"
 compileSdk = "37"
-minSdk = "23"
+minSdk = "24"
 ndkVersion = "28.2.13676358"
 
 # App Version
