@@ -8,6 +8,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.Det
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ExternalIDPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ImagePersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ProfilesItemResponse
+import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.CombinedCreditPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.CrewItem
@@ -124,4 +125,13 @@ object PersonMapper {
       facebookId = facebookId,
       instagramId = instagramId,
     )
+
+  fun <T, R> UIState<T>.dataOrDefault(default: R, selector: (T) -> R): R =
+    (this as? UIState.Success)?.data?.let(selector) ?: default
+
+  fun mapCastList(state: UIState<DetailPerson>): List<CastItem> =
+    state.dataOrDefault(emptyList()) { it.credits?.cast.orEmpty() }
+
+  fun mapImageList(state: UIState<DetailPerson>): List<ProfilesItem> =
+    state.dataOrDefault(emptyList()) { it.images?.profiles.orEmpty() }
 }

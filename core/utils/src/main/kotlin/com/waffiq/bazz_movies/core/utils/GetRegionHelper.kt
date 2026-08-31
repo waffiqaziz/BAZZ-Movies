@@ -51,12 +51,11 @@ object GetRegionHelper {
    * @param context The application context used to access locale configurations.
    * @return A string representing the user's region in lowercase.
    */
-  fun getLocation(context: Context): String {
-    return getNetworkLocation(context).ifEmpty {
+  fun getLocation(context: Context): String =
+    getNetworkLocation(context).ifEmpty {
       val locale = context.resources.configuration.locales.getOrNull(0)
       locale?.country?.lowercase(Locale.getDefault()).orEmpty()
     }
-  }
 
   /**
    * Helper extension for getting a locale safely for API 24 and up

@@ -1,7 +1,5 @@
 package com.waffiq.bazz_movies.feature.person.testutils
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
 import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
@@ -16,11 +14,6 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 
@@ -63,9 +56,7 @@ abstract class BasePersonViewModelTest {
     images = mockImagePerson,
   )
 
-  @get:Rule
-  val instantTaskExecutorRule = InstantTaskExecutorRule()
-
+  // No more LiveData -> no InstantTaskExecutorRule needed
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
@@ -74,82 +65,15 @@ abstract class BasePersonViewModelTest {
     personViewModel = PersonViewModel(getDetailPersonUseCase)
   }
 
-  protected val errorFlow = flowOf(Outcome.Error(errorMessage))
+  protected fun successFlow(data: DetailPerson): Flow<Outcome<DetailPerson>> =
+    flowOf(Outcome.Success(data))
 
-  protected fun <T> successFlow(data: T): Flow<Outcome.Success<T>> =
-    flow {
-      emit(Outcome.Success(data))
-    }
+  protected fun errorFlow(message: String = errorMessage): Flow<Outcome<DetailPerson>> =
+    flowOf(Outcome.Error(message))
 
-  fun <T : Any> flowSuccessWithLoading(data: T) =
+  protected fun loadingThenSuccessFlow(data: DetailPerson): Flow<Outcome<DetailPerson>> =
     flow {
       emit(Outcome.Loading)
       emit(Outcome.Success(data))
     }
-
-  @Suppress("LongParameterList")
-  protected fun <T : Any> testViewModel(
-    runBlock: () -> Unit,
-    liveData: LiveData<T>,
-    expectedSuccess: T? = null,
-    expectError: String? = null,
-    checkLoading: Boolean = false,
-    verifyBlock: () -> Unit = {},
-  ) = runTest {
-    val successData = mutableListOf<T>()
-    val errorState = mutableListOf<String>()
-    val loadingStates = mutableListOf<Boolean>()
-
-    personViewModel.loadingState.observeForever { loadingStates.add(it) }
-    personViewModel.errorState.observeForever { errorState.add(it) }
-    liveData.observeForever { data ->
-      data?.let {
-        successData.add(it)
-      }
-    }
-
-    runBlock()
-    advanceUntilIdle()
-
-    expectedSuccess?.let {
-      assertTrue(successData.contains(it))
-      assertEquals(liveData.value, it)
-    }
-
-    expectError?.let {
-      assertEquals(personViewModel.errorState.value, it)
-    }
-
-    if (checkLoading) {
-      checkEventLoading(loadingStates, expectedSuccess, expectError)
-    }
-
-    verifyBlock()
-  }
-
-  private fun <T> checkEventLoading(
-    collectedLoadingStates: MutableList<Boolean>,
-    expectedSuccess: T? = null,
-    expectError: String? = null,
-  ) {
-    when {
-      expectedSuccess != null -> {
-        assertTrue(collectedLoadingStates.contains(true))
-        assertFalse(collectedLoadingStates.last())
-        assertEquals(false, personViewModel.loadingState.value)
-      }
-
-      expectError != null -> {
-        assertTrue(collectedLoadingStates.contains(true))
-        assertFalse(collectedLoadingStates.last())
-        assertEquals(false, personViewModel.loadingState.value)
-      }
-
-      else -> {
-        if (collectedLoadingStates.isNotEmpty()) {
-          assertTrue(collectedLoadingStates.contains(true))
-        }
-      }
-    }
-  }
 }
