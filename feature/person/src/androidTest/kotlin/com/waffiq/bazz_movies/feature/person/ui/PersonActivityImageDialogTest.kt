@@ -43,7 +43,7 @@ class PersonActivityImageDialogTest : BasePersonActivityTest() {
 
   @Test
   fun imageDialog_whenThreeImages_showsCorrectPosition() {
-    imageList.value = (List(3) { testProfileItem })
+    imageList.value = List(3) { testProfileItem }
     context.launchPersonActivity {
       performClickListPhotos(1) // at least multiple images
       dots_indicator.isDisplayed()
@@ -52,7 +52,7 @@ class PersonActivityImageDialogTest : BasePersonActivityTest() {
 
   @Test
   fun imageDialog_whenElevenImages_showsTextIndicator() {
-    imageList.value = (List(11) { testProfileItem })
+    imageList.value = List(11) { testProfileItem }
 
     context.launchPersonActivity {
       // click the second image
