@@ -10,16 +10,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.waffiq.bazz_movies.core.common.MediaType.Companion.fromValue
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPlayForBinding
-import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.posterSource
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.navigation.INavigator
-import com.waffiq.bazz_movies.navigation.utils.toMediaArgs
+import com.waffiq.bazz_movies.navigation.MediaArgs
 
 class KnownForAdapter(private val navigator: INavigator) :
   RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
@@ -70,23 +70,20 @@ class KnownForAdapter(private val navigator: INavigator) :
       binding.tvCastName.text = titleHandler(cast)
       binding.tvCastCharacter.text = cast.character ?: itemView.context.getString(not_available)
 
-      val mediaArgs = MediaItem(
+      val mediaArgs = MediaArgs(
         overview = cast.overview,
         title = cast.title,
         name = cast.name,
         originalTitle = cast.originalTitle,
         originalName = cast.originalTitle,
-        mediaType = cast.mediaType,
+        mediaType = fromValue(cast.mediaType),
         firstAirDate = cast.releaseDate,
         releaseDate = cast.releaseDate,
         listGenreIds = cast.listGenreIds,
         id = cast.id,
-        popularity = cast.popularity,
-        voteAverage = cast.voteAverage,
-        voteCount = cast.voteCount,
         posterPath = cast.posterPath,
         backdropPath = cast.backdropPath,
-      ).toMediaArgs()
+      )
 
       // OnClickListener
       binding.container.setOnClickListener {

@@ -1,12 +1,21 @@
 package com.waffiq.bazz_movies.feature.person.utils.mapper
 
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CastItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CombinedCreditResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CrewItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.DetailPersonResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ExternalIDPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ImagePersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ProfilesItemResponse
+import com.waffiq.bazz_movies.core.uihelper.state.UIState
+import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
+import com.waffiq.bazz_movies.feature.person.domain.model.CombinedCreditPerson
+import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
+import com.waffiq.bazz_movies.feature.person.domain.model.ImagePerson
+import com.waffiq.bazz_movies.feature.person.domain.model.ProfilesItem
+import com.waffiq.bazz_movies.feature.person.testutils.DummyData.castItemResponse
+import com.waffiq.bazz_movies.feature.person.testutils.DummyData.combinedCreditResponse
+import com.waffiq.bazz_movies.feature.person.testutils.DummyData.externalIDPersonResponse
+import com.waffiq.bazz_movies.feature.person.testutils.DummyData.listOfProfilesItemResponse
+import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.mapCastList
+import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.mapImageList
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toCombinedCredit
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toDetailPerson
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toExternalIDPerson
@@ -20,19 +29,6 @@ class PersonMapperTest {
 
   @Test
   fun toCombinedCredit_withValidValue_returnsCombinedCredit() {
-    val listOfCastItemResponse = listOf(
-      CastItemResponse(id = 1, name = "John", voteCount = 12345),
-      CastItemResponse(id = 2, name = "Rex", voteCount = 2345),
-    )
-    val listOfCrewItemResponse = listOf(
-      CrewItemResponse(id = 1, job = "cameraman", title = "what"),
-      CrewItemResponse(id = 2, job = "director", title = "why"),
-    )
-    val combinedCreditResponse = CombinedCreditResponse(
-      cast = listOfCastItemResponse,
-      crew = listOfCrewItemResponse,
-    )
-
     val combinedCredit = combinedCreditResponse.toCombinedCredit()
     assertEquals("John", combinedCredit.cast?.get(0)?.name)
     assertEquals(12345, combinedCredit.cast?.get(0)?.voteCount)
@@ -55,31 +51,6 @@ class PersonMapperTest {
 
   @Test
   fun toCastItem_withValidValue_returnsCastItem() {
-    val castItemResponse = CastItemResponse(
-      firstAirDate = "firstAirDate",
-      overview = "overview",
-      originalLanguage = "originalLanguage",
-      episodeCount = 12,
-      genreIds = emptyList(),
-      posterPath = "posterPath",
-      originCountry = emptyList(),
-      backdropPath = "backdropPath",
-      character = "character",
-      creditId = "creditId",
-      mediaType = "tv",
-      originalName = "originalName",
-      popularity = 1234.0,
-      voteAverage = 4123f,
-      name = "name",
-      id = null,
-      adult = false,
-      voteCount = null,
-      originalTitle = "originalTitle",
-      video = false,
-      title = "title",
-      releaseDate = "releaseDate",
-      order = 3,
-    )
     val combinedCreditResponse = CombinedCreditResponse(
       cast = listOf(castItemResponse),
       crew = null,
@@ -134,20 +105,6 @@ class PersonMapperTest {
 
   @Test
   fun toImagePerson_withValidValue_returnsImagePerson() {
-    val listOfProfilesItemResponse = listOf(
-      ProfilesItemResponse(
-        width = 300,
-        height = 450,
-        filePath = "/file_path.jpg",
-        voteCount = 98765,
-      ),
-      ProfilesItemResponse(
-        width = 300,
-        height = 450,
-        filePath = "/file_path2.jpg",
-        voteCount = 9999,
-      ),
-    )
     val response = ImagePersonResponse(profiles = listOfProfilesItemResponse)
     val imagePerson = response.toImagePerson()
     assertEquals(300, imagePerson.profiles?.get(0)?.width)
@@ -170,14 +127,42 @@ class PersonMapperTest {
 
   @Test
   fun toExternalIDPerson_withValidValue_returnsExternalIDPerson() {
-    val response = ExternalIDPersonResponse(
-      imdbId = "nm12345",
-      instagramId = "instagram_id",
-      twitterId = "twitter_id",
-    )
-    val externalID = response.toExternalIDPerson()
+    val externalID = externalIDPersonResponse.toExternalIDPerson()
     assertEquals("nm12345", externalID.imdbId)
     assertEquals("instagram_id", externalID.instagramId)
     assertEquals("twitter_id", externalID.twitterId)
+  }
+
+  @Test
+  fun mapCastList_whenStateIsSuccess_returnsCast() {
+    val cast = listOf(CastItem(id = 1, name = "Actor A"))
+    val detailPerson = DetailPerson(credits = CombinedCreditPerson(cast = cast))
+    val state = UIState.Success(detailPerson)
+
+    assertEquals(cast, mapCastList(state))
+  }
+
+  @Test
+  fun mapCastList_whenCreditsIsNull_returnsEmptyList() {
+    val detailPerson = DetailPerson(credits = null)
+    val state = UIState.Success(detailPerson)
+
+    assertEquals(emptyList<CastItem>(), mapCastList(state))
+  }
+
+  @Test
+  fun mapCastList_whenStateIsNotSuccess_returnsEmptyList() {
+    assertEquals(emptyList<CastItem>(), mapCastList(UIState.Loading))
+    assertEquals(emptyList<CastItem>(), mapCastList(UIState.Error("fail")))
+    assertEquals(emptyList<CastItem>(), mapCastList(UIState.Idle))
+  }
+
+  @Test
+  fun mapImageList_whenStateIsSuccess_returnsProfiles() {
+    val profiles = listOf(ProfilesItem(filePath = "/a.jpg"))
+    val detailPerson = DetailPerson(images = ImagePerson(profiles = profiles))
+    val state = UIState.Success(detailPerson)
+
+    assertEquals(profiles, mapImageList(state))
   }
 }

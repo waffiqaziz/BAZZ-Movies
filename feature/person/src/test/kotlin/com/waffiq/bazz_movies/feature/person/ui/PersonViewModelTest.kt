@@ -1,188 +1,221 @@
 package com.waffiq.bazz_movies.feature.person.ui
 
-import androidx.lifecycle.Observer
+import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.models.Outcome
+import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
+import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ProfilesItem
 import com.waffiq.bazz_movies.feature.person.testutils.BasePersonViewModelTest
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.mockk
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNull
 import org.junit.Test
 
 class PersonViewModelTest : BasePersonViewModelTest() {
 
-  val observer = mockk<Observer<List<CastItem>>>(relaxed = true)
-  val observerProfilesItem = mockk<Observer<List<ProfilesItem>>>(relaxed = true)
+  @Test
+  fun detailPersonState_whenNoIdSet_emitsIdleInitially() =
+    runTest {
+      personViewModel.detailPersonState.test {
+        assertEquals(UIState.Idle, awaitItem())
+        cancelAndIgnoreRemainingEvents()
+      }
+    }
 
   @Test
-  fun getDetailPerson_whenSuccessful_emitsSuccess() {
-    coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns
-      flowSuccessWithLoading(mockDetailPerson)
+  fun detailPersonState_whenSuccessful_emitsLoadingThenSuccess() =
+    runTest {
+      coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns
+        loadingThenSuccessFlow(mockDetailPerson)
 
-    testViewModel(
-      runBlock = { personViewModel.getDetailPerson(personId) },
-      liveData = personViewModel.detailPerson,
-      expectedSuccess = mockDetailPerson,
-      checkLoading = true,
-      verifyBlock = {
-        coVerify { getDetailPersonUseCase.getDetailPerson(personId) }
-      },
-    )
-  }
+      personViewModel.detailPersonState.test {
+        assertEquals(UIState.Idle, awaitItem())
 
-  @Test
-  fun getDetailPerson_whenUnsuccessful_emitsError() {
-    coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns errorFlow
+        personViewModel.getDetailPerson(personId)
 
-    testViewModel(
-      runBlock = { personViewModel.getDetailPerson(personId) },
-      liveData = personViewModel.detailPerson,
-      expectError = errorMessage,
-      verifyBlock = {
-        coVerify { getDetailPersonUseCase.getDetailPerson(personId) }
-      },
-    )
-  }
+        assertEquals(UIState.Loading, awaitItem())
+        assertEquals(UIState.Success(mockDetailPerson), awaitItem())
+
+        cancelAndIgnoreRemainingEvents()
+      }
+
+      coVerify { getDetailPersonUseCase.getDetailPerson(personId) }
+    }
 
   @Test
-  fun getDetailPerson_whenLoading_emitsLoading() {
-    coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns flowOf(Outcome.Loading)
+  fun detailPersonState_whenUnsuccessful_emitsError() =
+    runTest {
+      coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns errorFlow()
 
-    testViewModel(
-      runBlock = { personViewModel.getDetailPerson(personId) },
-      liveData = personViewModel.detailPerson,
-      checkLoading = true,
-      verifyBlock = {
-        coVerify { getDetailPersonUseCase.getDetailPerson(personId) }
-      },
-    )
-  }
+      personViewModel.detailPersonState.test {
+        assertEquals(UIState.Idle, awaitItem())
+
+        personViewModel.getDetailPerson(personId)
+
+        assertEquals(UIState.Error(errorMessage), awaitItem())
+
+        cancelAndIgnoreRemainingEvents()
+      }
+
+      coVerify { getDetailPersonUseCase.getDetailPerson(personId) }
+    }
 
   @Test
-  fun castList_whenNotNull_returnsCorrectData() {
-    coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns
-      flowSuccessWithLoading(mockDetailPerson)
+  fun detailPersonState_whenLoading_emitsLoading() =
+    runTest {
+      coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns flowOf(Outcome.Loading)
 
-    testViewModel(
-      runBlock = { personViewModel.getDetailPerson(personId) },
-      liveData = personViewModel.castList,
-      expectedSuccess = listOf(mockCastItem),
-      checkLoading = true,
-      verifyBlock = {
-        coVerify { getDetailPersonUseCase.getDetailPerson(personId) }
-      },
-    )
-  }
+      personViewModel.detailPersonState.test {
+        assertEquals(UIState.Idle, awaitItem())
+
+        personViewModel.getDetailPerson(personId)
+
+        assertEquals(UIState.Loading, awaitItem())
+
+        cancelAndIgnoreRemainingEvents()
+      }
+    }
+
+  @Test
+  fun detailPersonState_whenIdCalledTwiceInSuccession_flatMapLatestUsesLatestId() =
+    runTest {
+      val secondPersonId = 2
+      val secondPerson = mockDetailPerson.copy(id = secondPersonId, name = "Jane Doe")
+
+      val firstPersonFlow = flow<Outcome<DetailPerson>> {
+        delay(1_000)
+        emit(Outcome.Success(mockDetailPerson))
+      }
+
+      coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns firstPersonFlow
+      coEvery { getDetailPersonUseCase.getDetailPerson(secondPersonId) } returns
+        successFlow(secondPerson)
+
+      personViewModel.detailPersonState.test {
+        assertEquals(UIState.Idle, awaitItem())
+
+        personViewModel.getDetailPerson(personId)
+        personViewModel.getDetailPerson(secondPersonId)
+
+        assertEquals(UIState.Success(secondPerson), awaitItem())
+
+        cancelAndIgnoreRemainingEvents()
+      }
+    }
+
+  @Test
+  fun castList_whenDetailPersonSuccessful_returnsCorrectData() =
+    runTest {
+      coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns
+        successFlow(mockDetailPerson)
+
+      personViewModel.castList.test {
+        assertEquals(emptyList<CastItem>(), awaitItem())
+
+        personViewModel.getDetailPerson(personId)
+
+        assertEquals(listOf(mockCastItem), awaitItem())
+
+        cancelAndIgnoreRemainingEvents()
+      }
+    }
 
   @Test
   fun castList_whenCastNull_returnsEmptyList() =
     runTest {
-      personViewModel.castList.observeForever(observer)
       coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns
         successFlow(mockDetailPerson.copy(credits = mockCreditsPerson.copy(cast = null)))
 
-      personViewModel.getDetailPerson(personId)
-      advanceUntilIdle()
-      assertEquals(emptyList<CastItem>(), personViewModel.castList.value)
+      personViewModel.castList.test {
+        assertEquals(emptyList<CastItem>(), awaitItem())
 
-      personViewModel.castList.removeObserver(observer)
+        personViewModel.getDetailPerson(personId)
+        advanceUntilIdle()
+
+        expectNoEvents()
+        assertEquals(emptyList<CastItem>(), personViewModel.castList.value)
+
+        cancelAndIgnoreRemainingEvents()
+      }
     }
 
   @Test
   fun castList_whenCreditsNull_returnsEmptyList() =
     runTest {
-      personViewModel.castList.observeForever(observer)
       coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns
         successFlow(mockDetailPerson.copy(credits = null))
 
-      personViewModel.getDetailPerson(personId)
-      advanceUntilIdle()
-      assertEquals(emptyList<CastItem>(), personViewModel.castList.value)
+      personViewModel.castList.test {
+        assertEquals(emptyList<CastItem>(), awaitItem())
 
-      personViewModel.castList.removeObserver(observer)
+        personViewModel.getDetailPerson(personId)
+        advanceUntilIdle()
+
+        expectNoEvents()
+        assertEquals(emptyList<CastItem>(), personViewModel.castList.value)
+
+        cancelAndIgnoreRemainingEvents()
+      }
     }
 
   @Test
-  fun imageList_whenNotNull_returnsCorrectData() {
-    coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns
-      flowSuccessWithLoading(mockDetailPerson)
+  fun imageList_whenDetailPersonSuccessful_returnsCorrectData() =
+    runTest {
+      coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns
+        successFlow(mockDetailPerson)
 
-    testViewModel(
-      runBlock = { personViewModel.getDetailPerson(personId) },
-      liveData = personViewModel.imageList,
-      expectedSuccess = listOf(mockProfilesItem),
-      checkLoading = true,
-      verifyBlock = {
-        coVerify { getDetailPersonUseCase.getDetailPerson(personId) }
-      },
-    )
-  }
+      personViewModel.imageList.test {
+        assertEquals(emptyList<ProfilesItem>(), awaitItem())
+
+        personViewModel.getDetailPerson(personId)
+
+        assertEquals(listOf(mockProfilesItem), awaitItem())
+
+        cancelAndIgnoreRemainingEvents()
+      }
+    }
 
   @Test
   fun imageList_whenImagesNull_returnsEmptyList() =
     runTest {
-      personViewModel.imageList.observeForever(observerProfilesItem)
       coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns
         successFlow(mockDetailPerson.copy(images = null))
 
-      personViewModel.getDetailPerson(personId)
-      advanceUntilIdle()
-      assertEquals(emptyList<CastItem>(), personViewModel.imageList.value)
+      personViewModel.imageList.test {
+        assertEquals(emptyList<ProfilesItem>(), awaitItem())
 
-      personViewModel.imageList.removeObserver(observerProfilesItem)
+        personViewModel.getDetailPerson(personId)
+        advanceUntilIdle()
+
+        expectNoEvents()
+        assertEquals(emptyList<ProfilesItem>(), personViewModel.imageList.value)
+
+        cancelAndIgnoreRemainingEvents()
+      }
     }
 
   @Test
   fun imageList_whenProfilesNull_returnsEmptyList() =
     runTest {
-      personViewModel.imageList.observeForever(observerProfilesItem)
       coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns
         successFlow(mockDetailPerson.copy(images = mockImagePerson.copy(profiles = null)))
 
-      personViewModel.getDetailPerson(personId)
-      advanceUntilIdle()
-      assertEquals(emptyList<CastItem>(), personViewModel.imageList.value)
+      personViewModel.imageList.test {
+        assertEquals(emptyList<ProfilesItem>(), awaitItem())
 
-      personViewModel.imageList.removeObserver(observerProfilesItem)
-    }
+        personViewModel.getDetailPerson(personId)
+        advanceUntilIdle()
 
-  @Test
-  fun executeUseCase_whenError_shouldUpdateErrorStateAndLoadingState() =
-    runTest {
-      val errorMessage = "Something went wrong"
-      val flow = flowOf(Outcome.Error(errorMessage))
+        expectNoEvents()
+        assertEquals(emptyList<ProfilesItem>(), personViewModel.imageList.value)
 
-      personViewModel.executeUseCase(
-        flowProvider = { flow },
-        onSuccess = {},
-      )
-      advanceUntilIdle()
-
-      assertFalse(personViewModel.loadingState.value == true)
-      assertEquals(errorMessage, personViewModel.errorState.value)
-    }
-
-  @Test
-  fun executeUseCase_whenLoading_withDefaultOnLoading_shouldDoNothing() =
-    runTest {
-      val flow = flowOf(Outcome.Loading)
-
-      // Don't pass onLoading — uses the default
-      personViewModel.executeUseCase(
-        flowProvider = { flow },
-        onSuccess = {},
-        // onLoading not passed intentionally
-      )
-
-      // Just verify nothing crashes and no state changes occurred
-      assertFalse(personViewModel.loadingState.value == true)
-      assertNull(personViewModel.errorState.value)
+        cancelAndIgnoreRemainingEvents()
+      }
     }
 }

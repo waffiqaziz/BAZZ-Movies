@@ -5,6 +5,7 @@ import android.os.Build
 import android.widget.Button
 import androidx.annotation.VisibleForTesting
 import androidx.core.view.isVisible
+import com.waffiq.bazz_movies.core.designsystem.R.string.no_biography
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.R.string.years_old
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
@@ -99,4 +100,7 @@ object PersonPageHelper {
       }
     }
   }
+
+  fun String?.validBiography(context: Context) =
+    takeIf { it?.isNotBlank() == true } ?: context.getString(no_biography)
 }

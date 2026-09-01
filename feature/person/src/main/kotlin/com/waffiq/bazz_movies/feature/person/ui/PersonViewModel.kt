@@ -1,19 +1,23 @@
 package com.waffiq.bazz_movies.feature.person.ui
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import com.waffiq.bazz_movies.core.models.Outcome
+import com.waffiq.bazz_movies.core.uihelper.state.UIState
+import com.waffiq.bazz_movies.core.uihelper.state.asUiState
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ProfilesItem
 import com.waffiq.bazz_movies.feature.person.domain.usecase.GetDetailPersonUseCase
+import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.mapCastList
+import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.mapImageList
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,55 +25,26 @@ class PersonViewModel @Inject constructor(
   private val getDetailPersonUseCase: GetDetailPersonUseCase,
 ) : ViewModel() {
 
-  private val _detailPerson = MutableLiveData<DetailPerson>()
-  val detailPerson: LiveData<DetailPerson> get() = _detailPerson
+  private val personId = MutableStateFlow<Int?>(null)
 
-  val castList: LiveData<List<CastItem>> = _detailPerson.map {
-    it.credits?.cast.orEmpty()
-  }
+  val detailPersonState: StateFlow<UIState<DetailPerson>> = personId
+    .filterNotNull()
+    .flatMapLatest { id -> getDetailPersonUseCase.getDetailPerson(id).asUiState() }
+    .stateIn(viewModelScope, SharingStarted.WhileSubscribed(TIME), UIState.Idle)
 
-  val imageList: LiveData<List<ProfilesItem>> = _detailPerson.map {
-    it.images?.profiles.orEmpty()
-  }
+  val castList: StateFlow<List<CastItem>> = detailPersonState
+    .map(::mapCastList)
+    .stateIn(viewModelScope, SharingStarted.WhileSubscribed(TIME), emptyList())
 
-  private val _errorState = MutableLiveData<String>()
-  val errorState: LiveData<String> get() = _errorState
-
-  private val _loadingState = MutableLiveData<Boolean>()
-  val loadingState: LiveData<Boolean> get() = _loadingState
+  val imageList: StateFlow<List<ProfilesItem>> = detailPersonState
+    .map(::mapImageList)
+    .stateIn(viewModelScope, SharingStarted.WhileSubscribed(TIME), emptyList())
 
   fun getDetailPerson(id: Int) {
-    executeUseCase(
-      flowProvider = { getDetailPersonUseCase.getDetailPerson(id) },
-      onSuccess = { _detailPerson.value = it },
-      onFinallySuccess = { _loadingState.value = false },
-      onLoading = { _loadingState.value = true },
-    )
+    personId.value = id
   }
 
-  fun <T> executeUseCase(
-    flowProvider: suspend () -> Flow<Outcome<T>>,
-    onSuccess: (T) -> Unit,
-    onFinallySuccess: () -> Unit = { /* default do nothing */ },
-    onLoading: () -> Unit = { /* default do nothing */ },
-  ) {
-    viewModelScope.launch {
-      val flow = flowProvider()
-      flow.collectLatest { outcome ->
-        when (outcome) {
-          is Outcome.Success -> {
-            onSuccess(outcome.data)
-            onFinallySuccess()
-          }
-
-          is Outcome.Loading -> onLoading()
-
-          is Outcome.Error -> {
-            _loadingState.value = false
-            _errorState.value = outcome.message
-          }
-        }
-      }
-    }
+  private companion object {
+    const val TIME = 5_000L
   }
 }

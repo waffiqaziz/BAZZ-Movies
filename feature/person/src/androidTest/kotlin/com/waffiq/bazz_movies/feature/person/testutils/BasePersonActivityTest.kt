@@ -3,21 +3,21 @@ package com.waffiq.bazz_movies.feature.person.testutils
 import android.content.Context
 import android.content.Intent
 import android.view.View
-import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.uiAutomator
 import com.bumptech.glide.Glide
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_biography
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.models.MediaCastItem
+import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
 import com.waffiq.bazz_movies.feature.person.R.id.btn_link
 import com.waffiq.bazz_movies.feature.person.R.id.divider1
@@ -26,14 +26,11 @@ import com.waffiq.bazz_movies.feature.person.R.id.rv_photos
 import com.waffiq.bazz_movies.feature.person.R.id.tv_biography
 import com.waffiq.bazz_movies.feature.person.R.id.tv_dead_header
 import com.waffiq.bazz_movies.feature.person.R.id.tv_death
-import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
-import com.waffiq.bazz_movies.feature.person.domain.model.ProfilesItem
 import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testDetailPerson
 import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testImagesList
 import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testKnownForList
 import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testMediaCastItem
-import com.waffiq.bazz_movies.feature.person.testutils.TestHelper.withCollapsingToolbarTitle
 import com.waffiq.bazz_movies.feature.person.ui.PersonActivity
 import com.waffiq.bazz_movies.feature.person.ui.PersonViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
@@ -41,6 +38,7 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.hamcrest.Matcher
 import org.junit.After
 import org.junit.Before
@@ -61,11 +59,10 @@ abstract class BasePersonActivityTest {
   @Inject
   lateinit var mockUriLauncher: UriLauncher
 
-  protected val detailPersonLiveData = MutableLiveData<DetailPerson>()
-  protected val imageListLiveData = MutableLiveData<List<ProfilesItem>>()
-  protected val creditPersonLiveData = MutableLiveData<List<CastItem>>()
-  protected val errorStateLiveData = MutableLiveData<String>()
-  protected val loadingStateLiveData = MutableLiveData<Boolean>()
+  protected val detailPersonState =
+    MutableStateFlow<UIState<DetailPerson>>(UIState.Success(testDetailPerson))
+  protected val imageList = MutableStateFlow(testImagesList)
+  protected val castList = MutableStateFlow(testKnownForList)
   protected lateinit var context: Context
 
   @Before
@@ -73,7 +70,6 @@ abstract class BasePersonActivityTest {
     Intents.init()
     hiltRule.inject()
     setupViewModelMocks()
-    setupBaseMocks()
     initializeTest(ApplicationProvider.getApplicationContext())
   }
 
@@ -82,19 +78,10 @@ abstract class BasePersonActivityTest {
     Intents.release()
   }
 
-  private fun setupBaseMocks() {
-    loadingStateLiveData.postValue(false)
-    creditPersonLiveData.postValue(testKnownForList)
-    detailPersonLiveData.postValue(testDetailPerson)
-    imageListLiveData.postValue(testImagesList)
-  }
-
   private fun setupViewModelMocks() {
-    every { mockPersonViewModel.detailPerson } returns detailPersonLiveData
-    every { mockPersonViewModel.castList } returns creditPersonLiveData
-    every { mockPersonViewModel.imageList } returns imageListLiveData
-    every { mockPersonViewModel.errorState } returns errorStateLiveData
-    every { mockPersonViewModel.loadingState } returns loadingStateLiveData
+    every { mockPersonViewModel.detailPersonState } returns detailPersonState
+    every { mockPersonViewModel.castList } returns castList
+    every { mockPersonViewModel.imageList } returns imageList
 
     every { mockPersonViewModel.getDetailPerson(any()) } just Runs
   }
@@ -115,6 +102,8 @@ abstract class BasePersonActivityTest {
     }
 
     ActivityScenario.launch<PersonActivity>(intent).use { scenario ->
+      scenario.onActivity { /* do nothing */ }
+      shortDelay()
       block(scenario)
     }
   }
@@ -142,12 +131,6 @@ abstract class BasePersonActivityTest {
     tv_biography.doesHaveText(context.getString(no_biography))
   }
 
-  protected fun checkCollapseTitle(title: String?) {
-    rv_photos.performScrollTo()
-    onView(isAssignableFrom(CollapsingToolbarLayout::class.java))
-      .check(matches(withCollapsingToolbarTitle(title)))
-  }
-
   protected fun checkDeathInfo(viewMatcher: Matcher<View>) {
     rv_known_for.performScrollTo()
     onView(withId(tv_death)).check(matches(viewMatcher))
@@ -157,5 +140,30 @@ abstract class BasePersonActivityTest {
   protected fun checkHomePageLink(viewMatcher: Matcher<View>) {
     onView(withId(btn_link)).check(matches(viewMatcher))
     onView(withId(divider1)).check(matches(viewMatcher))
+  }
+
+  protected fun performSwipeRefresh() {
+    uiAutomator {
+      // scroll down so the heigh for scroll up is enough
+      device.swipe(
+        device.displayWidth / 2,
+        device.displayHeight * 3 / 4,
+        device.displayWidth / 2,
+        device.displayHeight / 4,
+        20,
+      )
+      device.waitForIdle()
+
+      // perform scroll up till max height to trigger swipe refresh
+      device.swipe(
+        device.displayWidth / 2,
+        device.displayHeight / 3,
+        device.displayWidth / 2,
+        device.displayHeight * 12 / 10,
+        100,
+      )
+      device.waitForIdle()
+      shortDelay()
+    }
   }
 }

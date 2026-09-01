@@ -31,15 +31,16 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_logo
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_no_profile
 import com.waffiq.bazz_movies.core.designsystem.R.string.image_counter_format
-import com.waffiq.bazz_movies.core.designsystem.R.string.no_biography
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
-import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.models.MediaCastItem
+import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.animFadeOutLong
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.uihelper.utils.InsetHelper.setupWindowInsets
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.validName
+import com.waffiq.bazz_movies.core.utils.FlowUtils.collectFlow
 import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
 import com.waffiq.bazz_movies.feature.person.R.id.btn_close_dialog
 import com.waffiq.bazz_movies.feature.person.R.id.dots_indicator
@@ -56,6 +57,7 @@ import com.waffiq.bazz_movies.feature.person.utils.helper.DialogHelper.setupTran
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.formatBirthInfo
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.formatDeathInfo
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.setupSocialLink
+import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.validBiography
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.extractParcelableExtraFromIntent
 import dagger.hilt.android.AndroidEntryPoint
@@ -71,8 +73,8 @@ class PersonActivity : AppCompatActivity() {
   lateinit var uriLauncher: UriLauncher
 
   private lateinit var binding: ActivityPersonBinding
-
   private lateinit var dataExtra: MediaCastItem
+
   private val personViewModel: PersonViewModel by viewModels()
 
   private var dialog: Dialog? = null
@@ -120,12 +122,6 @@ class PersonActivity : AppCompatActivity() {
       dataExtra.id?.let { personViewModel.getDetailPerson(it) }
       binding.swipeRefresh.isRefreshing = false
     }
-
-    // error and loading handle
-    personViewModel.errorState.observe(this) {
-      mSnackbar = snackBarWarning(binding.coordinatorLayout, null, it)
-    }
-    personViewModel.loadingState.observe(this) { showLoading(it) }
   }
 
   private fun setupRecyclerView() {
@@ -140,18 +136,18 @@ class PersonActivity : AppCompatActivity() {
     binding.rvPhotos.adapter = adapterImage
 
     // show known for
-    personViewModel.castList.observe(this) {
+    collectFlow(personViewModel.castList) {
       adapterKnownFor.setCast(it)
     }
 
     // show picture
-    personViewModel.imageList.observe(this) {
+    collectFlow(personViewModel.imageList) {
       adapterImage.setImage(it)
     }
   }
 
   private fun showInitialData() {
-    binding.collapse.title = dataExtra.name ?: dataExtra.originalName ?: getString(not_available)
+    binding.collapse.title = dataExtra.validName
     val imageToLoad = if (!dataExtra.profilePath.isNullOrEmpty()) {
       binding.ivPicture.contentDescription = "with_profile"
       TMDB_IMG_LINK_POSTER_W780 + dataExtra.profilePath
@@ -170,23 +166,38 @@ class PersonActivity : AppCompatActivity() {
   }
 
   private fun observeMediaPerson() {
-    personViewModel.detailPerson.observe(this) { detailPerson ->
-      binding.tvBiography.text =
-        detailPerson.biography?.takeIf { it.isNotBlank() } ?: getString(no_biography)
+    collectFlow(personViewModel.detailPersonState) { state ->
+      when (state) {
+        is UIState.Idle -> Unit
 
-      if (!detailPerson.homepage.isNullOrEmpty()) {
-        binding.btnLink.isVisible = true
-        binding.divider1.isVisible = true
-        binding.btnLink.setOnClickListener {
-          uriLauncher.launch(detailPerson.homepage)
+        is UIState.Loading -> showLoading(true)
+
+        is UIState.Success -> {
+          showLoading(false)
+          val detailPerson = state.data
+
+          binding.tvBiography.text = detailPerson.biography.validBiography(this)
+          showHomePage(detailPerson.homepage)
+          showBirthdate(detailPerson)
+          showSocialMediaPerson(detailPerson.externalIds)
         }
-      } else {
-        binding.btnLink.isGone = true
-        binding.divider1.isGone = true
-      }
 
-      showBirthdate(detailPerson)
-      showSocialMediaPerson(detailPerson.externalIds)
+        is UIState.Error -> {
+          showLoading(false)
+          mSnackbar = snackBarWarning(binding.coordinatorLayout, null, state.message)
+        }
+      }
+    }
+  }
+
+  private fun showHomePage(homePage: String?) {
+    if (!homePage.isNullOrEmpty()) {
+      binding.btnLink.isVisible = true
+      binding.divider1.isVisible = true
+      binding.btnLink.setOnClickListener { uriLauncher.launch(homePage) }
+    } else {
+      binding.btnLink.isGone = true
+      binding.divider1.isGone = true
     }
   }
 
@@ -281,9 +292,8 @@ class PersonActivity : AppCompatActivity() {
       binding.nestedScrollViewPerson.isNestedScrollingEnabled = false
       binding.swipeRefresh.isEnabled = false
     } else {
-      val animation = animFadeOutLong(this)
-      binding.backgroundDimPerson.startAnimation(animation)
-      binding.progressBar.startAnimation(animation)
+      binding.backgroundDimPerson.startAnimation(animFadeOutLong(this))
+      binding.progressBar.startAnimation(animFadeOutLong(this))
 
       binding.nestedScrollViewPerson.isNestedScrollingEnabled = true
       binding.swipeRefresh.isEnabled = true

@@ -8,6 +8,7 @@ android.namespace = "com.waffiq.bazz_movies.core.uihelper"
 dependencies {
   api(project(":core:common"))
   implementation(project(":core:designsystem"))
+  implementation(project(":core:models"))
   implementation(project(":core:utils"))
 
   api(libs.androidx.core.ktx)
@@ -16,6 +17,8 @@ dependencies {
   testImplementation(project(":navigation"))
   testImplementation(project(":core:models"))
   testImplementation(libs.androidx.test.core)
+  testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.mockk)
   testImplementation(libs.robolectric)
+  testImplementation(libs.turbine)
 }

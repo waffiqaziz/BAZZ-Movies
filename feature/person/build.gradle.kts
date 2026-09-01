@@ -23,6 +23,7 @@ dependencies {
   implementation(libs.expandable.textview)
   implementation(libs.google.material)
 
+  testImplementation(project(":core:uihelper"))
   testImplementation(libs.androidx.core.testing)
   testImplementation(libs.androidx.test.core)
   testImplementation(libs.kotlinx.coroutines.test)
@@ -32,6 +33,5 @@ dependencies {
   testImplementation(libs.turbine)
 
   androidTestImplementation(libs.androidx.uiautomator)
-  androidTestImplementation(libs.kotlinx.coroutines.test)
   androidTestImplementation(libs.mockk.android)
 }
