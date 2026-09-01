@@ -22,14 +22,12 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.FACEBOOK_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.IMDB_PERSON_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.INSTAGRAM_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.TIKTOK_PERSON_LINK
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W780
 import com.waffiq.bazz_movies.core.common.utils.Constants.WIKIDATA_PERSON_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.X_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.YOUTUBE_CHANNEL_LINK
 import com.waffiq.bazz_movies.core.designsystem.R.color.gray_900
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_logo
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
-import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_no_profile
 import com.waffiq.bazz_movies.core.designsystem.R.string.image_counter_format
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.models.MediaCastItem
@@ -37,6 +35,8 @@ import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.animFadeOutLong
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
+import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.isValidImagePath
+import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.profileHighQualityImageSource
 import com.waffiq.bazz_movies.core.uihelper.utils.InsetHelper.setupWindowInsets
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.validName
@@ -148,15 +148,10 @@ class PersonActivity : AppCompatActivity() {
 
   private fun showInitialData() {
     binding.collapse.title = dataExtra.validName
-    val imageToLoad = if (!dataExtra.profilePath.isNullOrEmpty()) {
-      binding.ivPicture.contentDescription = "with_profile"
-      TMDB_IMG_LINK_POSTER_W780 + dataExtra.profilePath
-    } else {
-      binding.ivPicture.contentDescription = "no_profile"
-      ic_no_profile
-    }
+    binding.ivPicture.tag =
+      if (dataExtra.profilePath.isValidImagePath()) "with_profile" else "no_profile"
     Glide.with(binding.ivPicture)
-      .load(imageToLoad)
+      .load(dataExtra.profileHighQualityImageSource)
       .placeholder(ic_bazz_logo)
       .transition(withCrossFade())
       .error(ic_broken_image)

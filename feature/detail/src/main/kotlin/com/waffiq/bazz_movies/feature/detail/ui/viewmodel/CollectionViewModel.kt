@@ -3,12 +3,12 @@ package com.waffiq.bazz_movies.feature.detail.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.core.models.Outcome
+import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.backdropOriginalSource
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.CollectionSortOption
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.genreIds
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.sortedByOption
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.collection.GetMovieCollectionUseCase
 import com.waffiq.bazz_movies.feature.detail.ui.state.CollectionUiState
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.backdropOriginalSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -15,12 +15,14 @@ import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.isEnabled
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withTagValue
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomAssertions.withErrorText
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomAssertions.withoutError
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.not
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist as notExist
 import androidx.test.espresso.matcher.ViewMatchers.isClickable as clickable
@@ -28,6 +30,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed as isViewDisplaye
 
 @Suppress("TooManyFunctions")
 object CustomViewMatchers {
+
   fun withResDrawable(resourceId: Int): Matcher<View> {
     return object : BoundedMatcher<View, ImageView>(ImageView::class.java) {
 
@@ -121,6 +124,10 @@ object CustomViewMatchers {
 
   fun Int.hasContentDescription(expected: String) {
     onView(withId(this)).check(matches(withContentDescription(expected)))
+  }
+
+  fun Int.hasTag(expected: Any) {
+    onView(withId(this)).check(matches(withTagValue(equalTo(expected))))
   }
 
   fun Int.checkMatches(matcher: Matcher<View>) {

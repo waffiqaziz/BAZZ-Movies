@@ -17,7 +17,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
-import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.hasContentDescription
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.hasTag
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isGone
@@ -63,7 +63,7 @@ class PersonActivityTest : BasePersonActivityTest() {
   @Test
   fun personScreen_whenAllDataProvided_showsAllViews() {
     context.launchPersonActivity {
-      iv_picture.hasContentDescription("with_profile")
+      iv_picture.hasTag("with_profile")
       collapse.isDisplayed()
       rv_photos.performScrollTo()
       tv_biography.doesHaveText(testDetailPerson.biography.orEmpty())
@@ -161,14 +161,14 @@ class PersonActivityTest : BasePersonActivityTest() {
   @Test
   fun photoProfile_whenNull_showsNoProfile() {
     context.launchPersonActivity(testMediaCastItem.copy(profilePath = null)) {
-      iv_picture.hasContentDescription("no_profile")
+      iv_picture.hasTag("no_profile")
     }
   }
 
   @Test
   fun photoProfile_whenEmpty_showsNoProfile() {
     context.launchPersonActivity(testMediaCastItem.copy(profilePath = "")) {
-      iv_picture.hasContentDescription("no_profile")
+      iv_picture.hasTag("no_profile")
     }
   }
 
