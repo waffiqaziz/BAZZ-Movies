@@ -11,11 +11,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_no_profile_rounded
+import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.profileImageSource
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.roleName
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.validName
 import com.waffiq.bazz_movies.feature.detail.databinding.ItemCreditsPersonBinding
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.profileImageSource
 
 class CrewAdapter : ListAdapter<MediaCrewItem, CrewAdapter.ViewHolder>(CrewDiffCallback()) {
 

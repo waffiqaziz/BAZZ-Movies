@@ -21,6 +21,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.models.MediaState
 import com.waffiq.bazz_movies.core.models.Rated
+import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.backdropPathSource
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding
 import com.waffiq.bazz_movies.feature.detail.ui.CollectionDetailActivity
@@ -29,7 +30,6 @@ import com.waffiq.bazz_movies.feature.detail.ui.fragment.CreditsBottomSheet
 import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.state.UserAuthState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.backdropPathSource
 import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.changeBtnAction
 
 /**

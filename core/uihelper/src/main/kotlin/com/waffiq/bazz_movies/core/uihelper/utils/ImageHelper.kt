@@ -1,10 +1,12 @@
-package com.waffiq.bazz_movies.feature.detail.utils.helpers
+package com.waffiq.bazz_movies.core.uihelper.utils
 
 import com.waffiq.bazz_movies.core.common.utils.Constants.NOT_AVAILABLE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_ORIGINAL
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W300
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W500
+import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W780
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
+import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_no_profile
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_no_profile_rounded
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.models.Imageble
@@ -12,7 +14,7 @@ import com.waffiq.bazz_movies.core.models.Profilable
 
 object ImageHelper {
 
-  private fun String?.isValidImagePath(): Boolean = !this.isNullOrBlank() && this != NOT_AVAILABLE
+  fun String?.isValidImagePath(): Boolean = !this.isNullOrBlank() && this != NOT_AVAILABLE
 
   private val Imageble.backdropOriginalUrl: String?
     get() = when {
@@ -37,10 +39,6 @@ object ImageHelper {
       ?.takeIf { it.isNotBlank() && it != NOT_AVAILABLE }
       ?.let { TMDB_IMG_LINK_POSTER_W500 + it } // higher quality than on the list
 
-  /** Used on detail page, to show poster in higher quality
-   *
-   * @return Poster URL if available, otherwise fallback to drawable
-   */
   val Imageble.posterDetailSource: Any
     get() = posterUrl ?: ic_poster_error
 
@@ -48,5 +46,11 @@ object ImageHelper {
     get() = when {
       profilePath.isValidImagePath() -> TMDB_IMG_LINK_POSTER_W300 + profilePath
       else -> ic_no_profile_rounded
+    }
+
+  val Profilable.profileHighQualityImageSource: Any
+    get() = when {
+      profilePath.isValidImagePath() -> TMDB_IMG_LINK_POSTER_W780 + profilePath
+      else -> ic_no_profile
     }
 }

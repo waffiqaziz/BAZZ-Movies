@@ -1,18 +1,21 @@
-package com.waffiq.bazz_movies.feature.detail.utils.helpers
+package com.waffiq.bazz_movies.core.uihelper.utils
 
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_ORIGINAL
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W300
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W500
+import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W780
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
+import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_no_profile
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_no_profile_rounded
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
+import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.core.models.MediaItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.backdropOriginalSource
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.backdropPathSource
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.isBackdropNotAvailable
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.posterDetailSource
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.profileImageSource
+import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.backdropOriginalSource
+import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.backdropPathSource
+import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.isBackdropNotAvailable
+import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.posterDetailSource
+import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.profileHighQualityImageSource
+import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.profileImageSource
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -144,26 +147,43 @@ class ImageHelperTest {
 
   @Test
   fun profileImageSource_whenPathIsAvailable_returnsPoster() {
-    val data = MediaCrewItem(profilePath = "path")
+    val data = MediaCastItem(profilePath = "path")
     assertEquals(TMDB_IMG_LINK_POSTER_W300 + "path", data.profileImageSource)
   }
 
   @Test
   fun profileImageSource_whenPathPathMissing_returnsCorrectValue() {
     // all null
-    val data1 = MediaCrewItem()
-    assertEquals(ic_no_profile_rounded, data1.profileImageSource)
+    assertEquals(ic_no_profile_rounded, MediaCastItem().profileImageSource)
 
     // all N/A value
-    val data2 = MediaCrewItem(profilePath = "N/A")
-    assertEquals(ic_no_profile_rounded, data2.profileImageSource)
+    assertEquals(ic_no_profile_rounded, MediaCastItem(profilePath = "N/A").profileImageSource)
 
     // all empty value
-    val data3 = MediaCrewItem(profilePath = "")
-    assertEquals(ic_no_profile_rounded, data3.profileImageSource)
+    assertEquals(ic_no_profile_rounded, MediaCastItem(profilePath = "").profileImageSource)
 
     // all blank
-    val data4 = MediaCrewItem(profilePath = " ")
-    assertEquals(ic_no_profile_rounded, data4.profileImageSource)
+    assertEquals(ic_no_profile_rounded, MediaCastItem(profilePath = " ").profileImageSource)
+  }
+
+  @Test
+  fun profileHighQualityImageSource_whenPathIsAvailable_returnsPoster() {
+    val data = MediaCastItem(profilePath = "path")
+    assertEquals(TMDB_IMG_LINK_POSTER_W780 + "path", data.profileHighQualityImageSource)
+  }
+
+  @Test
+  fun profileHighQualityImageSource_whenPathPathMissing_returnsCorrectValue() {
+    // all null
+    assertEquals(ic_no_profile, MediaCastItem().profileHighQualityImageSource)
+
+    // all N/A value
+    assertEquals(ic_no_profile, MediaCastItem(profilePath = "N/A").profileHighQualityImageSource)
+
+    // all empty value
+    assertEquals(ic_no_profile, MediaCastItem(profilePath = "").profileHighQualityImageSource)
+
+    // all blank
+    assertEquals(ic_no_profile, MediaCastItem(profilePath = " ").profileHighQualityImageSource)
   }
 }

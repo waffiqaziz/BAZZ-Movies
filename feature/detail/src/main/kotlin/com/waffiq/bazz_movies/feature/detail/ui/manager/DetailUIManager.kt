@@ -28,6 +28,9 @@ import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeOut
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
+import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.backdropOriginalSource
+import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.isBackdropNotAvailable
+import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.posterDetailSource
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.dateOf
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
@@ -45,9 +48,6 @@ import com.waffiq.bazz_movies.feature.detail.ui.adapter.KeywordsAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.RecommendationAdapter
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.CreateTableViewHelper.createTable
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.CrewJobHelper.extractCrewDisplayNames
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.backdropOriginalSource
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.isBackdropNotAvailable
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.posterDetailSource
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.formatRating
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getEpisodesFormatted
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getScoreFromOMDB
