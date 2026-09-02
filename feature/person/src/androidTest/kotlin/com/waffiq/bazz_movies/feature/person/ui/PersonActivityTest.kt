@@ -43,7 +43,7 @@ import com.waffiq.bazz_movies.feature.person.R.id.view_group_social_media
 import com.waffiq.bazz_movies.feature.person.testutils.BasePersonActivityTest
 import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testDetailPerson
 import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testExternalIDPerson
-import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testMediaCastItem
+import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testPersonArgs
 import com.waffiq.bazz_movies.feature.person.testutils.TestHelper.isRefreshing
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.formatBirthInfo
@@ -110,13 +110,6 @@ class PersonActivityTest : BasePersonActivityTest() {
   }
 
   @Test
-  fun dataPerson_whenNoId_shouldNoProblem() {
-    context.launchPersonActivity(testMediaCastItem.copy(id = null)) {
-      verify(exactly = 0) { mockPersonViewModel.getDetailPerson(any()) }
-    }
-  }
-
-  @Test
   fun personScreen_whenLoading_showsProgressBar() {
     context.launchPersonActivity {
       // loading
@@ -160,14 +153,14 @@ class PersonActivityTest : BasePersonActivityTest() {
 
   @Test
   fun photoProfile_whenNull_showsNoProfile() {
-    context.launchPersonActivity(testMediaCastItem.copy(profilePath = null)) {
+    context.launchPersonActivity(testPersonArgs.copy(profilePath = null)) {
       iv_picture.hasTag("no_profile")
     }
   }
 
   @Test
   fun photoProfile_whenEmpty_showsNoProfile() {
-    context.launchPersonActivity(testMediaCastItem.copy(profilePath = "")) {
+    context.launchPersonActivity(testPersonArgs.copy(profilePath = "")) {
       iv_picture.hasTag("no_profile")
     }
   }
@@ -179,16 +172,6 @@ class PersonActivityTest : BasePersonActivityTest() {
 
       onView(withId(swipe_refresh)).check(matches(not(isRefreshing())))
       verify { mockPersonViewModel.getDetailPerson(any()) }
-    }
-  }
-
-  @Test
-  fun swipeRefresh_noId_doesNotTriggerFetchDetailPerson() {
-    context.launchPersonActivity(testMediaCastItem.copy(id = null)) { _ ->
-      performSwipeRefresh()
-
-      onView(withId(swipe_refresh)).check(matches(not(isRefreshing())))
-      verify(exactly = 0) { mockPersonViewModel.getDetailPerson(any()) }
     }
   }
 
@@ -328,7 +311,7 @@ class PersonActivityTest : BasePersonActivityTest() {
   @Test
   fun personScreen_whenInitialized_showsAllViews() {
     val intent = Intent(context, PersonActivity::class.java).apply {
-      putExtra(PersonActivity.EXTRA_PERSON, testMediaCastItem)
+      putExtra(PersonActivity.EXTRA_PERSON, testPersonArgs)
     }
 
     ActivityScenario.launch<PersonActivity>(intent).use { _ ->

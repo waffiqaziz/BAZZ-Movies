@@ -1,15 +1,10 @@
 package com.waffiq.bazz_movies.core.models
 
-import android.os.Parcel
-import android.os.Parcelable
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertNull
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 class MediaCastItemTest {
 
   private val mediaCastItemValid = MediaCastItem(
@@ -58,59 +53,5 @@ class MediaCastItemTest {
     assertNull(mediaCastItemNull.id)
     assertNull(mediaCastItemNull.adult)
     assertNull(mediaCastItemNull.order)
-  }
-
-  @Test
-  fun parcelable_whenAllFieldsAreValid_readsAndWritesCorrectly() {
-    // obtain the CREATOR field
-    @Suppress("UNCHECKED_CAST")
-    val creator =
-      MediaCastItem::class.java.getField("CREATOR")
-        .get(null) as Parcelable.Creator<MediaCastItem>
-    val parcel = Parcel.obtain()
-    mediaCastItemValid.writeToParcel(parcel, 0)
-
-    parcel.setDataPosition(0)
-
-    val fromParcel = creator.createFromParcel(parcel)
-    assertEquals(mediaCastItemValid, fromParcel)
-    parcel.recycle()
-  }
-
-  @Test
-  fun parcelable_whenAllFieldsAreNull_readsAndWritesCorrectly() {
-    @Suppress("UNCHECKED_CAST")
-    val creator =
-      MediaCastItem::class.java.getField("CREATOR").get(null) as Parcelable.Creator<MediaCastItem>
-    val parcel = Parcel.obtain()
-    mediaCastItemNull.writeToParcel(parcel, 0)
-
-    parcel.setDataPosition(0)
-    val fromParcel = creator.createFromParcel(parcel)
-
-    assertEquals(mediaCastItemNull, fromParcel)
-    parcel.recycle()
-  }
-
-  @Test
-  fun writeToParcel_whenCalledWithValidValue_performsWriteWithoutCrash() {
-    val parcel = Parcel.obtain()
-    mediaCastItemValid.writeToParcel(parcel, 0)
-    parcel.recycle()
-  }
-
-  @Test
-  fun writeToParcel_whenCalledWithNullValue_performsWriteWithoutCrash() {
-    val parcel = Parcel.obtain()
-    mediaCastItemNull.writeToParcel(parcel, 0)
-    parcel.recycle()
-  }
-
-  @Test
-  fun describeContents_whenCalled_returnsZero() {
-    val contentsValue = mediaCastItemValid.describeContents()
-
-    // assert the typical return value for describeContents
-    assertEquals(0, contentsValue)
   }
 }

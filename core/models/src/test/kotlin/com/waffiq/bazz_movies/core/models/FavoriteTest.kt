@@ -1,15 +1,10 @@
 package com.waffiq.bazz_movies.core.models
 
-import android.os.Parcel
-import android.os.Parcelable
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 class FavoriteTest {
   private val favoriteValid = Favorite(
     id = 1,
@@ -50,51 +45,5 @@ class FavoriteTest {
   fun isStalled_withCorrectValue_returnsCorrectly() {
     assertTrue(favoriteValid.isStale())
     assertFalse(favoriteValid.copy(lastUpdated = System.currentTimeMillis()).isStale())
-  }
-
-  @Test
-  fun parcelable_whenAllFieldsAreValid_readsAndWritesCorrectly() {
-    // obtain the CREATOR field
-    @Suppress("UNCHECKED_CAST")
-    val creator =
-      Favorite::class.java.getField("CREATOR").get(null) as Parcelable.Creator<Favorite>
-    val parcel = Parcel.obtain()
-    favoriteValid.writeToParcel(parcel, 0)
-
-    parcel.setDataPosition(0)
-
-    val fromParcel = creator.createFromParcel(parcel)
-    assertEquals(favoriteValid, fromParcel)
-    parcel.recycle()
-  }
-
-  @Test
-  fun parcelable_whenAllFieldsAreNull_readsAndWritesCorrectly() {
-    @Suppress("UNCHECKED_CAST")
-    val creator =
-      Favorite::class.java.getField("CREATOR").get(null) as Parcelable.Creator<Favorite>
-    val parcel = Parcel.obtain()
-    favoriteValid.writeToParcel(parcel, 0)
-
-    parcel.setDataPosition(0)
-    val fromParcel = creator.createFromParcel(parcel)
-
-    assertEquals(favoriteValid, fromParcel)
-    parcel.recycle()
-  }
-
-  @Test
-  fun writeToParcel_whenCalled_performsWriteWithoutCrash() {
-    val parcel = Parcel.obtain()
-    favoriteValid.writeToParcel(parcel, 0)
-    parcel.recycle()
-  }
-
-  @Test
-  fun describeContents_whenCalled_returnsZero() {
-    val contentsValue = favoriteValid.describeContents()
-
-    // assert the typical return value for describeContents
-    assertEquals(0, contentsValue)
   }
 }

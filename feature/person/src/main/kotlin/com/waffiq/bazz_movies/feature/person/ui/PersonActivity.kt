@@ -30,16 +30,14 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_logo
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.designsystem.R.string.image_counter_format
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
-import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.animFadeOutLong
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.isValidImagePath
-import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.profileHighQualityImageSource
+import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.profileDetailImageSource
 import com.waffiq.bazz_movies.core.uihelper.utils.InsetHelper.setupWindowInsets
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
-import com.waffiq.bazz_movies.core.utils.DetailDataUtils.validName
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectFlow
 import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
 import com.waffiq.bazz_movies.feature.person.R.id.btn_close_dialog
@@ -59,6 +57,7 @@ import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.forma
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.setupSocialLink
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.validBiography
 import com.waffiq.bazz_movies.navigation.INavigator
+import com.waffiq.bazz_movies.navigation.PersonArgs
 import com.waffiq.bazz_movies.navigation.extractParcelableExtraFromIntent
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -73,7 +72,7 @@ class PersonActivity : AppCompatActivity() {
   lateinit var uriLauncher: UriLauncher
 
   private lateinit var binding: ActivityPersonBinding
-  private lateinit var dataExtra: MediaCastItem
+  private lateinit var dataExtra: PersonArgs
 
   private val personViewModel: PersonViewModel by viewModels()
 
@@ -108,7 +107,7 @@ class PersonActivity : AppCompatActivity() {
   }
 
   private fun extractDataFromIntent(): Boolean {
-    val item = extractParcelableExtraFromIntent<MediaCastItem>(intent, EXTRA_PERSON)
+    val item = extractParcelableExtraFromIntent<PersonArgs>(intent, EXTRA_PERSON)
       ?: return false
     dataExtra = item
     return true
@@ -119,7 +118,7 @@ class PersonActivity : AppCompatActivity() {
       onBackPressedDispatcher.onBackPressed()
     }
     binding.swipeRefresh.setOnRefreshListener {
-      dataExtra.id?.let { personViewModel.getDetailPerson(it) }
+      personViewModel.getDetailPerson(dataExtra.id)
       binding.swipeRefresh.isRefreshing = false
     }
   }
@@ -147,17 +146,17 @@ class PersonActivity : AppCompatActivity() {
   }
 
   private fun showInitialData() {
-    binding.collapse.title = dataExtra.validName
+    binding.collapse.title = dataExtra.name
     binding.ivPicture.tag =
       if (dataExtra.profilePath.isValidImagePath()) "with_profile" else "no_profile"
     Glide.with(binding.ivPicture)
-      .load(dataExtra.profileHighQualityImageSource)
+      .load(dataExtra.profilePath.profileDetailImageSource)
       .placeholder(ic_bazz_logo)
       .transition(withCrossFade())
       .error(ic_broken_image)
       .into(binding.ivPicture)
 
-    dataExtra.id?.let { personViewModel.getDetailPerson(it) }
+    personViewModel.getDetailPerson(dataExtra.id)
   }
 
   private fun observeMediaPerson() {

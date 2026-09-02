@@ -9,6 +9,7 @@ import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.feature.detail.databinding.ItemCreditsPersonBinding
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseAdapterTest
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.mediaCastItem
+import com.waffiq.bazz_movies.navigation.PersonArgs
 import io.mockk.slot
 import io.mockk.verify
 import org.junit.Assert.assertEquals
@@ -141,7 +142,7 @@ class CastAdapterTest : BaseAdapterTest() {
     adapter.onBindViewHolder(viewHolder, 0)
 
     // use slot to capture MediaCastItem
-    val resultSlot = slot<MediaCastItem>()
+    val resultSlot = slot<PersonArgs>()
     binding.container.performClick()
 
     // wait the UI

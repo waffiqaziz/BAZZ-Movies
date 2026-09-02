@@ -1,9 +1,5 @@
 package com.waffiq.bazz_movies.core.models
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
 data class UserModel(
   val userId: Int,
   val name: String,
@@ -14,4 +10,4 @@ data class UserModel(
   val isLogin: Boolean,
   val gravatarHash: String?,
   val tmdbAvatar: String?,
-) : Parcelable
+)

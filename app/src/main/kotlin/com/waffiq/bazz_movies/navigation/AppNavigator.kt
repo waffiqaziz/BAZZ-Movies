@@ -7,7 +7,6 @@ import android.content.Intent
 import androidx.core.app.ActivityOptionsCompat
 import com.waffiq.bazz_movies.MainActivity
 import com.waffiq.bazz_movies.R.id.bottom_navigation
-import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.feature.about.ui.AboutActivity
 import com.waffiq.bazz_movies.feature.detail.ui.MediaDetailActivity
 import com.waffiq.bazz_movies.feature.detail.ui.MediaDetailActivity.Companion.EXTRA_MOVIE
@@ -26,9 +25,9 @@ class AppNavigator @Inject constructor() : INavigator {
     startActivity(intent, options.toBundle())
   }
 
-  override fun openPersonDetails(context: Context, cast: MediaCastItem) {
+  override fun openPersonDetails(context: Context, args: PersonArgs) {
     val intent = Intent(context, PersonActivity::class.java).apply {
-      putExtra(PersonActivity.EXTRA_PERSON, cast)
+      putExtra(PersonActivity.EXTRA_PERSON, args)
     }
     context.openActivity(intent)
   }

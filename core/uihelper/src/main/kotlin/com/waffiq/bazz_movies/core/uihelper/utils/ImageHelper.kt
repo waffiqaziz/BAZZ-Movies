@@ -48,9 +48,9 @@ object ImageHelper {
       else -> ic_no_profile_rounded
     }
 
-  val Profilable.profileHighQualityImageSource: Any
+  val String?.profileDetailImageSource: Any
     get() = when {
-      profilePath.isValidImagePath() -> TMDB_IMG_LINK_POSTER_W780 + profilePath
+      !isNullOrEmpty() -> TMDB_IMG_LINK_POSTER_W780 + this
       else -> ic_no_profile
     }
 }

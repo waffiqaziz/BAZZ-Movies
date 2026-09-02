@@ -1,7 +1,9 @@
 package com.waffiq.bazz_movies.navigation.testutils
 
 import com.waffiq.bazz_movies.core.common.MediaType
+import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.navigation.MediaArgs
+import com.waffiq.bazz_movies.navigation.utils.toPersonArgs
 
 object DummyData {
 
@@ -23,4 +25,13 @@ object DummyData {
   )
 
   val mediaArgsNull = MediaArgs(mediaType = MediaType.MOVIE)
+
+  val mediaCastItem = MediaCastItem(
+    id = 122333,
+    name = "Name",
+    originalName = "Name Original",
+    profilePath = "/profile.jpg",
+  )
+
+  val personArgs = mediaCastItem.toPersonArgs()
 }

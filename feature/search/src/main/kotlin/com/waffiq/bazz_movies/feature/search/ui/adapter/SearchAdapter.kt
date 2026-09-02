@@ -31,6 +31,7 @@ import com.waffiq.bazz_movies.feature.search.utils.MultiSearchItemMapper.toMedia
 import com.waffiq.bazz_movies.feature.search.utils.SearchHelper.getKnownFor
 import com.waffiq.bazz_movies.feature.search.utils.SearchHelper.profileImageSource
 import com.waffiq.bazz_movies.navigation.INavigator
+import com.waffiq.bazz_movies.navigation.utils.toPersonArgs
 
 class SearchAdapter(private val navigator: INavigator) :
   PagingDataAdapter<MultiSearchItem, SearchAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -60,7 +61,7 @@ class SearchAdapter(private val navigator: INavigator) :
       binding.content.setupPerson(true)
       binding.content.showDataPerson(data)
       binding.item.setOnClickListener {
-        navigator.openPersonDetails(itemView.context, data.toMediaCastItem())
+        navigator.openPersonDetails(itemView.context, data.toMediaCastItem().toPersonArgs())
       }
     }
 
