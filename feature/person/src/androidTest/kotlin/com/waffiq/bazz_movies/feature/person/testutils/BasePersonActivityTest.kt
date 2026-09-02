@@ -16,7 +16,6 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.no_biography
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
-import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
 import com.waffiq.bazz_movies.feature.person.R.id.btn_link
@@ -30,10 +29,11 @@ import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testDetailPerson
 import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testImagesList
 import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testKnownForList
-import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testMediaCastItem
+import com.waffiq.bazz_movies.feature.person.testutils.DummyData.testPersonArgs
 import com.waffiq.bazz_movies.feature.person.ui.PersonActivity
 import com.waffiq.bazz_movies.feature.person.ui.PersonViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
+import com.waffiq.bazz_movies.navigation.PersonArgs
 import dagger.hilt.android.testing.HiltAndroidRule
 import io.mockk.Runs
 import io.mockk.every
@@ -94,7 +94,7 @@ abstract class BasePersonActivityTest {
   }
 
   protected fun Context.launchPersonActivity(
-    person: MediaCastItem,
+    person: PersonArgs,
     block: (ActivityScenario<PersonActivity>) -> Unit,
   ) {
     val intent = Intent(this, PersonActivity::class.java).apply {
@@ -109,11 +109,11 @@ abstract class BasePersonActivityTest {
   }
 
   protected fun Context.launchPersonActivity(block: (ActivityScenario<PersonActivity>) -> Unit) {
-    this.launchPersonActivity(testMediaCastItem) { block(it) }
+    this.launchPersonActivity(testPersonArgs) { block(it) }
   }
 
   protected fun Context.launchNullPersonActivity(
-    person: MediaCastItem? = null,
+    person: PersonArgs? = null,
     block: (ActivityScenario<PersonActivity>) -> Unit,
   ) {
     val intent = Intent(this, PersonActivity::class.java).apply {

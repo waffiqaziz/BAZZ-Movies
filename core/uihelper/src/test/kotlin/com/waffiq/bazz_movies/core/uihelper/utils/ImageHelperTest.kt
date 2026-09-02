@@ -14,7 +14,7 @@ import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.backdropOriginalSo
 import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.backdropPathSource
 import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.isBackdropNotAvailable
 import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.posterDetailSource
-import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.profileHighQualityImageSource
+import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.profileDetailImageSource
 import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.profileImageSource
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -167,23 +167,13 @@ class ImageHelperTest {
   }
 
   @Test
-  fun profileHighQualityImageSource_whenPathIsAvailable_returnsPoster() {
-    val data = MediaCastItem(profilePath = "path")
-    assertEquals(TMDB_IMG_LINK_POSTER_W780 + "path", data.profileHighQualityImageSource)
+  fun profileDetailImageSource_whenPathIsAvailable_returnsPoster() {
+    assertEquals(TMDB_IMG_LINK_POSTER_W780 + "path", "path".profileDetailImageSource)
   }
 
   @Test
-  fun profileHighQualityImageSource_whenPathPathMissing_returnsCorrectValue() {
-    // all null
-    assertEquals(ic_no_profile, MediaCastItem().profileHighQualityImageSource)
-
-    // all N/A value
-    assertEquals(ic_no_profile, MediaCastItem(profilePath = "N/A").profileHighQualityImageSource)
-
-    // all empty value
-    assertEquals(ic_no_profile, MediaCastItem(profilePath = "").profileHighQualityImageSource)
-
-    // all blank
-    assertEquals(ic_no_profile, MediaCastItem(profilePath = " ").profileHighQualityImageSource)
+  fun profileDetailImageSource_whenPathPathMissing_returnsCorrectValue() {
+    assertEquals(ic_no_profile, null.profileDetailImageSource)
+    assertEquals(ic_no_profile, "".profileDetailImageSource)
   }
 }

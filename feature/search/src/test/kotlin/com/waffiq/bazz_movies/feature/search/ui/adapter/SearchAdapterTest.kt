@@ -3,11 +3,11 @@ package com.waffiq.bazz_movies.feature.search.ui.adapter
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.common.MediaType
 import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaNoSwipeBinding
-import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.feature.search.domain.model.KnownForItem
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.feature.search.testutils.BaseAdapterTest
 import com.waffiq.bazz_movies.navigation.MediaArgs
+import com.waffiq.bazz_movies.navigation.PersonArgs
 import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNotNull
@@ -199,7 +199,7 @@ class SearchAdapterTest : BaseAdapterTest() {
       adapter.onBindViewHolder(viewHolder, 0)
       binding.item.performClick()
 
-      val expectedPerson = MediaCastItem(
+      val expectedPerson = PersonArgs(
         id = 1,
         name = "Actor Name",
         originalName = "Original Actor Name",

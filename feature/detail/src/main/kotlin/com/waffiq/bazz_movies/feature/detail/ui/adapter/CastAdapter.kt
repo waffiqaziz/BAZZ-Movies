@@ -19,6 +19,7 @@ import com.waffiq.bazz_movies.core.utils.DetailDataUtils.roleName
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.validName
 import com.waffiq.bazz_movies.feature.detail.databinding.ItemCreditsPersonBinding
 import com.waffiq.bazz_movies.navigation.INavigator
+import com.waffiq.bazz_movies.navigation.utils.toPersonArgs
 
 class CastAdapter(private val navigator: INavigator) :
   ListAdapter<MediaCastItem, RecyclerView.ViewHolder>(CastDiffCallback()) {
@@ -71,7 +72,7 @@ class CastAdapter(private val navigator: INavigator) :
       binding.tvCastCharacter.text = cast.character?.takeIf { it.isNotBlank() } ?: "TBA"
 
       binding.container.setOnClickListener {
-        navigator.openPersonDetails(itemView.context, cast)
+        navigator.openPersonDetails(itemView.context, cast.toPersonArgs())
       }
     }
   }
@@ -93,7 +94,7 @@ class CastAdapter(private val navigator: INavigator) :
       binding.tvRole.text = cast.character.roleName
 
       binding.container.setOnClickListener {
-        navigator.openPersonDetails(itemView.context, cast)
+        navigator.openPersonDetails(itemView.context, cast.toPersonArgs())
       }
     }
   }

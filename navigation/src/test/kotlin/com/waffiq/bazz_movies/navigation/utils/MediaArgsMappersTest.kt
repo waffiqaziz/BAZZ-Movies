@@ -5,7 +5,7 @@ import com.waffiq.bazz_movies.navigation.testutils.DummyData.mediaArgs
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class MappersTest {
+class MediaArgsMappersTest {
 
   @Test
   fun toMediaItem_withValidValue_returnsCorrectly() {

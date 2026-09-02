@@ -1,9 +1,5 @@
 package com.waffiq.bazz_movies.core.models
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
 data class MediaCastItem(
   override val name: String? = null,
   override val originalName: String? = null,
@@ -18,5 +14,4 @@ data class MediaCastItem(
   val adult: Boolean? = null,
   val order: Int? = null,
 ) : Nameable,
-  Parcelable,
   Profilable

@@ -1,12 +1,8 @@
 package com.waffiq.bazz_movies.core.models
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
 /**
  * Used as data class for guest user favorite n watchlist
  */
-@Parcelize
 data class Favorite(
   val id: Int,
   val mediaId: Int,
@@ -22,7 +18,7 @@ data class Favorite(
   val isFavorite: Boolean,
   val isWatchlist: Boolean,
   val lastUpdated: Long,
-) : Parcelable {
+) {
 
   @Suppress("MagicNumber")
   fun isStale(): Boolean {

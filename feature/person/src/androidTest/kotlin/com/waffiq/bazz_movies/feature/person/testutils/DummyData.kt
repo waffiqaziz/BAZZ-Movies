@@ -1,16 +1,15 @@
 package com.waffiq.bazz_movies.feature.person.testutils
 
-import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ProfilesItem
+import com.waffiq.bazz_movies.navigation.PersonArgs
 
 object DummyData {
 
-  // helper methods to create test data
-  val testMediaCastItem =
-    MediaCastItem(
+  val testPersonArgs =
+    PersonArgs(
       id = 123,
       name = "Test Actor",
       originalName = "Test Actor Original",
