@@ -18,8 +18,6 @@ class UserModelTest {
     tmdbAvatar = "/avatar.jpg",
   )
 
-  private val userModelGravatarHashNull = userModelValid.copy(gravatarHash = null)
-
   @Test
   fun userModel_withValidValue_returnsCorrectData() {
     assertEquals(1, userModelValid.userId)
