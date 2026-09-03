@@ -92,8 +92,6 @@ class PersonActivity : AppCompatActivity() {
     binding.root.setupWindowInsets()
     justifyTextView(binding.tvBiography)
 
-    showLoading(true)
-
     // get the data from intent, if not available, finish the activity
     if (!extractDataFromIntent()) {
       finish()
@@ -161,24 +159,44 @@ class PersonActivity : AppCompatActivity() {
 
   private fun observeMediaPerson() {
     collectFlow(personViewModel.detailPersonState) { state ->
-      when (state) {
-        is UIState.Idle -> Unit
+      render(state)
+    }
+  }
 
-        is UIState.Loading -> showLoading(true)
+  private fun render(state: UIState<DetailPerson>) {
+    binding.illustrationError.root.isVisible = state is UIState.Error
+    binding.content.isGone = state is UIState.Error || state is UIState.Loading
+    binding.progressBar.isVisible = state is UIState.Loading
+    binding.backgroundDimPerson.isVisible = state is UIState.Loading
+    binding.swipeRefresh.isRefreshing = false
 
-        is UIState.Success -> {
-          showLoading(false)
-          val detailPerson = state.data
+    when (state) {
+      is UIState.Idle -> Unit
 
-          binding.tvBiography.text = detailPerson.biography.validBiography(this)
-          showHomePage(detailPerson.homepage)
-          showBirthdate(detailPerson)
-          showSocialMediaPerson(detailPerson.externalIds)
-        }
+      is UIState.Loading -> {
+        binding.nestedScrollViewPerson.isNestedScrollingEnabled = false
+        binding.swipeRefresh.isEnabled = false
+      }
 
-        is UIState.Error -> {
-          showLoading(false)
-          mSnackbar = snackBarWarning(binding.coordinatorLayout, null, state.message)
+      is UIState.Success -> {
+        binding.nestedScrollViewPerson.isNestedScrollingEnabled = true
+        binding.swipeRefresh.isEnabled = true
+        binding.backgroundDimPerson.startAnimation(animFadeOutLong(this))
+        binding.progressBar.startAnimation(animFadeOutLong(this))
+
+        val detailPerson = state.data
+        binding.tvBiography.text = detailPerson.biography.validBiography(this)
+        showHomePage(detailPerson.homepage)
+        showBirthdate(detailPerson)
+        showSocialMediaPerson(detailPerson.externalIds)
+      }
+
+      is UIState.Error -> {
+        binding.nestedScrollViewPerson.isNestedScrollingEnabled = true
+        binding.swipeRefresh.isEnabled = true
+        mSnackbar = snackBarWarning(binding.coordinatorLayout, null, state.message)
+        binding.illustrationError.btnTryAgain.setOnClickListener {
+          personViewModel.getDetailPerson(dataExtra.id)
         }
       }
     }
@@ -279,23 +297,6 @@ class PersonActivity : AppCompatActivity() {
     textView.text = getString(image_counter_format, position + 1, total)
   }
 
-  private fun showLoading(isLoading: Boolean) {
-    if (isLoading) {
-      binding.backgroundDimPerson.isVisible = true // blur background when loading
-      binding.progressBar.isVisible = true
-      binding.nestedScrollViewPerson.isNestedScrollingEnabled = false
-      binding.swipeRefresh.isEnabled = false
-    } else {
-      binding.backgroundDimPerson.startAnimation(animFadeOutLong(this))
-      binding.progressBar.startAnimation(animFadeOutLong(this))
-
-      binding.nestedScrollViewPerson.isNestedScrollingEnabled = true
-      binding.swipeRefresh.isEnabled = true
-      binding.backgroundDimPerson.isGone = true
-      binding.progressBar.isGone = true
-    }
-  }
-
   override fun onDestroy() {
     super.onDestroy()
     mSnackbar?.dismiss()
@@ -307,6 +308,7 @@ class PersonActivity : AppCompatActivity() {
 
   companion object {
     const val DIALOG_ALPHA = 0.8f
+    const val SCALE = 0.88f
     const val EXTRA_PERSON = "EXTRA_PERSON"
     private const val MAX_DOTS_COUNT = 10
   }
