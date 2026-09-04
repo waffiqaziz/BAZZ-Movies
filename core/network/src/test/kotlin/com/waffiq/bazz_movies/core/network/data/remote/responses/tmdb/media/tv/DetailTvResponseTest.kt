@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv
 
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.GenresResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.ProductionCountriesResponseItem
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.detailTvResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.detailTvResponse
 import com.waffiq.bazz_movies.core.network.testutils.DummyData.nextEpisodeToAirResponse
 import com.waffiq.bazz_movies.core.network.testutils.DummyData.watchProvidersResultsMap
 import org.junit.Assert.assertEquals
@@ -12,26 +12,24 @@ import org.junit.Test
 
 class DetailTvResponseTest {
 
-  val detailTvResponse = detailTvResponseDump
-
   @Test
   fun detailTvResponse_withValidValues_setsBasicInfoCorrectly() {
     assertEquals(253905, detailTvResponse.id)
     assertEquals("Miniseries", detailTvResponse.type)
     assertEquals("When the Phone Rings", detailTvResponse.name)
-    assertEquals("Zach Tyler Eisen", detailTvResponse.credits?.cast?.get(0)?.name)
+    assertEquals("Zach Tyler Eisen", detailTvResponse.aggregateCredits?.cast?.get(0)?.name)
     assertEquals("Drama", detailTvResponse.genres?.get(0)?.name)
     assertEquals("family", detailTvResponse.keywords?.keywords?.get(0)?.name)
     assertEquals(394.215, detailTvResponse.popularity)
     assertEquals(8.4, detailTvResponse.voteAverage)
     assertEquals(141, detailTvResponse.voteCount)
     assertEquals("지금 거신 전화는", detailTvResponse.originalName)
-    assertEquals("Korean", detailTvResponse.spokenLanguagesResponse?.get(0)?.englishName)
+    assertEquals("Korean", detailTvResponse.spokenLanguages?.get(0)?.englishName)
     assertEquals("ko", detailTvResponse.originalLanguage)
     assertEquals("ko", detailTvResponse.languages?.get(0))
     assertEquals("Ended", detailTvResponse.status)
     assertEquals("https://program.imbc.com/WhenThePhoneRings", detailTvResponse.homepage)
-    assertEquals("Kim Ji-woon", detailTvResponse.createdByResponse?.get(0)?.name)
+    assertEquals("Kim Ji-woon", detailTvResponse.createdBy?.get(0)?.name)
     assertTrue(detailTvResponse.adult == false)
     assertEquals("avatarthelastairbender", detailTvResponse.externalIds?.facebookId)
     assertEquals(
@@ -54,7 +52,7 @@ class DetailTvResponseTest {
     assertEquals("/glWP5Y7CVeqrOjJpLckQjuLFjQJ.jpg", detailTvResponse.posterPath)
     assertEquals(
       "/pOSCKaZhndUFYtxHXjQOV6xJi1s.png",
-      detailTvResponse.networksResponse?.get(0)?.logoPath,
+      detailTvResponse.networks?.get(0)?.logoPath,
     )
   }
 
@@ -62,19 +60,19 @@ class DetailTvResponseTest {
   fun detailTvResponse_withValidValues_setsSeasonsAndEpisodesCorrectly() {
     assertEquals(1, detailTvResponse.numberOfSeasons)
     assertEquals(12, detailTvResponse.numberOfEpisodes)
-    assertEquals(392789, detailTvResponse.seasonsResponse?.get(0)?.id)
+    assertEquals(392789, detailTvResponse.seasons?.get(0)?.id)
     assertEquals(70, detailTvResponse.episodeRunTime?.get(0))
-    assertEquals(67, detailTvResponse.lastEpisodeToAirResponse?.runtime)
+    assertEquals(67, detailTvResponse.lastEpisodeToAir?.runtime)
   }
 
   @Test
   fun detailTvResponse_withValidValues_setsProductionAndCountryCorrectly() {
-    assertEquals("South Korea", detailTvResponse.productionCountriesResponse?.get(0)?.name)
-    assertEquals("Baram Pictures", detailTvResponse.productionCompaniesResponse?.get(1)?.name)
+    assertEquals("South Korea", detailTvResponse.productionCountries?.get(0)?.name)
+    assertEquals("Baram Pictures", detailTvResponse.productionCompanies?.get(1)?.name)
     assertEquals("KR", detailTvResponse.originCountry?.get(0))
     assertEquals(
       "KR",
-      detailTvResponse.contentRatingsResponse?.contentRatingsItemResponse?.get(1)?.iso31661,
+      detailTvResponse.contentRatings?.contentRatings?.get(1)?.iso31661,
     )
   }
 
@@ -99,33 +97,33 @@ class DetailTvResponseTest {
     val detailTvResponse = DetailTvResponse()
     assertNull(detailTvResponse.originalLanguage)
     assertNull(detailTvResponse.numberOfEpisodes)
-    assertNull(detailTvResponse.networksResponse)
+    assertNull(detailTvResponse.networks)
     assertNull(detailTvResponse.type)
     assertNull(detailTvResponse.backdropPath)
-    assertNull(detailTvResponse.credits)
+    assertNull(detailTvResponse.aggregateCredits)
     assertNull(detailTvResponse.genres)
     assertNull(detailTvResponse.keywords)
     assertNull(detailTvResponse.popularity)
-    assertNull(detailTvResponse.productionCountriesResponse)
+    assertNull(detailTvResponse.productionCountries)
     assertNull(detailTvResponse.id)
     assertNull(detailTvResponse.numberOfSeasons)
     assertNull(detailTvResponse.voteCount)
     assertNull(detailTvResponse.firstAirDate)
     assertNull(detailTvResponse.overview)
-    assertNull(detailTvResponse.seasonsResponse)
+    assertNull(detailTvResponse.seasons)
     assertNull(detailTvResponse.languages)
-    assertNull(detailTvResponse.createdByResponse)
-    assertNull(detailTvResponse.lastEpisodeToAirResponse)
+    assertNull(detailTvResponse.createdBy)
+    assertNull(detailTvResponse.lastEpisodeToAir)
     assertNull(detailTvResponse.posterPath)
     assertNull(detailTvResponse.originCountry)
-    assertNull(detailTvResponse.spokenLanguagesResponse)
-    assertNull(detailTvResponse.productionCompaniesResponse)
+    assertNull(detailTvResponse.spokenLanguages)
+    assertNull(detailTvResponse.productionCompanies)
     assertNull(detailTvResponse.originalName)
     assertNull(detailTvResponse.voteAverage)
     assertNull(detailTvResponse.name)
     assertNull(detailTvResponse.tagline)
     assertNull(detailTvResponse.episodeRunTime)
-    assertNull(detailTvResponse.contentRatingsResponse)
+    assertNull(detailTvResponse.contentRatings)
     assertNull(detailTvResponse.adult)
     assertNull(detailTvResponse.nextEpisodeToAir)
     assertNull(detailTvResponse.inProduction)
@@ -142,30 +140,30 @@ class DetailTvResponseTest {
     val detailTvResponse = DetailTvResponse(
       originalLanguage = "Bahasa",
       numberOfEpisodes = 1,
-      networksResponse = listOf(NetworksItemResponse()),
+      networks = listOf(NetworksResponseItem()),
       type = "tv",
       backdropPath = "backdrop_path",
       genres = listOf(GenresResponseItem()),
       popularity = 11111.0,
-      productionCountriesResponse = listOf(ProductionCountriesResponseItem()),
+      productionCountries = listOf(ProductionCountriesResponseItem()),
       id = 1,
       numberOfSeasons = 1,
       voteCount = 1,
       firstAirDate = "first_air_data",
       overview = "overview",
-      seasonsResponse = listOf(SeasonsItemResponse()),
+      seasons = listOf(SeasonsResponseItem()),
       languages = listOf("id"),
-      createdByResponse = listOf(CreatedByItemResponse()),
+      createdBy = listOf(CreatedByResponseItem()),
       posterPath = "poster_path",
       originCountry = listOf("id"),
-      spokenLanguagesResponse = listOf(SpokenLanguagesResponseItem()),
-      productionCompaniesResponse = listOf(ProductionCompaniesResponseItem()),
+      spokenLanguages = listOf(SpokenLanguagesResponseItem()),
+      productionCompanies = listOf(ProductionCompaniesResponseItem()),
       originalName = "original_name",
       voteAverage = 1234.0,
       name = "name",
       tagline = "tag_line",
       episodeRunTime = listOf(123),
-      contentRatingsResponse = ContentRatingsResponse(),
+      contentRatings = ContentRatingsResponse(),
       adult = false,
       nextEpisodeToAir = nextEpisodeToAirResponse,
       inProduction = false,
@@ -173,8 +171,8 @@ class DetailTvResponseTest {
       homepage = "home_page",
       status = "status",
     )
-    assertNull(detailTvResponse.productionCountriesResponse?.get(0)?.name)
+    assertNull(detailTvResponse.productionCountries?.get(0)?.name)
 
-    DetailTvResponse(lastEpisodeToAirResponse = LastEpisodeToAirResponse())
+    DetailTvResponse(lastEpisodeToAir = LastEpisodeToAirResponse())
   }
 }

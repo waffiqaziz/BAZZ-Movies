@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class NetworksItemResponse(
+data class NetworksResponseItem(
 
   @Json(name = "logo_path")
   val logoPath: String? = null,

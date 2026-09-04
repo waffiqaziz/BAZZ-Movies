@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb
 
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.movieDump1
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.movieResponseItem1
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -11,7 +11,7 @@ class MediaResponseTest {
     val mediaResponse = MediaResponse(
       page = 1,
       totalPages = 100,
-      results = listOf(movieDump1),
+      results = listOf(movieResponseItem1),
       totalResults = 3,
     )
     assertEquals(1, mediaResponse.page)

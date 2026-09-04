@@ -1,8 +1,8 @@
-package com.waffiq.bazz_movies.core.models
+package com.waffiq.bazz_movies.feature.detail.domain.model
 
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertNull
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Test
 
 class MediaCastItemTest {

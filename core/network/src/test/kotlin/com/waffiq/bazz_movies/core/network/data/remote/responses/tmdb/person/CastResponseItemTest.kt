@@ -1,16 +1,16 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person
 
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.castItemResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.castResponseItem
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class CastItemResponseTest {
+class CastResponseItemTest {
 
   @Test
   fun castItemResponse_withValidValues_setsPropertiesCorrectly() {
-    val castItemResponse = castItemResponseDump
+    val castItemResponse = castResponseItem
     assertEquals("2022-10-10", castItemResponse.firstAirDate)
     assertTrue(castItemResponse.adult == false)
     assertEquals("/nH6hPhJq3EEv9CnBZgXU3IQnpJo.jpg", castItemResponse.backdropPath)
@@ -45,7 +45,7 @@ class CastItemResponseTest {
 
   @Test
   fun castItemResponse_withDefaultValues_setsPropertiesCorrectly() {
-    val castItemResponse = CastItemResponse()
+    val castItemResponse = CastResponseItem()
     assertNull(castItemResponse.firstAirDate)
     assertNull(castItemResponse.adult)
     assertNull(castItemResponse.backdropPath)
@@ -73,7 +73,7 @@ class CastItemResponseTest {
 
   @Test
   fun castItemResponse_withSomeNullValues_setsPropertiesCorrectly() {
-    val castItemResponse = CastItemResponse(id = 4355423, title = "Movie Title")
+    val castItemResponse = CastResponseItem(id = 4355423, title = "Movie Title")
     assertNull(castItemResponse.name)
     assertEquals(4355423, castItemResponse.id)
     assertEquals("Movie Title", castItemResponse.title)

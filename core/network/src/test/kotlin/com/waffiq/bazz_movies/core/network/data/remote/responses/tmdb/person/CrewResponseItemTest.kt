@@ -1,16 +1,16 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person
 
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.crewItemResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.crewResponseItem
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class CrewItemResponseTest {
+class CrewResponseItemTest {
 
   @Test
   fun crewItemResponse_withValidValues_setsPropertiesCorrectly() {
-    val crewItemResponse = crewItemResponseDump
+    val crewItemResponse = crewResponseItem
     assertTrue(crewItemResponse.adult == false)
     assertEquals("/z354BaTVzKj7E60WLzDoSmUuO4u.jpg", crewItemResponse.backdropPath)
     assertEquals(listOf(18, 28, 10752), crewItemResponse.genreIds)
@@ -36,7 +36,7 @@ class CrewItemResponseTest {
 
   @Test
   fun crewItemResponse_withDefaultValues_setsPropertiesCorrectly() {
-    val crewItemResponse = CrewItemResponse()
+    val crewItemResponse = CrewResponseItem()
     assertNull(crewItemResponse.adult)
     assertNull(crewItemResponse.backdropPath)
     assertNull(crewItemResponse.genreIds)
@@ -59,7 +59,7 @@ class CrewItemResponseTest {
 
   @Test
   fun crewItemResponse_withSomeNullValues_setsPropertiesCorrectly() {
-    val crewItemResponse = CrewItemResponse(
+    val crewItemResponse = CrewResponseItem(
       id = 345784867,
     )
     assertEquals(345784867, crewItemResponse.id)

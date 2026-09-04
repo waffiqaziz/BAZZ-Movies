@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class ContentRatingsItemResponse(
+data class ContentRatingsResponseItem(
 
   @Json(name = "descriptors")
   val descriptors: List<Any?>? = null,

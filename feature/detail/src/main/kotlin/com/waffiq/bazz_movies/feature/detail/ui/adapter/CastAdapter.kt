@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.annotation.VisibleForTesting
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,14 +13,15 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_no_profile_rounded
+import com.waffiq.bazz_movies.core.designsystem.R.plurals
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemCastBinding
-import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.profileImageSource
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.roleName
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.validName
 import com.waffiq.bazz_movies.feature.detail.databinding.ItemCreditsPersonBinding
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCastItem
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.PersonArgsMappers.toPersonArgs
 import com.waffiq.bazz_movies.navigation.INavigator
-import com.waffiq.bazz_movies.navigation.utils.toPersonArgs
 
 class CastAdapter(private val navigator: INavigator) :
   ListAdapter<MediaCastItem, RecyclerView.ViewHolder>(CastDiffCallback()) {
@@ -92,6 +94,18 @@ class CastAdapter(private val navigator: INavigator) :
 
       binding.tvName.text = cast.validName
       binding.tvRole.text = cast.character.roleName
+
+      if (cast.totalEpisodeCount != null) {
+        val totalEpisodes = itemView.context.resources.getQuantityString(
+          plurals.episodes,
+          cast.totalEpisodeCount,
+          cast.totalEpisodeCount,
+        )
+        binding.tvTotalEpisode.text = totalEpisodes
+        binding.tvTotalEpisode.isVisible = true
+      } else {
+        binding.tvTotalEpisode.isVisible = false
+      }
 
       binding.container.setOnClickListener {
         navigator.openPersonDetails(itemView.context, cast.toPersonArgs())

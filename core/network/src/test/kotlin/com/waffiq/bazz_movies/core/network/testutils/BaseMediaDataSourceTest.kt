@@ -30,7 +30,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.PersonA
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.SearchApiService
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.TrendingApiService
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.TvApiService
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.tvShowDump1
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.tvShowResponseItem1
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.defaultMediaResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingFlow
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
@@ -57,7 +57,7 @@ import retrofit2.Response
  */
 abstract class BaseMediaDataSourceTest {
 
-  protected val mediaResponse = listOf(tvShowDump1)
+  protected val mediaResponse = listOf(tvShowResponseItem1)
 
   protected val apiMaintenanceErrorResponse: Response<PostResponse> = Response.error(
     503,

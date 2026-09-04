@@ -1,16 +1,16 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew
 
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.mediaCastItemResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.mediaCastResponseItem
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class MediaCastItemResponseTest {
+class MediaCastResponseItemTest {
 
   @Test
   fun mediaCastItemResponse_withValidValues_setsPropertiesCorrectly() {
-    val mediaCastItemResponse = mediaCastItemResponseDump
+    val mediaCastItemResponse = mediaCastResponseItem
     assertEquals(13, mediaCastItemResponse.castId)
     assertEquals("Momo", mediaCastItemResponse.character)
     assertEquals(1, mediaCastItemResponse.gender)

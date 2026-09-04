@@ -36,11 +36,11 @@ object MovieMapper {
       backdropPath = backdropPath,
       credits = credits?.toMediaCredits(),
       revenue = revenue,
-      listGenres = listGenresItemResponse?.map { it?.toGenresItem() },
+      listGenres = genres?.map { it?.toGenresItem() },
       keywords = keywords?.toMediaKeywords(),
       popularity = popularity,
-      releaseDates = releaseDatesResponse?.toReleaseDates(),
-      listProductionCountriesItem = listProductionCountriesItemResponse?.map {
+      releaseDates = releaseDates?.toReleaseDates(),
+      listProductionCountriesItem = productionCountries?.map {
         it?.toProductionCountriesItem()
       },
       id = id,
@@ -51,13 +51,13 @@ object MovieMapper {
       runtime = runtime,
       posterPath = posterPath,
       listSpokenLanguagesItem =
-      listSpokenLanguagesItemResponse?.map { it?.toSpokenLanguagesItem() },
-      listProductionCompaniesItem = listProductionCompaniesItemResponse?.map {
+      spokenLanguages?.map { it?.toSpokenLanguagesItem() },
+      listProductionCompaniesItem = productionCompanies?.map {
         it?.toProductionCompaniesItem()
       },
       releaseDate = releaseDate,
       voteAverage = voteAverage,
-      belongsToCollection = belongsToCollectionResponse?.toBelongsToCollection(),
+      belongsToCollection = belongsToCollection?.toBelongsToCollection(),
       tagline = tagline,
       adult = adult,
       homepage = homepage,

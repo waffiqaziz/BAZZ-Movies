@@ -37,7 +37,7 @@ data class DetailMovieResponse(
   val revenue: Long? = null,
 
   @Json(name = "genres")
-  val listGenresItemResponse: List<GenresResponseItem?>? = null,
+  val genres: List<GenresResponseItem?>? = null,
 
   @Json(name = "keywords")
   val keywords: MovieKeywordsResponse? = null,
@@ -46,10 +46,10 @@ data class DetailMovieResponse(
   val popularity: Double? = null,
 
   @Json(name = "release_dates")
-  val releaseDatesResponse: ReleaseDatesResponse? = null,
+  val releaseDates: ReleaseDatesResponse? = null,
 
   @Json(name = "production_countries")
-  val listProductionCountriesItemResponse: List<ProductionCountriesResponseItem?>? = null,
+  val productionCountries: List<ProductionCountriesResponseItem?>? = null,
 
   @Json(name = "id")
   val id: Int? = null,
@@ -73,10 +73,10 @@ data class DetailMovieResponse(
   val posterPath: String? = null,
 
   @Json(name = "spoken_languages")
-  val listSpokenLanguagesItemResponse: List<SpokenLanguagesResponseItem?>? = null,
+  val spokenLanguages: List<SpokenLanguagesResponseItem?>? = null,
 
   @Json(name = "production_companies")
-  val listProductionCompaniesItemResponse: List<ProductionCompaniesResponseItem?>? = null,
+  val productionCompanies: List<ProductionCompaniesResponseItem?>? = null,
 
   @Json(name = "release_date")
   val releaseDate: String? = null,
@@ -85,7 +85,7 @@ data class DetailMovieResponse(
   val voteAverage: Double? = null,
 
   @Json(name = "belongs_to_collection")
-  val belongsToCollectionResponse: BelongsToCollectionResponse? = null,
+  val belongsToCollection: BelongsToCollectionResponse? = null,
 
   @Json(name = "tagline")
   val tagline: String? = null,

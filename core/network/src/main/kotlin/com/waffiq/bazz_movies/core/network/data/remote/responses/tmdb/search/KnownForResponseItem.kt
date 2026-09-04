@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class KnownForItemResponse(
+data class KnownForResponseItem(
 
   @Json(name = "overview")
   val overview: String? = null,

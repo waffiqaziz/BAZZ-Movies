@@ -93,18 +93,18 @@ class TvMapperTest {
   @Test
   fun toTvDetail_withEmptyLists_returnsTvDetail() {
     val detailTvResponse = DetailTvResponse(
-      networksResponse = emptyList(),
+      networks = emptyList(),
       genres = emptyList(),
-      productionCountriesResponse = emptyList(),
-      seasonsResponse = emptyList(),
+      productionCountries = emptyList(),
+      seasons = emptyList(),
       languages = emptyList(),
-      createdByResponse = emptyList(),
+      createdBy = emptyList(),
       originCountry = emptyList(),
-      spokenLanguagesResponse = emptyList(),
-      productionCompaniesResponse = emptyList(),
+      spokenLanguages = emptyList(),
+      productionCompanies = emptyList(),
       episodeRunTime = emptyList(),
-      contentRatingsResponse = ContentRatingsResponse(
-        contentRatingsItemResponse = emptyList(),
+      contentRatings = ContentRatingsResponse(
+        contentRatings = emptyList(),
       ),
     )
 
@@ -126,18 +126,18 @@ class TvMapperTest {
   @Test
   fun toTvDetail_withNullItemsInList_returnsTvDetailWithEmptyGenres() {
     val detailTvResponse = DetailTvResponse(
-      networksResponse = listOf(null, null),
+      networks = listOf(null, null),
       genres = listOf(null, null),
-      productionCountriesResponse = listOf(null),
-      seasonsResponse = listOf(null),
+      productionCountries = listOf(null),
+      seasons = listOf(null),
       languages = listOf("en"),
-      createdByResponse = listOf(null),
-      lastEpisodeToAirResponse = null,
-      spokenLanguagesResponse = listOf(null),
-      productionCompaniesResponse = listOf(null),
+      createdBy = listOf(null),
+      lastEpisodeToAir = null,
+      spokenLanguages = listOf(null),
+      productionCompanies = listOf(null),
       episodeRunTime = listOf(60),
-      contentRatingsResponse = ContentRatingsResponse(
-        contentRatingsItemResponse = listOf(null),
+      contentRatings = ContentRatingsResponse(
+        contentRatings = listOf(null),
       ),
       nextEpisodeToAir = null,
     )
@@ -164,7 +164,7 @@ class TvMapperTest {
   @Test
   fun toTvDetail_withProductionCountriesResponseItemNull_returnsTvDetail() {
     val detailTvResponse = DetailTvResponse(
-      productionCountriesResponse = listOf(ProductionCountriesResponseItem()),
+      productionCountries = listOf(ProductionCountriesResponseItem()),
     )
     detailTvResponse.toTvDetail()
   }
@@ -172,8 +172,8 @@ class TvMapperTest {
   @Test
   fun toTvDetail_withContentRatingsItemResponseNull_returnsTvDetail() {
     val detailTvResponse = DetailTvResponse(
-      contentRatingsResponse = ContentRatingsResponse(
-        contentRatingsItemResponse = null,
+      contentRatings = ContentRatingsResponse(
+        contentRatings = null,
       ),
     )
     detailTvResponse.toTvDetail()
@@ -182,7 +182,7 @@ class TvMapperTest {
   @Test
   fun toTvDetail_withSpokenLanguagesResponseNull_returnsTvDetail() {
     val detailTvResponse = DetailTvResponse(
-      spokenLanguagesResponse = listOf(SpokenLanguagesResponseItem()),
+      spokenLanguages = listOf(SpokenLanguagesResponseItem()),
     )
     detailTvResponse.toTvDetail()
   }
@@ -190,7 +190,7 @@ class TvMapperTest {
   @Test
   fun toTvDetail_withProductionCompaniesResponseNull_returnsTvDetail() {
     val detailTvResponse = DetailTvResponse(
-      productionCompaniesResponse = listOf(ProductionCompaniesResponseItem()),
+      productionCompanies = listOf(ProductionCompaniesResponseItem()),
     )
     detailTvResponse.toTvDetail()
   }

@@ -8,7 +8,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.datasource.country.Countr
 import com.waffiq.bazz_movies.core.network.data.remote.responses.countryip.CountryIPResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AccountDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AuthenticationResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AvatarItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AvatarResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AvatarTMDbResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.CreateSessionResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.GravatarResponse
@@ -216,7 +216,7 @@ class UserRepositoryTest {
         includeAdult = false,
         iso31661 = "en",
         name = "Waffiq",
-        avatarItemResponse = AvatarItemResponse(
+        avatar = AvatarResponseItem(
           gravatarResponse = GravatarResponse(
             hash = "325987423659432",
           ),

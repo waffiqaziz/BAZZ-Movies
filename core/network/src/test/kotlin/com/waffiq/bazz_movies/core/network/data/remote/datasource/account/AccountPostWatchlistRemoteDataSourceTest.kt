@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.account
 
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.postResponseSuccessDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.postResponseSuccess
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testError404Response
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testErrorResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testGeneralExceptionResponse
@@ -21,9 +21,9 @@ class AccountPostWatchlistRemoteDataSourceTest : BaseMediaDataSourceTest() {
     runTest {
       testSuccessResponse(
         apiEndpoint = { mockAccountApiService.postWatchlistTMDB(userId, sessionId, wtc) },
-        mockApiResponse = success(postResponseSuccessDump),
+        mockApiResponse = success(postResponseSuccess),
         dataSourceEndpointCall = { accountRemoteDataSource.postWatchlist(sessionId, wtc, userId) },
-        expectedData = postResponseSuccessDump,
+        expectedData = postResponseSuccess,
       )
     }
 

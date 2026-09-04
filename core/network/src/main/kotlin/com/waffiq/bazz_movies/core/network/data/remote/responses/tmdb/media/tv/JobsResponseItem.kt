@@ -4,20 +4,14 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class CreatedByItemResponse(
+data class JobsResponseItem(
 
-  @Json(name = "gender")
-  val gender: Int? = null,
+  @Json(name = "episode_count")
+  val episodeCount: Int? = null,
 
   @Json(name = "credit_id")
   val creditId: String? = null,
 
-  @Json(name = "name")
-  val name: String? = null,
-
-  @Json(name = "profile_path")
-  val profilePath: String? = null,
-
-  @Json(name = "id")
-  val id: Int? = null,
+  @Json(name = "job")
+  val job: String? = null,
 )

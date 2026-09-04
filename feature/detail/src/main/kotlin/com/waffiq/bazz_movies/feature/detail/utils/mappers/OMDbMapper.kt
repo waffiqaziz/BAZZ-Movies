@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.RatingsItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.RatingsResponseItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.RatingsItem
 
@@ -36,7 +36,7 @@ object OMDbMapper {
       writer = writer,
     )
 
-  private fun RatingsItemResponse.toRatingsItem() =
+  private fun RatingsResponseItem.toRatingsItem() =
     RatingsItem(
       value = value,
       source = source,

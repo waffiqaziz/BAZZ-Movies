@@ -1,9 +1,9 @@
 package com.waffiq.bazz_movies.feature.search.utils
 
 import com.waffiq.bazz_movies.core.common.MediaType.Companion.fromValue
-import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.navigation.MediaArgs
+import com.waffiq.bazz_movies.navigation.PersonArgs
 
 object MultiSearchItemMapper {
 
@@ -23,8 +23,8 @@ object MultiSearchItemMapper {
       id = id,
     )
 
-  fun MultiSearchItem.toMediaCastItem() =
-    MediaCastItem(
+  fun MultiSearchItem.toPersonArgs() =
+    PersonArgs(
       id = id,
       profilePath = profilePath,
       name = name,

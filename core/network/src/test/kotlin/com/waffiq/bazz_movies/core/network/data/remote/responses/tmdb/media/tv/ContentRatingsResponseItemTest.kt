@@ -1,15 +1,15 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv
 
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.contentRatingsItemResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.contentRatingsResponseItem
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 
-class ContentRatingsItemResponseTest {
+class ContentRatingsResponseItemTest {
 
   @Test
   fun contentRatingsItemResponse_withValidValues_setsPropertiesCorrectly() {
-    val contentRatingsItemResponse = contentRatingsItemResponseDump
+    val contentRatingsItemResponse = contentRatingsResponseItem
     assertEquals("SG", contentRatingsItemResponse.iso31661)
     assertEquals("this is description", contentRatingsItemResponse.descriptors?.get(0))
     assertEquals("PG13", contentRatingsItemResponse.rating)
@@ -17,7 +17,7 @@ class ContentRatingsItemResponseTest {
 
   @Test
   fun contentRatingsItemResponse_withDefaultValues_setsPropertiesCorrectly() {
-    val contentRatingsItemResponse = ContentRatingsItemResponse()
+    val contentRatingsItemResponse = ContentRatingsResponseItem()
     assertNull(contentRatingsItemResponse.iso31661)
     assertNull(contentRatingsItemResponse.rating)
     assertNull(contentRatingsItemResponse.descriptors)
@@ -25,7 +25,7 @@ class ContentRatingsItemResponseTest {
 
   @Test
   fun contentRatingsItemResponse_withSomeNullValues_setsPropertiesCorrectly() {
-    val contentRatingsItemResponse = ContentRatingsItemResponse(
+    val contentRatingsItemResponse = ContentRatingsResponseItem(
       iso31661 = "MY",
     )
     assertEquals("MY", contentRatingsItemResponse.iso31661)

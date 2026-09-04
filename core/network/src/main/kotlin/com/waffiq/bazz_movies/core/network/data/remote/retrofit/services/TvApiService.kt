@@ -64,7 +64,13 @@ interface TvApiService {
 
   @GET(
     "3/tv/{tvId}?" +
-      "append_to_response=content_ratings,credits,external_ids,keywords,videos,watch/providers",
+      "append_to_response=" +
+      "content_ratings," +
+      "aggregate_credits," +
+      "external_ids," +
+      "keywords," +
+      "videos," +
+      "watch/providers",
   )
   suspend fun getTvDetail(
     @Path("tvId") tvId: Int,

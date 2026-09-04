@@ -2,9 +2,9 @@ package com.waffiq.bazz_movies.core.network.data.remote.datasource.tv
 
 import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.GenericPagingSource
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.tvShowDump1
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.tvShowDump2
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.tvShowDump3
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.tvShowResponseItem1
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.tvShowResponseItem2
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.tvShowResponseItem3
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.defaultMediaResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingFlow
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingSource
@@ -25,7 +25,7 @@ class TvPagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
       }
 
       testPagingSource(
-        mockResults = defaultMediaResponse(listOf(tvShowDump3)),
+        mockResults = defaultMediaResponse(listOf(tvShowResponseItem3)),
         mockApiCall = { mockTvApiService.getPopularTv("id", airDate, 1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
@@ -38,7 +38,7 @@ class TvPagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
   fun getPopularTv_pagingFlow_returnsExpectedData() =
     runTest {
       val airDate = "2012-06-04"
-      val expected = listOf(tvShowDump3)
+      val expected = listOf(tvShowResponseItem3)
       coEvery { mockTvApiService.getPopularTv("id", airDate, 1) } returns
         defaultMediaResponse(expected)
 
@@ -57,7 +57,9 @@ class TvPagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
       }
 
       testPagingSource(
-        mockResults = defaultMediaResponse(listOf(tvShowDump1, tvShowDump2, tvShowDump3)),
+        mockResults = defaultMediaResponse(
+          listOf(tvShowResponseItem1, tvShowResponseItem2, tvShowResponseItem3),
+        ),
         mockApiCall = { mockTvApiService.getAiringTv("id", airDate, airDateEnd, 1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
@@ -70,7 +72,7 @@ class TvPagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
   fun getAiringTv_pagingFlow_returnsExpectedData() =
     runTest {
       val airDate = "2023-11-14"
-      val expected = listOf(tvShowDump1, tvShowDump3)
+      val expected = listOf(tvShowResponseItem1, tvShowResponseItem3)
       coEvery { mockTvApiService.getAiringTv("id", airDate, airDate, 1) } returns
         defaultMediaResponse(expected)
 
@@ -87,7 +89,7 @@ class TvPagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
       }
 
       testPagingSource(
-        mockResults = defaultMediaResponse(listOf(tvShowDump1)),
+        mockResults = defaultMediaResponse(listOf(tvShowResponseItem1)),
         mockApiCall = { mockTvApiService.getTvRecommendations(98765, 1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
@@ -99,7 +101,7 @@ class TvPagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getTvRecommendations_pagingFlow_returnsExpectedData() =
     runTest {
-      val expected = listOf(tvShowDump1)
+      val expected = listOf(tvShowResponseItem1)
 
       coEvery { mockTvApiService.getTvRecommendations(98765, 1) } returns
         defaultMediaResponse(expected)
@@ -116,7 +118,13 @@ class TvPagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
       }
 
       testPagingSource(
-        mockResults = defaultMediaResponse(listOf(tvShowDump3, tvShowDump2, tvShowDump1)),
+        mockResults = defaultMediaResponse(
+          listOf(
+            tvShowResponseItem3,
+            tvShowResponseItem2,
+            tvShowResponseItem1,
+          ),
+        ),
         mockApiCall = { mockTvApiService.getTopRatedTv(1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
@@ -128,7 +136,7 @@ class TvPagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getTopRatedTv_pagingFlow_returnsExpectedData() =
     runTest {
-      val expected = listOf(tvShowDump3, tvShowDump2, tvShowDump1)
+      val expected = listOf(tvShowResponseItem3, tvShowResponseItem2, tvShowResponseItem1)
       coEvery { mockTvApiService.getTopRatedTv(1) } returns
         defaultMediaResponse(expected)
 

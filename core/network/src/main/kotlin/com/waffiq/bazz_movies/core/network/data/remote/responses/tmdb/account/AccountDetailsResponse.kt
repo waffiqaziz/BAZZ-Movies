@@ -16,7 +16,7 @@ data class AccountDetailsResponse(
   val name: String? = null,
 
   @Json(name = "avatar")
-  val avatarItemResponse: AvatarItemResponse? = null,
+  val avatar: AvatarResponseItem? = null,
 
   @Json(name = "id")
   val id: Int? = null,

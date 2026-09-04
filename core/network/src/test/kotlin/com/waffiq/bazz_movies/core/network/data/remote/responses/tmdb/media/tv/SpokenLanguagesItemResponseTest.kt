@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv
 
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.spokenLanguagesItemResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.spokenLanguagesResponseItem
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -9,7 +9,7 @@ class SpokenLanguagesItemResponseTest {
 
   @Test
   fun spokenLanguagesItemResponse_withValidValues_setsPropertiesCorrectly() {
-    val spokenLanguagesItemResponse = spokenLanguagesItemResponseDump
+    val spokenLanguagesItemResponse = spokenLanguagesResponseItem
     assertEquals("Korean", spokenLanguagesItemResponse.englishName)
     assertEquals("ko", spokenLanguagesItemResponse.iso6391)
     assertEquals("한국어/조선말", spokenLanguagesItemResponse.name)

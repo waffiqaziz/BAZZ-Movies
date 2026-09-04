@@ -14,6 +14,7 @@ dependencies {
   api(libs.androidx.core.ktx)
   implementation(libs.androidx.paging.runtime)
 
+  testImplementation(project(":feature:detail"))
   testImplementation(libs.androidx.test.core)
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.mockk)

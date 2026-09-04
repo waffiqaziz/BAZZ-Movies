@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv
 
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.productionCompaniesItemResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.productionCompaniesResponseItem
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -9,7 +9,7 @@ class ProductionCompaniesItemResponseTest {
 
   @Test
   fun productionCompaniesItemResponse_withValidValues_setsPropertiesCorrectly() {
-    val productionCompaniesItemResponse = productionCompaniesItemResponseDump
+    val productionCompaniesItemResponse = productionCompaniesResponseItem
     assertEquals("/hUzeosd33nzE5MCNsZxCGEKTXaQ.png", productionCompaniesItemResponse.logoPath)
     assertEquals("Marvel Studios", productionCompaniesItemResponse.name)
     assertEquals(420, productionCompaniesItemResponse.id)

@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv
 
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.externalIdResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.externalIdResponse
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -9,7 +9,7 @@ class ExternalIdResponseTest {
 
   @Test
   fun externalIdResponse_withValidValues_setsPropertiesCorrectly() {
-    val externalIdResponse = externalIdResponseDump
+    val externalIdResponse = externalIdResponse
     assertEquals("tt0417299", externalIdResponse.imdbId)
     assertEquals("/m/05h95s", externalIdResponse.freebaseMid)
     assertEquals(74852, externalIdResponse.tvdbId)

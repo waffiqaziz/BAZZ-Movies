@@ -2,11 +2,11 @@ package com.waffiq.bazz_movies.core.network.data.remote.datasource.trending
 
 import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.GenericPagingSource
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.movieDump2
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.movieDump3
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.movieDump4
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.movieDump7
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.tvShowDump1
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.movieResponseItem2
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.movieResponseItem3
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.movieResponseItem4
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.movieResponseItem7
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.tvShowResponseItem1
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.defaultMediaResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingFlow
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingSource
@@ -25,7 +25,9 @@ class TrendingRemoteDataSourceTest : BaseMediaDataSourceTest() {
         GenericPagingSource { mockTrendingApiService.getTrendingThisWeek("id", 1).results }
 
       testPagingSource(
-        mockResults = defaultMediaResponse(listOf(movieDump4, movieDump2, movieDump3)),
+        mockResults = defaultMediaResponse(
+          listOf(movieResponseItem4, movieResponseItem2, movieResponseItem3),
+        ),
         mockApiCall = { mockTrendingApiService.getTrendingThisWeek("id", 1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
@@ -36,7 +38,7 @@ class TrendingRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getTrendingThisWeek_pagingFlow_returnsExpectedData() =
     runTest {
-      val expected = listOf(movieDump4, movieDump2, movieDump3)
+      val expected = listOf(movieResponseItem4, movieResponseItem2, movieResponseItem3)
       coEvery { mockTrendingApiService.getTrendingThisWeek("id", 1) } returns
         defaultMediaResponse(expected)
 
@@ -51,15 +53,15 @@ class TrendingRemoteDataSourceTest : BaseMediaDataSourceTest() {
       val pagingSource =
         GenericPagingSource { mockTrendingApiService.getTrendingToday("ca", 1).results }
       testPagingSource(
-        mockResults = defaultMediaResponse(listOf(tvShowDump1, movieDump7)),
+        mockResults = defaultMediaResponse(listOf(tvShowResponseItem1, movieResponseItem7)),
         mockApiCall = { mockTrendingApiService.getTrendingToday("ca", 1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
         assertEquals(2, page.data.size)
         assertEquals("Squid Game", page.data[0].name)
         assertEquals("Wicked", page.data[1].title)
-        assertEquals(tvShowDump1, page.data[0])
-        assertEquals(movieDump7, page.data[1])
+        assertEquals(tvShowResponseItem1, page.data[0])
+        assertEquals(movieResponseItem7, page.data[1])
         assertEquals(null, page.prevKey)
         assertEquals(2, page.nextKey)
       }
@@ -68,7 +70,7 @@ class TrendingRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getTrendingToday_pagingFlow_returnsExpectedData() =
     runTest {
-      val expected = listOf(tvShowDump1, movieDump7)
+      val expected = listOf(tvShowResponseItem1, movieResponseItem7)
       coEvery { mockTrendingApiService.getTrendingToday("ca", 1) } returns
         defaultMediaResponse(expected)
 

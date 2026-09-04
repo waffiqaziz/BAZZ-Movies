@@ -4,11 +4,11 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 
-class AvatarItemResponseTest {
+class AvatarResponseItemTest {
 
   @Test
   fun genresItemResponse_withValidValues_setsPropertiesCorrectly() {
-    val genresItemResponse = AvatarItemResponse(
+    val genresItemResponse = AvatarResponseItem(
       avatarTMDbResponse = AvatarTMDbResponse("/35709850723705.pjg"),
       gravatarResponse = GravatarResponse("gravatar_hash"),
     )
@@ -18,14 +18,14 @@ class AvatarItemResponseTest {
 
   @Test
   fun genresItemResponse_withDefaultValues_setsPropertiesCorrectly() {
-    val genresItemResponse = AvatarItemResponse()
+    val genresItemResponse = AvatarResponseItem()
     assertNull(genresItemResponse.avatarTMDbResponse)
     assertNull(genresItemResponse.gravatarResponse)
   }
 
   @Test
   fun genresItemResponse_withSomeNullValues_setsPropertiesCorrectly() {
-    val genresItemResponse = AvatarItemResponse(
+    val genresItemResponse = AvatarResponseItem(
       gravatarResponse = GravatarResponse("gravatar_hash"),
     )
     assertEquals("gravatar_hash", genresItemResponse.gravatarResponse?.hash)

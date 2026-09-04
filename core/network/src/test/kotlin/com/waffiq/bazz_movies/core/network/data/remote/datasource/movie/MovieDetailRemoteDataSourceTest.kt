@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.core.network.data.remote.datasource.movie
 
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
 import com.waffiq.bazz_movies.core.network.testutils.DummyData.detailCollectionsResponse
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.detailMovieResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.detailMovieResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testError404Response
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testErrorResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testGeneralExceptionResponse
@@ -22,9 +22,9 @@ class MovieDetailRemoteDataSourceTest : BaseMediaDataSourceTest() {
     runTest {
       testSuccessResponse(
         apiEndpoint = { mockMovieApiService.getMovieDetail(333333) },
-        mockApiResponse = success(detailMovieResponseDump),
+        mockApiResponse = success(detailMovieResponse),
         dataSourceEndpointCall = { movieRemoteDataSource.getMovieDetail(333333) },
-        expectedData = detailMovieResponseDump,
+        expectedData = detailMovieResponse,
       )
     }
 

@@ -1,15 +1,15 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv
 
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.seasonsItemResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.seasonsResponseItem
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 
-class SeasonsItemResponseTest {
+class SeasonsResponseItemTest {
 
   @Test
   fun seasonsItemResponse_withValidValues_setsPropertiesCorrectly() {
-    val seasonsItemResponse = seasonsItemResponseDump
+    val seasonsItemResponse = seasonsResponseItem
     assertEquals("2024-11-22", seasonsItemResponse.airDate)
     assertEquals("Overview", seasonsItemResponse.overview)
     assertEquals(12, seasonsItemResponse.episodeCount)
@@ -21,7 +21,7 @@ class SeasonsItemResponseTest {
 
   @Test
   fun seasonsItemResponse_withDefaultValues_setsPropertiesCorrectly() {
-    val seasonsItemResponse = SeasonsItemResponse()
+    val seasonsItemResponse = SeasonsResponseItem()
     assertNull(seasonsItemResponse.airDate)
     assertNull(seasonsItemResponse.overview)
     assertNull(seasonsItemResponse.episodeCount)
@@ -33,7 +33,7 @@ class SeasonsItemResponseTest {
 
   @Test
   fun seasonsItemResponse_withSomeNullValues_setsPropertiesCorrectly() {
-    val seasonsItemResponse = SeasonsItemResponse(
+    val seasonsItemResponse = SeasonsResponseItem(
       id = 659874,
     )
     assertEquals(659874, seasonsItemResponse.id)

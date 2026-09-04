@@ -7,5 +7,5 @@ import com.squareup.moshi.JsonClass
 data class ImagePersonResponse(
 
   @Json(name = "profiles")
-  val profiles: List<ProfilesItemResponse>? = null,
+  val profiles: List<ProfilesResponseItem>? = null,
 )

@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search
 
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.movieSearchDump
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.personDump1
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.movieSearchResponseItem
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.personSearchResponseItem1
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -11,7 +11,7 @@ class MultiSearchItemResponseTest {
 
   @Test
   fun multiSearchResponseItem_withValidValues_setsPropertiesCorrectly() {
-    val multiSearchResponseItem = personDump1
+    val multiSearchResponseItem = personSearchResponseItem1
     assertEquals("person", multiSearchResponseItem.mediaType)
     assertEquals(
       "Jumanji: Welcome to the Jungle",
@@ -28,7 +28,7 @@ class MultiSearchItemResponseTest {
 
   @Test
   fun multiSearchResponseItem_withOtherValidValues_setsPropertiesCorrectly() {
-    val multiSearchResponseItem = movieSearchDump
+    val multiSearchResponseItem = movieSearchResponseItem
     assertEquals("movie", multiSearchResponseItem.mediaType)
     assertEquals("Avatar", multiSearchResponseItem.title)
     assertEquals("Avatar", multiSearchResponseItem.originalTitle)

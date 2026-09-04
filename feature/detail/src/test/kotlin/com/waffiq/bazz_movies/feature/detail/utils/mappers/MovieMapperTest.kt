@@ -58,12 +58,12 @@ class MovieMapperTest {
       imdbId = null,
       video = false,
       backdropPath = null,
-      listGenresItemResponse = null,
-      releaseDatesResponse = null,
-      listProductionCountriesItemResponse = null,
-      listSpokenLanguagesItemResponse = null,
-      listProductionCompaniesItemResponse = null,
-      belongsToCollectionResponse = null,
+      genres = null,
+      releaseDates = null,
+      productionCountries = null,
+      spokenLanguages = null,
+      productionCompanies = null,
+      belongsToCollection = null,
       adult = true,
     )
 
@@ -82,14 +82,14 @@ class MovieMapperTest {
   @Test
   fun toDetailMovie_withEmptyLists_returnsDetailMovie() {
     val detailMovieResponse = DetailMovieResponse(
-      listGenresItemResponse = emptyList(),
-      releaseDatesResponse = ReleaseDatesResponse(
+      genres = emptyList(),
+      releaseDates = ReleaseDatesResponse(
         listReleaseDatesResponseItem = emptyList(),
       ),
-      listProductionCountriesItemResponse = emptyList(),
-      listSpokenLanguagesItemResponse = emptyList(),
-      listProductionCompaniesItemResponse = emptyList(),
-      belongsToCollectionResponse = BelongsToCollectionResponse(
+      productionCountries = emptyList(),
+      spokenLanguages = emptyList(),
+      productionCompanies = emptyList(),
+      belongsToCollection = BelongsToCollectionResponse(
         backdropPath = null,
         name = "Collection",
         id = 1,
@@ -113,12 +113,12 @@ class MovieMapperTest {
     val detailMovieResponse = DetailMovieResponse(
       video = false,
       revenue = 1000000,
-      listGenresItemResponse = listOf(null, null),
-      releaseDatesResponse = null,
-      listProductionCountriesItemResponse = listOf(null),
-      listSpokenLanguagesItemResponse = listOf(null),
-      listProductionCompaniesItemResponse = listOf(null),
-      belongsToCollectionResponse = null,
+      genres = listOf(null, null),
+      releaseDates = null,
+      productionCountries = listOf(null),
+      spokenLanguages = listOf(null),
+      productionCompanies = listOf(null),
+      belongsToCollection = null,
     )
 
     val detailMovie: MovieDetail = detailMovieResponse.toDetailMovie()
@@ -134,7 +134,7 @@ class MovieMapperTest {
   @Test
   fun toDetailMovie_edgeCase_returnsDetailMovie() {
     val detailMovieResponse = detailMovieResponse.copy(
-      listGenresItemResponse = listOf(GenresResponseItem(null, null)),
+      genres = listOf(GenresResponseItem(null, null)),
     )
 
     val detailMovie: MovieDetail = detailMovieResponse.toDetailMovie()
@@ -145,10 +145,10 @@ class MovieMapperTest {
   @Test
   fun toDetailMovie_withNullMappingResults_returnsDetailMovieWithDefaults() {
     val detailMovieResponse = DetailMovieResponse(
-      listGenresItemResponse = listOf(),
-      listProductionCountriesItemResponse = listOf(),
-      listSpokenLanguagesItemResponse = listOf(),
-      listProductionCompaniesItemResponse = listOf(),
+      genres = listOf(),
+      productionCountries = listOf(),
+      spokenLanguages = listOf(),
+      productionCompanies = listOf(),
     )
 
     val detailMovie: MovieDetail = detailMovieResponse.toDetailMovie()
@@ -161,7 +161,7 @@ class MovieMapperTest {
   @Test
   fun toDetailMovie_withNullProductionCountriesItem_returnsDetailMovieWithDefaults() {
     val detailMovieResponse = DetailMovieResponse(
-      listProductionCountriesItemResponse = listOf(ProductionCountriesResponseItem()),
+      productionCountries = listOf(ProductionCountriesResponseItem()),
     )
 
     val detailMovie: MovieDetail = detailMovieResponse.toDetailMovie()
@@ -187,7 +187,7 @@ class MovieMapperTest {
   fun toDetailMovie_withSpokenLanguagesItemThatMapsToNull_returnsDetailMovieWithNullItems() {
     val spokenLanguagesItemResponse = SpokenLanguagesResponseItem()
     val detailMovieResponse = DetailMovieResponse(
-      listSpokenLanguagesItemResponse = listOf(spokenLanguagesItemResponse),
+      spokenLanguages = listOf(spokenLanguagesItemResponse),
     )
 
     val detailMovie: MovieDetail = detailMovieResponse.toDetailMovie()
@@ -201,7 +201,7 @@ class MovieMapperTest {
   fun toDetailMovie_withProductionCompaniesItemThatMapsToNull_returnsDetailMovieWithNullItems() {
     val productionCompaniesItemResponse = ProductionCompaniesResponseItem()
     val detailMovieResponse = DetailMovieResponse(
-      listProductionCompaniesItemResponse = listOf(productionCompaniesItemResponse),
+      productionCompanies = listOf(productionCompaniesItemResponse),
     )
 
     val detailMovie: MovieDetail = detailMovieResponse.toDetailMovie()
@@ -216,7 +216,7 @@ class MovieMapperTest {
   fun toReleaseDates_withNullListReleaseDatesItem_returnsReleaseDates() {
     val releaseDatesResponse = ReleaseDatesResponse()
     val detailMovieResponse = DetailMovieResponse(
-      releaseDatesResponse = releaseDatesResponse,
+      releaseDates = releaseDatesResponse,
     )
 
     val detailMovie = detailMovieResponse.toDetailMovie()
@@ -227,7 +227,7 @@ class MovieMapperTest {
   @Test
   fun toReleaseDates_withNullListReleaseDatesItemValue_returnsReleaseDates() {
     val detailMovieResponse = DetailMovieResponse(
-      releaseDatesResponse = ReleaseDatesResponse(
+      releaseDates = ReleaseDatesResponse(
         listReleaseDatesResponseItem = listOf(ReleaseDatesResponseItem()),
       ),
     )
@@ -240,7 +240,7 @@ class MovieMapperTest {
   @Test
   fun toReleaseDates_withNullListReleaseDatesResponseItem_returnsReleaseDates() {
     val detailMovieResponse = DetailMovieResponse(
-      releaseDatesResponse = ReleaseDatesResponse(
+      releaseDates = ReleaseDatesResponse(
         listReleaseDatesResponseItem = null,
       ),
     )
@@ -250,7 +250,7 @@ class MovieMapperTest {
     assertNull(detailMovie.releaseDates?.listReleaseDatesItem)
 
     val detailMovieResponseNull = DetailMovieResponse(
-      releaseDatesResponse = ReleaseDatesResponse(
+      releaseDates = ReleaseDatesResponse(
         listReleaseDatesResponseItem = listOf(null),
       ),
     )

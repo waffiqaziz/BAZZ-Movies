@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.omdb
 
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.omdbDetailsResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.omdbDetailsResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testError404Response
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testErrorResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testGeneralExceptionResponse
@@ -21,9 +21,9 @@ class OMDbDetailDataSourceTest : BaseMediaDataSourceTest() {
     runTest {
       testSuccessResponse(
         apiEndpoint = { mockOmdbApiService.getOMDbDetails("tt1630029") },
-        mockApiResponse = success(omdbDetailsResponseDump),
+        mockApiResponse = success(omdbDetailsResponse),
         dataSourceEndpointCall = { omdbRemoteDataSource.getOMDbDetails("tt1630029") },
-        expectedData = omdbDetailsResponseDump,
+        expectedData = omdbDetailsResponse,
       )
     }
 

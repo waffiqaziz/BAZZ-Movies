@@ -1,7 +1,8 @@
-package com.waffiq.bazz_movies.navigation.utils
+package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
-import com.waffiq.bazz_movies.core.models.MediaCastItem
-import com.waffiq.bazz_movies.navigation.testutils.DummyData.mediaCastItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCastItem
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.mediaCastItem
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.PersonArgsMappers.toPersonArgs
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

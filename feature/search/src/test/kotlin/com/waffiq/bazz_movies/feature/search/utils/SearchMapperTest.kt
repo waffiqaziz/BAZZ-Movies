@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.search.utils
 
 import com.waffiq.bazz_movies.core.common.MediaType
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.KnownForItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.KnownForResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
 import com.waffiq.bazz_movies.feature.search.utils.SearchMapper.toMultiSearchItem
 import junit.framework.TestCase.assertEquals
@@ -14,8 +14,8 @@ class SearchMapperTest {
   private val response = MultiSearchResponseItem(
     mediaType = "movie",
     listKnownFor = listOf(
-      KnownForItemResponse(title = "Known Movie 1"),
-      KnownForItemResponse(title = "Known Movie 2"),
+      KnownForResponseItem(title = "Known Movie 1"),
+      KnownForResponseItem(title = "Known Movie 2"),
     ),
     knownForDepartment = "Acting",
     popularity = 8.5,

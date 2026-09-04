@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post
 
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.postResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.postResponse
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -10,7 +10,7 @@ class PostResponseTest {
 
   @Test
   fun postResponse_withValidValues_setsPropertiesCorrectly() {
-    val postResponse = postResponseDump
+    val postResponse = postResponse
     assertTrue(postResponse.success == true)
     assertEquals(200, postResponse.statusCode)
     assertEquals("Success", postResponse.statusMessage)

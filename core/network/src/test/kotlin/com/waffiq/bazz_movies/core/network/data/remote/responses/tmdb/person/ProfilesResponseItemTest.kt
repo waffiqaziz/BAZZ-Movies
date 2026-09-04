@@ -1,15 +1,15 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person
 
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.profileItemResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.profileResponseItem
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 
-class ProfilesItemResponseTest {
+class ProfilesResponseItemTest {
 
   @Test
   fun profilesItemResponse_withValidValues_setsPropertiesCorrectly() {
-    val profilesItemResponse = profileItemResponseDump
+    val profilesItemResponse = profileResponseItem
     assertEquals(0.667, profilesItemResponse.aspectRatio)
     assertEquals("/83fLAMMb1LGT8YZ4dgRI0fti3az.jpg", profilesItemResponse.filePath)
     assertEquals(5.25f, profilesItemResponse.voteAverage)
@@ -21,7 +21,7 @@ class ProfilesItemResponseTest {
 
   @Test
   fun profilesItemResponse_withDefaultValues_setsPropertiesCorrectly() {
-    val profilesItemResponse = ProfilesItemResponse()
+    val profilesItemResponse = ProfilesResponseItem()
     assertNull(profilesItemResponse.aspectRatio)
     assertNull(profilesItemResponse.filePath)
     assertNull(profilesItemResponse.voteAverage)
@@ -33,7 +33,7 @@ class ProfilesItemResponseTest {
 
   @Test
   fun profilesItemResponse_withSomeNullValues_setsPropertiesCorrectly() {
-    val profilesItemResponse = ProfilesItemResponse(
+    val profilesItemResponse = ProfilesResponseItem(
       iso6391 = "id",
     )
     assertEquals("id", profilesItemResponse.iso6391)

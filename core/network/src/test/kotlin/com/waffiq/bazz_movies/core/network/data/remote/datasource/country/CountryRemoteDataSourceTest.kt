@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.country
 
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.countryIPResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.countryIPResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testError404Response
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testErrorResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testGeneralExceptionResponse
@@ -21,9 +21,9 @@ class CountryRemoteDataSourceTest : BaseMediaDataSourceTest() {
     runTest {
       testSuccessResponse(
         apiEndpoint = { mockCountryIPApiService.getIP() },
-        mockApiResponse = success(countryIPResponseDump),
+        mockApiResponse = success(countryIPResponse),
         dataSourceEndpointCall = { countryRemoteDataSource.getCountryCode() },
-        expectedData = countryIPResponseDump,
+        expectedData = countryIPResponse,
       )
     }
 

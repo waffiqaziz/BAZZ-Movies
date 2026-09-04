@@ -1,29 +1,29 @@
 package com.waffiq.bazz_movies.feature.person.testutils
 
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CastItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CastResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CombinedCreditResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CrewItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CrewResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ExternalIDPersonResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ProfilesItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ProfilesResponseItem
 
 object DummyData {
 
-  val listOfCastItemResponse = listOf(
-    CastItemResponse(id = 1, name = "John", voteCount = 12345),
-    CastItemResponse(id = 2, name = "Rex", voteCount = 2345),
+  val listOfCastResponseItem = listOf(
+    CastResponseItem(id = 1, name = "John", voteCount = 12345),
+    CastResponseItem(id = 2, name = "Rex", voteCount = 2345),
   )
 
-  val listOfCrewItemResponse = listOf(
-    CrewItemResponse(id = 1, job = "cameraman", title = "what"),
-    CrewItemResponse(id = 2, job = "director", title = "why"),
+  val listOfCrewResponseItem = listOf(
+    CrewResponseItem(id = 1, job = "cameraman", title = "what"),
+    CrewResponseItem(id = 2, job = "director", title = "why"),
   )
 
   val combinedCreditResponse = CombinedCreditResponse(
-    cast = listOfCastItemResponse,
-    crew = listOfCrewItemResponse,
+    cast = listOfCastResponseItem,
+    crew = listOfCrewResponseItem,
   )
 
-  val castItemResponse = CastItemResponse(
+  val castResponseItem = CastResponseItem(
     firstAirDate = "firstAirDate",
     overview = "overview",
     originalLanguage = "originalLanguage",
@@ -49,14 +49,14 @@ object DummyData {
     order = 3,
   )
 
-  val listOfProfilesItemResponse = listOf(
-    ProfilesItemResponse(
+  val listOfProfilesResponseItem = listOf(
+    ProfilesResponseItem(
       width = 300,
       height = 450,
       filePath = "/file_path.jpg",
       voteCount = 98765,
     ),
-    ProfilesItemResponse(
+    ProfilesResponseItem(
       width = 300,
       height = 450,
       filePath = "/file_path2.jpg",

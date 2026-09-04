@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class AvatarItemResponse(
+data class AvatarResponseItem(
 
   @Json(name = "tmdb")
   val avatarTMDbResponse: AvatarTMDbResponse? = null,

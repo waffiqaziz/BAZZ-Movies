@@ -1,15 +1,15 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search
 
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.knownForItemResponseDump2
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.knownForResponseItemDump2
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 
-class KnownForItemResponseTest {
+class KnownForResponseItemTest {
 
   @Test
   fun knownForItemResponse_withValidValues_setsPropertiesCorrectly() {
-    val knownForItemResponse = knownForItemResponseDump2
+    val knownForItemResponse = knownForResponseItemDump2
     assertEquals(
       """
         As the gang return to Jumanji to rescue one of their own, they discover that nothing is as 
@@ -40,7 +40,7 @@ class KnownForItemResponseTest {
 
   @Test
   fun knownForItemResponse_withDefaultValues_setsPropertiesCorrectly() {
-    val knownForItemResponse = KnownForItemResponse()
+    val knownForItemResponse = KnownForResponseItem()
     assertNull(knownForItemResponse.overview)
     assertNull(knownForItemResponse.originalLanguage)
     assertNull(knownForItemResponse.originalTitle)
@@ -64,7 +64,7 @@ class KnownForItemResponseTest {
 
   @Test
   fun knownForItemResponse_withSomeNullValues_setsPropertiesCorrectly() {
-    val knownForItemResponse = KnownForItemResponse(id = 154325)
+    val knownForItemResponse = KnownForResponseItem(id = 154325)
     assertEquals(154325, knownForItemResponse.id)
     assertNull(knownForItemResponse.overview)
     assertNull(knownForItemResponse.originalLanguage)

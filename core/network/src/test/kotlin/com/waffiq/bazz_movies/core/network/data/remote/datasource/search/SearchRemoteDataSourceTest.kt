@@ -4,8 +4,8 @@ import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.SearchPagin
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponse
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
 import com.waffiq.bazz_movies.core.network.testutils.DummyData.multiMediaTypeSet
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.personDump1
 import com.waffiq.bazz_movies.core.network.testutils.DummyData.personMediaTypeSet
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.personSearchResponseItem1
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.defaultMultiSearchResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingFlowSearch
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingSearchSource
@@ -23,7 +23,7 @@ class SearchRemoteDataSourceTest : BaseMediaDataSourceTest() {
       val pagingSource = SearchPagingSource(mockSearchApiService, "john", personMediaTypeSet)
 
       testPagingSearchSource(
-        mockResults = defaultMultiSearchResponse(listOf(personDump1)),
+        mockResults = defaultMultiSearchResponse(listOf(personSearchResponseItem1)),
         mockApiCall = { mockSearchApiService.searchPerson("john", 1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
@@ -34,7 +34,7 @@ class SearchRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun search_pagingFlow_returnsExpectedData() =
     runTest {
-      val expected = listOf(personDump1)
+      val expected = listOf(personSearchResponseItem1)
       coEvery { mockSearchApiService.searchPerson("john", 1) } returns
         defaultMultiSearchResponse(expected)
 
@@ -49,7 +49,7 @@ class SearchRemoteDataSourceTest : BaseMediaDataSourceTest() {
     runTest {
       val singleResponseItem = MultiSearchResponse(
         page = 1,
-        results = listOf(personDump1),
+        results = listOf(personSearchResponseItem1),
         totalResults = 1,
         totalPages = 1,
       )
@@ -58,7 +58,7 @@ class SearchRemoteDataSourceTest : BaseMediaDataSourceTest() {
         singleResponseItem
 
       searchRemoteDataSource.search("batman", multiMediaTypeSet)
-        .testPagingFlowSearch(this, listOf(personDump1))
+        .testPagingFlowSearch(this, listOf(personSearchResponseItem1))
 
       coVerify {
         mockSearchApiService.searchMulti(any(), any())

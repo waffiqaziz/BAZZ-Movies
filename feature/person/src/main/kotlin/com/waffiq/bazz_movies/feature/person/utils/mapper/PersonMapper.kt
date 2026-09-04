@@ -1,13 +1,13 @@
 package com.waffiq.bazz_movies.feature.person.utils.mapper
 
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CastItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CastResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CombinedCreditResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CrewItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CrewResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.DetailPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ExternalIDPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ImagePersonResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ProfilesItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ProfilesResponseItem
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.CombinedCreditPerson
@@ -25,7 +25,7 @@ object PersonMapper {
       crew = crew?.map { it.toCrewItem() }?.sortedByDescending { it.voteCount },
     )
 
-  private fun CastItemResponse.toCastItem() =
+  private fun CastResponseItem.toCastItem() =
     CastItem(
       firstAirDate = firstAirDate,
       overview = overview,
@@ -52,7 +52,7 @@ object PersonMapper {
       order = order ?: 0,
     )
 
-  private fun CrewItemResponse.toCrewItem() =
+  private fun CrewResponseItem.toCrewItem() =
     CrewItem(
       overview = overview,
       originalLanguage = originalLanguage,
@@ -100,7 +100,7 @@ object PersonMapper {
       profiles = profiles?.map { it.toProfilesItem() },
     )
 
-  private fun ProfilesItemResponse.toProfilesItem() =
+  private fun ProfilesResponseItem.toProfilesItem() =
     ProfilesItem(
       aspectRatio = aspectRatio,
       filePath = filePath,

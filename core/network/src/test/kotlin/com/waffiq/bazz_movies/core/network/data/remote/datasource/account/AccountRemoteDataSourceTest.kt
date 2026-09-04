@@ -8,7 +8,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.constants.value
 import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.GenericPagingSource
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
 import com.waffiq.bazz_movies.core.network.testutils.DummyData
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.tvShowDump2
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.tvShowResponseItem2
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.defaultMediaResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingFlow
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingSource
@@ -43,7 +43,7 @@ class AccountRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getFavoriteMovies_pagingFlow_returnsExpectedData() =
     runTest {
-      val expected = listOf(DummyData.movieDump6)
+      val expected = listOf(DummyData.movieResponseItem6)
       coEvery { stubFavoriteMovies() } returns defaultMediaResponse(expected)
       accountRemoteDataSource.getFavoriteMovies(userId, sessionId, CREATED_AT_ASC)
         .testPagingFlow(this, expected)
@@ -53,7 +53,7 @@ class AccountRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getWatchlistMovies_pagingFlow_returnsExpectedData() =
     runTest {
-      val expected = listOf(DummyData.movieDump2)
+      val expected = listOf(DummyData.movieResponseItem2)
       coEvery { stubWatchlistMovies() } returns defaultMediaResponse(expected)
       accountRemoteDataSource.getWatchlistMovies(userId, sessionId, CREATED_AT_ASC)
         .testPagingFlow(this, expected)
@@ -65,7 +65,7 @@ class AccountRemoteDataSourceTest : BaseMediaDataSourceTest() {
     runTest {
       val pagingSource = GenericPagingSource { stubFavoriteTv().results }
       testPagingSource(
-        mockResults = defaultMediaResponse(listOf(tvShowDump2)),
+        mockResults = defaultMediaResponse(listOf(tvShowResponseItem2)),
         mockApiCall = { stubFavoriteTv() },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
@@ -77,7 +77,7 @@ class AccountRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getFavoriteTv_pagingFlow_returnsExpectedData() =
     runTest {
-      val expected = listOf(tvShowDump2)
+      val expected = listOf(tvShowResponseItem2)
       coEvery { stubFavoriteTv() } returns defaultMediaResponse(expected)
       accountRemoteDataSource.getFavoriteTv(userId, sessionId, CREATED_AT_ASC)
         .testPagingFlow(this, expected)
@@ -89,7 +89,7 @@ class AccountRemoteDataSourceTest : BaseMediaDataSourceTest() {
     runTest {
       val pagingSource = GenericPagingSource { stubWatchlistTv().results }
       testPagingSource(
-        mockResults = defaultMediaResponse(listOf(tvShowDump2)),
+        mockResults = defaultMediaResponse(listOf(tvShowResponseItem2)),
         mockApiCall = { stubWatchlistTv() },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
@@ -101,7 +101,7 @@ class AccountRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getWatchlistTv_pagingFlow_returnsExpectedData() =
     runTest {
-      val expected = listOf(tvShowDump2)
+      val expected = listOf(tvShowResponseItem2)
       coEvery { stubWatchlistTv() } returns defaultMediaResponse(expected)
       accountRemoteDataSource.getWatchlistTv(userId, sessionId, CREATED_AT_ASC)
         .testPagingFlow(this, expected)

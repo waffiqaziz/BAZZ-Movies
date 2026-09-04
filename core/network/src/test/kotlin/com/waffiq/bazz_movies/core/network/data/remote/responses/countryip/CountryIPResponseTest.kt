@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.countryip
 
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.countryIPResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.countryIPResponse
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -9,7 +9,7 @@ class CountryIPResponseTest {
 
   @Test
   fun countryIPResponse_withValidValues_setsPropertiesCorrectly() {
-    val countryIPResponse = countryIPResponseDump
+    val countryIPResponse = countryIPResponse
     assertEquals("ID", countryIPResponse.country)
     assertEquals("103.187.242.255", countryIPResponse.ip)
   }

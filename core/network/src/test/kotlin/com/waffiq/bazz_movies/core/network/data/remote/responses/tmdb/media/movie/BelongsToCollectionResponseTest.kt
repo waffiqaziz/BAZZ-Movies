@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie
 
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.belongsToCollectionDeadpoolDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.belongsToCollectionDeadpool
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -9,7 +9,7 @@ class BelongsToCollectionResponseTest {
 
   @Test
   fun belongsToCollectionResponse_withValidValues_setsPropertiesCorrectly() {
-    val belongsToCollectionResponse = belongsToCollectionDeadpoolDump
+    val belongsToCollectionResponse = belongsToCollectionDeadpool
     assertEquals(448150, belongsToCollectionResponse.id)
     assertEquals("Deadpool Collection", belongsToCollectionResponse.name)
     assertEquals("/30c5jO7YEXuF8KiWXLg9m28GWDA.jpg", belongsToCollectionResponse.posterPath)
