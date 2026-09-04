@@ -19,11 +19,9 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.rele
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.releasedates.ReleaseDatesResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.releasedates.ReleaseDatesResponseItemValue
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.AggregateCreditsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.CastResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ContentRatingsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ContentRatingsResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.CreatedByResponseItem
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.CrewResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.JobsResponseItem
@@ -32,10 +30,17 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.N
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.NextEpisodeToAirResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.RolesResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SeasonsResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.TvCastResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.TvCrewResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.ProviderResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponseItem
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinString
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCastItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem
@@ -68,12 +73,11 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.Provider
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.rolesItem
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAgeRating
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformDuration
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformTMDBScore
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaCreditsMapper.toMediaCastItem
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaCreditsMapper.toMediaCrewItem
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toMediaCredits
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toVideo
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toCredits
@@ -154,9 +158,44 @@ object DummyData {
     job = "director",
   )
 
-  val mediaCastItem = mediaCastResponseItem.toMediaCastItem()
+  val rolesItem = RolesItem(
+    character = "Joel Miller",
+    episodeCount = 9,
+    creditId = "5e4b8a8f0c3a36847",
+  )
 
-  val mediaCrewItem = mediaCrewResponseItem.toMediaCrewItem()
+  val mediaCastItem = MediaCastItem(
+    name = "Pedro Pascal",
+    originalName = "José Pedro Balmaceda Pascal",
+    profilePath = "/profile.jpg",
+    id = 125336,
+    castId = 123,
+    character = "Joel Miller",
+    roles = listOf(rolesItem),
+    totalEpisodeCount = 9,
+    gender = 2,
+    creditId = "5e4b8a8f0c3a36847",
+    knownForDepartment = "Acting",
+    popularity = 87.42,
+    adult = false,
+    order = 0,
+  )
+
+  val mediaCrewItem = MediaCrewItem(
+    name = "David Fincher",
+    originalName = "David Fincher",
+    profilePath = "/profile.jpg",
+    id = 7467,
+    creditId = "52fe425ec3a36847",
+    totalEpisodeCount = 8,
+    gender = 2,
+    knownForDepartment = "Directing",
+    jobs = emptyList(),
+    popularity = 25.18,
+    adult = false,
+    department = "Directing",
+    job = "Director",
+  )
 
   val mediaCreditsResponse = MediaCreditsResponse(
     cast = listOf(mediaCastResponseItem, mediaCastResponseItem.copy(id = 89, name = "actor 3")),
@@ -167,21 +206,18 @@ object DummyData {
     RolesResponseItem(character = "Character 1", episodeCount = 12, creditId = "creditId")
 
   val castResponseItem =
-    CastResponseItem(id = 334, name = "Cast 1", roles = listOf(rolesResponseItem))
+    TvCastResponseItem(id = 334, name = "Cast 1", roles = listOf(rolesResponseItem))
 
   val jobsResponseItem =
     JobsResponseItem(job = "Writter", episodeCount = 12, creditId = "creditId")
 
   val crewResponseItem =
-    CrewResponseItem(id = 224, name = "name crew", jobs = listOf(jobsResponseItem))
+    TvCrewResponseItem(id = 224, name = "name crew", jobs = listOf(jobsResponseItem))
 
   val aggregateCreditsResponse = AggregateCreditsResponse(
     cast = listOf(castResponseItem),
     crew = listOf(crewResponseItem),
   )
-
-  val rolesItem =
-    RolesItem(character = "Character 1", episodeCount = 12, creditId = "creditId")
 
   val castItem = CastItem(
     id = 334,
@@ -401,6 +437,40 @@ object DummyData {
 
   val nextEpisodeToAir = nextEpisodeToAirResponse.toNextEpisodeToAir()
 
+  val netflix = ProviderResponse(
+    logoPath = "/9A1JSVmSgCK7b0e2h6f0s6s7L6M.jpg",
+    providerId = 8,
+    providerName = "Netflix",
+    displayPriority = 1,
+  )
+
+  val amazonPrimeVideo = ProviderResponse(
+    logoPath = "/emthp39XA2YScoYL1p0sdbAH2m3.jpg",
+    providerId = 119,
+    providerName = "Amazon Prime Video",
+    displayPriority = 2,
+  )
+
+  val appleTv = ProviderResponse(
+    logoPath = "/peURlLlr8jggOwK53fJ5wdQl05y.jpg",
+    providerId = 350,
+    providerName = "Apple TV",
+    displayPriority = 3,
+  )
+
+  val watchProvidersResponse = WatchProvidersResponse(
+    results = mapOf(
+      "US" to WatchProvidersResponseItem(
+        link = "https://www.themoviedb.org/movie/123/watch",
+        ads = null,
+        buy = listOf(appleTv),
+        flatrate = listOf(netflix),
+        free = null,
+        rent = listOf(amazonPrimeVideo),
+      ),
+    ),
+  )
+
   val detailTvResponse = DetailTvResponse(
     originalLanguage = "en",
     numberOfEpisodes = 10,
@@ -432,13 +502,14 @@ object DummyData {
     episodeRunTime = listOf(60),
     contentRatings = contentRatingsResponse,
     adult = false,
-    nextEpisodeToAir = null,
+    nextEpisodeToAir = nextEpisodeToAirResponse,
     inProduction = true,
     lastAirDate = "2024-01-15",
     homepage = "https://testtv.com",
     status = "Returning Series",
     externalIds = externalIdResponse,
     videos = videoResponse,
+    watchProviders = watchProvidersResponse,
   )
 
   val tvDetailFull = TvDetail(

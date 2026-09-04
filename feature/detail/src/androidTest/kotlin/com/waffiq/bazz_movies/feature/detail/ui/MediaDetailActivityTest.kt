@@ -28,9 +28,9 @@ import com.waffiq.bazz_movies.feature.detail.R.id.tv_summary_header
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_year_released
 import com.waffiq.bazz_movies.feature.detail.R.id.watch_provider_section
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.mediaArgs
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaCredits
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaDetail
+import com.waffiq.bazz_movies.feature.detail.testutils.DataDummy.mediaArgs
+import com.waffiq.bazz_movies.feature.detail.testutils.DataDummy.testMediaCredits
+import com.waffiq.bazz_movies.feature.detail.testutils.DataDummy.testMediaDetail
 import com.waffiq.bazz_movies.feature.detail.testutils.basetest.BaseMediaDetailActivityTest
 import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import dagger.hilt.android.testing.HiltAndroidTest

@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.feature.detail.ui
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_play
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaDetail
+import com.waffiq.bazz_movies.feature.detail.testutils.DataDummy.testMediaDetail
 import com.waffiq.bazz_movies.feature.detail.testutils.basetest.BaseMediaDetailActivityTest
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.verify

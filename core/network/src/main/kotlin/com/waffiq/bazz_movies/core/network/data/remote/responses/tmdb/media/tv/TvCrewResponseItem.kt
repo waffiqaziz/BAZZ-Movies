@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class CrewResponseItem(
+data class TvCrewResponseItem(
 
   @Json(name = "total_episode_count")
   val totalEpisodeCount: Int? = null,

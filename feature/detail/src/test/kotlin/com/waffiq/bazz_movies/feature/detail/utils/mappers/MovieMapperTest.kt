@@ -199,10 +199,11 @@ class MovieMapperTest {
 
   @Test
   fun toDetailMovie_withProductionCompaniesItemThatMapsToNull_returnsDetailMovieWithNullItems() {
-    val productionCompaniesResponseItem
-    = ProductionCompaniesResponseItem()
+    val productionCompaniesResponseItem =
+      ProductionCompaniesResponseItem()
     val detailMovieResponse = DetailMovieResponse(
-      productionCompanies = listOf(productionCompaniesResponseItem
+      productionCompanies = listOf(
+        productionCompaniesResponseItem,
       ),
     )
 

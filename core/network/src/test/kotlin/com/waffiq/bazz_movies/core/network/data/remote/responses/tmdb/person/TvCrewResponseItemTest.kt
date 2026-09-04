@@ -6,7 +6,7 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class CrewResponseItemTest {
+class TvCrewResponseItemTest {
 
   @Test
   fun crewResponseItem_withValidValues_setsPropertiesCorrectly() {

@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search
 
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.knownForResponseItem1
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.knownForResponseItem2
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -15,26 +15,26 @@ class KnownForResponseItemTest {
         they expect. The players will have to brave parts unknown and unexplored in order to escape 
         the world’s most dangerous game.
       """.trimIndent(),
-      knownForResponseItem1.overview,
+      knownForResponseItem2.overview,
     )
-    assertEquals("en", knownForResponseItem1.originalLanguage)
-    assertEquals("Jumanji: The Next Level", knownForResponseItem1.originalTitle)
-    assertEquals(false, knownForResponseItem1.video)
-    assertEquals("Jumanji: The Next Level", knownForResponseItem1.title)
-    assertEquals(listOf(12, 35, 14), knownForResponseItem1.genreIds)
-    assertEquals("/4kh9dxAiClS2GMUpkRyzGwpNWWX.jpg", knownForResponseItem1.posterPath)
-    assertEquals("/zTxHf9iIOCqRbxvl8W5QYKrsMLq.jpg", knownForResponseItem1.backdropPath)
-    assertEquals("2019-12-04", knownForResponseItem1.releaseDate)
-    assertEquals("movie", knownForResponseItem1.mediaType)
-    assertEquals(92.641, knownForResponseItem1.popularity)
-    assertEquals(6.9, knownForResponseItem1.voteAverage)
-    assertEquals(512200, knownForResponseItem1.id)
-    assertEquals(false, knownForResponseItem1.adult)
-    assertEquals(8692, knownForResponseItem1.voteCount)
-    assertEquals("2019-12-04", knownForResponseItem1.firstAirDate)
-    assertEquals(listOf("US"), knownForResponseItem1.originCountry)
-    assertEquals("Jumanji: The Next Level", knownForResponseItem1.originalName)
-    assertEquals("Jumanji: The Next Level", knownForResponseItem1.name)
+    assertEquals("en", knownForResponseItem2.originalLanguage)
+    assertEquals("Jumanji: The Next Level", knownForResponseItem2.originalTitle)
+    assertEquals(false, knownForResponseItem2.video)
+    assertEquals("Jumanji: The Next Level", knownForResponseItem2.title)
+    assertEquals(listOf(12, 35, 14), knownForResponseItem2.genreIds)
+    assertEquals("/4kh9dxAiClS2GMUpkRyzGwpNWWX.jpg", knownForResponseItem2.posterPath)
+    assertEquals("/zTxHf9iIOCqRbxvl8W5QYKrsMLq.jpg", knownForResponseItem2.backdropPath)
+    assertEquals("2019-12-04", knownForResponseItem2.releaseDate)
+    assertEquals("movie", knownForResponseItem2.mediaType)
+    assertEquals(92.641, knownForResponseItem2.popularity)
+    assertEquals(6.9, knownForResponseItem2.voteAverage)
+    assertEquals(512200, knownForResponseItem2.id)
+    assertEquals(false, knownForResponseItem2.adult)
+    assertEquals(8692, knownForResponseItem2.voteCount)
+    assertEquals("2019-12-04", knownForResponseItem2.firstAirDate)
+    assertEquals(listOf("US"), knownForResponseItem2.originCountry)
+    assertEquals("Jumanji: The Next Level", knownForResponseItem2.originalName)
+    assertEquals("Jumanji: The Next Level", knownForResponseItem2.name)
   }
 
   @Test

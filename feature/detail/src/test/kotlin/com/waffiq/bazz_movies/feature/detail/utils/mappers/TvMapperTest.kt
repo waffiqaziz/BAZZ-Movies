@@ -2,22 +2,32 @@ package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
 import com.waffiq.bazz_movies.core.models.GenresItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.ProductionCountriesResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.AggregateCreditsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ContentRatingsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ProductionCompaniesResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SpokenLanguagesResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.TvCastResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.TvCrewResponseItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCastItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ContentRatingsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.CreatedByItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.JobsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.NetworksItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.RolesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.SeasonsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.detailTvResponse
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toCredits
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toExternalTvID
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toMediaCastItem
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toMediaCrewItem
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toTvDetail
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -60,7 +70,7 @@ class TvMapperTest {
     assertEquals(1, tvDetail.contentRatings?.contentRatingsItem?.size)
     assertEquals("TV-MA", tvDetail.contentRatings?.contentRatingsItem?.get(0)?.rating)
     assertEquals(false, tvDetail.adult)
-    assertEquals(null, tvDetail.nextEpisodeToAir)
+    assertEquals("name", tvDetail.nextEpisodeToAir?.name)
     assertEquals(true, tvDetail.inProduction)
     assertEquals("2024-01-15", tvDetail.lastAirDate)
     assertEquals("https://testtv.com", tvDetail.homepage)
@@ -88,6 +98,8 @@ class TvMapperTest {
     assertEquals(null, detailTv.contentRatings)
     assertEquals(null, detailTv.externalIds)
     assertEquals(null, detailTv.videos)
+    assertEquals(null, detailTv.watchProviders)
+    assertEquals(null, detailTv.nextEpisodeToAir)
   }
 
   @Test
@@ -274,5 +286,65 @@ class TvMapperTest {
     assertEquals(0, externalTvID.tvrageId)
     assertEquals("", externalTvID.facebookId)
     assertEquals("", externalTvID.instagramId)
+  }
+
+  @Test
+  fun toCredits_castAndCrewNull_returnsNull() {
+    val result = AggregateCreditsResponse(cast = null, crew = null).toCredits()
+    assertEquals(emptyList<MediaCastItem>(), result.cast)
+    assertEquals(emptyList<MediaCrewItem>(), result.crew)
+  }
+
+  @Test
+  fun toCredits_itemEmpty_returnsNull() {
+    val result = AggregateCreditsResponse(
+      cast = listOf<TvCastResponseItem>(),
+      crew = listOf<TvCrewResponseItem>(),
+    ).toCredits()
+
+    assertEquals(emptyList<MediaCastItem>(), result.cast)
+    assertEquals(emptyList<MediaCrewItem>(), result.crew)
+  }
+
+  @Test
+  fun toCredits_nullItem_returnsNull() {
+    val result = AggregateCreditsResponse(
+      cast = listOf(TvCastResponseItem()),
+      crew = listOf(TvCrewResponseItem()),
+    ).toCredits()
+
+    assertEquals(listOf(MediaCastItem()), result.cast)
+    assertEquals(listOf(MediaCrewItem()), result.crew)
+  }
+
+  @Test
+  fun toCredits_listContainsNullItem_mapsToDefaultInstance() {
+    val result = AggregateCreditsResponse(
+      cast = listOf(null),
+      crew = listOf(null),
+    ).toCredits()
+
+    assertEquals(listOf(MediaCastItem()), result.cast)
+    assertEquals(listOf(MediaCrewItem()), result.crew)
+  }
+
+  @Test
+  fun toMediaCastItem_rolesIsListOfNull_mapsToListOfNull() {
+    // null
+    val result = TvCastResponseItem(roles = listOf(null)).toMediaCastItem()
+    assertEquals(listOf(null), result.roles)
+
+    // empty
+    val result2 = TvCastResponseItem(roles = emptyList()).toMediaCastItem()
+    assertEquals(emptyList<RolesItem>(), result2.roles)
+  }
+
+  @Test
+  fun toMediaCrewItem_jobsIsListOfNull_mapsToListOfNull() {
+    val result = TvCrewResponseItem(jobs = listOf(null)).toMediaCrewItem()
+    assertEquals(listOf(null), result.jobs)
+
+    val result2 = TvCrewResponseItem(jobs = emptyList()).toMediaCrewItem()
+    assertEquals(emptyList<JobsItem>(), result2.jobs)
   }
 }

@@ -17,13 +17,15 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.movie.PartsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.RatingsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.JobsItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.RolesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.Provider
 import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import com.waffiq.bazz_movies.navigation.utils.toMediaArgs
 
-object DataDumb {
+object DataDummy {
 
   val testUserModel = UserModel(
     username = "testUser",
@@ -269,6 +271,17 @@ object DataDumb {
         sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est 
         laborum.",
     """.trimIndent(),
+    originalTitle = "movie 1",
+    posterPath = "path.png",
+    backdropPath = "backdrop.png",
+    originalLanguage = "en",
+    video = false,
+    mediaType = "movie",
+    releaseDate = "released date",
+    popularity = 123123f,
+    voteAverage = 123f,
+    adult = false,
+    voteCount = 322,
   )
 
   val detailCollections = DetailCollections(
@@ -288,5 +301,49 @@ object DataDumb {
       partsItem.copy(id = 31, title = "movie 9"),
       partsItem.copy(id = 32, title = "movie 10"),
     ),
+  )
+
+  val rolesItem = RolesItem(
+    character = "max",
+    episodeCount = 1,
+    creditId = "id",
+  )
+
+  val mediaCastItem = MediaCastItem(
+    castId = 10,
+    character = "John Doe",
+    gender = 2,
+    creditId = "abc123",
+    knownForDepartment = "Acting",
+    originalName = "Jonathan Doe",
+    popularity = 12.5,
+    roles = listOf(rolesItem),
+    name = "John D.",
+    profilePath = "/profile.jpg",
+    id = 200,
+    adult = false,
+    order = 1,
+  )
+
+  val jobsItem = JobsItem(
+    episodeCount = 3,
+    creditId = "id",
+    job = "cameramen",
+  )
+
+  val mediaCrewItem = MediaCrewItem(
+    gender = 1,
+    creditId = "12345",
+    knownForDepartment = "Directing",
+    originalName = "John Doe",
+    popularity = 8.5,
+    name = "John Doe",
+    profilePath = "/profile.jpg",
+    id = 123,
+    adult = false,
+    department = "Directing",
+    job = "Director",
+    totalEpisodeCount = 3,
+    jobs = listOf(jobsItem),
   )
 }

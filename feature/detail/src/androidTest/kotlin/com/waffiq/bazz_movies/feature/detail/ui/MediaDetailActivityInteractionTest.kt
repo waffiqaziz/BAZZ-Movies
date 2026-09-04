@@ -40,11 +40,11 @@ import com.waffiq.bazz_movies.feature.detail.R.id.score_section
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_your_score
 import com.waffiq.bazz_movies.feature.detail.R.id.your_score_viewGroup
 import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.mediaArgs
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaCredits
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaItem
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaState
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaStateRated
+import com.waffiq.bazz_movies.feature.detail.testutils.DataDummy.mediaArgs
+import com.waffiq.bazz_movies.feature.detail.testutils.DataDummy.testMediaCredits
+import com.waffiq.bazz_movies.feature.detail.testutils.DataDummy.testMediaItem
+import com.waffiq.bazz_movies.feature.detail.testutils.DataDummy.testMediaState
+import com.waffiq.bazz_movies.feature.detail.testutils.DataDummy.testMediaStateRated
 import com.waffiq.bazz_movies.feature.detail.testutils.SetRatingAction
 import com.waffiq.bazz_movies.feature.detail.testutils.basetest.BaseMediaDetailActivityTest
 import com.waffiq.bazz_movies.navigation.ListArgs

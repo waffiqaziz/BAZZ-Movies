@@ -8,8 +8,8 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisp
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_sidebar
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_keywords
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaDetail
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaItem
+import com.waffiq.bazz_movies.feature.detail.testutils.DataDummy.testMediaDetail
+import com.waffiq.bazz_movies.feature.detail.testutils.DataDummy.testMediaItem
 import com.waffiq.bazz_movies.feature.detail.testutils.basetest.BaseMediaDetailActivityTest
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType.BY_KEYWORD

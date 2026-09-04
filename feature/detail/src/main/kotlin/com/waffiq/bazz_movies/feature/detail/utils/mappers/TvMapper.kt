@@ -1,11 +1,9 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.AggregateCreditsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.CastResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ContentRatingsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ContentRatingsResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.CreatedByResponseItem
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.CrewResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.JobsResponseItem
@@ -14,6 +12,8 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.N
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.NextEpisodeToAirResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.RolesResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SeasonsResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.TvCastResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.TvCrewResponseItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCastItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
@@ -97,7 +97,7 @@ object TvMapper {
       crew = crew?.map { it?.toMediaCrewItem() ?: MediaCrewItem() } ?: emptyList(),
     )
 
-  fun CastResponseItem.toMediaCastItem() =
+  fun TvCastResponseItem.toMediaCastItem() =
     MediaCastItem(
       totalEpisodeCount = totalEpisodeCount,
       gender = gender,
@@ -120,7 +120,7 @@ object TvMapper {
       creditId = creditId,
     )
 
-  fun CrewResponseItem.toMediaCrewItem() =
+  fun TvCrewResponseItem.toMediaCrewItem() =
     MediaCrewItem(
       totalEpisodeCount = totalEpisodeCount,
       gender = gender,

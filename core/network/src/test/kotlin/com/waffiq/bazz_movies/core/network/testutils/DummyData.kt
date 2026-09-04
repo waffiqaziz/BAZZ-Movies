@@ -27,25 +27,29 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.rele
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.releasedates.ReleaseDatesResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.releasedates.ReleaseDatesResponseItemValue
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.AggregateCreditsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.CastResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ContentRatingsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ContentRatingsResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.CreatedByResponseItem
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.CrewResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.JobsResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.LastEpisodeToAirResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.NetworksResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.NextEpisodeToAirResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ProductionCompaniesResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.RolesResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SeasonsResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SpokenLanguagesResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.TvCastResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.TvCrewResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.ProviderResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CastResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CombinedCreditResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CrewResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.DetailPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ExternalIDPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ImagePersonResponse
@@ -56,8 +60,6 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.Kno
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.MediaStateResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.RatedResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CastResponseItem as PersonCastResponseItem
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CrewResponseItem as PersonCrewResponseItem
 
 @Suppress("LargeClass")
 object DummyData {
@@ -486,76 +488,105 @@ object DummyData {
     ),
   )
 
+  val rolesResponseItem = RolesResponseItem(
+    character = "character",
+    episodeCount = 1,
+    creditId = "creditId",
+  )
+
+  val tvCastResponseItem1 = TvCastResponseItem(
+    adult = false,
+    gender = 2,
+    id = 60251,
+    knownForDepartment = "Acting",
+    name = "Zach Tyler Eisen",
+    roles = listOf(rolesResponseItem),
+    originalName = "Zach Tyler Eisen",
+    totalEpisodeCount = 1,
+    popularity = 10.086,
+    profilePath = "/ifHd2Yoovlvu6FFEIxUsXVyrYUf.jpg",
+    order = 0,
+  )
+
+  val tvCastResponseItem2 = TvCastResponseItem(
+    adult = false,
+    gender = 1,
+    id = 52404,
+    knownForDepartment = "Acting",
+    name = "Mae Whitman",
+    originalName = "Mae Whitman",
+    popularity = 65.903,
+    profilePath = "/oy89WyETM8T3Z4aRJb2EnmqZ7A3.jpg",
+    order = 1,
+  )
+
+  val tvCastResponseItem3 = TvCastResponseItem(
+    adult = false,
+    gender = 2,
+    id = 60230,
+    knownForDepartment = "Acting",
+    name = "Jack De Sena",
+    originalName = "Jack De Sena",
+    popularity = 12.877,
+    profilePath = "/i9VlMsPol6XIicnRZRiwmYSyE4P.jpg",
+    order = 2,
+  )
+
+  val jobsResponseItem = JobsResponseItem(
+    episodeCount = 12,
+    creditId = "creditId",
+    job = "crew",
+  )
+
+  val tvCrewResponseItem1 = TvCrewResponseItem(
+    adult = false,
+    gender = 0,
+    id = 1447300,
+    knownForDepartment = "Crew",
+    name = "Dao Le",
+    originalName = "Dao Le",
+    popularity = 2.219,
+    jobs = listOf(jobsResponseItem),
+    department = "Editing",
+    profilePath = "path.jpg",
+    totalEpisodeCount = 12,
+  )
+
+  val tvCrewResponseItem2 = TvCrewResponseItem(
+    adult = false,
+    gender = 2,
+    id = 1450350,
+    knownForDepartment = "Writing",
+    name = "Heiko von Drengenberg",
+    originalName = "Heiko von Drengenberg",
+    popularity = 1.422,
+    jobs = listOf(jobsResponseItem),
+    profilePath = null,
+    department = "Directing",
+  )
+  val tvCrewResponseItem3 = TvCrewResponseItem(
+    adult = false,
+    gender = 2,
+    id = 1190518,
+    knownForDepartment = "Production",
+    name = "Bryan Konietzko",
+    originalName = "Bryan Konietzko",
+    jobs = listOf(jobsResponseItem),
+    popularity = 2.821,
+    profilePath = "/5lPnGvtATjmPakR96dqPW3v4u8q.jpg",
+    department = "Production",
+  )
+
   val aggregateCreditsResponse = AggregateCreditsResponse(
     cast = listOf(
-      CastResponseItem(
-        adult = false,
-        gender = 2,
-        id = 60251,
-        knownForDepartment = "Acting",
-        name = "Zach Tyler Eisen",
-        originalName = "Zach Tyler Eisen",
-        popularity = 10.086,
-        profilePath = "/ifHd2Yoovlvu6FFEIxUsXVyrYUf.jpg",
-        order = 0,
-      ),
-      CastResponseItem(
-        adult = false,
-        gender = 1,
-        id = 52404,
-        knownForDepartment = "Acting",
-        name = "Mae Whitman",
-        originalName = "Mae Whitman",
-        popularity = 65.903,
-        profilePath = "/oy89WyETM8T3Z4aRJb2EnmqZ7A3.jpg",
-        order = 1,
-      ),
-      CastResponseItem(
-        adult = false,
-        gender = 2,
-        id = 60230,
-        knownForDepartment = "Acting",
-        name = "Jack De Sena",
-        originalName = "Jack De Sena",
-        popularity = 12.877,
-        profilePath = "/i9VlMsPol6XIicnRZRiwmYSyE4P.jpg",
-        order = 2,
-      ),
+      tvCastResponseItem1,
+      tvCastResponseItem2,
+      tvCastResponseItem3,
     ),
     crew = listOf(
-      CrewResponseItem(
-        adult = false,
-        gender = 0,
-        id = 1447300,
-        knownForDepartment = "Crew",
-        name = "Dao Le",
-        originalName = "Dao Le",
-        popularity = 2.219,
-        profilePath = null,
-        department = "Editing",
-      ),
-      CrewResponseItem(
-        adult = false,
-        gender = 2,
-        id = 1450350,
-        knownForDepartment = "Writing",
-        name = "Heiko von Drengenberg",
-        originalName = "Heiko von Drengenberg",
-        popularity = 1.422,
-        profilePath = null,
-        department = "Directing",
-      ),
-      CrewResponseItem(
-        adult = false,
-        gender = 2,
-        id = 1190518,
-        knownForDepartment = "Production",
-        name = "Bryan Konietzko",
-        originalName = "Bryan Konietzko",
-        popularity = 2.821,
-        profilePath = "/5lPnGvtATjmPakR96dqPW3v4u8q.jpg",
-        department = "Production",
-      ),
+      tvCrewResponseItem1,
+      tvCrewResponseItem2,
+      tvCrewResponseItem3,
     ),
   )
 
@@ -1031,7 +1062,7 @@ object DummyData {
     watchlist = true,
   )
 
-  val castResponseItem = PersonCastResponseItem(
+  val castResponseItem = CastResponseItem(
     firstAirDate = "2022-10-10",
     adult = false,
     backdropPath = "/nH6hPhJq3EEv9CnBZgXU3IQnpJo.jpg",
@@ -1061,7 +1092,7 @@ object DummyData {
     originalName = "War of the Worlds",
   )
 
-  val crewResponseItem = PersonCrewResponseItem(
+  val crewResponseItem = CrewResponseItem(
     adult = false,
     backdropPath = "/z354BaTVzKj7E60WLzDoSmUuO4u.jpg",
     genreIds = listOf(18, 28, 10752),
@@ -1082,7 +1113,7 @@ object DummyData {
     mediaType = "movie",
   )
 
-  val castResponseItem2 = PersonCastResponseItem(
+  val castResponseItem2 = CastResponseItem(
     adult = false,
     backdropPath = "/r1gLQFbpkWWLrOEPmpqzzMIUxxj.jpg",
     genreIds = listOf(878, 28, 53),
@@ -1107,7 +1138,7 @@ object DummyData {
     mediaType = "movie",
   )
 
-  val crewResponseItem2 = PersonCrewResponseItem(
+  val crewResponseItem2 = CrewResponseItem(
     adult = false,
     backdropPath = "/wwLufumafJojc59hgIamHyJSTO9.jpg",
     genreIds = listOf(878, 10749, 18, 14, 53, 9648),
@@ -1133,7 +1164,7 @@ object DummyData {
     mediaType = "movie",
   )
 
-  val crewResponseItem3 = PersonCrewResponseItem(
+  val crewResponseItem3 = CrewResponseItem(
     adult = false,
     backdropPath = "/5IxQYCNd0pU8wYDrvHiVIaWDWGX.jpg",
     genreIds = listOf(27, 9648, 53),
