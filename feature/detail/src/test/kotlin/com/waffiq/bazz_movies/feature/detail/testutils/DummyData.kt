@@ -233,7 +233,7 @@ object DummyData {
 
   val mediaKeywords = MediaKeywords(keywords = mediaKeywordsItems)
 
-  val genresItemResponse = GenresResponseItem(id = 1, name = "Action")
+  val genresResponseItem = GenresResponseItem(id = 1, name = "Action")
 
   val releaseDatesItemValueResponse = ReleaseDatesResponseItemValue(
     descriptors = listOf("R"),
@@ -244,13 +244,13 @@ object DummyData {
     releaseDate = "2024-01-01",
   )
 
-  val releaseDatesItemResponse = ReleaseDatesResponseItem(
+  val releaseDatesResponseItem = ReleaseDatesResponseItem(
     iso31661 = "US",
     listReleaseDateResponseItemValue = listOf(releaseDatesItemValueResponse),
   )
 
   val releaseDatesResponse = ReleaseDatesResponse(
-    listReleaseDatesResponseItem = listOf(releaseDatesItemResponse),
+    listReleaseDatesResponseItem = listOf(releaseDatesResponseItem),
   )
 
   val belongsToCollectionResponse = BelongsToCollectionResponse(
@@ -288,7 +288,7 @@ object DummyData {
     backdropPath = "/backdrop.jpg",
     credits = mediaCreditsResponse,
     revenue = 1000000,
-    genres = listOf(genresItemResponse),
+    genres = listOf(genresResponseItem),
     keywords = movieKeywordsResponse,
     popularity = 8.5,
     releaseDates = releaseDatesResponse,
@@ -342,14 +342,14 @@ object DummyData {
     writer = "Writer Name",
   )
 
-  val networksItemResponse = NetworksResponseItem(
+  val networksResponseItem = NetworksResponseItem(
     logoPath = "/network_logo.jpg",
     name = "HBO",
     id = 1,
     originCountry = "US",
   )
 
-  val seasonsItemResponse = SeasonsResponseItem(
+  val seasonsResponseItem = SeasonsResponseItem(
     airDate = "2024-01-01",
     overview = "Season overview",
     episodeCount = 10,
@@ -359,7 +359,7 @@ object DummyData {
     posterPath = "/season_poster.jpg",
   )
 
-  val createdByItemResponse = CreatedByResponseItem(
+  val createdByResponseItem = CreatedByResponseItem(
     gender = 1,
     creditId = "credit123",
     name = "Creator Name",
@@ -383,14 +383,14 @@ object DummyData {
     voteCount = 100,
   )
 
-  val contentRatingsItemResponse = ContentRatingsResponseItem(
+  val contentRatingsResponseItem = ContentRatingsResponseItem(
     descriptors = listOf("Violence"),
     iso31661 = "US",
     rating = "TV-MA",
   )
 
   val contentRatingsResponse = ContentRatingsResponse(
-    contentRatings = listOf(contentRatingsItemResponse),
+    contentRatings = listOf(contentRatingsResponseItem),
   )
 
   val nextEpisodeToAirResponse = NextEpisodeToAirResponse(
@@ -404,11 +404,11 @@ object DummyData {
   val detailTvResponse = DetailTvResponse(
     originalLanguage = "en",
     numberOfEpisodes = 10,
-    networks = listOf(networksItemResponse),
+    networks = listOf(networksResponseItem),
     type = "Scripted",
     backdropPath = "/backdrop.jpg",
     aggregateCredits = aggregateCreditsResponse,
-    genres = listOf(genresItemResponse),
+    genres = listOf(genresResponseItem),
     keywords = tvKeywordsResponse,
     popularity = 8.5,
     productionCountries = listOf(),
@@ -417,9 +417,9 @@ object DummyData {
     voteCount = 100,
     firstAirDate = "2024-01-01",
     overview = "Test TV show overview",
-    seasons = listOf(seasonsItemResponse),
+    seasons = listOf(seasonsResponseItem),
     languages = listOf("en"),
-    createdBy = listOf(createdByItemResponse),
+    createdBy = listOf(createdByResponseItem),
     lastEpisodeToAir = lastEpisodeToAirResponse,
     posterPath = "/poster.jpg",
     originCountry = listOf("US"),
@@ -480,7 +480,7 @@ object DummyData {
     videos = video,
   )
 
-  private val ratingsItemResponse = RatingsResponseItem(
+  private val ratingsResponseItem = RatingsResponseItem(
     value = "8.5/10",
     source = "Internet Movie Database",
   )
@@ -491,7 +491,7 @@ object DummyData {
     website = "https://movie.com",
     imdbRating = "8.5",
     imdbVotes = "500,000",
-    ratings = listOf(ratingsItemResponse),
+    ratings = listOf(ratingsResponseItem),
     runtime = "148 min",
     language = "English",
     rated = "PG-13",

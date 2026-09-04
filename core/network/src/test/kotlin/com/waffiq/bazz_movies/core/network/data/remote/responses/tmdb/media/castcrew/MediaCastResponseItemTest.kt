@@ -9,45 +9,45 @@ import org.junit.Test
 class MediaCastResponseItemTest {
 
   @Test
-  fun mediaCastItemResponse_withValidValues_setsPropertiesCorrectly() {
-    val mediaCastItemResponse = mediaCastResponseItem
-    assertEquals(13, mediaCastItemResponse.castId)
-    assertEquals("Momo", mediaCastItemResponse.character)
-    assertEquals(1, mediaCastItemResponse.gender)
-    assertEquals("6638f569ae38430122ca1143", mediaCastItemResponse.creditId)
-    assertEquals("Acting", mediaCastItemResponse.knownForDepartment)
-    assertEquals("Alexa Goodall", mediaCastItemResponse.originalName)
-    assertEquals(3.822, mediaCastItemResponse.popularity)
-    assertEquals("Alexa Goodall", mediaCastItemResponse.name)
-    assertEquals("/39Pk0wdjD2TC4QgnrODxWD8bubH.jpg", mediaCastItemResponse.profilePath)
-    assertEquals(3771374, mediaCastItemResponse.id)
-    assertTrue(mediaCastItemResponse.adult == false)
-    assertEquals(0, mediaCastItemResponse.order)
+  fun mediaCastResponseItem_withValidValues_setsPropertiesCorrectly() {
+    val mediaCastResponseItem = mediaCastResponseItem
+    assertEquals(13, mediaCastResponseItem.castId)
+    assertEquals("Momo", mediaCastResponseItem.character)
+    assertEquals(1, mediaCastResponseItem.gender)
+    assertEquals("6638f569ae38430122ca1143", mediaCastResponseItem.creditId)
+    assertEquals("Acting", mediaCastResponseItem.knownForDepartment)
+    assertEquals("Alexa Goodall", mediaCastResponseItem.originalName)
+    assertEquals(3.822, mediaCastResponseItem.popularity)
+    assertEquals("Alexa Goodall", mediaCastResponseItem.name)
+    assertEquals("/39Pk0wdjD2TC4QgnrODxWD8bubH.jpg", mediaCastResponseItem.profilePath)
+    assertEquals(3771374, mediaCastResponseItem.id)
+    assertTrue(mediaCastResponseItem.adult == false)
+    assertEquals(0, mediaCastResponseItem.order)
   }
 
   @Test
-  fun mediaCastItemResponse_withDefaultValues_setsPropertiesCorrectly() {
-    val mediaCastItemResponse = MediaCastResponseItem()
-    assertNull(mediaCastItemResponse.castId)
-    assertNull(mediaCastItemResponse.character)
-    assertNull(mediaCastItemResponse.gender)
-    assertNull(mediaCastItemResponse.creditId)
-    assertNull(mediaCastItemResponse.knownForDepartment)
-    assertNull(mediaCastItemResponse.originalName)
-    assertNull(mediaCastItemResponse.popularity)
-    assertNull(mediaCastItemResponse.name)
-    assertNull(mediaCastItemResponse.profilePath)
-    assertNull(mediaCastItemResponse.id)
-    assertNull(mediaCastItemResponse.adult)
-    assertNull(mediaCastItemResponse.order)
+  fun mediaCastResponseItem_withDefaultValues_setsPropertiesCorrectly() {
+    val mediaCastResponseItem = MediaCastResponseItem()
+    assertNull(mediaCastResponseItem.castId)
+    assertNull(mediaCastResponseItem.character)
+    assertNull(mediaCastResponseItem.gender)
+    assertNull(mediaCastResponseItem.creditId)
+    assertNull(mediaCastResponseItem.knownForDepartment)
+    assertNull(mediaCastResponseItem.originalName)
+    assertNull(mediaCastResponseItem.popularity)
+    assertNull(mediaCastResponseItem.name)
+    assertNull(mediaCastResponseItem.profilePath)
+    assertNull(mediaCastResponseItem.id)
+    assertNull(mediaCastResponseItem.adult)
+    assertNull(mediaCastResponseItem.order)
   }
 
   @Test
-  fun mediaCastItemResponse_withSomeNullValues_setsPropertiesCorrectly() {
-    val mediaCastItemResponse = MediaCastResponseItem(
+  fun mediaCastResponseItem_withSomeNullValues_setsPropertiesCorrectly() {
+    val mediaCastResponseItem = MediaCastResponseItem(
       name = "Martin Freeman",
     )
-    assertEquals("Martin Freeman", mediaCastItemResponse.name)
-    assertNull(mediaCastItemResponse.originalName)
+    assertEquals("Martin Freeman", mediaCastResponseItem.name)
+    assertNull(mediaCastResponseItem.originalName)
   }
 }

@@ -8,28 +8,28 @@ import org.junit.Test
 class ContentRatingsResponseItemTest {
 
   @Test
-  fun contentRatingsItemResponse_withValidValues_setsPropertiesCorrectly() {
-    val contentRatingsItemResponse = contentRatingsResponseItem
-    assertEquals("SG", contentRatingsItemResponse.iso31661)
-    assertEquals("this is description", contentRatingsItemResponse.descriptors?.get(0))
-    assertEquals("PG13", contentRatingsItemResponse.rating)
+  fun contentRatingsResponseItem_withValidValues_setsPropertiesCorrectly() {
+    val contentRatingsResponseItem = contentRatingsResponseItem
+    assertEquals("SG", contentRatingsResponseItem.iso31661)
+    assertEquals("this is description", contentRatingsResponseItem.descriptors?.get(0))
+    assertEquals("PG13", contentRatingsResponseItem.rating)
   }
 
   @Test
-  fun contentRatingsItemResponse_withDefaultValues_setsPropertiesCorrectly() {
-    val contentRatingsItemResponse = ContentRatingsResponseItem()
-    assertNull(contentRatingsItemResponse.iso31661)
-    assertNull(contentRatingsItemResponse.rating)
-    assertNull(contentRatingsItemResponse.descriptors)
+  fun contentRatingsResponseItem_withDefaultValues_setsPropertiesCorrectly() {
+    val contentRatingsResponseItem = ContentRatingsResponseItem()
+    assertNull(contentRatingsResponseItem.iso31661)
+    assertNull(contentRatingsResponseItem.rating)
+    assertNull(contentRatingsResponseItem.descriptors)
   }
 
   @Test
-  fun contentRatingsItemResponse_withSomeNullValues_setsPropertiesCorrectly() {
-    val contentRatingsItemResponse = ContentRatingsResponseItem(
+  fun contentRatingsResponseItem_withSomeNullValues_setsPropertiesCorrectly() {
+    val contentRatingsResponseItem = ContentRatingsResponseItem(
       iso31661 = "MY",
     )
-    assertEquals("MY", contentRatingsItemResponse.iso31661)
-    assertNull(contentRatingsItemResponse.rating)
-    assertNull(contentRatingsItemResponse.descriptors)
+    assertEquals("MY", contentRatingsResponseItem.iso31661)
+    assertNull(contentRatingsResponseItem.rating)
+    assertNull(contentRatingsResponseItem.descriptors)
   }
 }

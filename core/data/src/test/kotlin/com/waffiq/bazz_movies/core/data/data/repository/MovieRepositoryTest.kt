@@ -2,8 +2,8 @@ package com.waffiq.bazz_movies.core.data.data.repository
 
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.data.testutils.BaseRepositoryTest
-import com.waffiq.bazz_movies.core.data.testutils.TestVariables.mediaStateResponse
-import com.waffiq.bazz_movies.core.data.testutils.TestVariables.postMovieResponseSuccess
+import com.waffiq.bazz_movies.core.data.testutils.DummyData.mediaStateResponse
+import com.waffiq.bazz_movies.core.data.testutils.DummyData.postMovieResponseSuccess
 import com.waffiq.bazz_movies.core.mappers.MediaStateMapper.toMediaState
 import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.movie.MovieRemoteDataSource

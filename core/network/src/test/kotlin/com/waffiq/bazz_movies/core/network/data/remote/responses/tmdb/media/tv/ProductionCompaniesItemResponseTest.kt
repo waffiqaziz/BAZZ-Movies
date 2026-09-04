@@ -5,32 +5,31 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 
-class ProductionCompaniesItemResponseTest {
+class ProductionCompaniesResponseItemTest {
 
   @Test
-  fun productionCompaniesItemResponse_withValidValues_setsPropertiesCorrectly() {
-    val productionCompaniesItemResponse = productionCompaniesResponseItem
-    assertEquals("/hUzeosd33nzE5MCNsZxCGEKTXaQ.png", productionCompaniesItemResponse.logoPath)
-    assertEquals("Marvel Studios", productionCompaniesItemResponse.name)
-    assertEquals(420, productionCompaniesItemResponse.id)
-    assertEquals("US", productionCompaniesItemResponse.originCountry)
+  fun productionCompaniesResponseItem_withValidValues_setsPropertiesCorrectly() {
+    assertEquals("/hUzeosd33nzE5MCNsZxCGEKTXaQ.png", productionCompaniesResponseItem.logoPath)
+    assertEquals("Marvel Studios", productionCompaniesResponseItem.name)
+    assertEquals(420, productionCompaniesResponseItem.id)
+    assertEquals("US", productionCompaniesResponseItem.originCountry)
   }
 
   @Test
-  fun productionCompaniesItemResponse_withDefaultValues_setsPropertiesCorrectly() {
-    val productionCompaniesItemResponse = ProductionCompaniesResponseItem()
-    assertNull(productionCompaniesItemResponse.logoPath)
-    assertNull(productionCompaniesItemResponse.name)
-    assertNull(productionCompaniesItemResponse.id)
-    assertNull(productionCompaniesItemResponse.originCountry)
+  fun productionCompaniesResponseItem_withDefaultValues_setsPropertiesCorrectly() {
+    val productionCompaniesResponseItem = ProductionCompaniesResponseItem()
+    assertNull(productionCompaniesResponseItem.logoPath)
+    assertNull(productionCompaniesResponseItem.name)
+    assertNull(productionCompaniesResponseItem.id)
+    assertNull(productionCompaniesResponseItem.originCountry)
   }
 
   @Test
-  fun productionCompaniesItemResponse_withSomeNullValues_setsPropertiesCorrectly() {
-    val productionCompaniesItemResponse = ProductionCompaniesResponseItem(
+  fun productionCompaniesResponseItem_withSomeNullValues_setsPropertiesCorrectly() {
+    val productionCompaniesResponseItem = ProductionCompaniesResponseItem(
       id = 7658762,
     )
-    assertEquals(7658762, productionCompaniesItemResponse.id)
-    assertNull(productionCompaniesItemResponse.name)
+    assertEquals(7658762, productionCompaniesResponseItem.id)
+    assertNull(productionCompaniesResponseItem.name)
   }
 }

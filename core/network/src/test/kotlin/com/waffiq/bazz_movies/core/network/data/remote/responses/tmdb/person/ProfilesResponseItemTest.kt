@@ -8,40 +8,39 @@ import org.junit.Test
 class ProfilesResponseItemTest {
 
   @Test
-  fun profilesItemResponse_withValidValues_setsPropertiesCorrectly() {
-    val profilesItemResponse = profileResponseItem
-    assertEquals(0.667, profilesItemResponse.aspectRatio)
-    assertEquals("/83fLAMMb1LGT8YZ4dgRI0fti3az.jpg", profilesItemResponse.filePath)
-    assertEquals(5.25f, profilesItemResponse.voteAverage)
-    assertEquals(8, profilesItemResponse.voteCount)
-    assertEquals(736, profilesItemResponse.width)
-    assertEquals("en", profilesItemResponse.iso6391)
-    assertEquals(1104, profilesItemResponse.height)
+  fun profileResponseItem_withValidValues_setsPropertiesCorrectly() {
+    assertEquals(0.667, profileResponseItem.aspectRatio)
+    assertEquals("/83fLAMMb1LGT8YZ4dgRI0fti3az.jpg", profileResponseItem.filePath)
+    assertEquals(5.25f, profileResponseItem.voteAverage)
+    assertEquals(8, profileResponseItem.voteCount)
+    assertEquals(736, profileResponseItem.width)
+    assertEquals("en", profileResponseItem.iso6391)
+    assertEquals(1104, profileResponseItem.height)
   }
 
   @Test
-  fun profilesItemResponse_withDefaultValues_setsPropertiesCorrectly() {
-    val profilesItemResponse = ProfilesResponseItem()
-    assertNull(profilesItemResponse.aspectRatio)
-    assertNull(profilesItemResponse.filePath)
-    assertNull(profilesItemResponse.voteAverage)
-    assertNull(profilesItemResponse.voteCount)
-    assertNull(profilesItemResponse.width)
-    assertNull(profilesItemResponse.iso6391)
-    assertNull(profilesItemResponse.height)
+  fun profileResponseItem_withDefaultValues_setsPropertiesCorrectly() {
+    val profileResponseItem = ProfilesResponseItem()
+    assertNull(profileResponseItem.aspectRatio)
+    assertNull(profileResponseItem.filePath)
+    assertNull(profileResponseItem.voteAverage)
+    assertNull(profileResponseItem.voteCount)
+    assertNull(profileResponseItem.width)
+    assertNull(profileResponseItem.iso6391)
+    assertNull(profileResponseItem.height)
   }
 
   @Test
-  fun profilesItemResponse_withSomeNullValues_setsPropertiesCorrectly() {
-    val profilesItemResponse = ProfilesResponseItem(
+  fun profileResponseItem_withSomeNullValues_setsPropertiesCorrectly() {
+    val profileResponseItem = ProfilesResponseItem(
       iso6391 = "id",
     )
-    assertEquals("id", profilesItemResponse.iso6391)
-    assertNull(profilesItemResponse.aspectRatio)
-    assertNull(profilesItemResponse.filePath)
-    assertNull(profilesItemResponse.voteAverage)
-    assertNull(profilesItemResponse.voteCount)
-    assertNull(profilesItemResponse.width)
-    assertNull(profilesItemResponse.height)
+    assertEquals("id", profileResponseItem.iso6391)
+    assertNull(profileResponseItem.aspectRatio)
+    assertNull(profileResponseItem.filePath)
+    assertNull(profileResponseItem.voteAverage)
+    assertNull(profileResponseItem.voteCount)
+    assertNull(profileResponseItem.width)
+    assertNull(profileResponseItem.height)
   }
 }

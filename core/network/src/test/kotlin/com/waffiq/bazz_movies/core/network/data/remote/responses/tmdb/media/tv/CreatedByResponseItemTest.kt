@@ -8,31 +8,30 @@ import org.junit.Test
 class CreatedByResponseItemTest {
 
   @Test
-  fun createdByItemResponse_withValidValues_setsPropertiesCorrectly() {
-    val createdByItemResponse = createdByResponseItem
-    assertEquals(1, createdByItemResponse.gender)
-    assertEquals("675abc88ccf4df966822ca59", createdByItemResponse.creditId)
-    assertEquals("Kim Ji-woon", createdByItemResponse.name)
-    assertEquals(null, createdByItemResponse.profilePath)
-    assertEquals(2349392, createdByItemResponse.id)
+  fun createdByResponseItem_withValidValues_setsPropertiesCorrectly() {
+    assertEquals(1, createdByResponseItem.gender)
+    assertEquals("675abc88ccf4df966822ca59", createdByResponseItem.creditId)
+    assertEquals("Kim Ji-woon", createdByResponseItem.name)
+    assertEquals(null, createdByResponseItem.profilePath)
+    assertEquals(2349392, createdByResponseItem.id)
   }
 
   @Test
-  fun createdByItemResponse_withDefaultValues_setsPropertiesCorrectly() {
-    val createdByItemResponse = CreatedByResponseItem()
-    assertNull(createdByItemResponse.gender)
-    assertNull(createdByItemResponse.creditId)
-    assertNull(createdByItemResponse.name)
-    assertNull(createdByItemResponse.profilePath)
-    assertNull(createdByItemResponse.id)
+  fun createdByResponseItem_withDefaultValues_setsPropertiesCorrectly() {
+    val createdByResponseItem = CreatedByResponseItem()
+    assertNull(createdByResponseItem.gender)
+    assertNull(createdByResponseItem.creditId)
+    assertNull(createdByResponseItem.name)
+    assertNull(createdByResponseItem.profilePath)
+    assertNull(createdByResponseItem.id)
   }
 
   @Test
-  fun createdByItemResponse_withSomeNullValues_setsPropertiesCorrectly() {
-    val createdByItemResponse = CreatedByResponseItem(
+  fun createdByResponseItem_withSomeNullValues_setsPropertiesCorrectly() {
+    val createdByResponseItem = CreatedByResponseItem(
       id = 435625,
     )
-    assertEquals(435625, createdByItemResponse.id)
-    assertNull(createdByItemResponse.name)
+    assertEquals(435625, createdByResponseItem.id)
+    assertNull(createdByResponseItem.name)
   }
 }

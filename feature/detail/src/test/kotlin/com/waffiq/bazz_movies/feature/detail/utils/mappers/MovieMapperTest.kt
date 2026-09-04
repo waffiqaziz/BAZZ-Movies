@@ -185,9 +185,9 @@ class MovieMapperTest {
 
   @Test
   fun toDetailMovie_withSpokenLanguagesItemThatMapsToNull_returnsDetailMovieWithNullItems() {
-    val spokenLanguagesItemResponse = SpokenLanguagesResponseItem()
+    val spokenLanguagesResponseItem = SpokenLanguagesResponseItem()
     val detailMovieResponse = DetailMovieResponse(
-      spokenLanguages = listOf(spokenLanguagesItemResponse),
+      spokenLanguages = listOf(spokenLanguagesResponseItem),
     )
 
     val detailMovie: MovieDetail = detailMovieResponse.toDetailMovie()
@@ -199,9 +199,11 @@ class MovieMapperTest {
 
   @Test
   fun toDetailMovie_withProductionCompaniesItemThatMapsToNull_returnsDetailMovieWithNullItems() {
-    val productionCompaniesItemResponse = ProductionCompaniesResponseItem()
+    val productionCompaniesResponseItem
+    = ProductionCompaniesResponseItem()
     val detailMovieResponse = DetailMovieResponse(
-      productionCompanies = listOf(productionCompaniesItemResponse),
+      productionCompanies = listOf(productionCompaniesResponseItem
+      ),
     )
 
     val detailMovie: MovieDetail = detailMovieResponse.toDetailMovie()

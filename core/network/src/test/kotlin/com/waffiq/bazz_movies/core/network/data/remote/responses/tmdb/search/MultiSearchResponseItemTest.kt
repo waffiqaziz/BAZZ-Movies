@@ -7,7 +7,7 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class MultiSearchItemResponseTest {
+class MultiSearchResponseItemTest {
 
   @Test
   fun multiSearchResponseItem_withValidValues_setsPropertiesCorrectly() {

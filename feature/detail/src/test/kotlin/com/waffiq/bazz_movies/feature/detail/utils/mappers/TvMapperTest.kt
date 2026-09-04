@@ -170,7 +170,7 @@ class TvMapperTest {
   }
 
   @Test
-  fun toTvDetail_withContentRatingsItemResponseNull_returnsTvDetail() {
+  fun toTvDetail_withContentRatingsResponseItemNull_returnsTvDetail() {
     val detailTvResponse = DetailTvResponse(
       contentRatings = ContentRatingsResponse(
         contentRatings = null,

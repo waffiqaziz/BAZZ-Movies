@@ -15,7 +15,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostR
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.MediaStateResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.RatedResponse
 
-object TestVariables {
+object DummyData {
 
   const val USER_REGION = "US"
   const val ERROR_MESSAGE = "Network error"
@@ -23,7 +23,7 @@ object TestVariables {
   const val MOVIE_ID = 1001
   const val TV_ID = 2002
 
-  fun createSampleMediaItemResponse(id: Int = 1, name: String = "Test Name"): MediaResponseItem =
+  fun createSampleMediaResponseItem(id: Int = 1, name: String = "Test Name"): MediaResponseItem =
     MediaResponseItem(id = id, name = name)
 
   fun createSamplePagingData(vararg items: MediaResponseItem): PagingData<MediaResponseItem> =

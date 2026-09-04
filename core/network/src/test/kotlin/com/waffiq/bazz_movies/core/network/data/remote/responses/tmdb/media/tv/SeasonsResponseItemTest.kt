@@ -8,35 +8,34 @@ import org.junit.Test
 class SeasonsResponseItemTest {
 
   @Test
-  fun seasonsItemResponse_withValidValues_setsPropertiesCorrectly() {
-    val seasonsItemResponse = seasonsResponseItem
-    assertEquals("2024-11-22", seasonsItemResponse.airDate)
-    assertEquals("Overview", seasonsItemResponse.overview)
-    assertEquals(12, seasonsItemResponse.episodeCount)
-    assertEquals("When the Phone Rings", seasonsItemResponse.name)
-    assertEquals(1, seasonsItemResponse.seasonNumber)
-    assertEquals(392789, seasonsItemResponse.id)
-    assertEquals("/glWP5Y7CVeqrOjJpLckQjuLFjQJ.jpg", seasonsItemResponse.posterPath)
+  fun seasonsResponseItem_withValidValues_setsPropertiesCorrectly() {
+    assertEquals("2024-11-22", seasonsResponseItem.airDate)
+    assertEquals("Overview", seasonsResponseItem.overview)
+    assertEquals(12, seasonsResponseItem.episodeCount)
+    assertEquals("When the Phone Rings", seasonsResponseItem.name)
+    assertEquals(1, seasonsResponseItem.seasonNumber)
+    assertEquals(392789, seasonsResponseItem.id)
+    assertEquals("/glWP5Y7CVeqrOjJpLckQjuLFjQJ.jpg", seasonsResponseItem.posterPath)
   }
 
   @Test
-  fun seasonsItemResponse_withDefaultValues_setsPropertiesCorrectly() {
-    val seasonsItemResponse = SeasonsResponseItem()
-    assertNull(seasonsItemResponse.airDate)
-    assertNull(seasonsItemResponse.overview)
-    assertNull(seasonsItemResponse.episodeCount)
-    assertNull(seasonsItemResponse.name)
-    assertNull(seasonsItemResponse.seasonNumber)
-    assertNull(seasonsItemResponse.id)
-    assertNull(seasonsItemResponse.posterPath)
+  fun seasonsResponseItem_withDefaultValues_setsPropertiesCorrectly() {
+    val seasonsResponseItem = SeasonsResponseItem()
+    assertNull(seasonsResponseItem.airDate)
+    assertNull(seasonsResponseItem.overview)
+    assertNull(seasonsResponseItem.episodeCount)
+    assertNull(seasonsResponseItem.name)
+    assertNull(seasonsResponseItem.seasonNumber)
+    assertNull(seasonsResponseItem.id)
+    assertNull(seasonsResponseItem.posterPath)
   }
 
   @Test
-  fun seasonsItemResponse_withSomeNullValues_setsPropertiesCorrectly() {
-    val seasonsItemResponse = SeasonsResponseItem(
+  fun seasonsResponseItem_withSomeNullValues_setsPropertiesCorrectly() {
+    val seasonsResponseItem = SeasonsResponseItem(
       id = 659874,
     )
-    assertEquals(659874, seasonsItemResponse.id)
-    assertNull(seasonsItemResponse.name)
+    assertEquals(659874, seasonsResponseItem.id)
+    assertNull(seasonsResponseItem.name)
   }
 }

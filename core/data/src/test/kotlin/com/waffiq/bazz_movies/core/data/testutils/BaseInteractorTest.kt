@@ -7,10 +7,10 @@ import com.waffiq.bazz_movies.core.data.domain.repository.IAsianRepository
 import com.waffiq.bazz_movies.core.data.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.core.data.domain.repository.ITrendingRepository
 import com.waffiq.bazz_movies.core.data.domain.repository.ITvRepository
-import com.waffiq.bazz_movies.core.data.testutils.TestVariables.ERROR_MESSAGE
-import com.waffiq.bazz_movies.core.data.testutils.TestVariables.USER_REGION
-import com.waffiq.bazz_movies.core.data.testutils.TestVariables.movieMediaItem
-import com.waffiq.bazz_movies.core.data.testutils.TestVariables.tvMediaItem
+import com.waffiq.bazz_movies.core.data.testutils.DummyData.ERROR_MESSAGE
+import com.waffiq.bazz_movies.core.data.testutils.DummyData.USER_REGION
+import com.waffiq.bazz_movies.core.data.testutils.DummyData.movieMediaItem
+import com.waffiq.bazz_movies.core.data.testutils.DummyData.tvMediaItem
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ

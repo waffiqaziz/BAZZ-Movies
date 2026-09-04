@@ -10,7 +10,7 @@ class MediaItemMapperTest {
 
   @Test
   fun toMediaItem_withValidValues_returnsMediaItem() {
-    val mediaItemResponse = MediaResponseItem(
+    val mediaResponseItem = MediaResponseItem(
       firstAirDate = "2023-12-01",
       overview = "This is an overview",
       originalLanguage = "en",
@@ -32,7 +32,7 @@ class MediaItemMapperTest {
       originCountry = listOf("ID", "MY"),
     )
 
-    val mediaItem = mediaItemResponse.toMediaItem()
+    val mediaItem = mediaResponseItem.toMediaItem()
 
     assertEquals("2023-12-01", mediaItem.firstAirDate)
     assertEquals("This is an overview", mediaItem.overview)
@@ -57,9 +57,9 @@ class MediaItemMapperTest {
 
   @Test
   fun toMediaItem_withNullValues_returnsMediaItem() {
-    val mediaItemResponse = MediaResponseItem()
+    val mediaResponseItem = MediaResponseItem()
 
-    val mediaItem = mediaItemResponse.toMediaItem()
+    val mediaItem = mediaResponseItem.toMediaItem()
 
     assertNull(mediaItem.firstAirDate)
     assertNull(mediaItem.overview)
@@ -84,7 +84,7 @@ class MediaItemMapperTest {
 
   @Test
   fun toMediaItem_withEmptyStringsAndZeroValues_returnsMediaItem() {
-    val mediaItemResponse = MediaResponseItem(
+    val mediaResponseItem = MediaResponseItem(
       firstAirDate = "",
       overview = "",
       originalLanguage = "",
@@ -106,7 +106,7 @@ class MediaItemMapperTest {
       originCountry = emptyList(),
     )
 
-    val mediaItem = mediaItemResponse.toMediaItem()
+    val mediaItem = mediaResponseItem.toMediaItem()
 
     assertEquals("", mediaItem.firstAirDate)
     assertEquals("", mediaItem.overview)
@@ -131,7 +131,7 @@ class MediaItemMapperTest {
 
   @Test
   fun toMediaItem_withBlankValues_returnsMediaItem() {
-    val mediaItemResponse = MediaResponseItem(
+    val mediaResponseItem = MediaResponseItem(
       firstAirDate = "  ",
       overview = "  ",
       originalLanguage = "  ",
@@ -145,7 +145,7 @@ class MediaItemMapperTest {
       releaseDate = "  ",
     )
 
-    val mediaItem = mediaItemResponse.toMediaItem()
+    val mediaItem = mediaResponseItem.toMediaItem()
 
     assertEquals("  ", mediaItem.firstAirDate)
     assertEquals("  ", mediaItem.overview)
@@ -162,7 +162,7 @@ class MediaItemMapperTest {
 
   @Test
   fun toMediaItem_withSomeNullValues_returnsMediaItem() {
-    val mediaItemResponse = MediaResponseItem(
+    val mediaResponseItem = MediaResponseItem(
       firstAirDate = null,
       overview = "Overview",
       genreIds = null,
@@ -171,7 +171,7 @@ class MediaItemMapperTest {
       voteCount = null,
     )
 
-    val mediaItem = mediaItemResponse.toMediaItem()
+    val mediaItem = mediaResponseItem.toMediaItem()
 
     assertNull(mediaItem.firstAirDate)
     assertEquals("Overview", mediaItem.overview)

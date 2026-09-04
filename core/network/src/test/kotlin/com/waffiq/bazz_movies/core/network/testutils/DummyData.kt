@@ -898,7 +898,7 @@ object DummyData {
     id = 2349392,
   )
 
-  val networworkResponseItem = NetworksResponseItem(
+  val networkResponseItem = NetworksResponseItem(
     logoPath = "/pOSCKaZhndUFYtxHXjQOV6xJi1s.png",
     name = "MBC",
     id = 97,
@@ -955,7 +955,7 @@ object DummyData {
   val detailTvResponse = DetailTvResponse(
     originalLanguage = "ko",
     numberOfEpisodes = 12,
-    networks = listOf(networworkResponseItem),
+    networks = listOf(networkResponseItem),
     type = "Miniseries",
     backdropPath = "/2vtI9xzD6qpDzY9m8kV67QY0qfM.jpg",
     aggregateCredits = aggregateCreditsResponse,

@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.data.domain.usecase.asian
 
 import com.waffiq.bazz_movies.core.data.testutils.BaseInteractorTest
-import com.waffiq.bazz_movies.core.data.testutils.TestVariables.tvMediaItem
+import com.waffiq.bazz_movies.core.data.testutils.DummyData.tvMediaItem
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
