@@ -31,6 +31,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.designsystem.R.string.image_counter_format
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
+import com.waffiq.bazz_movies.core.uihelper.state.isLoading
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.animFadeOutLong
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
@@ -165,9 +166,9 @@ class PersonActivity : AppCompatActivity() {
 
   private fun render(state: UIState<DetailPerson>) {
     binding.illustrationError.root.isVisible = state is UIState.Error
-    binding.content.isGone = state is UIState.Error || state is UIState.Loading
-    binding.progressBar.isVisible = state is UIState.Loading
-    binding.backgroundDimPerson.isVisible = state is UIState.Loading
+    binding.content.isGone = state is UIState.Error || state.isLoading
+    binding.progressBar.isVisible = state.isLoading
+    binding.backgroundDimPerson.isVisible = state.isLoading
     binding.swipeRefresh.isRefreshing = false
 
     when (state) {
@@ -308,7 +309,6 @@ class PersonActivity : AppCompatActivity() {
 
   companion object {
     const val DIALOG_ALPHA = 0.8f
-    const val SCALE = 0.88f
     const val EXTRA_PERSON = "EXTRA_PERSON"
     private const val MAX_DOTS_COUNT = 10
   }
