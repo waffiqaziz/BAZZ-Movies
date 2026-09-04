@@ -13,6 +13,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
 import com.waffiq.bazz_movies.core.common.utils.Constants.INSTAGRAM_LINK
+import com.waffiq.bazz_movies.core.designsystem.R.id.btn_try_again
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
@@ -131,6 +132,11 @@ class PersonActivityTest : BasePersonActivityTest() {
     context.launchPersonActivity {
       detailPersonState.value = UIState.Error(errorMessage)
       errorMessage.isDisplayed()
+
+      // perform retry
+      btn_try_again.performScrollTo()
+      btn_try_again.performClick()
+      verify { mockPersonViewModel.getDetailPerson(any()) }
     }
   }
 
