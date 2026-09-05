@@ -3,6 +3,8 @@ package com.waffiq.bazz_movies.feature.detail.ui.adapter
 import android.os.Looper
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemCastBinding
 import com.waffiq.bazz_movies.feature.detail.databinding.ItemCreditsPersonBinding
@@ -164,6 +166,21 @@ class CastAdapterTest : BaseAdapterTest() {
     adapter.setVerticalMode(true)
     itemCreditsBinding.container.performClick()
     verify { navigator.openPersonDetails(any(), any()) }
+  }
+
+
+  @Test
+  fun bind_totalEpisodeNotNull_showsCorrectView() {
+    verticalViewHolder.bind(MediaCastItem(id = 112, name = "name", totalEpisodeCount = 12))
+    adapter.setVerticalMode(true)
+    assertTrue(itemCreditsBinding.tvTotalEpisode.isVisible)
+  }
+
+  @Test
+  fun bind_totalEpisodeIsNull_hidesCorrectView() {
+    verticalViewHolder.bind(MediaCastItem(id = 1234, name = "name"))
+    adapter.setVerticalMode(true)
+    assertTrue(itemCreditsBinding.tvTotalEpisode.isGone)
   }
 
   @Test

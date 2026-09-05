@@ -8,7 +8,7 @@ data class CrewItem(
   val popularity: Any? = null,
   val jobs: List<JobsItem?>? = null,
   val name: String? = null,
-  val profilePath: Any? = null,
+  val profilePath: String? = null,
   val id: Int? = null,
   val adult: Boolean? = null,
   val department: String? = null,
