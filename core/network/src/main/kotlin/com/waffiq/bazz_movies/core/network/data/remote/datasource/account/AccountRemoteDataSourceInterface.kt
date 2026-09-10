@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.account
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.network.data.remote.models.FavoriteRequest
-import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistRequest
+import com.waffiq.bazz_movies.core.network.data.remote.model.FavoriteRequest
+import com.waffiq.bazz_movies.core.network.data.remote.model.WatchlistRequest
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostFavoriteWatchlistResponse
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult

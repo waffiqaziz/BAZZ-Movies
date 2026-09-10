@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.domain.model
 
-import com.waffiq.bazz_movies.core.models.Nameable
-import com.waffiq.bazz_movies.core.models.Profilable
+import com.waffiq.bazz_movies.core.model.Nameable
+import com.waffiq.bazz_movies.core.model.Profilable
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.JobsItem
 
 data class MediaCrewItem(

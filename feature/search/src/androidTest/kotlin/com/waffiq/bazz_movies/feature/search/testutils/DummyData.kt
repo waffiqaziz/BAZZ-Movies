@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.search.testutils
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.models.SearchHistory
+import com.waffiq.bazz_movies.core.model.SearchHistory
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 
 object DummyData {

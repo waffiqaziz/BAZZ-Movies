@@ -10,9 +10,10 @@ enum class MediaType {
     companion object {
     private val byValue: Map<String, MediaType> = entries.associateBy { it.value }
 
-    /*
-     * Parses a TMDB `media_type` field ("movie", "tv", "person") into a [MediaType].
-     * Returns null for unknown/blank values.
+    /**
+     * Parses a TMDB `media_type` field ("movie", "tv", "person")
+     * into a [MediaType].
+     * Defaults to [MediaType.MOVIE] for unknown or blank values.
      */
     fun fromValue(value: String?): MediaType = value?.let { byValue[it.lowercase()] } ?: MOVIE
   }

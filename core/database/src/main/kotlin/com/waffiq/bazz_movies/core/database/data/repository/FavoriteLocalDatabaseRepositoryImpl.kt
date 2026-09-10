@@ -5,7 +5,7 @@ import com.waffiq.bazz_movies.core.database.domain.repository.IFavoriteLocalData
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.database.utils.FavoriteMapper.toFavorite
 import com.waffiq.bazz_movies.core.database.utils.FavoriteMapper.toFavoriteEntity
-import com.waffiq.bazz_movies.core.models.Favorite
+import com.waffiq.bazz_movies.core.model.Favorite
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

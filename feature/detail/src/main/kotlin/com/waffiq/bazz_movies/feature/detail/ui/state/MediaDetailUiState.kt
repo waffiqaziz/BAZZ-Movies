@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.ui.state
 
-import com.waffiq.bazz_movies.core.models.MediaState
+import com.waffiq.bazz_movies.core.model.MediaState
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails

@@ -5,7 +5,7 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
 import com.waffiq.bazz_movies.core.database.data.model.SearchHistoryEntity
 import com.waffiq.bazz_movies.core.database.utils.FavoriteMapper.toFavorite
-import com.waffiq.bazz_movies.core.models.SearchHistory
+import com.waffiq.bazz_movies.core.model.SearchHistory
 import kotlinx.coroutines.flow.flowOf
 
 object DummyData {

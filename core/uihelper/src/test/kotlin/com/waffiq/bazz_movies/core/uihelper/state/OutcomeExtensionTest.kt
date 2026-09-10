@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.uihelper.state
 
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.models.Outcome
+import com.waffiq.bazz_movies.core.model.Outcome
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Test

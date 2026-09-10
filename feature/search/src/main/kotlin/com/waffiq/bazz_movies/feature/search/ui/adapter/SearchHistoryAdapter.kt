@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.waffiq.bazz_movies.core.models.SearchHistory
+import com.waffiq.bazz_movies.core.model.SearchHistory
 import com.waffiq.bazz_movies.feature.search.databinding.ItemSearchHistoryBinding
 import com.waffiq.bazz_movies.feature.search.ui.adapter.diffutil.HistoryDiffUtil
 

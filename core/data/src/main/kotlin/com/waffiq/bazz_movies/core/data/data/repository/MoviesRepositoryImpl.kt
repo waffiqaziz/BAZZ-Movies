@@ -8,10 +8,10 @@ import com.waffiq.bazz_movies.core.mappers.MediaItemMapper.toMediaItem
 import com.waffiq.bazz_movies.core.mappers.MediaStateMapper.toMediaState
 import com.waffiq.bazz_movies.core.mappers.NetworkResultMapper.toOutcome
 import com.waffiq.bazz_movies.core.mappers.PostMapper.toPostResult
-import com.waffiq.bazz_movies.core.models.MediaItem
-import com.waffiq.bazz_movies.core.models.MediaState
-import com.waffiq.bazz_movies.core.models.Outcome
-import com.waffiq.bazz_movies.core.models.PostResult
+import com.waffiq.bazz_movies.core.model.MediaItem
+import com.waffiq.bazz_movies.core.model.MediaState
+import com.waffiq.bazz_movies.core.model.Outcome
+import com.waffiq.bazz_movies.core.model.PostResult
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.movie.MovieRemoteDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

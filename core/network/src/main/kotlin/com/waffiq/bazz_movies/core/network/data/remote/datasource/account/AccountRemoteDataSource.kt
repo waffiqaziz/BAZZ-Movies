@@ -6,8 +6,8 @@ import com.waffiq.bazz_movies.core.common.value
 import com.waffiq.bazz_movies.core.coroutines.IoDispatcher
 import com.waffiq.bazz_movies.core.network.data.remote.constants.AccountMediaCategory
 import com.waffiq.bazz_movies.core.network.data.remote.constants.value
-import com.waffiq.bazz_movies.core.network.data.remote.models.FavoriteRequest
-import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistRequest
+import com.waffiq.bazz_movies.core.network.data.remote.model.FavoriteRequest
+import com.waffiq.bazz_movies.core.network.data.remote.model.WatchlistRequest
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostFavoriteWatchlistResponse
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.AccountApiService

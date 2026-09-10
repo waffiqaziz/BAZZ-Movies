@@ -2,8 +2,8 @@ package com.waffiq.bazz_movies.feature.more.ui.viewmodel
 
 import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.models.Outcome
-import com.waffiq.bazz_movies.core.models.PostResult
+import com.waffiq.bazz_movies.core.model.Outcome
+import com.waffiq.bazz_movies.core.model.PostResult
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount.AuthTMDbAccountUseCase
 import com.waffiq.bazz_movies.feature.more.testutils.BaseViewModelTest

@@ -10,7 +10,7 @@ import com.waffiq.bazz_movies.core.database.testutils.DummyData.watchlistMovieEn
 import com.waffiq.bazz_movies.core.database.testutils.DummyData.watchlistTvEntity
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.database.utils.FavoriteMapper.toFavoriteEntity
-import com.waffiq.bazz_movies.core.models.Favorite
+import com.waffiq.bazz_movies.core.model.Favorite
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify

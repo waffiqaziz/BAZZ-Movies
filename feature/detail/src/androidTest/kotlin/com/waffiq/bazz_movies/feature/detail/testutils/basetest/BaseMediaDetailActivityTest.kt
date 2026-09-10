@@ -12,8 +12,8 @@ import androidx.test.espresso.intent.Intents
 import androidx.test.platform.app.InstrumentationRegistry
 import com.bumptech.glide.Glide
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
-import com.waffiq.bazz_movies.core.models.MediaItem
-import com.waffiq.bazz_movies.core.models.UserModel
+import com.waffiq.bazz_movies.core.model.MediaItem
+import com.waffiq.bazz_movies.core.model.UserModel
 import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDummy.mediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDummy.testMediaItem

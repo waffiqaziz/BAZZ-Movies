@@ -5,7 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.coroutines.IoDispatcher
-import com.waffiq.bazz_movies.core.network.data.remote.models.RatingRequest
+import com.waffiq.bazz_movies.core.network.data.remote.model.RatingRequest
 import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.GenericPagingSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailCollectionsResponse

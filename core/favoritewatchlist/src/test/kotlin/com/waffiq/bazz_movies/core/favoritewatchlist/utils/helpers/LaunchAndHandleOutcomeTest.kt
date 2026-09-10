@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.ViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.launchAndHandleOutcome
-import com.waffiq.bazz_movies.core.models.Outcome
+import com.waffiq.bazz_movies.core.model.Outcome
 import io.mockk.mockk
 import io.mockk.verify
 import io.mockk.verifySequence

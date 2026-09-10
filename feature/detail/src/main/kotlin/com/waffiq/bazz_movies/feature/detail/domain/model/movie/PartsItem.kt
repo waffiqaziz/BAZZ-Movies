@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.domain.model.movie
 
-import com.waffiq.bazz_movies.core.models.Imageble
+import com.waffiq.bazz_movies.core.model.Imageble
 
 data class PartsItem(
   val id: Int? = null,

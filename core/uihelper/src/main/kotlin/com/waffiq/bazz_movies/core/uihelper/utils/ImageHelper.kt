@@ -9,8 +9,8 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_fil
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_no_profile
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_no_profile_rounded
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
-import com.waffiq.bazz_movies.core.models.Imageble
-import com.waffiq.bazz_movies.core.models.Profilable
+import com.waffiq.bazz_movies.core.model.Imageble
+import com.waffiq.bazz_movies.core.model.Profilable
 
 object ImageHelper {
 

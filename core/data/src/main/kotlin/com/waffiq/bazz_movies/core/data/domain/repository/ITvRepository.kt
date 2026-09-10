@@ -1,10 +1,10 @@
 package com.waffiq.bazz_movies.core.data.domain.repository
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.models.MediaItem
-import com.waffiq.bazz_movies.core.models.MediaState
-import com.waffiq.bazz_movies.core.models.Outcome
-import com.waffiq.bazz_movies.core.models.PostResult
+import com.waffiq.bazz_movies.core.model.MediaItem
+import com.waffiq.bazz_movies.core.model.MediaState
+import com.waffiq.bazz_movies.core.model.Outcome
+import com.waffiq.bazz_movies.core.model.PostResult
 import kotlinx.coroutines.flow.Flow
 
 interface ITvRepository {

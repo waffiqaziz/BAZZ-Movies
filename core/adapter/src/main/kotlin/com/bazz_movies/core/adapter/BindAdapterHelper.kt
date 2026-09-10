@@ -7,7 +7,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemMediaBinding
-import com.waffiq.bazz_movies.core.models.MediaItem
+import com.waffiq.bazz_movies.core.model.MediaItem
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.posterSource
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.releaseDateHandler
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler

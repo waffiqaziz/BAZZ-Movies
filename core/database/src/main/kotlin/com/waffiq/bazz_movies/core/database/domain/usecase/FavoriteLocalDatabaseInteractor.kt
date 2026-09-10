@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.core.database.domain.usecase
 
 import com.waffiq.bazz_movies.core.database.domain.repository.IFavoriteLocalDatabaseRepository
 import com.waffiq.bazz_movies.core.database.utils.DbResult
-import com.waffiq.bazz_movies.core.models.Favorite
+import com.waffiq.bazz_movies.core.model.Favorite
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

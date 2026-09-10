@@ -23,7 +23,7 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHa
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
-import com.waffiq.bazz_movies.core.models.UserModel
+import com.waffiq.bazz_movies.core.model.UserModel
 import com.waffiq.bazz_movies.core.testmodule.DummyData.userModel
 import com.waffiq.bazz_movies.core.testmodule.MockRegionViewModelModule.setupCountryCode
 import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.setupRegion

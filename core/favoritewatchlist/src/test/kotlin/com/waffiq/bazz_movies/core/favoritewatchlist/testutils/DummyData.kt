@@ -4,8 +4,8 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.MOVIE_O
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.MOVIE_ORIGINAL_TITLE
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.MOVIE_TITLE
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.TEST_DATE
-import com.waffiq.bazz_movies.core.models.Favorite
-import com.waffiq.bazz_movies.core.models.MediaItem
+import com.waffiq.bazz_movies.core.model.Favorite
+import com.waffiq.bazz_movies.core.model.MediaItem
 
 object DummyData {
 

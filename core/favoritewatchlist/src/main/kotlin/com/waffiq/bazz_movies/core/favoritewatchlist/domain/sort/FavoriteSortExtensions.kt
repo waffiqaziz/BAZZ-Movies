@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.domain.sort
 
-import com.waffiq.bazz_movies.core.models.Favorite
+import com.waffiq.bazz_movies.core.model.Favorite
 import com.waffiq.bazz_movies.core.network.data.remote.constants.SortBy.CREATED_AT_ASC
 import com.waffiq.bazz_movies.core.network.data.remote.constants.SortBy.CREATED_AT_DESC
 

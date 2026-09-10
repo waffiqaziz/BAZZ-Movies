@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.domain.usecase.collection
 
-import com.waffiq.bazz_movies.core.models.Outcome
+import com.waffiq.bazz_movies.core.model.Outcome
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.DetailCollections
 import kotlinx.coroutines.flow.Flow
 

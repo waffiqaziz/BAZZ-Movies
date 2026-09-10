@@ -1,10 +1,10 @@
 package com.waffiq.bazz_movies.feature.search.domain.model
 
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.models.Dateable
-import com.waffiq.bazz_movies.core.models.Imageble
-import com.waffiq.bazz_movies.core.models.ProfileImageable
-import com.waffiq.bazz_movies.core.models.Titleable
+import com.waffiq.bazz_movies.core.model.Dateable
+import com.waffiq.bazz_movies.core.model.Imageble
+import com.waffiq.bazz_movies.core.model.ProfileImageable
+import com.waffiq.bazz_movies.core.model.Titleable
 
 data class MultiSearchItem(
   override val name: String? = null,

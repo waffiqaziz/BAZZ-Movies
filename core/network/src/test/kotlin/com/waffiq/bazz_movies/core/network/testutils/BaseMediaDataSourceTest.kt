@@ -14,8 +14,8 @@ import com.waffiq.bazz_movies.core.network.data.remote.datasource.person.PersonR
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.search.SearchRemoteDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.trending.TrendingRemoteDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.tv.TvRemoteDataSource
-import com.waffiq.bazz_movies.core.network.data.remote.models.FavoriteRequest
-import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistRequest
+import com.waffiq.bazz_movies.core.network.data.remote.model.FavoriteRequest
+import com.waffiq.bazz_movies.core.network.data.remote.model.WatchlistRequest
 import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.GenericPagingSource
 import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.SearchPagingSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem

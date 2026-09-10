@@ -11,7 +11,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_p
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaSwipeBinding
-import com.waffiq.bazz_movies.core.models.Favorite
+import com.waffiq.bazz_movies.core.model.Favorite
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
 import com.waffiq.bazz_movies.core.utils.GenreHelper.toListGenreIds
 import com.waffiq.bazz_movies.core.utils.RatingHelper.ratingHandler

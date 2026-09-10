@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.database.domain.usecase
 
-import com.waffiq.bazz_movies.core.models.SearchHistory
+import com.waffiq.bazz_movies.core.model.SearchHistory
 import kotlinx.coroutines.flow.Flow
 
 interface SearchHistoryLocalDatabaseUseCase {

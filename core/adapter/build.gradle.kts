@@ -10,8 +10,7 @@ dependencies {
   api(project(":core:designsystem"))
   api(project(":core:uihelper"))
   api(project(":core:utils"))
-
-  implementation(project(":core:models"))
+  implementation(project(":core:model"))
 
   testImplementation(libs.androidx.test.core)
   testImplementation(libs.robolectric)

@@ -28,7 +28,7 @@ ksp {
 
 dependencies {
   api(project(":core:common"))
-  api(project(":core:models"))
+  api(project(":core:model"))
   implementation(project(":core:coroutines"))
   implementation(project(":core:utils"))
 

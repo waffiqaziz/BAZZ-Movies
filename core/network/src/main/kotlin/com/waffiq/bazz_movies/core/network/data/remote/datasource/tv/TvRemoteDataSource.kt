@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.core.network.data.remote.datasource.tv
 
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.coroutines.IoDispatcher
-import com.waffiq.bazz_movies.core.network.data.remote.models.RatingRequest
+import com.waffiq.bazz_movies.core.network.data.remote.model.RatingRequest
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse

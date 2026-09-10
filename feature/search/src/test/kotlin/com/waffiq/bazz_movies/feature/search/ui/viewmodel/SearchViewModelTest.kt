@@ -5,7 +5,7 @@ import androidx.paging.PagingData
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.common.MediaType
 import com.waffiq.bazz_movies.core.database.domain.usecase.SearchHistoryLocalDatabaseUseCase
-import com.waffiq.bazz_movies.core.models.SearchHistory
+import com.waffiq.bazz_movies.core.model.SearchHistory
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.feature.search.domain.usecase.MultiSearchUseCase

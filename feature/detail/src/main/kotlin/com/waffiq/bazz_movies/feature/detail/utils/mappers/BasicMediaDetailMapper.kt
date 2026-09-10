@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_watch_providers
-import com.waffiq.bazz_movies.core.models.Favorite
+import com.waffiq.bazz_movies.core.model.Favorite
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.toUsd
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoinName

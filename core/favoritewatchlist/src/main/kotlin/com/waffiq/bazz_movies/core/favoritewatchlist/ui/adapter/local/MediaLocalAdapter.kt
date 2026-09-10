@@ -14,7 +14,7 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.SwipeAdapterHelp
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local.MediaLocalAdapterHelper.bindMetaData
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local.MediaLocalAdapterHelper.bindOpenDetail
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local.MediaLocalAdapterHelper.bindPicture
-import com.waffiq.bazz_movies.core.models.Favorite
+import com.waffiq.bazz_movies.core.model.Favorite
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.SwipeConfig
 import com.waffiq.bazz_movies.navigation.INavigator
 

@@ -19,7 +19,7 @@ plugins {
 dependencies {
   implementation(project(":core:designsystem"))
   implementation(project(":core:favoritewatchlist"))
-  implementation(project(":core:models"))
+  implementation(project(":core:model"))
   implementation(project(":core:uihelper"))
   implementation(project(":core:user"))
   implementation(project(":feature:about"))

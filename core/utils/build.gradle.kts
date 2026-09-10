@@ -11,7 +11,7 @@ android.namespace = "com.waffiq.bazz_movies.core.utils"
 dependencies {
   implementation(project(":core:common"))
   implementation(project(":core:designsystem"))
-  implementation(project(":core:models"))
+  implementation(project(":core:model"))
   implementation(libs.androidx.fragment.ktx)
   implementation(libs.androidx.paging.runtime)
 

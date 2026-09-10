@@ -5,7 +5,7 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.favorit
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.watchlistMovieList
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.watchlistTvList
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
-import com.waffiq.bazz_movies.core.models.Favorite
+import com.waffiq.bazz_movies.core.model.Favorite
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 

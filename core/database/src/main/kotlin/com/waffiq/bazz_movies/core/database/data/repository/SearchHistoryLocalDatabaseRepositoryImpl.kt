@@ -5,7 +5,7 @@ import com.waffiq.bazz_movies.core.database.data.model.SearchHistoryEntity
 import com.waffiq.bazz_movies.core.database.domain.repository.ISearchHistoryLocalDatabaseRepository
 import com.waffiq.bazz_movies.core.database.utils.SearchHistoryMapper.toSearchHistory
 import com.waffiq.bazz_movies.core.database.utils.SearchHistoryMapper.toSearchHistoryEntity
-import com.waffiq.bazz_movies.core.models.SearchHistory
+import com.waffiq.bazz_movies.core.model.SearchHistory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

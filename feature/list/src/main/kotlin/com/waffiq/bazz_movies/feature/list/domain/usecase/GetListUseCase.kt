@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.list.domain.usecase
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.models.MediaItem
+import com.waffiq.bazz_movies.core.model.MediaItem
 import kotlinx.coroutines.flow.Flow
 
 interface GetListUseCase {

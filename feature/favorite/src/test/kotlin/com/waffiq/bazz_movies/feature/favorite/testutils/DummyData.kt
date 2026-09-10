@@ -3,10 +3,10 @@ package com.waffiq.bazz_movies.feature.favorite.testutils
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.data.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.mappers.MediaItemMapper.toMediaItem
-import com.waffiq.bazz_movies.core.models.MediaState
-import com.waffiq.bazz_movies.core.models.Outcome
-import com.waffiq.bazz_movies.core.models.Rated
-import com.waffiq.bazz_movies.core.models.UserModel
+import com.waffiq.bazz_movies.core.model.MediaState
+import com.waffiq.bazz_movies.core.model.Outcome
+import com.waffiq.bazz_movies.core.model.Rated
+import com.waffiq.bazz_movies.core.model.UserModel
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 
 /**

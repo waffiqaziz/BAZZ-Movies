@@ -15,7 +15,7 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomAssertions.waitFor
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
-import com.waffiq.bazz_movies.core.models.MediaItem
+import com.waffiq.bazz_movies.core.model.MediaItem
 import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.setupLoggedUserModel
 import com.waffiq.bazz_movies.feature.favorite.testutils.BaseFavoriteFragmentTestHelper
 import com.waffiq.bazz_movies.feature.favorite.ui.fragment.FavoriteChildFragment

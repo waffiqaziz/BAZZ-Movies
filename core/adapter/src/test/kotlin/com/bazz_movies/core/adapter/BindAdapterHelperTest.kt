@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import androidx.test.core.app.ApplicationProvider
 import com.google.android.material.imageview.ShapeableImageView
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemMediaBinding
-import com.waffiq.bazz_movies.core.models.MediaItem
+import com.waffiq.bazz_movies.core.model.MediaItem
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test

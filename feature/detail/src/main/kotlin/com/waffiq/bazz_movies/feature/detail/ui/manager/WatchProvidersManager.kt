@@ -12,7 +12,7 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_LINK_MAIN
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_arrow_down
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_arrow_up
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_watch_providers
-import com.waffiq.bazz_movies.core.models.MediaItem
+import com.waffiq.bazz_movies.core.model.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding

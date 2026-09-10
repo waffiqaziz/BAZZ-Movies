@@ -7,11 +7,11 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
-import com.waffiq.bazz_movies.core.models.Dateable
-import com.waffiq.bazz_movies.core.models.Imageble
-import com.waffiq.bazz_movies.core.models.MediaItem
-import com.waffiq.bazz_movies.core.models.Nameable
-import com.waffiq.bazz_movies.core.models.Titleable
+import com.waffiq.bazz_movies.core.model.Dateable
+import com.waffiq.bazz_movies.core.model.Imageble
+import com.waffiq.bazz_movies.core.model.MediaItem
+import com.waffiq.bazz_movies.core.model.Nameable
+import com.waffiq.bazz_movies.core.model.Titleable
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
 import com.waffiq.bazz_movies.core.utils.DateFormatter.formatDate
 import java.text.NumberFormat

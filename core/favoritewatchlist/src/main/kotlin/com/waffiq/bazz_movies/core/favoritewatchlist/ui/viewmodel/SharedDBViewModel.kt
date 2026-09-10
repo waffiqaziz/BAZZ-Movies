@@ -7,7 +7,7 @@ import com.waffiq.bazz_movies.core.database.domain.usecase.FavoriteLocalDatabase
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.favoritewatchlist.domain.sort.GuestFavoriteSortOption
 import com.waffiq.bazz_movies.core.favoritewatchlist.domain.sort.sortedByOption
-import com.waffiq.bazz_movies.core.models.Favorite
+import com.waffiq.bazz_movies.core.model.Favorite
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

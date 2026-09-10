@@ -101,7 +101,7 @@ Below you can find a list of BAZZ Movies modules.
 | [`:core:data`][core-data-link]                               | [![Coverage][core-data-coverage-badge]][core-data-coverage-link]                               |
 | [`:core:database`][core-database-link]                       | [![Coverage][core-database-coverage-badge]][core-database-coverage-link]                       |
 | [`:core:designsystem`][core-designsystem-link]               | [![Coverage][core-designsystem-coverage-badge]][core-designsystem-coverage-link]               |
-| [`:core:models`][core-models-link]                           | [![Coverage][core-models-coverage-badge]][core-models-coverage-link]                           |
+| [`:core:model`][core-model-link]                           | [![Coverage][core-model-coverage-badge]][core-model-coverage-link]                           |
 | [`:core:favoritewatchlist`][core-favoritewatchlist-link]     | [![Coverage][core-favoritewatchlist-coverage-badge]][core-favoritewatchlist-coverage-link]     |
 | [`:core:instrumentationtest`][core-instrumentationtest-link] | [![Coverage][core-instrumentationtest-coverage-badge]][core-instrumentationtest-coverage-link] |
 | [`:core:mappers`][core-mappers-link]                         | [![Coverage][core-mappers-coverage-badge]][core-mappers-coverage-link]                         |
@@ -314,11 +314,11 @@ plugins {
 
 [core-designsystem-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-designsystem
 
-[core-models-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/models
+[core-model-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/models
 
-[core-models-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-models
+[core-model-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-model
 
-[core-models-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-models
+[core-model-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-model
 
 [core-favoritewatchlist-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/favoritewatchlist
 

@@ -34,7 +34,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.all_data_deleted
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.sign_out_success
 import com.waffiq.bazz_movies.core.designsystem.R.string.user_no_name
-import com.waffiq.bazz_movies.core.models.UserModel
+import com.waffiq.bazz_movies.core.model.UserModel
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.uihelper.state.isLoading
