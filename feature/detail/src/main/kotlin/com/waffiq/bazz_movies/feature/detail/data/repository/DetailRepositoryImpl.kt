@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.data.repository
 
-import com.waffiq.bazz_movies.core.mappers.NetworkResultMapper.toOutcome
+import com.waffiq.bazz_movies.core.mapper.NetworkResultMapper.toOutcome
 import com.waffiq.bazz_movies.core.model.Outcome
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.movie.MovieRemoteDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.omdb.OmdbRemoteDataSource
@@ -10,10 +10,10 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toDetailCollections
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toDetailMovie
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.OMDbMapper.toOMDbDetails
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toTvDetail
+import com.waffiq.bazz_movies.feature.detail.utils.mapper.MovieMapper.toDetailCollections
+import com.waffiq.bazz_movies.feature.detail.utils.mapper.MovieMapper.toDetailMovie
+import com.waffiq.bazz_movies.feature.detail.utils.mapper.OMDbMapper.toOMDbDetails
+import com.waffiq.bazz_movies.feature.detail.utils.mapper.TvMapper.toTvDetail
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

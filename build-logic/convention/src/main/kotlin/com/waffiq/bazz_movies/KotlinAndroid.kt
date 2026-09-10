@@ -72,7 +72,7 @@ private inline fun <reified T : KotlinBaseExtension> Project.configureKotlin() =
     // Directly adding to the freeCompilerArgs list
     if (project.path != ":core:model" &&
       project.path != ":core:common" &&
-      project.path != ":core:mappers"
+      project.path != ":core:mapper"
     ) {
       freeCompilerArgs.addAll(
         listOf(

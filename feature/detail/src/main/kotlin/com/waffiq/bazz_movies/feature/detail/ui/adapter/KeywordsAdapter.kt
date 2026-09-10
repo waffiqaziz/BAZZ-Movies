@@ -9,7 +9,7 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.databinding.ChipLayoutBinding
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getListOfKeywords
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaKeywordsMapper.toValidKeywordOrNull
+import com.waffiq.bazz_movies.feature.detail.utils.mapper.MediaKeywordsMapper.toValidKeywordOrNull
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType.BY_KEYWORD

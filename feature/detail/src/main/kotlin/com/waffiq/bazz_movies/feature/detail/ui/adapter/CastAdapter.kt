@@ -20,7 +20,7 @@ import com.waffiq.bazz_movies.core.utils.DetailDataUtils.roleName
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.validName
 import com.waffiq.bazz_movies.feature.detail.databinding.ItemCreditsPersonBinding
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCastItem
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.PersonArgsMappers.toPersonArgs
+import com.waffiq.bazz_movies.feature.detail.utils.mapper.PersonArgsMappers.toPersonArgs
 import com.waffiq.bazz_movies.navigation.INavigator
 
 class CastAdapter(private val navigator: INavigator) :

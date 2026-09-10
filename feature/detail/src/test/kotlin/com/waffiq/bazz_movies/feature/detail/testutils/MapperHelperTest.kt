@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.feature.detail.testutils
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.releaseDateRegion
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.BasicMediaDetailMapper.toMediaDetail
+import com.waffiq.bazz_movies.feature.detail.utils.mapper.BasicMediaDetailMapper.toMediaDetail
 
 object MapperHelperTest {
 

@@ -1,0 +1,139 @@
+package com.waffiq.bazz_movies.feature.detail.utils.mapper
+
+import com.waffiq.bazz_movies.core.designsystem.R.string.no_watch_providers
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.ProviderResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponseItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
+import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.ads
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.buy
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.flatrate
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.free
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.rent
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.watchProviders
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.watchProvidersItem
+import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
+import com.waffiq.bazz_movies.feature.detail.utils.mapper.WatchProvidersMapper.toWatchProvidersState
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Test
+
+class WatchProvidersMapperTest {
+
+  private val errorWatchProvidersUiState = WatchProvidersUiState.Error(no_watch_providers)
+
+  @Test
+  fun toWatchProviders_withValidValues_returnsWatchProviders() {
+    val providerResponse = ProviderResponse(
+      logoPath = "/logo.png",
+      providerId = 1,
+      providerName = "Netflix",
+      displayPriority = 10,
+    )
+
+    val countryProviderDataResponse = WatchProvidersResponseItem(
+      link = "https://example.com",
+      ads = listOf(providerResponse),
+      buy = listOf(providerResponse),
+      flatrate = listOf(providerResponse),
+      free = listOf(providerResponse),
+      rent = listOf(providerResponse),
+    )
+
+    val response = WatchProvidersResponse(mapOf("US" to countryProviderDataResponse))
+
+    val domain = with(WatchProvidersMapper) { response.toWatchProviders() }
+    assertEquals(1, domain.results?.size)
+    val country = domain.results?.get("US")
+    assertEquals("https://example.com", country?.link)
+    assertEquals(1, country?.ads?.size)
+    assertEquals(1, country?.buy?.size)
+    assertEquals(1, country?.flatrate?.size)
+    assertEquals(1, country?.free?.size)
+    assertEquals(1, country?.rent?.size)
+
+    val provider = country?.ads?.first()
+    assertEquals("/logo.png", provider?.logoPath)
+    assertEquals(1, provider?.providerId)
+    assertEquals("Netflix", provider?.providerName)
+    assertEquals(10, provider?.displayPriority)
+  }
+
+  @Test
+  fun toWatchProviders_withNullValues_returnsDomainWithNullFields() {
+    val countryProviderDataResponse = WatchProvidersResponseItem(
+      link = null,
+      ads = null,
+      buy = null,
+      flatrate = null,
+      free = null,
+      rent = null,
+    )
+
+    val response = WatchProvidersResponse(mapOf("ID" to countryProviderDataResponse))
+    val domain = with(WatchProvidersMapper) { response.toWatchProviders() }
+    assertEquals(1, domain.results?.size)
+    val country = domain.results?.get("ID")
+    assertNull(country?.link)
+    assertNull(country?.ads)
+    assertNull(country?.buy)
+    assertNull(country?.flatrate)
+    assertNull(country?.free)
+    assertNull(country?.rent)
+  }
+
+  @Test
+  fun toWatchProviders_withNullResults_returnsDomainWithNullResults() {
+    val response = WatchProvidersResponse(results = null)
+    val domain = with(WatchProvidersMapper) { response.toWatchProviders() }
+    assertNull(domain.results)
+  }
+
+  @Test
+  fun toWatchProvidersState_whenWatchProvidersIsNull_expectedErrorState() {
+    val result = (null as WatchProviders?).toWatchProvidersState("US")
+    assertEquals(errorWatchProvidersUiState, result)
+  }
+
+  @Test
+  fun toWatchProvidersState_whenRegionDoesNotExist_expectedErrorState() {
+    val result = watchProviders.toWatchProvidersState("ID")
+    assertEquals(errorWatchProvidersUiState, result)
+  }
+
+  @Test
+  fun toWatchProvidersState_whenRegionNotFound_expectedError() {
+    val watchProviders = WatchProviders(
+      results = mapOf("ID" to watchProvidersItem),
+    )
+
+    val result = watchProviders.toWatchProvidersState("US")
+    assertEquals(errorWatchProvidersUiState, result)
+  }
+
+  @Test
+  fun toWatchProvidersState_whenNull_expectedNull() {
+    val watchProviders = WatchProviders(
+      results = mapOf(
+        "ID" to WatchProvidersItem(
+          link = null,
+          ads = null,
+          buy = null,
+          flatrate = null,
+          free = null,
+          rent = null,
+        ),
+      ),
+    )
+
+    assertNotNull(watchProviders.toWatchProvidersState("ID"))
+  }
+
+  @Test
+  fun toWatchProvidersState_whenRegionExists_expectedSuccessWithProviders() {
+    val result = watchProviders.toWatchProvidersState("US")
+    assertEquals(WatchProvidersUiState.Success(ads, buy, flatrate, free, rent), result)
+  }
+}

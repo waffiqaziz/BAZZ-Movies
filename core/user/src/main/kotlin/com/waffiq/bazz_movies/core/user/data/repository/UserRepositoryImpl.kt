@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.user.data.repository
 
-import com.waffiq.bazz_movies.core.mappers.NetworkResultMapper.toOutcome
-import com.waffiq.bazz_movies.core.mappers.PostMapper.toPostResult
+import com.waffiq.bazz_movies.core.mapper.NetworkResultMapper.toOutcome
+import com.waffiq.bazz_movies.core.mapper.PostMapper.toPostResult
 import com.waffiq.bazz_movies.core.model.Outcome
 import com.waffiq.bazz_movies.core.model.PostResult
 import com.waffiq.bazz_movies.core.model.UserModel
@@ -13,12 +13,12 @@ import com.waffiq.bazz_movies.core.user.domain.model.account.Authentication
 import com.waffiq.bazz_movies.core.user.domain.model.account.CountryIP
 import com.waffiq.bazz_movies.core.user.domain.model.account.CreateSession
 import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
-import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toAccountDetails
-import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toAuthentication
-import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toCountryIP
-import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toCreateSession
-import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toUserModel
-import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toUserModelPref
+import com.waffiq.bazz_movies.core.user.utils.mapper.AccountMapper.toAccountDetails
+import com.waffiq.bazz_movies.core.user.utils.mapper.AccountMapper.toAuthentication
+import com.waffiq.bazz_movies.core.user.utils.mapper.AccountMapper.toCountryIP
+import com.waffiq.bazz_movies.core.user.utils.mapper.AccountMapper.toCreateSession
+import com.waffiq.bazz_movies.core.user.utils.mapper.AccountMapper.toUserModel
+import com.waffiq.bazz_movies.core.user.utils.mapper.AccountMapper.toUserModelPref
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

@@ -4,7 +4,7 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.database.domain.repository.IFavoriteLocalDatabaseRepository
 import com.waffiq.bazz_movies.core.model.Favorite
 import com.waffiq.bazz_movies.core.model.Outcome
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.BasicMediaDetailMapper.refreshWith
+import com.waffiq.bazz_movies.feature.detail.utils.mapper.BasicMediaDetailMapper.refreshWith
 import javax.inject.Inject
 
 class RefreshMediaMetadataInteractor @Inject constructor(

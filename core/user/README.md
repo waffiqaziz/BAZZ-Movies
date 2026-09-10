@@ -54,7 +54,7 @@ and regional settings.
 ### Utility Classes
 
 - **[Constants](../user/src/main/kotlin/com/waffiq/bazz_movies/core/user/utils/common/Constants.kt)** – Stores constant values used in the module.
-- **[AccountMapper](../user/src/main/kotlin/com/waffiq/bazz_movies/core/user/utils/mappers/AccountMapper.kt)** – Mapper account data between different layers.
+- **[AccountMapper](../user/src/main/kotlin/com/waffiq/bazz_movies/core/user/utils/mapper/AccountMapper.kt)** – Mapper account data between different layers.
 
 ## Example Usage
 

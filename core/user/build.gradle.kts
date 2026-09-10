@@ -13,7 +13,7 @@ dependencies {
   api(project(":core:model"))
   api(project(":core:network"))
   implementation(project(":core:common"))
-  implementation(project(":core:mappers"))
+  implementation(project(":core:mapper"))
 
   implementation(libs.androidx.lifecycle.livedata.core)
   implementation(libs.androidx.lifecycle.viewmodel)

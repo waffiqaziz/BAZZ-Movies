@@ -78,11 +78,10 @@ flag_management:
         - core/instrumentationtest/
       carryforward: true
         
-    - name: core-mappers
+    - name: core-mapper
       paths:
-        - core/mappers/
+        - core/mapper/
       carryforward: true
-
         
     - name: core-network
       paths:

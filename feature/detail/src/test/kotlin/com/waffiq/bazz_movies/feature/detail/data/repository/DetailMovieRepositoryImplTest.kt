@@ -6,8 +6,8 @@ import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testLoadingState
 import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testSuccessfulCall
 import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testUnsuccessfulCall
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseDetailRepositoryImplTest
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toDetailCollections
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toDetailMovie
+import com.waffiq.bazz_movies.feature.detail.utils.mapper.MovieMapper.toDetailCollections
+import com.waffiq.bazz_movies.feature.detail.utils.mapper.MovieMapper.toDetailMovie
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest

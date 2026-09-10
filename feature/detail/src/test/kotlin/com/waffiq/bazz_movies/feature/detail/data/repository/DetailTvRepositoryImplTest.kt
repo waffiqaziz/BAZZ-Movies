@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.detail.data.repository
 
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseDetailRepositoryImplTest
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toTvDetail
+import com.waffiq.bazz_movies.feature.detail.utils.mapper.TvMapper.toTvDetail
 import io.mockk.coVerify
 import io.mockk.mockk
 import org.junit.Test

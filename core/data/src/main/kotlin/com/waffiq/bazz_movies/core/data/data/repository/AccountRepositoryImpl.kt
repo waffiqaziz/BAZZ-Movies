@@ -2,14 +2,14 @@ package com.waffiq.bazz_movies.core.data.data.repository
 
 import com.waffiq.bazz_movies.core.data.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.data.domain.repository.IAccountRepository
-import com.waffiq.bazz_movies.core.data.utils.mappers.Mapper.toPostFavoriteWatchlist
-import com.waffiq.bazz_movies.core.mappers.NetworkResultMapper.toOutcome
+import com.waffiq.bazz_movies.core.data.utils.mapper.Mapper.toPostFavoriteWatchlist
+import com.waffiq.bazz_movies.core.mapper.NetworkResultMapper.toOutcome
 import com.waffiq.bazz_movies.core.model.FavoriteParams
 import com.waffiq.bazz_movies.core.model.Outcome
 import com.waffiq.bazz_movies.core.model.WatchlistParams
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.account.AccountRemoteDataSource
-import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toFavoriteRequest
-import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toWatchlistRequest
+import com.waffiq.bazz_movies.core.network.utils.mapper.NetworkMapper.toFavoriteRequest
+import com.waffiq.bazz_movies.core.network.utils.mapper.NetworkMapper.toWatchlistRequest
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton

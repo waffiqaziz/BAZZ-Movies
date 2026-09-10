@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.favorite.testutils
 
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.data.domain.model.post.PostFavoriteWatchlist
-import com.waffiq.bazz_movies.core.mappers.MediaItemMapper.toMediaItem
+import com.waffiq.bazz_movies.core.mapper.MediaItemMapper.toMediaItem
 import com.waffiq.bazz_movies.core.model.MediaState
 import com.waffiq.bazz_movies.core.model.Outcome
 import com.waffiq.bazz_movies.core.model.Rated
