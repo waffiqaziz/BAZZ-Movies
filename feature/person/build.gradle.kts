@@ -10,7 +10,7 @@ android.namespace = "com.waffiq.bazz_movies.feature.person"
 
 dependencies {
   implementation(project(":core:common"))
-  implementation(project(":core:mappers"))
+  implementation(project(":core:mapper"))
   implementation(project(":core:model"))
   implementation(project(":core:network"))
   implementation(project(":core:uihelper"))

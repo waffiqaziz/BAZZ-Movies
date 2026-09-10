@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.list.data.repository
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.mappers.MediaItemMapper.toMediaItem
+import com.waffiq.bazz_movies.core.mapper.MediaItemMapper.toMediaItem
 import com.waffiq.bazz_movies.core.model.MediaItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.discover.DiscoverRemoteDataSource
 import com.waffiq.bazz_movies.core.test.PagingFlowHelperTest.testPagingFlowAwaitComplete

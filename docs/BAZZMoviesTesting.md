@@ -92,37 +92,37 @@ see [here](https://kotest.io/docs/framework/testing-styles.html#behavior-spec).
 
 Below you can find a list of BAZZ Movies modules.
 
-| Module Name                                                  | Coverage                                                                                       |
-|--------------------------------------------------------------|------------------------------------------------------------------------------------------------|
-| [`:app`][app-link]                                           | [![Coverage][app-coverage-badge]][app-coverage-link]                                           |
-| [`:core:adapter`][core-adapter-link]                         | [![Coverage][core-adapter-coverage-badge]][core-adapter-coverage-link]                         |
-| [`:core:common`][core-common-link]                           | [![Coverage][core-common-coverage-badge]][core-common-coverage-link]                           |
-| [`:core:coroutines`][core-coroutines-link]                   | [![Coverage][core-coroutines-coverage-badge]][core-coroutines-coverage-link]                   |
-| [`:core:data`][core-data-link]                               | [![Coverage][core-data-coverage-badge]][core-data-coverage-link]                               |
-| [`:core:database`][core-database-link]                       | [![Coverage][core-database-coverage-badge]][core-database-coverage-link]                       |
-| [`:core:designsystem`][core-designsystem-link]               | [![Coverage][core-designsystem-coverage-badge]][core-designsystem-coverage-link]               |
+| Module Name                                                | Coverage                                                                                     |
+|------------------------------------------------------------|----------------------------------------------------------------------------------------------|
+| [`:app`][app-link]                                         | [![Coverage][app-coverage-badge]][app-coverage-link]                                         |
+| [`:core:adapter`][core-adapter-link]                       | [![Coverage][core-adapter-coverage-badge]][core-adapter-coverage-link]                       |
+| [`:core:common`][core-common-link]                         | [![Coverage][core-common-coverage-badge]][core-common-coverage-link]                         |
+| [`:core:coroutines`][core-coroutines-link]                 | [![Coverage][core-coroutines-coverage-badge]][core-coroutines-coverage-link]                 |
+| [`:core:data`][core-data-link]                             | [![Coverage][core-data-coverage-badge]][core-data-coverage-link]                             |
+| [`:core:database`][core-database-link]                     | [![Coverage][core-database-coverage-badge]][core-database-coverage-link]                     |
+| [`:core:designsystem`][core-designsystem-link]             | [![Coverage][core-designsystem-coverage-badge]][core-designsystem-coverage-link]             |
 | [`:core:model`][core-model-link]                           | [![Coverage][core-model-coverage-badge]][core-model-coverage-link]                           |
-| [`:core:favoritewatchlist`][core-favoritewatchlist-link]     | [![Coverage][core-favoritewatchlist-coverage-badge]][core-favoritewatchlist-coverage-link]     |
+| [`:core:favoritewatchlist`][core-favoritewatchlist-link]   | [![Coverage][core-favoritewatchlist-coverage-badge]][core-favoritewatchlist-coverage-link]   |
 | [`:core:instrumentationtest`][core-instrumentationtest-link] | [![Coverage][core-instrumentationtest-coverage-badge]][core-instrumentationtest-coverage-link] |
-| [`:core:mappers`][core-mappers-link]                         | [![Coverage][core-mappers-coverage-badge]][core-mappers-coverage-link]                         |
-| [`:core:network`][core-network-link]                         | [![Coverage][core-network-coverage-badge]][core-network-coverage-link]                         |
-| [`:core:test`][core-test-link]                               | [![Coverage][core-test-coverage-badge]][core-test-coverage-link]                               |
-| [`:core:testmodule`][core-testmodule-link]                   | [![Coverage][core-testmodule-coverage-badge]][core-testmodule-coverage-link]                   |
-| [`:core:uihelper`][core-uihelper-link]                       | [![Coverage][core-uihelper-coverage-badge]][core-uihelper-coverage-link]                       |
-| [`:core:user`][core-user-link]                               | [![Coverage][core-user-coverage-badge]][core-user-coverage-link]                               |
-| [`:core:utils`][core-utils-link]                             | [![Coverage][core-utils-coverage-badge]][core-utils-coverage-link]                             |
-| [`:feature:about`][feature-about-link]                       | [![Coverage][feature-about-coverage-badge]][feature-about-coverage-link]                       |
-| [`:feature:detail`][feature-detail-link]                     | [![Coverage][feature-detail-coverage-badge]][feature-detail-coverage-link]                     |
-| [`:feature:favorite`][feature-favorite-link]                 | [![Coverage][feature-favorite-coverage-badge]][feature-favorite-coverage-link]                 |
-| [`:feature:home`][feature-home-link]                         | [![Coverage][feature-home-coverage-badge]][feature-home-coverage-link]                         |
-| [`:feature:list`][feature-list-link]                         | [![Coverage][feature-list-coverage-badge]][feature-list-coverage-link]                         |
-| [`:feature:login`][feature-login-link]                       | [![Coverage][feature-login-coverage-badge]][feature-login-coverage-link]                       |
-| [`:feature:more`][feature-more-link]                         | [![Coverage][feature-more-coverage-badge]][feature-more-coverage-link]                         |
-| [`:feature:person`][feature-person-link]                     | [![Coverage][feature-person-coverage-badge]][feature-person-coverage-link]                     |
-| [`:feature:search`][feature-search-link]                     | [![Coverage][feature-search-coverage-badge]][feature-search-coverage-link]                     |
-| [`:feature:watchlist`][feature-watchlist-link]               | [![Coverage][feature-watchlist-coverage-badge]][feature-watchlist-coverage-link]               |
-| [`:navigation`][navigation-link]                             | [![Coverage][navigation-coverage-badge]][navigation-coverage-link]                             |
-| **TOTAL COVERAGE**                                           | [![Codecov][BADGE-CODECOV]][CODECOV]                                                           |
+| [`:core:mapper`][core-mapper-link]                         | [![Coverage][core-mapper-coverage-badge]][core-mapper-coverage-link]                         |
+| [`:core:network`][core-network-link]                       | [![Coverage][core-network-coverage-badge]][core-network-coverage-link]                       |
+| [`:core:test`][core-test-link]                             | [![Coverage][core-test-coverage-badge]][core-test-coverage-link]                             |
+| [`:core:testmodule`][core-testmodule-link]                 | [![Coverage][core-testmodule-coverage-badge]][core-testmodule-coverage-link]                 |
+| [`:core:uihelper`][core-uihelper-link]                     | [![Coverage][core-uihelper-coverage-badge]][core-uihelper-coverage-link]                     |
+| [`:core:user`][core-user-link]                             | [![Coverage][core-user-coverage-badge]][core-user-coverage-link]                             |
+| [`:core:utils`][core-utils-link]                           | [![Coverage][core-utils-coverage-badge]][core-utils-coverage-link]                           |
+| [`:feature:about`][feature-about-link]                     | [![Coverage][feature-about-coverage-badge]][feature-about-coverage-link]                     |
+| [`:feature:detail`][feature-detail-link]                   | [![Coverage][feature-detail-coverage-badge]][feature-detail-coverage-link]                   |
+| [`:feature:favorite`][feature-favorite-link]               | [![Coverage][feature-favorite-coverage-badge]][feature-favorite-coverage-link]               |
+| [`:feature:home`][feature-home-link]                       | [![Coverage][feature-home-coverage-badge]][feature-home-coverage-link]                       |
+| [`:feature:list`][feature-list-link]                       | [![Coverage][feature-list-coverage-badge]][feature-list-coverage-link]                       |
+| [`:feature:login`][feature-login-link]                     | [![Coverage][feature-login-coverage-badge]][feature-login-coverage-link]                     |
+| [`:feature:more`][feature-more-link]                       | [![Coverage][feature-more-coverage-badge]][feature-more-coverage-link]                       |
+| [`:feature:person`][feature-person-link]                   | [![Coverage][feature-person-coverage-badge]][feature-person-coverage-link]                   |
+| [`:feature:search`][feature-search-link]                   | [![Coverage][feature-search-coverage-badge]][feature-search-coverage-link]                   |
+| [`:feature:watchlist`][feature-watchlist-link]             | [![Coverage][feature-watchlist-coverage-badge]][feature-watchlist-coverage-link]             |
+| [`:navigation`][navigation-link]                           | [![Coverage][navigation-coverage-badge]][navigation-coverage-link]                           |
+| **TOTAL COVERAGE**                                         | [![Codecov][BADGE-CODECOV]][CODECOV]                                                         |
 
 ## Unit Tests
 
@@ -205,10 +205,10 @@ For [`:feature:detail`](../feature/detail/) module on debug variant:
   ```
 
 - The generate report available on all module separately.
-  Example for [:core:mappers](../core/mappers/) module, the report will be available at:
+  Example for [:core:mapper](../core/mapper/) module, the report will be available at:
 
   ```terminal
-  core/mappers/build/reports/jacoco/createDebugCombinedCoverageReport/html/index.html
+  core/mapper/build/reports/jacoco/createDebugCombinedCoverageReport/html/index.html
   ```
 
 ## Code Coverage Reports with [Kotlinx Kover](https://github.com/Kotlin/kotlinx-kover)
@@ -314,7 +314,7 @@ plugins {
 
 [core-designsystem-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-designsystem
 
-[core-model-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/models
+[core-model-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/model
 
 [core-model-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-model
 
@@ -332,11 +332,11 @@ plugins {
 
 [core-instrumentationtest-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-instrumentationtest
 
-[core-mappers-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/mappers
+[core-mapper-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/mapper
 
-[core-mappers-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-mappers
+[core-mapper-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-mapper
 
-[core-mappers-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-mappers
+[core-mapper-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-mapper
 
 [core-network-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/network
 

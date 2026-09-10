@@ -9,7 +9,7 @@ android.namespace = "com.waffiq.bazz_movies.core.movie"
 
 dependencies {
   api(project(":core:common"))
-  api(project(":core:mappers"))
+  api(project(":core:mapper"))
   api(project(":core:model"))
   api(project(":core:network"))
   api(project(":core:user"))

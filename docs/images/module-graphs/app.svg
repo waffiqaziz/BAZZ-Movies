@@ -242,15 +242,15 @@
 <path fill="none" stroke="black" d="M1547.67,-215.77C1547.46,-195.77 1543.94,-163.1 1525,-144 1505.56,-124.4 1438.76,-109.68 1386.24,-100.78"/>
 <polygon fill="black" stroke="black" points="1386.86,-97.34 1376.43,-99.17 1385.72,-104.25 1386.86,-97.34"/>
 </g>
-<!-- :core:mappers -->
+<!-- :core:mapper -->
 <g id="node20" class="node">
-<title>:core:mappers</title>
+<title>:core:mapper</title>
 <ellipse fill="none" stroke="black" cx="1450" cy="-162" rx="65.73" ry="18"/>
-<text xml:space="preserve" text-anchor="middle" x="1450" y="-157.8" font-family="Times,serif" font-size="14.00">:core:mappers</text>
+<text xml:space="preserve" text-anchor="middle" x="1450" y="-157.8" font-family="Times,serif" font-size="14.00">:core:mapper</text>
 </g>
-<!-- :core:user&#45;&gt;:core:mappers -->
+<!-- :core:user&#45;&gt;:core:mapper -->
 <g id="edge22" class="edge">
-<title>:core:user-&gt;:core:mappers</title>
+<title>:core:user-&gt;:core:mapper</title>
 <path fill="none" stroke="red" stroke-width="2" d="M1525.47,-217.46C1512.56,-208.15 1495.91,-196.13 1481.53,-185.76"/>
 <polygon fill="red" stroke="red" stroke-width="2" points="1485.09,-184.01 1474.93,-180.99 1480.99,-189.68 1485.09,-184.01"/>
 </g>
@@ -518,9 +518,9 @@
 <path fill="none" stroke="black" d="M1208.21,-365.24C1265.63,-351.55 1352.36,-330.04 1357,-324 1376.92,-298.08 1350.76,-283.49 1342,-252 1329.37,-206.61 1323.01,-152.07 1320.11,-119.53"/>
 <polygon fill="black" stroke="black" points="1323.61,-119.39 1319.29,-109.72 1316.64,-119.98 1323.61,-119.39"/>
 </g>
-<!-- :feature:person&#45;&gt;:core:mappers -->
+<!-- :feature:person&#45;&gt;:core:mapper -->
 <g id="edge61" class="edge">
-<title>:feature:person-&gt;:core:mappers</title>
+<title>:feature:person-&gt;:core:mapper</title>
 <path fill="none" stroke="black" d="M1209.14,-365.63C1218.08,-363.71 1227.31,-361.76 1236,-360 1321.09,-342.75 1368.15,-386.89 1428,-324 1461.72,-288.56 1459.86,-227.27 1455.14,-191.4"/>
 <polygon fill="black" stroke="black" points="1458.64,-191.16 1453.7,-181.78 1451.72,-192.19 1458.64,-191.16"/>
 </g>
@@ -626,15 +626,15 @@
 <path fill="none" stroke="black" d="M1260.38,-81.38C1164.01,-68.62 970.22,-42.98 863.58,-28.87"/>
 <polygon fill="black" stroke="black" points="864.15,-25.41 853.78,-27.57 863.23,-32.35 864.15,-25.41"/>
 </g>
-<!-- :core:mappers&#45;&gt;:core:model -->
+<!-- :core:mapper&#45;&gt;:core:model -->
 <g id="edge81" class="edge">
-<title>:core:mappers-&gt;:core:model</title>
+<title>:core:mapper-&gt;:core:model</title>
 <path fill="none" stroke="black" d="M1448.14,-143.74C1445.46,-124.88 1439.17,-94.37 1425,-72 1417.74,-60.54 1407.27,-50.18 1397.04,-41.72"/>
 <polygon fill="black" stroke="black" points="1399.42,-39.14 1389.39,-35.73 1395.1,-44.65 1399.42,-39.14"/>
 </g>
-<!-- :core:mappers&#45;&gt;:core:network -->
+<!-- :core:mapper&#45;&gt;:core:network -->
 <g id="edge82" class="edge">
-<title>:core:mappers-&gt;:core:network</title>
+<title>:core:mapper-&gt;:core:network</title>
 <path fill="none" stroke="red" stroke-width="2" d="M1420.7,-145.46C1401.99,-135.54 1377.51,-122.56 1357.14,-111.75"/>
 <polygon fill="red" stroke="red" stroke-width="2" points="1360.36,-109.5 1349.89,-107.91 1357.08,-115.69 1360.36,-109.5"/>
 </g>
@@ -662,9 +662,9 @@
 <path fill="none" stroke="black" d="M1298.27,-287.97C1297.28,-258.47 1296.42,-196.02 1304,-144 1305.2,-135.77 1307.21,-126.99 1309.34,-118.99"/>
 <polygon fill="black" stroke="black" points="1312.69,-120.01 1312.05,-109.44 1305.95,-118.1 1312.69,-120.01"/>
 </g>
-<!-- :core:data&#45;&gt;:core:mappers -->
+<!-- :core:data&#45;&gt;:core:mapper -->
 <g id="edge85" class="edge">
-<title>:core:data-&gt;:core:mappers</title>
+<title>:core:data-&gt;:core:mapper</title>
 <path fill="none" stroke="black" d="M1316.32,-288.71C1342.8,-263.81 1393.52,-216.12 1424.3,-187.17"/>
 <polygon fill="black" stroke="black" points="1426.43,-189.97 1431.31,-180.57 1421.63,-184.87 1426.43,-189.97"/>
 </g>
@@ -728,9 +728,9 @@
 <path fill="none" stroke="black" d="M1503.61,-365.94C1435.25,-355.63 1331.17,-339.54 1241,-324 1155.44,-309.25 1134.73,-301.71 1049,-288 927.69,-268.6 784.87,-250.91 706.94,-241.69"/>
 <polygon fill="black" stroke="black" points="707.76,-238.26 697.42,-240.57 706.95,-245.21 707.76,-238.26"/>
 </g>
-<!-- :core:favoritewatchlist&#45;&gt;:core:mappers -->
+<!-- :core:favoritewatchlist&#45;&gt;:core:mapper -->
 <g id="edge96" class="edge">
-<title>:core:favoritewatchlist-&gt;:core:mappers</title>
+<title>:core:favoritewatchlist-&gt;:core:mapper</title>
 <path fill="none" stroke="black" d="M1615.72,-361.17C1631.13,-352.59 1647.34,-340.35 1656,-324 1669.99,-297.59 1638.95,-216.98 1638,-216 1608.98,-186.1 1564.51,-172.69 1526.1,-166.83"/>
 <polygon fill="black" stroke="black" points="1526.81,-163.4 1516.43,-165.52 1525.86,-170.33 1526.81,-163.4"/>
 </g>

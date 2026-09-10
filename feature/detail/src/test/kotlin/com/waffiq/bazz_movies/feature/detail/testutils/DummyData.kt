@@ -77,11 +77,11 @@ import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAg
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformDuration
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformTMDBScore
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toMediaCredits
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toVideo
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toCredits
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toExternalTvID
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toNextEpisodeToAir
+import com.waffiq.bazz_movies.feature.detail.utils.mapper.MediaDetailMapper.toMediaCredits
+import com.waffiq.bazz_movies.feature.detail.utils.mapper.MediaDetailMapper.toVideo
+import com.waffiq.bazz_movies.feature.detail.utils.mapper.TvMapper.toCredits
+import com.waffiq.bazz_movies.feature.detail.utils.mapper.TvMapper.toExternalTvID
+import com.waffiq.bazz_movies.feature.detail.utils.mapper.TvMapper.toNextEpisodeToAir
 
 @Suppress("LargeClass")
 object DummyData {

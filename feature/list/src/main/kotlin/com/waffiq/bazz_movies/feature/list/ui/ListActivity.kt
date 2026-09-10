@@ -44,7 +44,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.toggle_list_layout
 import com.waffiq.bazz_movies.core.designsystem.R.string.top_rated
 import com.waffiq.bazz_movies.core.designsystem.R.string.trending
 import com.waffiq.bazz_movies.core.designsystem.R.string.upcoming
-import com.waffiq.bazz_movies.core.uihelper.mappers.UIStateMapper.toUiState
+import com.waffiq.bazz_movies.core.uihelper.mapper.UIStateMapper.toUiState
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.uihelper.state.isLoading
 import com.waffiq.bazz_movies.core.uihelper.utils.InsetHelper.setupWindowInsets

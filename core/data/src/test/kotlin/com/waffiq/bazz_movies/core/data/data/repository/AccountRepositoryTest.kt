@@ -6,8 +6,8 @@ import com.waffiq.bazz_movies.core.data.testutils.DummyData.postFavoriteWatchlis
 import com.waffiq.bazz_movies.core.data.testutils.DummyData.watchlistParams
 import com.waffiq.bazz_movies.core.model.Outcome
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.account.AccountRemoteDataSource
-import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toFavoriteRequest
-import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toWatchlistRequest
+import com.waffiq.bazz_movies.core.network.utils.mapper.NetworkMapper.toFavoriteRequest
+import com.waffiq.bazz_movies.core.network.utils.mapper.NetworkMapper.toWatchlistRequest
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import io.mockk.coEvery
 import io.mockk.mockk

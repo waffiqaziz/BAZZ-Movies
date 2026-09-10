@@ -56,15 +56,15 @@
 <path fill="none" stroke="black" d="M586.78,-72.76C565.4,-62.65 537.75,-49.58 515.07,-38.85"/>
 <polygon fill="black" stroke="black" points="516.62,-35.71 506.08,-34.6 513.63,-42.04 516.62,-35.71"/>
 </g>
-<!-- :core:mappers -->
+<!-- :core:mapper -->
 <g id="node6" class="node">
-<title>:core:mappers</title>
+<title>:core:mapper</title>
 <ellipse fill="none" stroke="black" cx="621.1" cy="-18" rx="65.73" ry="18"/>
-<text xml:space="preserve" text-anchor="middle" x="621.1" y="-13.8" font-family="Times,serif" font-size="14.00">:core:mappers</text>
+<text xml:space="preserve" text-anchor="middle" x="621.1" y="-13.8" font-family="Times,serif" font-size="14.00">:core:mapper</text>
 </g>
-<!-- :core:favoritewatchlist&#45;&gt;:core:mappers -->
+<!-- :core:favoritewatchlist&#45;&gt;:core:mapper -->
 <g id="edge5" class="edge">
-<title>:core:favoritewatchlist-&gt;:core:mappers</title>
+<title>:core:favoritewatchlist-&gt;:core:mapper</title>
 <path fill="none" stroke="black" d="M621.1,-71.7C621.1,-64.41 621.1,-55.73 621.1,-47.54"/>
 <polygon fill="black" stroke="black" points="624.6,-47.62 621.1,-37.62 617.6,-47.62 624.6,-47.62"/>
 </g>

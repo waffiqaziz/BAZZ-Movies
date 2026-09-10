@@ -16,7 +16,7 @@ android {
 dependencies {
   api(project(":core:data"))
   api(project(":core:database"))
-  api(project(":core:mappers"))
+  api(project(":core:mapper"))
   api(project(":core:model"))
   api(project(":core:uihelper"))
   api(project(":core:user"))

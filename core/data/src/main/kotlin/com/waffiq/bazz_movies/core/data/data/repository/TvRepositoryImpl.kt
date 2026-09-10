@@ -6,10 +6,10 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.data.domain.repository.ITvRepository
 import com.waffiq.bazz_movies.core.data.utils.Helper.getDateToday
 import com.waffiq.bazz_movies.core.data.utils.Helper.getDateTwoWeeksFromToday
-import com.waffiq.bazz_movies.core.mappers.MediaItemMapper.toMediaItem
-import com.waffiq.bazz_movies.core.mappers.MediaStateMapper.toMediaState
-import com.waffiq.bazz_movies.core.mappers.NetworkResultMapper.toOutcome
-import com.waffiq.bazz_movies.core.mappers.PostMapper.toPostResult
+import com.waffiq.bazz_movies.core.mapper.MediaItemMapper.toMediaItem
+import com.waffiq.bazz_movies.core.mapper.MediaStateMapper.toMediaState
+import com.waffiq.bazz_movies.core.mapper.NetworkResultMapper.toOutcome
+import com.waffiq.bazz_movies.core.mapper.PostMapper.toPostResult
 import com.waffiq.bazz_movies.core.model.MediaItem
 import com.waffiq.bazz_movies.core.model.MediaState
 import com.waffiq.bazz_movies.core.model.Outcome

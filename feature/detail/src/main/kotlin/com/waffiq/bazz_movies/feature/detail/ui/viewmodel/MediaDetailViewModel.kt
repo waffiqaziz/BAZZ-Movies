@@ -26,7 +26,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostRateUs
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.RefreshMediaMetadataUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail.GetOMDbDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.BasicMediaDetailMapper.refreshWith
+import com.waffiq.bazz_movies.feature.detail.utils.mapper.BasicMediaDetailMapper.refreshWith
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow

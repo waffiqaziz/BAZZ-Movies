@@ -32,15 +32,15 @@
 <path fill="none" stroke="black" d="M330.97,-75.17C309.32,-64.79 279.38,-50.44 255.19,-38.84"/>
 <polygon fill="black" stroke="black" points="256.77,-35.71 246.23,-34.54 253.74,-42.02 256.77,-35.71"/>
 </g>
-<!-- :core:mappers -->
+<!-- :core:mapper -->
 <g id="node4" class="node">
-<title>:core:mappers</title>
+<title>:core:mapper</title>
 <ellipse fill="none" stroke="black" cx="359.81" cy="-18" rx="65.73" ry="18"/>
-<text xml:space="preserve" text-anchor="middle" x="359.81" y="-13.8" font-family="Times,serif" font-size="14.00">:core:mappers</text>
+<text xml:space="preserve" text-anchor="middle" x="359.81" y="-13.8" font-family="Times,serif" font-size="14.00">:core:mapper</text>
 </g>
-<!-- :core:data&#45;&gt;:core:mappers -->
+<!-- :core:data&#45;&gt;:core:mapper -->
 <g id="edge3" class="edge">
-<title>:core:data-&gt;:core:mappers</title>
+<title>:core:data-&gt;:core:mapper</title>
 <path fill="none" stroke="black" d="M359.81,-71.7C359.81,-64.41 359.81,-55.73 359.81,-47.54"/>
 <polygon fill="black" stroke="black" points="363.31,-47.62 359.81,-37.62 356.31,-47.62 363.31,-47.62"/>
 </g>

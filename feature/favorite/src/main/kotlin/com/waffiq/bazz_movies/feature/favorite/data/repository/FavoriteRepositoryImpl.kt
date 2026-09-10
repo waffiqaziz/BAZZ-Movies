@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.favorite.data.repository
 
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.waffiq.bazz_movies.core.mappers.MediaItemMapper.toMediaItem
+import com.waffiq.bazz_movies.core.mapper.MediaItemMapper.toMediaItem
 import com.waffiq.bazz_movies.core.model.MediaItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.account.AccountRemoteDataSource
 import com.waffiq.bazz_movies.feature.favorite.domain.repository.IFavoriteRepository

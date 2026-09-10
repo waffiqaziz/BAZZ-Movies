@@ -532,14 +532,14 @@ jobs:
           name: core-database-coverage
         continue-on-error: true
 
-      - name: Upload coverage with core-models flag
+      - name: Upload coverage with core-model flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: core/models/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
-          flags: core-models
+          files: core/model/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: core-model
           token: ${{ secrets.CODECOV_TOKEN }}
-          name: core-models-coverage
+          name: core-model-coverage
         continue-on-error: true
 
       - name: Upload coverage with core-favoritewatchlist flag
@@ -562,14 +562,14 @@ jobs:
           name: core-instrumentationtest-coverage
         continue-on-error: true
 
-      - name: Upload coverage with core-mappers flag
+      - name: Upload coverage with core-mapper flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
-          files: core/mappers/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
-          flags: core-mappers
+          files: core/mapper/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: core-mapper
           token: ${{ secrets.CODECOV_TOKEN }}
-          name: core-mappers-coverage
+          name: core-mapper-coverage
         continue-on-error: true
 
       - name: Upload coverage with core-network flag

@@ -7,7 +7,7 @@ import com.waffiq.bazz_movies.core.common.MediaType
 import com.waffiq.bazz_movies.core.common.value
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.SearchApiService
-import com.waffiq.bazz_movies.core.network.utils.mappers.SearchMapper.withMediaType
+import com.waffiq.bazz_movies.core.network.utils.mapper.SearchMapper.withMediaType
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
