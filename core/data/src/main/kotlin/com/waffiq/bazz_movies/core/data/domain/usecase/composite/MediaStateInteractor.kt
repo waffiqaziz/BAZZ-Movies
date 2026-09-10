@@ -2,8 +2,8 @@ package com.waffiq.bazz_movies.core.data.domain.usecase.composite
 
 import com.waffiq.bazz_movies.core.data.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.core.data.domain.repository.ITvRepository
-import com.waffiq.bazz_movies.core.models.MediaState
-import com.waffiq.bazz_movies.core.models.Outcome
+import com.waffiq.bazz_movies.core.model.MediaState
+import com.waffiq.bazz_movies.core.model.Outcome
 import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapConcat

@@ -1,0 +1,32 @@
+package com.waffiq.bazz_movies.core.model
+
+/**
+ * Used as data class for guest user favorite n watchlist
+ */
+data class Favorite(
+  val id: Int,
+  val mediaId: Int,
+  val mediaType: String,
+  val genre: String,
+  val backDrop: String,
+  val poster: String,
+  val overview: String,
+  val title: String,
+  val releaseDate: String,
+  val popularity: Double,
+  val rating: Float,
+  val isFavorite: Boolean,
+  val isWatchlist: Boolean,
+  val lastUpdated: Long,
+) {
+
+  @Suppress("MagicNumber")
+  fun isStale(): Boolean {
+    // tmdb terms says max data cached is 90 days,
+    // but we use earlier (10 days before the date),
+    val eightyDaysMillis =
+      80L * 24 * 60 * 60 * 1000
+
+    return System.currentTimeMillis() - lastUpdated > eightyDaysMillis
+  }
+}

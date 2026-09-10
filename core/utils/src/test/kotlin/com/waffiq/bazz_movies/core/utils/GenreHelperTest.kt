@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.utils
 
-import com.waffiq.bazz_movies.core.models.GenresItem
+import com.waffiq.bazz_movies.core.model.GenresItem
 import com.waffiq.bazz_movies.core.utils.GenreHelper.getGenreName
 import com.waffiq.bazz_movies.core.utils.GenreHelper.toListGenreIds
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoinName

@@ -36,8 +36,8 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisp
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isTextVisible
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
-import com.waffiq.bazz_movies.core.models.Favorite
-import com.waffiq.bazz_movies.core.models.MediaItem
+import com.waffiq.bazz_movies.core.model.Favorite
+import com.waffiq.bazz_movies.core.model.MediaItem
 import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.setupGuestUserModel
 import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.setupLoggedUserModel
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar

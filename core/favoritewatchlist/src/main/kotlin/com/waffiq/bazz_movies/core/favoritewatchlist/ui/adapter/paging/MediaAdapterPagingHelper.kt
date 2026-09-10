@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging
 
 import androidx.recyclerview.widget.DiffUtil
-import com.waffiq.bazz_movies.core.models.MediaItem
+import com.waffiq.bazz_movies.core.model.MediaItem
 
 object MediaAdapterPagingHelper {
 

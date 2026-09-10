@@ -13,9 +13,9 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.domain.sort.LoggedFavoriteS
 import com.waffiq.bazz_movies.core.favoritewatchlist.domain.sort.toQueryString
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.launchAndHandleOutcome
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
-import com.waffiq.bazz_movies.core.models.FavoriteParams
-import com.waffiq.bazz_movies.core.models.MediaItem
-import com.waffiq.bazz_movies.core.models.WatchlistParams
+import com.waffiq.bazz_movies.core.model.FavoriteParams
+import com.waffiq.bazz_movies.core.model.MediaItem
+import com.waffiq.bazz_movies.core.model.WatchlistParams
 import com.waffiq.bazz_movies.feature.watchlist.domain.model.FavoriteActionResult
 import com.waffiq.bazz_movies.feature.watchlist.domain.usecase.composite.CheckAndAddToFavoriteUseCase
 import com.waffiq.bazz_movies.feature.watchlist.domain.usecase.watchlistmovie.GetWatchlistMovieUseCase

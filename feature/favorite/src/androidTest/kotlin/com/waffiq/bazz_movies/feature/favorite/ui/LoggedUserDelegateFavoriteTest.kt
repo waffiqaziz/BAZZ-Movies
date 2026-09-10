@@ -24,8 +24,8 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHa
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNotExist
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
-import com.waffiq.bazz_movies.core.models.FavoriteParams
-import com.waffiq.bazz_movies.core.models.WatchlistParams
+import com.waffiq.bazz_movies.core.model.FavoriteParams
+import com.waffiq.bazz_movies.core.model.WatchlistParams
 import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.setupGuestUserModel
 import com.waffiq.bazz_movies.feature.favorite.testutils.BaseFavoriteFragmentTestHelper
 import dagger.hilt.android.testing.HiltAndroidTest

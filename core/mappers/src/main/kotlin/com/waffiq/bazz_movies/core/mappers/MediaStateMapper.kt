@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.mappers
 
-import com.waffiq.bazz_movies.core.models.MediaState
-import com.waffiq.bazz_movies.core.models.Rated
+import com.waffiq.bazz_movies.core.model.MediaState
+import com.waffiq.bazz_movies.core.model.Rated
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.MediaStateResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.RatedResponse
 

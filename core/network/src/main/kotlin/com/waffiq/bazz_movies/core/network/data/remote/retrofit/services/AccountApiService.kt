@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.network.data.remote.retrofit.services
 
-import com.waffiq.bazz_movies.core.network.data.remote.models.FavoriteRequest
-import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistRequest
+import com.waffiq.bazz_movies.core.network.data.remote.model.FavoriteRequest
+import com.waffiq.bazz_movies.core.network.data.remote.model.WatchlistRequest
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostFavoriteWatchlistResponse
 import retrofit2.Response

@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local
 
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.favorite
-import com.waffiq.bazz_movies.core.models.Favorite
+import com.waffiq.bazz_movies.core.model.Favorite
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test

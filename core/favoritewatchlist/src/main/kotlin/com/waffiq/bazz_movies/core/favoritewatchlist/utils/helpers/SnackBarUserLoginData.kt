@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers
 
-import com.waffiq.bazz_movies.core.models.FavoriteParams
-import com.waffiq.bazz_movies.core.models.WatchlistParams
+import com.waffiq.bazz_movies.core.model.FavoriteParams
+import com.waffiq.bazz_movies.core.model.WatchlistParams
 
 /**
  * Data class representing the information required to display a Snackbar

@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.domain.usecase.composite
 
-import com.waffiq.bazz_movies.core.models.Outcome
-import com.waffiq.bazz_movies.core.models.PostResult
+import com.waffiq.bazz_movies.core.model.Outcome
+import com.waffiq.bazz_movies.core.model.PostResult
 import kotlinx.coroutines.flow.Flow
 
 interface PostRateUseCase {

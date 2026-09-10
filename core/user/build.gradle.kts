@@ -10,7 +10,7 @@ plugins {
 android.namespace = "com.waffiq.bazz_movies.core.user"
 
 dependencies {
-  api(project(":core:models"))
+  api(project(":core:model"))
   api(project(":core:network"))
   implementation(project(":core:common"))
   implementation(project(":core:mappers"))

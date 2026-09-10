@@ -8,7 +8,7 @@ import androidx.annotation.VisibleForTesting
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.favoritewatchlist.databinding.FragmentChildBinding
-import com.waffiq.bazz_movies.core.models.MediaItem
+import com.waffiq.bazz_movies.core.model.MediaItem
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

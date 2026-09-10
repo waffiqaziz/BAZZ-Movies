@@ -7,7 +7,7 @@ import com.google.android.material.listitem.SwipeableListItem
 import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaSwipeBinding
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.movieData
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.MediaPagingAdapter
-import com.waffiq.bazz_movies.core.models.MediaItem
+import com.waffiq.bazz_movies.core.model.MediaItem
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import io.mockk.mockk
 import org.junit.Before

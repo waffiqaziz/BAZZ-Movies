@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.search.ui.adapter.diffutil
 
 import androidx.recyclerview.widget.DiffUtil
-import com.waffiq.bazz_movies.core.models.SearchHistory
+import com.waffiq.bazz_movies.core.model.SearchHistory
 
 class HistoryDiffUtil : DiffUtil.ItemCallback<SearchHistory>() {
   override fun areItemsTheSame(old: SearchHistory, new: SearchHistory) = old.query == new.query

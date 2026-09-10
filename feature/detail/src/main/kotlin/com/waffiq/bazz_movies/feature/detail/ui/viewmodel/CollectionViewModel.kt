@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.detail.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.waffiq.bazz_movies.core.models.Outcome
+import com.waffiq.bazz_movies.core.model.Outcome
 import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.backdropOriginalSource
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.CollectionSortOption
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.genreIds

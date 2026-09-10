@@ -31,7 +31,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_genre_tv_movie
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_genre_tv_show
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_genre_war
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_genre_western
-import com.waffiq.bazz_movies.core.models.ProfileImageable
+import com.waffiq.bazz_movies.core.model.ProfileImageable
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.utils.LayoutHelper.initLinearLayoutManagerVertical
 import com.waffiq.bazz_movies.feature.search.domain.model.KnownForItem

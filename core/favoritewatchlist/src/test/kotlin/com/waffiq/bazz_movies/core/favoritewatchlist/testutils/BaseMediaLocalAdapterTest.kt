@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.recyclerview.widget.RecyclerView
 import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaSwipeBinding
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local.MediaLocalAdapter
-import com.waffiq.bazz_movies.core.models.Favorite
+import com.waffiq.bazz_movies.core.model.Favorite
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.SwipeConfig
 import io.mockk.mockk
 import org.junit.Before

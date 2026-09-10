@@ -5,7 +5,7 @@ import androidx.paging.map
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.data.domain.repository.IAsianRepository
 import com.waffiq.bazz_movies.core.mappers.MediaItemMapper.toMediaItem
-import com.waffiq.bazz_movies.core.models.MediaItem
+import com.waffiq.bazz_movies.core.model.MediaItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.asian.AsianRemoteDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

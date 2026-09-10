@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.domain.usecase.composite
 
-import com.waffiq.bazz_movies.core.models.Outcome
+import com.waffiq.bazz_movies.core.model.Outcome
 import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository

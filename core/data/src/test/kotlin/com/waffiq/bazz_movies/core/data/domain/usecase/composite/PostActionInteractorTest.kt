@@ -5,8 +5,8 @@ import com.waffiq.bazz_movies.core.data.testutils.BaseInteractorTest
 import com.waffiq.bazz_movies.core.data.testutils.DummyData.favoriteParams
 import com.waffiq.bazz_movies.core.data.testutils.DummyData.postFavoriteWatchlistSuccess
 import com.waffiq.bazz_movies.core.data.testutils.DummyData.watchlistParams
-import com.waffiq.bazz_movies.core.models.Outcome
-import com.waffiq.bazz_movies.core.models.UserModel
+import com.waffiq.bazz_movies.core.model.Outcome
+import com.waffiq.bazz_movies.core.model.UserModel
 import io.mockk.coEvery
 import io.mockk.coVerify
 import junit.framework.TestCase.assertEquals

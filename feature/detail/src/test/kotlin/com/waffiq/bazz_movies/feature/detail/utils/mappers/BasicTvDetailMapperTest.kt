@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_watch_providers
-import com.waffiq.bazz_movies.core.models.GenresItem
+import com.waffiq.bazz_movies.core.model.GenresItem
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.ads
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.buy
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.flatrate

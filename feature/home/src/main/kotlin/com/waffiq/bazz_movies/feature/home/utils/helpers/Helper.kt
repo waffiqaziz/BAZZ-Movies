@@ -2,8 +2,8 @@ package com.waffiq.bazz_movies.feature.home.utils.helpers
 
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
-import com.waffiq.bazz_movies.core.models.Dateable
-import com.waffiq.bazz_movies.core.models.Imageble
+import com.waffiq.bazz_movies.core.model.Dateable
+import com.waffiq.bazz_movies.core.model.Imageble
 
 object Helper {
 

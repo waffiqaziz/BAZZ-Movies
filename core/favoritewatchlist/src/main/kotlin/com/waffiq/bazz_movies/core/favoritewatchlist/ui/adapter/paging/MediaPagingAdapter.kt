@@ -14,7 +14,7 @@ import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaSwipeBi
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.SwipeAdapterHelper.bindContent
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.SwipeAdapterHelper.createSwipeCallback
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.MediaAdapterPagingHelper.DIFF_CALLBACK
-import com.waffiq.bazz_movies.core.models.MediaItem
+import com.waffiq.bazz_movies.core.model.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.SwipeConfig
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.utils.toMediaArgs

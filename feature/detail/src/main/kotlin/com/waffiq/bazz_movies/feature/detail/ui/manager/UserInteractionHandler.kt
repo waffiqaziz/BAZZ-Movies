@@ -18,9 +18,9 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.item_added_to_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.item_removed_from_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.item_removed_from_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
-import com.waffiq.bazz_movies.core.models.MediaItem
-import com.waffiq.bazz_movies.core.models.MediaState
-import com.waffiq.bazz_movies.core.models.Rated
+import com.waffiq.bazz_movies.core.model.MediaItem
+import com.waffiq.bazz_movies.core.model.MediaState
+import com.waffiq.bazz_movies.core.model.Rated
 import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.backdropPathSource
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding

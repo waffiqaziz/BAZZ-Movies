@@ -17,7 +17,7 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.perform
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
-import com.waffiq.bazz_movies.core.models.SearchHistory
+import com.waffiq.bazz_movies.core.model.SearchHistory
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.feature.search.R.id.search_bar
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem

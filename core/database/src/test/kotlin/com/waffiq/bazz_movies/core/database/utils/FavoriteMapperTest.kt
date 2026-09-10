@@ -3,8 +3,8 @@ package com.waffiq.bazz_movies.core.database.utils
 import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
 import com.waffiq.bazz_movies.core.database.utils.FavoriteMapper.toFavorite
 import com.waffiq.bazz_movies.core.database.utils.FavoriteMapper.toFavoriteEntity
-import com.waffiq.bazz_movies.core.models.Favorite
-import com.waffiq.bazz_movies.core.models.MediaItem
+import com.waffiq.bazz_movies.core.model.Favorite
+import com.waffiq.bazz_movies.core.model.MediaItem
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

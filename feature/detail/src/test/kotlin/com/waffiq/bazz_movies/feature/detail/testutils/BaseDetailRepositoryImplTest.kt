@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.testutils
 
-import com.waffiq.bazz_movies.core.models.Outcome
+import com.waffiq.bazz_movies.core.model.Outcome
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.movie.MovieRemoteDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.omdb.OmdbRemoteDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.tv.TvRemoteDataSource

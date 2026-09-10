@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.retrofit.services
 
-import com.waffiq.bazz_movies.core.network.data.remote.models.RatingRequest
+import com.waffiq.bazz_movies.core.network.data.remote.model.RatingRequest
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse

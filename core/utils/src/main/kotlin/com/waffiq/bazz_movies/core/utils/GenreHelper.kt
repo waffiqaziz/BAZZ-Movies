@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.core.utils
 import android.content.Context
 import com.waffiq.bazz_movies.core.common.Genre
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
-import com.waffiq.bazz_movies.core.models.GenresItem
+import com.waffiq.bazz_movies.core.model.GenresItem
 
 /**
  * A utility object for handling movie and TV show genres.

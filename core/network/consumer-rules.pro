@@ -3,7 +3,7 @@
 -keep class com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.** { *; }
 -keep class com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.** { *; }
 -keep class com.waffiq.bazz_movies.core.network.data.remote.responses.countryip.** { *; }
--keep class com.waffiq.bazz_movies.core.network.data.remote.models.** { *; }
+-keep class com.waffiq.bazz_movies.core.network.data.remote.model.** { *; }
 -keep class com.waffiq.bazz_movies.core.network.data.remote.query.** { *; }
 -keep class com.waffiq.bazz_movies.core.network.data.remote.constants.** { *; }
 

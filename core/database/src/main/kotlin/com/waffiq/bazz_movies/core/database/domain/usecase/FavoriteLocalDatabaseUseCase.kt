@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.database.domain.usecase
 
 import com.waffiq.bazz_movies.core.database.utils.DbResult
-import com.waffiq.bazz_movies.core.models.Favorite
+import com.waffiq.bazz_movies.core.model.Favorite
 import kotlinx.coroutines.flow.Flow
 
 interface FavoriteLocalDatabaseUseCase {

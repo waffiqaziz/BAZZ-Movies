@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.testmodule
 
-import com.waffiq.bazz_movies.core.models.UserModel
+import com.waffiq.bazz_movies.core.model.UserModel
 import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.provideMockUserPreferenceViewModel
 import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.setupGuestUserModel
 import com.waffiq.bazz_movies.core.testmodule.MockUserPreferenceViewModelModule.setupLoggedUserModel

@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local
 
 import androidx.recyclerview.widget.DiffUtil
-import com.waffiq.bazz_movies.core.models.Favorite
+import com.waffiq.bazz_movies.core.model.Favorite
 
 class MediaLocalDiffCallback : DiffUtil.ItemCallback<Favorite>() {
   override fun areItemsTheSame(oldItem: Favorite, newItem: Favorite): Boolean =

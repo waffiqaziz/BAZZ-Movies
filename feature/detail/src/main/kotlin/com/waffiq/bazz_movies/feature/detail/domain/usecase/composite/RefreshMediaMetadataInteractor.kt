@@ -2,8 +2,8 @@ package com.waffiq.bazz_movies.feature.detail.domain.usecase.composite
 
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.database.domain.repository.IFavoriteLocalDatabaseRepository
-import com.waffiq.bazz_movies.core.models.Favorite
-import com.waffiq.bazz_movies.core.models.Outcome
+import com.waffiq.bazz_movies.core.model.Favorite
+import com.waffiq.bazz_movies.core.model.Outcome
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.BasicMediaDetailMapper.refreshWith
 import javax.inject.Inject
 

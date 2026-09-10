@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.tv
 
-import com.waffiq.bazz_movies.core.network.data.remote.models.RatingRequest
+import com.waffiq.bazz_movies.core.network.data.remote.model.RatingRequest
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
 import com.waffiq.bazz_movies.core.network.testutils.DummyData.ratePostResponseSuccess
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testError404Response

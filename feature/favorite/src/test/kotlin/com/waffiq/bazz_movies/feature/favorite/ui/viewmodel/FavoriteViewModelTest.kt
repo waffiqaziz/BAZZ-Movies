@@ -6,8 +6,8 @@ import com.waffiq.bazz_movies.core.data.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.data.domain.usecase.composite.PostActionUseCase
 import com.waffiq.bazz_movies.core.favoritewatchlist.domain.sort.LoggedFavoriteSortOption
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
-import com.waffiq.bazz_movies.core.models.FavoriteParams
-import com.waffiq.bazz_movies.core.models.WatchlistParams
+import com.waffiq.bazz_movies.core.model.FavoriteParams
+import com.waffiq.bazz_movies.core.model.WatchlistParams
 import com.waffiq.bazz_movies.core.test.KotestInstantExecutorExtension
 import com.waffiq.bazz_movies.core.test.PagingFlowHelperTest.testPagingFlowCancelRemaining
 import com.waffiq.bazz_movies.feature.favorite.domain.model.WatchlistActionResult

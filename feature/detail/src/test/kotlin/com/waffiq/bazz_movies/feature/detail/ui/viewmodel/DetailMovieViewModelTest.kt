@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.ui.viewmodel
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.models.Outcome
+import com.waffiq.bazz_movies.core.model.Outcome
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailViewModelTest
 import io.mockk.coEvery
 import io.mockk.coVerify

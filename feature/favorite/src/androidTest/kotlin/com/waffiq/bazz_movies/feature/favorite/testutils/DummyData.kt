@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.feature.favorite.testutils
 
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.models.Favorite
-import com.waffiq.bazz_movies.core.models.MediaItem
+import com.waffiq.bazz_movies.core.model.Favorite
+import com.waffiq.bazz_movies.core.model.MediaItem
 
 object DummyData {
 

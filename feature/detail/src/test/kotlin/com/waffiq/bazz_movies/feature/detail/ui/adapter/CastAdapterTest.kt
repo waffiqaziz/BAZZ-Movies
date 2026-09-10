@@ -168,7 +168,6 @@ class CastAdapterTest : BaseAdapterTest() {
     verify { navigator.openPersonDetails(any(), any()) }
   }
 
-
   @Test
   fun bind_totalEpisodeNotNull_showsCorrectView() {
     verticalViewHolder.bind(MediaCastItem(id = 112, name = "name", totalEpisodeCount = 12))

@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.core.testmodule
 
 import androidx.lifecycle.MutableLiveData
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
-import com.waffiq.bazz_movies.core.models.UserModel
+import com.waffiq.bazz_movies.core.model.UserModel
 import com.waffiq.bazz_movies.core.testmodule.DummyData.userModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import dagger.Module

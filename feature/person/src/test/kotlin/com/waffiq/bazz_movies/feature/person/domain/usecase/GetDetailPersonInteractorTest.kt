@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.person.domain.usecase
 
 import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.models.Outcome
+import com.waffiq.bazz_movies.core.model.Outcome
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.repository.IPersonRepository
 import io.mockk.coEvery

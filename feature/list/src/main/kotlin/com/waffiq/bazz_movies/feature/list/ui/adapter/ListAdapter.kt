@@ -12,7 +12,7 @@ import com.bazz_movies.core.adapter.BindAdapterHelper.bindMetaData
 import com.bazz_movies.core.adapter.BindAdapterHelper.bindPicture
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemListBinding
 import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaNoSwipeBinding
-import com.waffiq.bazz_movies.core.models.MediaItem
+import com.waffiq.bazz_movies.core.model.MediaItem
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.MediaSource
 import com.waffiq.bazz_movies.navigation.utils.toMediaArgs
