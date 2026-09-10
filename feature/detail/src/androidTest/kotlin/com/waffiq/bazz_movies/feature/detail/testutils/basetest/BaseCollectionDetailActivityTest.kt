@@ -11,7 +11,7 @@ import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.CollectionSortOption
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.PartsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.genreIds
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.detailCollections
+import com.waffiq.bazz_movies.feature.detail.testutils.DataDummy.detailCollections
 import com.waffiq.bazz_movies.feature.detail.ui.CollectionDetailActivity
 import com.waffiq.bazz_movies.feature.detail.ui.state.CollectionUiState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.CollectionViewModel

@@ -4,7 +4,6 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.GenresResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.ProductionCountriesResponseItem
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.TvKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
@@ -19,7 +18,7 @@ data class DetailTvResponse(
   val numberOfEpisodes: Int? = null,
 
   @Json(name = "networks")
-  val networksResponse: List<NetworksItemResponse?>? = null,
+  val networks: List<NetworksResponseItem?>? = null,
 
   @Json(name = "type")
   val type: String? = null,
@@ -27,8 +26,8 @@ data class DetailTvResponse(
   @Json(name = "backdrop_path")
   val backdropPath: String? = null,
 
-  @Json(name = "credits")
-  val credits: MediaCreditsResponse? = null,
+  @Json(name = "aggregate_credits")
+  val aggregateCredits: AggregateCreditsResponse? = null,
 
   @Json(name = "genres")
   val genres: List<GenresResponseItem?>? = null,
@@ -40,7 +39,7 @@ data class DetailTvResponse(
   val popularity: Double? = null,
 
   @Json(name = "production_countries")
-  val productionCountriesResponse: List<ProductionCountriesResponseItem?>? = null,
+  val productionCountries: List<ProductionCountriesResponseItem?>? = null,
 
   @Json(name = "id")
   val id: Int? = null,
@@ -58,16 +57,16 @@ data class DetailTvResponse(
   val overview: String? = null,
 
   @Json(name = "seasons")
-  val seasonsResponse: List<SeasonsItemResponse?>? = null,
+  val seasons: List<SeasonsResponseItem?>? = null,
 
   @Json(name = "languages")
   val languages: List<String?>? = null,
 
   @Json(name = "created_by")
-  val createdByResponse: List<CreatedByItemResponse?>? = null,
+  val createdBy: List<CreatedByResponseItem?>? = null,
 
   @Json(name = "last_episode_to_air")
-  val lastEpisodeToAirResponse: LastEpisodeToAirResponse? = null,
+  val lastEpisodeToAir: LastEpisodeToAirResponse? = null,
 
   @Json(name = "poster_path")
   val posterPath: String? = null,
@@ -76,10 +75,10 @@ data class DetailTvResponse(
   val originCountry: List<String?>? = null,
 
   @Json(name = "spoken_languages")
-  val spokenLanguagesResponse: List<SpokenLanguagesResponseItem?>? = null,
+  val spokenLanguages: List<SpokenLanguagesResponseItem?>? = null,
 
   @Json(name = "production_companies")
-  val productionCompaniesResponse: List<ProductionCompaniesResponseItem?>? = null,
+  val productionCompanies: List<ProductionCompaniesResponseItem?>? = null,
 
   @Json(name = "original_name")
   val originalName: String? = null,
@@ -97,7 +96,7 @@ data class DetailTvResponse(
   val episodeRunTime: List<Int?>? = null,
 
   @Json(name = "content_ratings")
-  val contentRatingsResponse: ContentRatingsResponse? = null,
+  val contentRatings: ContentRatingsResponse? = null,
 
   @Json(name = "adult")
   val adult: Boolean? = null,

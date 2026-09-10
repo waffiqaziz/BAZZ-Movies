@@ -5,7 +5,7 @@ import com.waffiq.bazz_movies.core.models.Favorite
 import com.waffiq.bazz_movies.core.models.GenresItem
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.RatingsItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.RatingsResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.GenresResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCastResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
@@ -18,19 +18,29 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movi
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.releasedates.ReleaseDatesResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.releasedates.ReleaseDatesResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.releasedates.ReleaseDatesResponseItemValue
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ContentRatingsItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.AggregateCreditsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ContentRatingsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.CreatedByItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ContentRatingsResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.CreatedByResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.JobsResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.LastEpisodeToAirResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.NetworksItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.NetworksResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.NextEpisodeToAirResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SeasonsItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.RolesResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SeasonsResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.TvCastResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.TvCrewResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.ProviderResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponseItem
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinString
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCastItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem
@@ -48,28 +58,33 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDat
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDates
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDatesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDatesItemValue
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.AggregateCredits
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.CastItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ContentRatings
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ContentRatingsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.CreatedByItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.CrewItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.JobsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.LastEpisodeToAir
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.NetworksItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.RolesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.SeasonsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.Provider
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.rolesItem
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAgeRating
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformDuration
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformTMDBScore
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaCreditsMapper.toMediaCastItem
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaCreditsMapper.toMediaCrewItem
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toMediaCredits
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toVideo
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toCredits
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toExternalTvID
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toNextEpisodeToAir
 
-// Used as data dumb testing
+@Suppress("LargeClass")
 object DummyData {
 
   const val IMDB_ID = "tt1234567"
@@ -143,21 +158,104 @@ object DummyData {
     job = "director",
   )
 
-  val mediaCastItem = mediaCastResponseItem.toMediaCastItem()
+  val rolesItem = RolesItem(
+    character = "Joel Miller",
+    episodeCount = 9,
+    creditId = "5e4b8a8f0c3a36847",
+  )
 
-  val mediaCrewItem = mediaCrewResponseItem.toMediaCrewItem()
+  val mediaCastItem = MediaCastItem(
+    name = "Pedro Pascal",
+    originalName = "José Pedro Balmaceda Pascal",
+    profilePath = "/profile.jpg",
+    id = 125336,
+    castId = 123,
+    character = "Joel Miller",
+    roles = listOf(rolesItem),
+    totalEpisodeCount = 9,
+    gender = 2,
+    creditId = "5e4b8a8f0c3a36847",
+    knownForDepartment = "Acting",
+    popularity = 87.42,
+    adult = false,
+    order = 0,
+  )
+
+  val mediaCrewItem = MediaCrewItem(
+    name = "David Fincher",
+    originalName = "David Fincher",
+    profilePath = "/profile.jpg",
+    id = 7467,
+    creditId = "52fe425ec3a36847",
+    totalEpisodeCount = 8,
+    gender = 2,
+    knownForDepartment = "Directing",
+    jobs = emptyList(),
+    popularity = 25.18,
+    adult = false,
+    department = "Directing",
+    job = "Director",
+  )
 
   val mediaCreditsResponse = MediaCreditsResponse(
     cast = listOf(mediaCastResponseItem, mediaCastResponseItem.copy(id = 89, name = "actor 3")),
     crew = listOf(mediaCrewResponseItem),
   )
 
+  val rolesResponseItem =
+    RolesResponseItem(character = "Character 1", episodeCount = 12, creditId = "creditId")
+
+  val castResponseItem =
+    TvCastResponseItem(id = 334, name = "Cast 1", roles = listOf(rolesResponseItem))
+
+  val jobsResponseItem =
+    JobsResponseItem(job = "Writter", episodeCount = 12, creditId = "creditId")
+
+  val crewResponseItem =
+    TvCrewResponseItem(id = 224, name = "name crew", jobs = listOf(jobsResponseItem))
+
+  val aggregateCreditsResponse = AggregateCreditsResponse(
+    cast = listOf(castResponseItem),
+    crew = listOf(crewResponseItem),
+  )
+
+  val castItem = CastItem(
+    id = 334,
+    name = "Cast 1",
+    originalName = "Cast One",
+    roles = listOf(rolesItem),
+    knownForDepartment = "acting",
+    gender = 1,
+    profilePath = "path1.jpg",
+    adult = false,
+    order = 1,
+  )
+
+  val jobsItem =
+    JobsItem(job = "Writter", episodeCount = 12, creditId = "creditId")
+
+  val crewItem = CrewItem(
+    id = 224,
+    name = "name crew",
+    jobs = listOf(jobsItem),
+    totalEpisodeCount = 12,
+    gender = 0,
+    knownForDepartment = "writter",
+    originalName = "name crew original",
+    popularity = 3232,
+    profilePath = "path.jpg",
+    adult = false,
+    department = "writter",
+  )
+
+  val aggregateCredits = AggregateCredits(
+    cast = listOf(castItem),
+    crew = listOf(crewItem),
+  )
+
   val mediaCredits = mediaCreditsResponse.toMediaCredits()
 
-  val mediaKeywordsResponseItem = MediaKeywordsResponseItem(
-    id = 333,
-    name = "crime",
-  )
+  val mediaKeywordsResponseItem = MediaKeywordsResponseItem(id = 333, name = "crime")
 
   val tvKeywordsResponse = TvKeywordsResponse(keywords = listOf(mediaKeywordsResponseItem))
 
@@ -171,10 +269,7 @@ object DummyData {
 
   val mediaKeywords = MediaKeywords(keywords = mediaKeywordsItems)
 
-  val genresItemResponse = GenresResponseItem(
-    id = 1,
-    name = "Action",
-  )
+  val genresResponseItem = GenresResponseItem(id = 1, name = "Action")
 
   val releaseDatesItemValueResponse = ReleaseDatesResponseItemValue(
     descriptors = listOf("R"),
@@ -185,13 +280,13 @@ object DummyData {
     releaseDate = "2024-01-01",
   )
 
-  val releaseDatesItemResponse = ReleaseDatesResponseItem(
+  val releaseDatesResponseItem = ReleaseDatesResponseItem(
     iso31661 = "US",
     listReleaseDateResponseItemValue = listOf(releaseDatesItemValueResponse),
   )
 
   val releaseDatesResponse = ReleaseDatesResponse(
-    listReleaseDatesResponseItem = listOf(releaseDatesItemResponse),
+    listReleaseDatesResponseItem = listOf(releaseDatesResponseItem),
   )
 
   val belongsToCollectionResponse = BelongsToCollectionResponse(
@@ -229,11 +324,11 @@ object DummyData {
     backdropPath = "/backdrop.jpg",
     credits = mediaCreditsResponse,
     revenue = 1000000,
-    listGenresItemResponse = listOf(genresItemResponse),
+    genres = listOf(genresResponseItem),
     keywords = movieKeywordsResponse,
     popularity = 8.5,
-    releaseDatesResponse = releaseDatesResponse,
-    listProductionCountriesItemResponse = listOf(),
+    releaseDates = releaseDatesResponse,
+    productionCountries = listOf(),
     id = 1,
     voteCount = 100,
     budget = 500000,
@@ -241,11 +336,11 @@ object DummyData {
     originalTitle = "Test Movie Original",
     runtime = 120,
     posterPath = "/poster.jpg",
-    listSpokenLanguagesItemResponse = listOf(),
-    listProductionCompaniesItemResponse = listOf(),
+    spokenLanguages = listOf(),
+    productionCompanies = listOf(),
     releaseDate = "2024-01-01",
     voteAverage = 7.5,
-    belongsToCollectionResponse = belongsToCollectionResponse,
+    belongsToCollection = belongsToCollectionResponse,
     tagline = "Test tagline",
     adult = false,
     homepage = "https://testmovie.com",
@@ -283,14 +378,14 @@ object DummyData {
     writer = "Writer Name",
   )
 
-  val networksItemResponse = NetworksItemResponse(
+  val networksResponseItem = NetworksResponseItem(
     logoPath = "/network_logo.jpg",
     name = "HBO",
     id = 1,
     originCountry = "US",
   )
 
-  val seasonsItemResponse = SeasonsItemResponse(
+  val seasonsResponseItem = SeasonsResponseItem(
     airDate = "2024-01-01",
     overview = "Season overview",
     episodeCount = 10,
@@ -300,7 +395,7 @@ object DummyData {
     posterPath = "/season_poster.jpg",
   )
 
-  val createdByItemResponse = CreatedByItemResponse(
+  val createdByResponseItem = CreatedByResponseItem(
     gender = 1,
     creditId = "credit123",
     name = "Creator Name",
@@ -324,14 +419,14 @@ object DummyData {
     voteCount = 100,
   )
 
-  val contentRatingsItemResponse = ContentRatingsItemResponse(
+  val contentRatingsResponseItem = ContentRatingsResponseItem(
     descriptors = listOf("Violence"),
     iso31661 = "US",
     rating = "TV-MA",
   )
 
   val contentRatingsResponse = ContentRatingsResponse(
-    contentRatingsItemResponse = listOf(contentRatingsItemResponse),
+    contentRatings = listOf(contentRatingsResponseItem),
   )
 
   val nextEpisodeToAirResponse = NextEpisodeToAirResponse(
@@ -342,44 +437,79 @@ object DummyData {
 
   val nextEpisodeToAir = nextEpisodeToAirResponse.toNextEpisodeToAir()
 
+  val netflix = ProviderResponse(
+    logoPath = "/9A1JSVmSgCK7b0e2h6f0s6s7L6M.jpg",
+    providerId = 8,
+    providerName = "Netflix",
+    displayPriority = 1,
+  )
+
+  val amazonPrimeVideo = ProviderResponse(
+    logoPath = "/emthp39XA2YScoYL1p0sdbAH2m3.jpg",
+    providerId = 119,
+    providerName = "Amazon Prime Video",
+    displayPriority = 2,
+  )
+
+  val appleTv = ProviderResponse(
+    logoPath = "/peURlLlr8jggOwK53fJ5wdQl05y.jpg",
+    providerId = 350,
+    providerName = "Apple TV",
+    displayPriority = 3,
+  )
+
+  val watchProvidersResponse = WatchProvidersResponse(
+    results = mapOf(
+      "US" to WatchProvidersResponseItem(
+        link = "https://www.themoviedb.org/movie/123/watch",
+        ads = null,
+        buy = listOf(appleTv),
+        flatrate = listOf(netflix),
+        free = null,
+        rent = listOf(amazonPrimeVideo),
+      ),
+    ),
+  )
+
   val detailTvResponse = DetailTvResponse(
     originalLanguage = "en",
     numberOfEpisodes = 10,
-    networksResponse = listOf(networksItemResponse),
+    networks = listOf(networksResponseItem),
     type = "Scripted",
     backdropPath = "/backdrop.jpg",
-    credits = mediaCreditsResponse,
-    genres = listOf(genresItemResponse),
+    aggregateCredits = aggregateCreditsResponse,
+    genres = listOf(genresResponseItem),
     keywords = tvKeywordsResponse,
     popularity = 8.5,
-    productionCountriesResponse = listOf(),
+    productionCountries = listOf(),
     id = 1,
     numberOfSeasons = 1,
     voteCount = 100,
     firstAirDate = "2024-01-01",
     overview = "Test TV show overview",
-    seasonsResponse = listOf(seasonsItemResponse),
+    seasons = listOf(seasonsResponseItem),
     languages = listOf("en"),
-    createdByResponse = listOf(createdByItemResponse),
-    lastEpisodeToAirResponse = lastEpisodeToAirResponse,
+    createdBy = listOf(createdByResponseItem),
+    lastEpisodeToAir = lastEpisodeToAirResponse,
     posterPath = "/poster.jpg",
     originCountry = listOf("US"),
-    spokenLanguagesResponse = listOf(),
-    productionCompaniesResponse = listOf(),
+    spokenLanguages = listOf(),
+    productionCompanies = listOf(),
     originalName = "Test TV Show Original",
     voteAverage = 8.5,
     name = "Test TV Show",
     tagline = "Test tagline",
     episodeRunTime = listOf(60),
-    contentRatingsResponse = contentRatingsResponse,
+    contentRatings = contentRatingsResponse,
     adult = false,
-    nextEpisodeToAir = null,
+    nextEpisodeToAir = nextEpisodeToAirResponse,
     inProduction = true,
     lastAirDate = "2024-01-15",
     homepage = "https://testtv.com",
     status = "Returning Series",
     externalIds = externalIdResponse,
     videos = videoResponse,
+    watchProviders = watchProvidersResponse,
   )
 
   val tvDetailFull = TvDetail(
@@ -388,7 +518,7 @@ object DummyData {
     listNetworksItem = listOf(NetworksItem(name = "AMC")),
     type = "Scripted",
     backdropPath = "/backdrop.jpg",
-    credits = mediaCredits,
+    credits = aggregateCreditsResponse.toCredits(),
     listGenres = listOf(GenresItem()),
     popularity = 100.5,
     listProductionCountriesItem = listOf(ProductionCountriesItem()),
@@ -421,7 +551,7 @@ object DummyData {
     videos = video,
   )
 
-  private val ratingsItemResponse = RatingsItemResponse(
+  private val ratingsResponseItem = RatingsResponseItem(
     value = "8.5/10",
     source = "Internet Movie Database",
   )
@@ -432,7 +562,7 @@ object DummyData {
     website = "https://movie.com",
     imdbRating = "8.5",
     imdbVotes = "500,000",
-    ratings = listOf(ratingsItemResponse),
+    ratings = listOf(ratingsResponseItem),
     runtime = "148 min",
     language = "English",
     rated = "PG-13",

@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account
 
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.authenticationResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.authenticationResponse
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
@@ -11,7 +11,7 @@ class AuthenticationResponseTest {
 
   @Test
   fun authenticationResponse_withValidValues_setsPropertiesCorrectly() {
-    val authenticationResponse = authenticationResponseDump
+    val authenticationResponse = authenticationResponse
     assertTrue(authenticationResponse.success)
     assertEquals("expire_date", authenticationResponse.expireAt)
     assertEquals("request_token", authenticationResponse.requestToken)

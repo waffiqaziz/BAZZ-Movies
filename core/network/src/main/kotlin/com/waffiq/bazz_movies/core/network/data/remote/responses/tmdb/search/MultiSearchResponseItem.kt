@@ -10,7 +10,7 @@ data class MultiSearchResponseItem(
   val mediaType: String? = null,
 
   @Json(name = "known_for")
-  val listKnownFor: List<KnownForItemResponse>? = null,
+  val listKnownFor: List<KnownForResponseItem>? = null,
 
   @Json(name = "known_for_department")
   val knownForDepartment: String? = null,

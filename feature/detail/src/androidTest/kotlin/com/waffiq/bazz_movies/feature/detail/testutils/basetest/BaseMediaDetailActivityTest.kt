@@ -15,9 +15,9 @@ import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.models.UserModel
 import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.mediaDetailUiState
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaItem
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testUserModel
+import com.waffiq.bazz_movies.feature.detail.testutils.DataDummy.mediaDetailUiState
+import com.waffiq.bazz_movies.feature.detail.testutils.DataDummy.testMediaItem
+import com.waffiq.bazz_movies.feature.detail.testutils.DataDummy.testUserModel
 import com.waffiq.bazz_movies.feature.detail.ui.MediaDetailActivity
 import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel

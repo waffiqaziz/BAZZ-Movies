@@ -15,11 +15,11 @@ class AccountDetailsResponseTest {
     assertEquals("YOUR_NAME", accountDetailsResponse.name)
     assertEquals(
       "gravatar_hash2",
-      accountDetailsResponse.avatarItemResponse?.gravatarResponse?.hash,
+      accountDetailsResponse.avatar?.gravatarResponse?.hash,
     )
     assertEquals(
       "avatar_path",
-      accountDetailsResponse.avatarItemResponse?.avatarTMDbResponse?.avatarPath,
+      accountDetailsResponse.avatar?.avatarTMDbResponse?.avatarPath,
     )
     assertEquals(543798538, accountDetailsResponse.id)
     assertEquals("en", accountDetailsResponse.iso6391)
@@ -33,7 +33,7 @@ class AccountDetailsResponseTest {
     assertNull(accountDetailsResponse.includeAdult)
     assertNull(accountDetailsResponse.iso31661)
     assertNull(accountDetailsResponse.name)
-    assertNull(accountDetailsResponse.avatarItemResponse)
+    assertNull(accountDetailsResponse.avatar)
     assertNull(accountDetailsResponse.id)
     assertNull(accountDetailsResponse.iso6391)
     assertNull(accountDetailsResponse.username)

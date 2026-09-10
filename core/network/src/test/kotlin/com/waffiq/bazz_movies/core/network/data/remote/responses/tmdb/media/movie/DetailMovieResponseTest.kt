@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie
 
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.detailMovieResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.detailMovieResponse
 import com.waffiq.bazz_movies.core.network.testutils.DummyData.watchProvidersResultsMap
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -8,7 +8,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class DetailMovieResponseTest {
-  val detailMovieResponse = detailMovieResponseDump
 
   @Test
   fun detailMovieResponse_withValidValues_setsBasicInfoCorrectly() {
@@ -16,9 +15,9 @@ class DetailMovieResponseTest {
     assertEquals("Deadpool & Wolverine", detailMovieResponse.title)
     assertEquals("Deadpool & Wolverine", detailMovieResponse.originalTitle)
     assertEquals("Alexa Goodall", detailMovieResponse.credits?.cast?.get(0)?.name)
-    assertEquals("English", detailMovieResponse.listSpokenLanguagesItemResponse?.get(0)?.name)
+    assertEquals("English", detailMovieResponse.spokenLanguages?.get(0)?.name)
     assertEquals("en", detailMovieResponse.originalLanguage)
-    assertEquals("Action", detailMovieResponse.listGenresItemResponse?.get(0)?.name)
+    assertEquals("Action", detailMovieResponse.genres?.get(0)?.name)
     assertEquals("family", detailMovieResponse.keywords?.keywords?.get(0)?.name)
     assertEquals(
       "https://www.marvel.com/movies/deadpool-and-wolverine",
@@ -35,7 +34,7 @@ class DetailMovieResponseTest {
     assertEquals("Released", detailMovieResponse.status)
     assertEquals(
       "AD",
-      detailMovieResponse.releaseDatesResponse?.listReleaseDatesResponseItem?.get(0)?.iso31661,
+      detailMovieResponse.releaseDates?.listReleaseDatesResponseItem?.get(0)?.iso31661,
     )
   }
 
@@ -54,13 +53,13 @@ class DetailMovieResponseTest {
   fun detailMovieResponse_withValidValues_setsCompanyAndProductionCorrectly() {
     assertEquals(
       "United States of America",
-      detailMovieResponse.listProductionCountriesItemResponse?.get(0)?.name,
+      detailMovieResponse.productionCountries?.get(0)?.name,
     )
     assertEquals(
       "Marvel Studios",
-      detailMovieResponse.listProductionCompaniesItemResponse?.get(0)?.name,
+      detailMovieResponse.productionCompanies?.get(0)?.name,
     )
-    assertEquals("Deadpool Collection", detailMovieResponse.belongsToCollectionResponse?.name)
+    assertEquals("Deadpool Collection", detailMovieResponse.belongsToCollection?.name)
   }
 
   @Test
@@ -93,11 +92,11 @@ class DetailMovieResponseTest {
     assertNull(detailMovieResponse.backdropPath)
     assertNull(detailMovieResponse.credits)
     assertNull(detailMovieResponse.revenue)
-    assertNull(detailMovieResponse.listGenresItemResponse)
+    assertNull(detailMovieResponse.genres)
     assertNull(detailMovieResponse.keywords)
     assertNull(detailMovieResponse.popularity)
-    assertNull(detailMovieResponse.releaseDatesResponse)
-    assertNull(detailMovieResponse.listProductionCountriesItemResponse)
+    assertNull(detailMovieResponse.releaseDates)
+    assertNull(detailMovieResponse.productionCountries)
     assertNull(detailMovieResponse.id)
     assertNull(detailMovieResponse.voteCount)
     assertNull(detailMovieResponse.budget)
@@ -105,11 +104,11 @@ class DetailMovieResponseTest {
     assertNull(detailMovieResponse.originalTitle)
     assertNull(detailMovieResponse.runtime)
     assertNull(detailMovieResponse.posterPath)
-    assertNull(detailMovieResponse.listSpokenLanguagesItemResponse)
-    assertNull(detailMovieResponse.listProductionCompaniesItemResponse)
+    assertNull(detailMovieResponse.spokenLanguages)
+    assertNull(detailMovieResponse.productionCompanies)
     assertNull(detailMovieResponse.releaseDate)
     assertNull(detailMovieResponse.voteAverage)
-    assertNull(detailMovieResponse.belongsToCollectionResponse)
+    assertNull(detailMovieResponse.belongsToCollection)
     assertNull(detailMovieResponse.tagline)
     assertNull(detailMovieResponse.adult)
     assertNull(detailMovieResponse.homepage)

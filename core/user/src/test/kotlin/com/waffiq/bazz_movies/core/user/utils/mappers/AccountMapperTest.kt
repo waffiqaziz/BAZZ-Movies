@@ -4,7 +4,7 @@ import com.waffiq.bazz_movies.core.models.UserModel
 import com.waffiq.bazz_movies.core.network.data.remote.responses.countryip.CountryIPResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AccountDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AuthenticationResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AvatarItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AvatarResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AvatarTMDbResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.CreateSessionResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.GravatarResponse
@@ -128,7 +128,7 @@ class AccountMapperTest {
       includeAdult = false,
       iso31661 = "en",
       name = "Waffiq",
-      avatarItemResponse = AvatarItemResponse(
+      avatar = AvatarResponseItem(
         gravatarResponse = GravatarResponse(hash = "325987423659432"),
         avatarTMDbResponse = AvatarTMDbResponse(avatarPath = "347589074283054"),
       ),
@@ -148,7 +148,7 @@ class AccountMapperTest {
     assertFalse(accountDetails.includeAdult == true)
 
     assertEquals(
-      response.avatarItemResponse?.avatarTMDbResponse?.avatarPath,
+      response.avatar?.avatarTMDbResponse?.avatarPath,
       accountDetails.avatarItem?.avatarTMDb?.avatarPath,
     )
   }
@@ -159,7 +159,7 @@ class AccountMapperTest {
       includeAdult = false,
       iso31661 = "id",
       name = "people",
-      avatarItemResponse = null,
+      avatar = null,
       id = 5637195,
       iso6391 = "MY",
       username = "someone",
@@ -181,7 +181,7 @@ class AccountMapperTest {
       includeAdult = null,
       iso31661 = null,
       name = null,
-      avatarItemResponse = null,
+      avatar = null,
       id = null,
       iso6391 = null,
       username = null,
@@ -200,7 +200,7 @@ class AccountMapperTest {
 
   @Test
   fun toAvatarItem_withValidValues_returnsAvatarItem() {
-    val response = AvatarItemResponse(
+    val response = AvatarResponseItem(
       gravatarResponse = GravatarResponse(hash = "/617956749353.jpg"),
       avatarTMDbResponse = AvatarTMDbResponse(avatarPath = "/27359679153253.jpg"),
     )
@@ -212,7 +212,7 @@ class AccountMapperTest {
 
   @Test
   fun toAvatarItem_withGravatarNull_returnsAvatarItem() {
-    val response = AvatarItemResponse(
+    val response = AvatarResponseItem(
       gravatarResponse = null,
       avatarTMDbResponse = AvatarTMDbResponse(avatarPath = "/27359679153253.jpg"),
     )
@@ -225,7 +225,7 @@ class AccountMapperTest {
 
   @Test
   fun toAvatarItem_withAvatarNull_returnsAvatarItem() {
-    val response = AvatarItemResponse(
+    val response = AvatarResponseItem(
       gravatarResponse = GravatarResponse(hash = "/617956749353.jpg"),
       avatarTMDbResponse = null,
     )
@@ -238,7 +238,7 @@ class AccountMapperTest {
 
   @Test
   fun toAvatarItem_withNullValues_returnsAvatarItem() {
-    val response = AvatarItemResponse(gravatarResponse = null, avatarTMDbResponse = null)
+    val response = AvatarResponseItem(gravatarResponse = null, avatarTMDbResponse = null)
 
     val avatarItem: AvatarItem = response.toAvatarItem()
 

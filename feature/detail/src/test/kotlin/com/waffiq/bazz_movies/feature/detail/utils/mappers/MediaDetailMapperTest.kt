@@ -30,7 +30,7 @@ class MediaDetailMapperTest {
 
   @Test
   fun toVideo_withValidValues_returnsVideo() {
-    val videoItemResponse = VideoResponseItem(
+    val videoResponseItem = VideoResponseItem(
       site = "YouTube",
       size = 1080,
       iso31661 = "US",
@@ -44,7 +44,7 @@ class MediaDetailMapperTest {
     )
 
     val videoResponse = VideoResponse(
-      results = listOf(videoItemResponse),
+      results = listOf(videoResponseItem),
     )
 
     val video: Videos = videoResponse.toVideo()
@@ -112,26 +112,26 @@ class MediaDetailMapperTest {
 
   @Test
   fun toGenresItem_withValidValues_returnsGenresItem() {
-    val genresItemResponse = GenresResponseItem(
+    val genresResponseItem = GenresResponseItem(
       name = "Action",
       id = 28,
     )
 
-    val genresItem: GenresItem = genresItemResponse.toGenresItem()
+    val genresItem: GenresItem = genresResponseItem.toGenresItem()
     assertEquals("Action", genresItem.name)
     assertEquals(28, genresItem.id)
   }
 
   @Test
   fun toSpokenLanguagesItem_withValidValues_returnsSpokenLanguagesItem() {
-    val spokenLanguagesItemResponse = SpokenLanguagesResponseItem(
+    val spokenLanguagesResponseItem = SpokenLanguagesResponseItem(
       name = "English",
       iso6391 = "en",
       englishName = "English",
     )
 
     val spokenLanguagesItem: SpokenLanguagesItem =
-      spokenLanguagesItemResponse.toSpokenLanguagesItem()
+      spokenLanguagesResponseItem.toSpokenLanguagesItem()
     assertEquals("English", spokenLanguagesItem.name)
     assertEquals("en", spokenLanguagesItem.iso6391)
     assertEquals("English", spokenLanguagesItem.englishName)
@@ -139,7 +139,7 @@ class MediaDetailMapperTest {
 
   @Test
   fun toProductionCountriesItem_withValidValues_returnsProductionCountriesItem() {
-    val productionCountriesItemResponse = ProductionCountriesResponseItem(
+    val productionCountriesResponseItem = ProductionCountriesResponseItem(
       iso31661 = "US",
       name = "United States",
       type = 1,
@@ -148,7 +148,7 @@ class MediaDetailMapperTest {
     )
 
     val productionCountriesItem: ProductionCountriesItem =
-      productionCountriesItemResponse.toProductionCountriesItem()
+      productionCountriesResponseItem.toProductionCountriesItem()
     assertEquals("US", productionCountriesItem.iso31661)
     assertEquals("United States", productionCountriesItem.name)
     assertEquals(1, productionCountriesItem.type)
@@ -158,7 +158,7 @@ class MediaDetailMapperTest {
 
   @Test
   fun toProductionCompaniesItem_withValidValues_returnsProductionCompaniesItem() {
-    val productionCompaniesItemResponse = ProductionCompaniesResponseItem(
+    val productionCompaniesResponseItem = ProductionCompaniesResponseItem(
       logoPath = "/logo.png",
       name = "Marvel Studios",
       id = 420,
@@ -166,7 +166,7 @@ class MediaDetailMapperTest {
     )
 
     val productionCompaniesItem: ProductionCompaniesItem =
-      productionCompaniesItemResponse.toProductionCompaniesItem()
+      productionCompaniesResponseItem.toProductionCompaniesItem()
     assertEquals("/logo.png", productionCompaniesItem.logoPath)
     assertEquals("Marvel Studios", productionCompaniesItem.name)
     assertEquals(420, productionCompaniesItem.id)
@@ -175,7 +175,7 @@ class MediaDetailMapperTest {
 
   @Test
   fun toProductionCompaniesItem_withNullValues_returnsProductionCompaniesItem() {
-    val productionCompaniesItemResponse = ProductionCompaniesResponseItem(
+    val productionCompaniesResponseItem = ProductionCompaniesResponseItem(
       logoPath = null,
       name = "Unknown Studio",
       id = 999,
@@ -183,7 +183,7 @@ class MediaDetailMapperTest {
     )
 
     val productionCompaniesItem: ProductionCompaniesItem =
-      productionCompaniesItemResponse.toProductionCompaniesItem()
+      productionCompaniesResponseItem.toProductionCompaniesItem()
     assertNull(productionCompaniesItem.logoPath)
     assertEquals("Unknown Studio", productionCompaniesItem.name)
     assertEquals(999, productionCompaniesItem.id)
@@ -191,15 +191,15 @@ class MediaDetailMapperTest {
   }
 
   @Test
-  fun toSpokenLanguagesItem_withNullValues_returnsSpokenLanguagesItemResponse() {
-    val spokenLanguagesItemResponse = SpokenLanguagesResponseItem(
+  fun toSpokenLanguagesItem_withNullValues_returnsSpokenLanguagesResponseItem() {
+    val spokenLanguagesResponseItem = SpokenLanguagesResponseItem(
       name = null,
       iso6391 = "xx",
       englishName = null,
     )
 
     val spokenLanguagesItem: SpokenLanguagesItem =
-      spokenLanguagesItemResponse.toSpokenLanguagesItem()
+      spokenLanguagesResponseItem.toSpokenLanguagesItem()
     assertNull(spokenLanguagesItem.name)
     assertEquals("xx", spokenLanguagesItem.iso6391)
     assertNull(spokenLanguagesItem.englishName)

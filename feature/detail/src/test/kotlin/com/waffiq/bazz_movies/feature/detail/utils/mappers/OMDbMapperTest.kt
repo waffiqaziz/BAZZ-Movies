@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.RatingsItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.RatingsResponseItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.omdbDetailsResponse
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.OMDbMapper.toOMDbDetails
@@ -64,17 +64,17 @@ class OMDbMapperTest {
 
   @Test
   fun toOMDbDetails_withMultipleRatings_returnsOMDbDetails() {
-    val ratingsItem1 = RatingsItemResponse(
+    val ratingsItem1 = RatingsResponseItem(
       value = "8.5/10",
       source = "Internet Movie Database",
     )
 
-    val ratingsItem2 = RatingsItemResponse(
+    val ratingsItem2 = RatingsResponseItem(
       value = "94%",
       source = "Rotten Tomatoes",
     )
 
-    val ratingsItem3 = RatingsItemResponse(
+    val ratingsItem3 = RatingsResponseItem(
       value = "85/100",
       source = "Metacritic",
     )

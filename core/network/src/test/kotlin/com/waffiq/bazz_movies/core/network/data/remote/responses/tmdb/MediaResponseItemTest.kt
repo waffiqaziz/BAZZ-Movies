@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb
 
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.movieDump1
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.tvShowDump1
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.movieResponseItem1
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.tvShowResponseItem1
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -10,7 +10,7 @@ class MediaResponseItemTest {
 
   @Test
   fun mediaResponseItem_withValidValues_setsPropertiesCorrectly() {
-    val mediaResponseItem = movieDump1
+    val mediaResponseItem = movieResponseItem1
     assertEquals(
       """
         Imprisoned in the 1940s for the double murder of his wife and her lover, upstanding banker 
@@ -27,7 +27,7 @@ class MediaResponseItemTest {
 
   @Test
   fun mediaResponseItem_withValidValues_setsPropertiesOriginCountryCorrectly() {
-    val mediaResponseItem = tvShowDump1
+    val mediaResponseItem = tvShowResponseItem1
     assertEquals("KR", mediaResponseItem.originCountry?.get(0))
   }
 

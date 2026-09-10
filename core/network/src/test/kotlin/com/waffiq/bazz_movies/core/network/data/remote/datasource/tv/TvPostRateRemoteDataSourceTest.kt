@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.core.network.data.remote.datasource.tv
 
 import com.waffiq.bazz_movies.core.network.data.remote.models.RatingRequest
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.ratePostResponseSuccessDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.ratePostResponseSuccess
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testError404Response
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testErrorResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testGeneralExceptionResponse
@@ -22,9 +22,9 @@ class TvPostRateRemoteDataSourceTest : BaseMediaDataSourceTest() {
     runTest {
       testSuccessResponse(
         apiEndpoint = { mockTvApiService.postTvRate(tvId, sessionId, RatingRequest(rating)) },
-        mockApiResponse = success(ratePostResponseSuccessDump),
+        mockApiResponse = success(ratePostResponseSuccess),
         dataSourceEndpointCall = { tvRemoteDataSource.postTvRate(sessionId, rating, tvId) },
-        expectedData = ratePostResponseSuccessDump,
+        expectedData = ratePostResponseSuccess,
       )
     }
 

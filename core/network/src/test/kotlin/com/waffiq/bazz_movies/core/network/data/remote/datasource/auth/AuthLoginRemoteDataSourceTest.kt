@@ -1,9 +1,9 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.auth
 
 import com.waffiq.bazz_movies.core.network.testutils.BaseAuthDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.authenticationResponseDump
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.createSessionResponseDump
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.postResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.authenticationResponse
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.createSessionResponse
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.postResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testError404Response
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testErrorResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testGeneralExceptionResponse
@@ -23,9 +23,9 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
     runTest {
       testSuccessResponse(
         apiEndpoint = { mockAuthApiService.createToken() },
-        mockApiResponse = success(authenticationResponseDump),
+        mockApiResponse = success(authenticationResponse),
         dataSourceEndpointCall = { authRemoteDataSource.createToken() },
-        expectedData = authenticationResponseDump,
+        expectedData = authenticationResponse,
       )
     }
 
@@ -101,9 +101,9 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
     runTest {
       testSuccessResponse(
         apiEndpoint = { mockAuthApiService.deleteSession("session_id") },
-        mockApiResponse = success(postResponseDump),
+        mockApiResponse = success(postResponse),
         dataSourceEndpointCall = { authRemoteDataSource.deleteSession("session_id") },
-        expectedData = postResponseDump,
+        expectedData = postResponse,
       )
     }
 
@@ -179,9 +179,9 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
     runTest {
       testSuccessResponse(
         apiEndpoint = { mockAuthApiService.createSessionLogin("request_token") },
-        mockApiResponse = success(createSessionResponseDump),
+        mockApiResponse = success(createSessionResponse),
         dataSourceEndpointCall = { authRemoteDataSource.createSessionLogin("request_token") },
-        expectedData = createSessionResponseDump,
+        expectedData = createSessionResponse,
       )
     }
 
@@ -257,11 +257,11 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
     runTest {
       testSuccessResponse(
         apiEndpoint = { mockAuthApiService.login("username", "password", "session_id") },
-        mockApiResponse = success(authenticationResponseDump),
+        mockApiResponse = success(authenticationResponse),
         dataSourceEndpointCall = {
           authRemoteDataSource.login("username", "password", "session_id")
         },
-        expectedData = authenticationResponseDump,
+        expectedData = authenticationResponse,
       )
     }
 

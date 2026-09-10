@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person
 
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.combinedCreditResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.combinedCreditResponse
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -9,7 +9,7 @@ class CombinedCreditResponseTest {
 
   @Test
   fun combinedCreditResponse_withValidValues_setsPropertiesCorrectly() {
-    val combinedCreditResponse = combinedCreditResponseDump
+    val combinedCreditResponse = combinedCreditResponse
     assertEquals("War of the Worlds", combinedCreditResponse.cast?.get(0)?.originalTitle)
     assertEquals("The Last Samurai", combinedCreditResponse.crew?.get(0)?.originalTitle)
   }

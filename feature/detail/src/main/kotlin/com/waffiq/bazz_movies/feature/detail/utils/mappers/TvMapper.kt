@@ -1,25 +1,34 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ContentRatingsItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.AggregateCreditsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ContentRatingsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.CreatedByItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ContentRatingsResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.CreatedByResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.JobsResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.LastEpisodeToAirResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.NetworksItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.NetworksResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.NextEpisodeToAirResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SeasonsItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.RolesResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SeasonsResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.TvCastResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.TvCrewResponseItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCastItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ContentRatings
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ContentRatingsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.CreatedByItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.JobsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.LastEpisodeToAir
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.NetworksItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.NextEpisodeToAir
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.RolesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.SeasonsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toGenresItem
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toMediaCredits
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toProductionCountriesItem
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toSpokenLanguagesItem
@@ -27,41 +36,42 @@ import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toV
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaKeywordsMapper.toMediaKeywords
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.WatchProvidersMapper.toWatchProviders
 
+@Suppress("TooManyFunctions")
 object TvMapper {
 
   fun DetailTvResponse.toTvDetail() =
     TvDetail(
       originalLanguage = originalLanguage,
       numberOfEpisodes = numberOfEpisodes,
-      listNetworksItem = networksResponse?.map { it?.toNetworksItem() },
+      listNetworksItem = networks?.map { it?.toNetworksItem() },
       type = type,
       backdropPath = backdropPath,
-      credits = credits?.toMediaCredits(),
+      credits = aggregateCredits?.toCredits(),
       listGenres = genres?.map { it?.toGenresItem() },
       keywords = keywords?.toMediaKeywords(),
       popularity = popularity,
       listProductionCountriesItem =
-      productionCountriesResponse?.map { it?.toProductionCountriesItem() },
+      productionCountries?.map { it?.toProductionCountriesItem() },
       id = id,
       numberOfSeasons = numberOfSeasons,
       voteCount = voteCount,
       firstAirDate = firstAirDate,
       overview = overview,
-      listSeasonsItem = seasonsResponse?.map { it?.toSeasonsItem() },
+      listSeasonsItem = seasons?.map { it?.toSeasonsItem() },
       listLanguages = languages,
-      listCreatedByItem = createdByResponse?.map { it?.toCreatedByItem() },
-      lastEpisodeToAir = lastEpisodeToAirResponse?.toLastEpisodeToAir(),
+      listCreatedByItem = createdBy?.map { it?.toCreatedByItem() },
+      lastEpisodeToAir = lastEpisodeToAir?.toLastEpisodeToAir(),
       posterPath = posterPath,
       listOriginCountry = originCountry,
-      listSpokenLanguagesItem = spokenLanguagesResponse?.map { it?.toSpokenLanguagesItem() },
+      listSpokenLanguagesItem = spokenLanguages?.map { it?.toSpokenLanguagesItem() },
       listProductionCompaniesItem =
-      productionCompaniesResponse?.map { it?.toProductionCompaniesItem() },
+      productionCompanies?.map { it?.toProductionCompaniesItem() },
       originalName = originalName,
       voteAverage = voteAverage,
       name = name,
       tagline = tagline,
       listEpisodeRunTime = episodeRunTime,
-      contentRatings = contentRatingsResponse?.toContentRatings(),
+      contentRatings = contentRatings?.toContentRatings(),
       adult = adult,
       nextEpisodeToAir = nextEpisodeToAir?.toNextEpisodeToAir(),
       inProduction = inProduction,
@@ -73,19 +83,7 @@ object TvMapper {
       watchProviders = watchProviders?.toWatchProviders(),
     )
 
-  private fun ContentRatingsResponse.toContentRatings() =
-    ContentRatings(
-      contentRatingsItem = contentRatingsItemResponse?.map { it?.toContentRatingsItem() },
-    )
-
-  private fun ContentRatingsItemResponse.toContentRatingsItem() =
-    ContentRatingsItem(
-      descriptors = descriptors,
-      iso31661 = iso31661,
-      rating = rating,
-    )
-
-  private fun NetworksItemResponse.toNetworksItem() =
+  private fun NetworksResponseItem.toNetworksItem() =
     NetworksItem(
       logoPath = logoPath,
       name = name,
@@ -93,7 +91,70 @@ object TvMapper {
       originCountry = originCountry,
     )
 
-  private fun SeasonsItemResponse.toSeasonsItem() =
+  fun AggregateCreditsResponse.toCredits() =
+    MediaCredits(
+      cast = cast?.map { it?.toMediaCastItem() ?: MediaCastItem() } ?: emptyList(),
+      crew = crew?.map { it?.toMediaCrewItem() ?: MediaCrewItem() } ?: emptyList(),
+    )
+
+  fun TvCastResponseItem.toMediaCastItem() =
+    MediaCastItem(
+      totalEpisodeCount = totalEpisodeCount,
+      gender = gender,
+      knownForDepartment = knownForDepartment,
+      originalName = originalName,
+      popularity = popularity,
+      roles = roles?.map { it?.toRolesItem() },
+      character = roles?.firstOrNull()?.character,
+      name = name,
+      profilePath = profilePath,
+      id = id,
+      adult = adult,
+      order = order,
+    )
+
+  fun RolesResponseItem.toRolesItem() =
+    RolesItem(
+      character = character,
+      episodeCount = episodeCount,
+      creditId = creditId,
+    )
+
+  fun TvCrewResponseItem.toMediaCrewItem() =
+    MediaCrewItem(
+      totalEpisodeCount = totalEpisodeCount,
+      gender = gender,
+      knownForDepartment = knownForDepartment,
+      originalName = originalName,
+      popularity = popularity,
+      jobs = jobs?.map { it?.toJobsItem() },
+      name = name,
+      profilePath = profilePath,
+      id = id,
+      adult = adult,
+      department = department,
+    )
+
+  fun JobsResponseItem.toJobsItem() =
+    JobsItem(
+      episodeCount = episodeCount,
+      creditId = creditId,
+      job = job,
+    )
+
+  private fun ContentRatingsResponse.toContentRatings() =
+    ContentRatings(
+      contentRatingsItem = contentRatings?.map { it?.toContentRatingsItem() },
+    )
+
+  private fun ContentRatingsResponseItem.toContentRatingsItem() =
+    ContentRatingsItem(
+      descriptors = descriptors,
+      iso31661 = iso31661,
+      rating = rating,
+    )
+
+  private fun SeasonsResponseItem.toSeasonsItem() =
     SeasonsItem(
       airDate = airDate,
       overview = overview,
@@ -104,7 +165,7 @@ object TvMapper {
       posterPath = posterPath,
     )
 
-  private fun CreatedByItemResponse.toCreatedByItem() =
+  private fun CreatedByResponseItem.toCreatedByItem() =
     CreatedByItem(
       gender = gender,
       creditId = creditId,

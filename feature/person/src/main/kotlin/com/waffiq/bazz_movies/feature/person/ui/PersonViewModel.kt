@@ -11,10 +11,9 @@ import com.waffiq.bazz_movies.feature.person.domain.usecase.GetDetailPersonUseCa
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.mapCastList
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.mapImageList
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -25,10 +24,12 @@ class PersonViewModel @Inject constructor(
   private val getDetailPersonUseCase: GetDetailPersonUseCase,
 ) : ViewModel() {
 
-  private val personId = MutableStateFlow<Int?>(null)
+  private val personId = MutableSharedFlow<Int>(
+    replay = 1,
+    extraBufferCapacity = 1,
+  )
 
   val detailPersonState: StateFlow<UIState<DetailPerson>> = personId
-    .filterNotNull()
     .flatMapLatest { id -> getDetailPersonUseCase.getDetailPerson(id).asUiState() }
     .stateIn(viewModelScope, SharingStarted.WhileSubscribed(TIME), UIState.Idle)
 
@@ -41,7 +42,7 @@ class PersonViewModel @Inject constructor(
     .stateIn(viewModelScope, SharingStarted.WhileSubscribed(TIME), emptyList())
 
   fun getDetailPerson(id: Int) {
-    personId.value = id
+    personId.tryEmit(id)
   }
 
   private companion object {

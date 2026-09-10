@@ -8,7 +8,6 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_fil
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_no_profile
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_no_profile_rounded
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
-import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.backdropOriginalSource
 import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.backdropPathSource
@@ -16,6 +15,7 @@ import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.isBackdropNotAvail
 import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.posterDetailSource
 import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.profileDetailImageSource
 import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.profileImageSource
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCastItem
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

@@ -1,9 +1,9 @@
 package com.waffiq.bazz_movies.core.data.domain.usecase.listtv
 
 import com.waffiq.bazz_movies.core.data.testutils.BaseInteractorTest
-import com.waffiq.bazz_movies.core.data.testutils.TestVariables.TV_ID
-import com.waffiq.bazz_movies.core.data.testutils.TestVariables.USER_REGION
-import com.waffiq.bazz_movies.core.data.testutils.TestVariables.tvMediaItem
+import com.waffiq.bazz_movies.core.data.testutils.DummyData.TV_ID
+import com.waffiq.bazz_movies.core.data.testutils.DummyData.USER_REGION
+import com.waffiq.bazz_movies.core.data.testutils.DummyData.tvMediaItem
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before

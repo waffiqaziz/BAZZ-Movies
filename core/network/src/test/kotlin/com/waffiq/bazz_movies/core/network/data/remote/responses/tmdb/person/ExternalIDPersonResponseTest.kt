@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person
 
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.externalIDPersonResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.externalIDPersonResponse
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -9,7 +9,7 @@ class ExternalIDPersonResponseTest {
 
   @Test
   fun externalIDPersonResponse_withValidValues_setsPropertiesCorrectly() {
-    val externalIDPersonResponse = externalIDPersonResponseDump
+    val externalIDPersonResponse = externalIDPersonResponse
     assertEquals(114253, externalIDPersonResponse.id)
     assertEquals("/m/027xw9j", externalIDPersonResponse.freebaseMid)
     assertEquals(null, externalIDPersonResponse.freebaseId)

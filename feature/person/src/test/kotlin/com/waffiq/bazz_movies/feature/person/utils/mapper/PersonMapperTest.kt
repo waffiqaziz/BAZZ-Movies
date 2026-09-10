@@ -3,17 +3,17 @@ package com.waffiq.bazz_movies.feature.person.utils.mapper
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CombinedCreditResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.DetailPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ImagePersonResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ProfilesItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ProfilesResponseItem
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.CombinedCreditPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ImagePerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ProfilesItem
-import com.waffiq.bazz_movies.feature.person.testutils.DummyData.castItemResponse
+import com.waffiq.bazz_movies.feature.person.testutils.DummyData.castResponseItem
 import com.waffiq.bazz_movies.feature.person.testutils.DummyData.combinedCreditResponse
 import com.waffiq.bazz_movies.feature.person.testutils.DummyData.externalIDPersonResponse
-import com.waffiq.bazz_movies.feature.person.testutils.DummyData.listOfProfilesItemResponse
+import com.waffiq.bazz_movies.feature.person.testutils.DummyData.listOfProfilesResponseItem
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.mapCastList
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.mapImageList
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toCombinedCredit
@@ -52,7 +52,7 @@ class PersonMapperTest {
   @Test
   fun toCastItem_withValidValue_returnsCastItem() {
     val combinedCreditResponse = CombinedCreditResponse(
-      cast = listOf(castItemResponse),
+      cast = listOf(castResponseItem),
       crew = null,
     )
 
@@ -72,7 +72,7 @@ class PersonMapperTest {
       imdbId = "nm123456",
       name = "Silverst",
       gender = 2,
-      images = ImagePersonResponse(listOf(ProfilesItemResponse())),
+      images = ImagePersonResponse(listOf(ProfilesResponseItem())),
     )
     val detailPerson = response.toDetailPerson()
     assertEquals("nm123456", detailPerson.imdbId)
@@ -105,7 +105,7 @@ class PersonMapperTest {
 
   @Test
   fun toImagePerson_withValidValue_returnsImagePerson() {
-    val response = ImagePersonResponse(profiles = listOfProfilesItemResponse)
+    val response = ImagePersonResponse(profiles = listOfProfilesResponseItem)
     val imagePerson = response.toImagePerson()
     assertEquals(300, imagePerson.profiles?.get(0)?.width)
     assertEquals(450, imagePerson.profiles?.get(0)?.height)

@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search
 
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.personDump1
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.personSearchResponseItem1
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -12,7 +12,7 @@ class MultiSearchResponseTest {
     val multiSearchResponse = MultiSearchResponse(
       page = 1,
       totalPages = 20,
-      results = listOf(personDump1),
+      results = listOf(personSearchResponseItem1),
       totalResults = 1,
     )
     assertEquals(1, multiSearchResponse.page)

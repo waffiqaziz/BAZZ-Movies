@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.tv
 
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.statedResponseDump2
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.mediaStateResponse2
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testError404Response
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testErrorResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testGeneralExceptionResponse
@@ -21,9 +21,9 @@ class TvStateRemoteDataSourceTest : BaseMediaDataSourceTest() {
     runTest {
       testSuccessResponse(
         apiEndpoint = { mockTvApiService.getTvState(544321, "session_id") },
-        mockApiResponse = success(statedResponseDump2),
+        mockApiResponse = success(mediaStateResponse2),
         dataSourceEndpointCall = { tvRemoteDataSource.getTvState("session_id", 544321) },
-        expectedData = statedResponseDump2,
+        expectedData = mediaStateResponse2,
       )
     }
 

@@ -7,8 +7,8 @@ import com.squareup.moshi.JsonClass
 data class CombinedCreditResponse(
 
   @Json(name = "cast")
-  val cast: List<CastItemResponse>? = null,
+  val cast: List<CastResponseItem>? = null,
 
   @Json(name = "crew")
-  val crew: List<CrewItemResponse>? = null,
+  val crew: List<CrewResponseItem>? = null,
 )

@@ -6,7 +6,7 @@ import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_imdb
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_rotten_tomatoes
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.RatingsItem
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testOMDbDetails
+import com.waffiq.bazz_movies.feature.detail.testutils.DataDummy.testOMDbDetails
 import com.waffiq.bazz_movies.feature.detail.testutils.basetest.BaseMediaDetailActivityTest
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.flow.update

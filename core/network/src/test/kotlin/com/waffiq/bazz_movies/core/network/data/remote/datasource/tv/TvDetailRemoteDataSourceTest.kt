@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.tv
 
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.detailTvResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.detailTvResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -14,9 +14,9 @@ class TvDetailRemoteDataSourceTest : BaseMediaDataSourceTest() {
     runTest {
       TestHelper.testSuccessResponse(
         apiEndpoint = { mockTvApiService.getTvDetail(253905) },
-        mockApiResponse = success(detailTvResponseDump),
+        mockApiResponse = success(detailTvResponse),
         dataSourceEndpointCall = { tvRemoteDataSource.getTvDetail(253905) },
-        expectedData = detailTvResponseDump,
+        expectedData = detailTvResponse,
       )
     }
 

@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.search.utils
 
 import com.waffiq.bazz_movies.core.common.MediaType
 import com.waffiq.bazz_movies.core.common.value
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.KnownForItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.KnownForResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
 import com.waffiq.bazz_movies.feature.search.domain.model.KnownForItem
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
@@ -34,7 +34,7 @@ object SearchMapper {
       originalName = originalName,
     )
 
-  private fun KnownForItemResponse.toKnownForItem() =
+  private fun KnownForResponseItem.toKnownForItem() =
     KnownForItem(
       overview = overview,
       originalLanguage = originalLanguage,

@@ -5,7 +5,7 @@ import com.waffiq.bazz_movies.core.models.UserModel
 import com.waffiq.bazz_movies.core.network.data.remote.responses.countryip.CountryIPResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AccountDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AuthenticationResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AvatarItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AvatarResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AvatarTMDbResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.CreateSessionResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.GravatarResponse
@@ -64,14 +64,14 @@ object AccountMapper {
       includeAdult = includeAdult,
       iso31661 = iso31661,
       name = name,
-      avatarItem = avatarItemResponse?.toAvatarItem(),
+      avatarItem = avatar?.toAvatarItem(),
       id = id,
       iso6391 = iso6391,
       username = username,
     )
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  fun AvatarItemResponse.toAvatarItem() =
+  fun AvatarResponseItem.toAvatarItem() =
     AvatarItem(
       avatarTMDb = avatarTMDbResponse?.toAvatarTMDb(),
       gravatar = gravatarResponse?.toGravatar(),

@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.omdb
 
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.omdbDetailsResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.omdbDetailsResponse
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -9,26 +9,26 @@ class OMDbDetailsResponseTest {
 
   @Test
   fun oMDbDetailsResponse_withValidValues_setsRatingFieldsCorrectly() {
-    assertEquals("67", omdbDetailsResponseDump.metascore)
-    assertEquals("7.5", omdbDetailsResponseDump.imdbRating)
+    assertEquals("67", omdbDetailsResponse.metascore)
+    assertEquals("7.5", omdbDetailsResponse.imdbRating)
 
-    assertEquals("Internet Movie Database", omdbDetailsResponseDump.ratings?.get(0)?.source)
-    assertEquals("7.5/10", omdbDetailsResponseDump.ratings?.get(0)?.value)
+    assertEquals("Internet Movie Database", omdbDetailsResponse.ratings?.get(0)?.source)
+    assertEquals("7.5/10", omdbDetailsResponse.ratings?.get(0)?.value)
 
-    assertEquals("Rotten Tomatoes", omdbDetailsResponseDump.ratings?.get(1)?.source)
-    assertEquals("76%", omdbDetailsResponseDump.ratings?.get(1)?.value)
+    assertEquals("Rotten Tomatoes", omdbDetailsResponse.ratings?.get(1)?.source)
+    assertEquals("76%", omdbDetailsResponse.ratings?.get(1)?.value)
 
-    assertEquals("Metacritic", omdbDetailsResponseDump.ratings?.get(2)?.source)
-    assertEquals("67/100", omdbDetailsResponseDump.ratings?.get(2)?.value)
+    assertEquals("Metacritic", omdbDetailsResponse.ratings?.get(2)?.source)
+    assertEquals("67/100", omdbDetailsResponse.ratings?.get(2)?.value)
   }
 
   @Test
   fun oMDbDetailsResponse_withValidValues_setsBasicDetailsCorrectly() {
-    assertEquals("Avatar: The Way of Water", omdbDetailsResponseDump.title)
-    assertEquals("Action, Adventure, Fantasy", omdbDetailsResponseDump.genre)
-    assertEquals("James Cameron, Rick Jaffa, Amanda Silver", omdbDetailsResponseDump.writer)
-    assertEquals("James Cameron", omdbDetailsResponseDump.director)
-    assertEquals("Sam Worthington, Zoe Saldana, Sigourney Weaver", omdbDetailsResponseDump.actors)
+    assertEquals("Avatar: The Way of Water", omdbDetailsResponse.title)
+    assertEquals("Action, Adventure, Fantasy", omdbDetailsResponse.genre)
+    assertEquals("James Cameron, Rick Jaffa, Amanda Silver", omdbDetailsResponse.writer)
+    assertEquals("James Cameron", omdbDetailsResponse.director)
+    assertEquals("Sam Worthington, Zoe Saldana, Sigourney Weaver", omdbDetailsResponse.actors)
   }
 
   @Test
@@ -39,38 +39,38 @@ class OMDbDetailsResponseTest {
         familiar threat returns to finish what was previously started, Jake must work with Neytiri 
         and the army of the Na'vi race to protect their home.
       """.trimIndent(),
-      omdbDetailsResponseDump.plot,
+      omdbDetailsResponse.plot,
     )
   }
 
   @Test
   fun oMDbDetailsResponse_withValidValues_setsBoxOfficeInfoCorrectly() {
-    assertEquals("$684,075,767", omdbDetailsResponseDump.boxOffice)
-    assertEquals("Won 1 Oscar. 75 wins & 152 nominations total", omdbDetailsResponseDump.awards)
+    assertEquals("$684,075,767", omdbDetailsResponse.boxOffice)
+    assertEquals("Won 1 Oscar. 75 wins & 152 nominations total", omdbDetailsResponse.awards)
   }
 
   @Test
   fun oMDbDetailsResponse_withValidValues_setsTechnicalDetailsCorrectly() {
-    assertEquals("192 min", omdbDetailsResponseDump.runtime)
-    assertEquals("English", omdbDetailsResponseDump.language)
-    assertEquals("PG-13", omdbDetailsResponseDump.rated)
-    assertEquals("16 Dec 2022", omdbDetailsResponseDump.released)
-    assertEquals("United States", omdbDetailsResponseDump.country)
-    assertEquals("tt1630029", omdbDetailsResponseDump.imdbID)
-    assertEquals("519,728", omdbDetailsResponseDump.imdbVotes)
+    assertEquals("192 min", omdbDetailsResponse.runtime)
+    assertEquals("English", omdbDetailsResponse.language)
+    assertEquals("PG-13", omdbDetailsResponse.rated)
+    assertEquals("16 Dec 2022", omdbDetailsResponse.released)
+    assertEquals("United States", omdbDetailsResponse.country)
+    assertEquals("tt1630029", omdbDetailsResponse.imdbID)
+    assertEquals("519,728", omdbDetailsResponse.imdbVotes)
   }
 
   @Test
   fun oMDbDetailsResponse_withValidValues_setsPropertiesCorrectly() {
-    assertEquals("N/A", omdbDetailsResponseDump.website)
-    assertEquals("N/A", omdbDetailsResponseDump.production)
-    assertEquals("True", omdbDetailsResponseDump.response)
-    assertEquals("movie", omdbDetailsResponseDump.type)
-    assertEquals("N/A", omdbDetailsResponseDump.dVD)
-    assertEquals("2022", omdbDetailsResponseDump.year)
+    assertEquals("N/A", omdbDetailsResponse.website)
+    assertEquals("N/A", omdbDetailsResponse.production)
+    assertEquals("True", omdbDetailsResponse.response)
+    assertEquals("movie", omdbDetailsResponse.type)
+    assertEquals("N/A", omdbDetailsResponse.dVD)
+    assertEquals("2022", omdbDetailsResponse.year)
     assertEquals(
       "https://m.media-amazon.com/images/M/poster@._V1_SX300.jpg",
-      omdbDetailsResponseDump.poster,
+      omdbDetailsResponse.poster,
     )
   }
 
@@ -102,12 +102,5 @@ class OMDbDetailsResponseTest {
     assertNull(oMDbDetailsResponseNull.poster)
     assertNull(oMDbDetailsResponseNull.country)
     assertNull(oMDbDetailsResponseNull.genre)
-  }
-
-  @Test
-  fun ratingsItemResponse_withSomeNullValues_setsNullValueCorrectly() {
-    val ratingsItemResponse = RatingsItemResponse()
-    assertNull(ratingsItemResponse.value)
-    assertNull(ratingsItemResponse.source)
   }
 }

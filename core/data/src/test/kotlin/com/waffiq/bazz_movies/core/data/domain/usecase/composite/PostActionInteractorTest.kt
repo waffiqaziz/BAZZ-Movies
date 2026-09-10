@@ -2,9 +2,9 @@ package com.waffiq.bazz_movies.core.data.domain.usecase.composite
 
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.data.testutils.BaseInteractorTest
-import com.waffiq.bazz_movies.core.data.testutils.TestVariables.favoriteParams
-import com.waffiq.bazz_movies.core.data.testutils.TestVariables.postFavoriteWatchlistSuccess
-import com.waffiq.bazz_movies.core.data.testutils.TestVariables.watchlistParams
+import com.waffiq.bazz_movies.core.data.testutils.DummyData.favoriteParams
+import com.waffiq.bazz_movies.core.data.testutils.DummyData.postFavoriteWatchlistSuccess
+import com.waffiq.bazz_movies.core.data.testutils.DummyData.watchlistParams
 import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.core.models.UserModel
 import io.mockk.coEvery

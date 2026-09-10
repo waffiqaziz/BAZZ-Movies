@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.account
 
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DummyData.postResponseSuccessDump
+import com.waffiq.bazz_movies.core.network.testutils.DummyData.postResponseSuccess
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testError404Response
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testErrorResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testGeneralExceptionResponse
@@ -21,9 +21,9 @@ class AccountPostFavoriteRemoteDataSourceTest : BaseMediaDataSourceTest() {
     runTest {
       testSuccessResponse(
         apiEndpoint = { mockAccountApiService.postFavoriteTMDB(userId, sessionId, fav) },
-        mockApiResponse = success(postResponseSuccessDump),
+        mockApiResponse = success(postResponseSuccess),
         dataSourceEndpointCall = { accountRemoteDataSource.postFavorite(sessionId, fav, userId) },
-        expectedData = postResponseSuccessDump,
+        expectedData = postResponseSuccess,
       )
     }
 
