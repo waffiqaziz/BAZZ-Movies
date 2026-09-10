@@ -31,7 +31,7 @@ android {
 dependencies {
   implementation(project(":core:common"))
   implementation(project(":core:coroutines"))
-  implementation(project(":core:models"))
+  implementation(project(":core:model"))
 
   implementation(libs.androidx.paging.common)
   implementation(libs.kotlinx.coroutines.core)
