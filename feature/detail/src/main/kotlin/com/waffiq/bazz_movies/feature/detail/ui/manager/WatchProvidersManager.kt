@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
-import com.waffiq.bazz_movies.core.common.utils.Constants.JUSTWATCH_LINK_MAIN
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_LINK_MAIN
+import com.waffiq.bazz_movies.core.common.Constants.JUSTWATCH_LINK_MAIN
+import com.waffiq.bazz_movies.core.common.Constants.TMDB_LINK_MAIN
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_arrow_down
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_arrow_up
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_watch_providers
-import com.waffiq.bazz_movies.core.model.MediaItem
+import com.waffiq.bazz_movies.core.model.media.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding

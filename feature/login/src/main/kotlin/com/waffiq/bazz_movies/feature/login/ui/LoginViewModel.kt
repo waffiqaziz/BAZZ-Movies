@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
-import com.waffiq.bazz_movies.core.model.Outcome
-import com.waffiq.bazz_movies.core.model.UserModel
+import com.waffiq.bazz_movies.core.common.Constants.NAN
+import com.waffiq.bazz_movies.core.common.Outcome
+import com.waffiq.bazz_movies.core.model.user.UserModel
 import com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount.AuthTMDbAccountUseCase
 import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

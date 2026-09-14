@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.network.data.remote.pagingsources
 
 import androidx.paging.PagingSource
-import com.waffiq.bazz_movies.core.common.MediaType
+import com.waffiq.bazz_movies.core.model.media.MediaType
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.SearchApiService

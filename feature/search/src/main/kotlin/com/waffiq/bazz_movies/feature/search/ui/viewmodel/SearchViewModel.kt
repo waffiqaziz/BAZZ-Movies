@@ -4,10 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.waffiq.bazz_movies.core.common.MediaType
-import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
+import com.waffiq.bazz_movies.core.common.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.database.domain.usecase.SearchHistoryLocalDatabaseUseCase
-import com.waffiq.bazz_movies.core.model.SearchHistory
+import com.waffiq.bazz_movies.core.model.local.SearchHistory
+import com.waffiq.bazz_movies.core.model.media.MediaType
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.feature.search.domain.usecase.MultiSearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

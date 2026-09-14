@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.testmodule
 
-import com.waffiq.bazz_movies.core.model.UserModel
+import com.waffiq.bazz_movies.core.model.user.UserModel
 
 object DummyData {
 

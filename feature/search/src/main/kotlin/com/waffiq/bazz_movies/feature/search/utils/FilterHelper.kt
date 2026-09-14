@@ -1,10 +1,10 @@
 package com.waffiq.bazz_movies.feature.search.utils
 
 import androidx.annotation.StringRes
-import com.waffiq.bazz_movies.core.common.MediaType
 import com.waffiq.bazz_movies.core.designsystem.R.string.movie
 import com.waffiq.bazz_movies.core.designsystem.R.string.person
 import com.waffiq.bazz_movies.core.designsystem.R.string.tv_series
+import com.waffiq.bazz_movies.core.model.media.MediaType
 
 @StringRes
 fun MediaType.labelRes(): Int =

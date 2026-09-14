@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.navigation.utils
 
-import com.waffiq.bazz_movies.core.common.MediaType.Companion.fromValue
-import com.waffiq.bazz_movies.core.common.value
-import com.waffiq.bazz_movies.core.model.MediaItem
+import com.waffiq.bazz_movies.core.model.media.MediaItem
+import com.waffiq.bazz_movies.core.model.media.MediaType.Companion.fromValue
+import com.waffiq.bazz_movies.core.model.media.value
 import com.waffiq.bazz_movies.navigation.MediaArgs
 
 fun MediaArgs.toMediaItem() =

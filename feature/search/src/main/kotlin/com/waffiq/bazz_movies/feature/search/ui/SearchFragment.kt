@@ -33,13 +33,13 @@ import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.badge.ExperimentalBadgeUtils
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.core.common.Genre
-import com.waffiq.bazz_movies.core.common.MediaType
-import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_LONG
+import com.waffiq.bazz_movies.core.common.Constants.DEBOUNCE_LONG
 import com.waffiq.bazz_movies.core.designsystem.R.color.yellow
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_cross
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_left_icon
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
+import com.waffiq.bazz_movies.core.model.media.Genre
+import com.waffiq.bazz_movies.core.model.media.MediaType
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.utils.FlowUtils.launchOnStarted

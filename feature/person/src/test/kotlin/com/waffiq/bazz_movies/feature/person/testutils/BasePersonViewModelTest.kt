@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.person.testutils
 
-import com.waffiq.bazz_movies.core.model.Outcome
+import com.waffiq.bazz_movies.core.common.Outcome
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.CombinedCreditPerson

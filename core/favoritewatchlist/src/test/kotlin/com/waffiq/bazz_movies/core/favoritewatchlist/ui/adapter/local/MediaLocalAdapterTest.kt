@@ -3,7 +3,6 @@ package com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local
 import android.os.Looper
 import android.widget.FrameLayout
 import com.google.android.material.listitem.SwipeableListItem
-import com.waffiq.bazz_movies.core.common.MediaType.Companion.fromValue
 import com.waffiq.bazz_movies.core.designsystem.R.id.container_result
 import com.waffiq.bazz_movies.core.designsystem.R.id.reveal_layout_end
 import com.waffiq.bazz_movies.core.designsystem.R.id.reveal_layout_start
@@ -11,6 +10,7 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.BaseMediaLocalAda
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.INA_MOVIE_TITLE
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.INA_MOVIE_TITLE2
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.favorite
+import com.waffiq.bazz_movies.core.model.media.MediaType.Companion.fromValue
 import com.waffiq.bazz_movies.navigation.MediaArgs
 import io.mockk.slot
 import io.mockk.verify

@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.core.database.data.datasource
 import androidx.room.Room.inMemoryDatabaseBuilder
 import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.database.data.room.FavoriteDao
 import com.waffiq.bazz_movies.core.database.data.room.FavoriteDatabase
 import com.waffiq.bazz_movies.core.database.testutils.DummyData.favoriteMovieEntity

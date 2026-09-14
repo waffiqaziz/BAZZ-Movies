@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.feature.search.ui.adapter
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.common.MediaType
 import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaNoSwipeBinding
+import com.waffiq.bazz_movies.core.model.media.MediaType
 import com.waffiq.bazz_movies.feature.search.domain.model.KnownForItem
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.feature.search.testutils.BaseAdapterTest

@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.core.data.testutils
 
 import androidx.paging.PagingData
 import app.cash.turbine.test
+import com.waffiq.bazz_movies.core.common.Outcome
 import com.waffiq.bazz_movies.core.data.domain.repository.IAccountRepository
 import com.waffiq.bazz_movies.core.data.domain.repository.IAsianRepository
 import com.waffiq.bazz_movies.core.data.domain.repository.IMoviesRepository
@@ -11,8 +12,7 @@ import com.waffiq.bazz_movies.core.data.testutils.DummyData.ERROR_MESSAGE
 import com.waffiq.bazz_movies.core.data.testutils.DummyData.USER_REGION
 import com.waffiq.bazz_movies.core.data.testutils.DummyData.movieMediaItem
 import com.waffiq.bazz_movies.core.data.testutils.DummyData.tvMediaItem
-import com.waffiq.bazz_movies.core.model.MediaItem
-import com.waffiq.bazz_movies.core.model.Outcome
+import com.waffiq.bazz_movies.core.model.media.MediaItem
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ
 import com.waffiq.bazz_movies.core.test.UnconfinedDispatcherRule
 import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository

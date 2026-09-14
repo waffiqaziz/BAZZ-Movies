@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.BaseAdapterPagingTest
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.movieData
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.SwipeConfig

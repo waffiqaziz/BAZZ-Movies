@@ -5,13 +5,13 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.listitem.ListItemCardView
-import com.waffiq.bazz_movies.core.common.MediaType.Companion.fromValue
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W185
+import com.waffiq.bazz_movies.core.common.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaSwipeBinding
-import com.waffiq.bazz_movies.core.model.Favorite
+import com.waffiq.bazz_movies.core.model.local.Favorite
+import com.waffiq.bazz_movies.core.model.media.MediaType.Companion.fromValue
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
 import com.waffiq.bazz_movies.core.utils.GenreHelper.toListGenreIds
 import com.waffiq.bazz_movies.core.utils.RatingHelper.ratingHandler

@@ -1,9 +1,9 @@
 package com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount
 
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.model.Outcome
-import com.waffiq.bazz_movies.core.model.PostResult
-import com.waffiq.bazz_movies.core.model.UserModel
+import com.waffiq.bazz_movies.core.common.Outcome
+import com.waffiq.bazz_movies.core.model.user.PostResult
+import com.waffiq.bazz_movies.core.model.user.UserModel
 import com.waffiq.bazz_movies.core.user.domain.model.account.AccountDetails
 import com.waffiq.bazz_movies.core.user.domain.model.account.Authentication
 import com.waffiq.bazz_movies.core.user.domain.model.account.AvatarItem

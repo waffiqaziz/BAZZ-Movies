@@ -1,17 +1,17 @@
 package com.waffiq.bazz_movies.core.utils
 
 import android.content.Context
-import com.waffiq.bazz_movies.core.common.utils.Constants.NOT_AVAILABLE
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_W300
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W185
+import com.waffiq.bazz_movies.core.common.Constants.NOT_AVAILABLE
+import com.waffiq.bazz_movies.core.common.Constants.TMDB_IMG_LINK_BACKDROP_W300
+import com.waffiq.bazz_movies.core.common.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
-import com.waffiq.bazz_movies.core.model.Dateable
-import com.waffiq.bazz_movies.core.model.Imageble
-import com.waffiq.bazz_movies.core.model.MediaItem
-import com.waffiq.bazz_movies.core.model.Nameable
-import com.waffiq.bazz_movies.core.model.Titleable
+import com.waffiq.bazz_movies.core.model.common.Dateable
+import com.waffiq.bazz_movies.core.model.common.Imageble
+import com.waffiq.bazz_movies.core.model.common.Nameable
+import com.waffiq.bazz_movies.core.model.common.Titleable
+import com.waffiq.bazz_movies.core.model.media.MediaItem
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
 import com.waffiq.bazz_movies.core.utils.DateFormatter.formatDate
 import java.text.NumberFormat

@@ -13,12 +13,12 @@ import androidx.core.view.WindowCompat.enableEdgeToEdge
 import androidx.fragment.app.setFragmentResult
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
-import com.waffiq.bazz_movies.core.common.MediaType
 import com.waffiq.bazz_movies.core.designsystem.R.color.yellow_alpha_20
 import com.waffiq.bazz_movies.core.designsystem.R.dimen.stroke
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_tick
 import com.waffiq.bazz_movies.core.designsystem.R.font.nunito_sans_bold
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
+import com.waffiq.bazz_movies.core.model.media.MediaType
 import com.waffiq.bazz_movies.feature.search.R.color.selector_chip_background
 import com.waffiq.bazz_movies.feature.search.R.color.selector_chip_stroke
 import com.waffiq.bazz_movies.feature.search.R.color.selector_chip_text

@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.user.domain.usecase.userpreference
 
-import com.waffiq.bazz_movies.core.model.UserModel
+import com.waffiq.bazz_movies.core.model.user.UserModel
 import kotlinx.coroutines.flow.Flow
 
 interface UserPrefUseCase {

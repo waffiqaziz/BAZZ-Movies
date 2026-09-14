@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.feature.detail.ui.adapter
 
 import android.os.Looper
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.databinding.ChipLayoutBinding
 import com.waffiq.bazz_movies.core.utils.GenreHelper.getGenreName
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseAdapterTest

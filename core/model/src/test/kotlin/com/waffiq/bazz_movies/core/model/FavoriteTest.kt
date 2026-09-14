@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.core.model
 
+import com.waffiq.bazz_movies.core.model.local.Favorite
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue

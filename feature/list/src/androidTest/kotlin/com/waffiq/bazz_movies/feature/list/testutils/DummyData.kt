@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.list.testutils
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.model.MediaItem
+import com.waffiq.bazz_movies.core.model.media.MediaItem
 
 object DummyData {
 

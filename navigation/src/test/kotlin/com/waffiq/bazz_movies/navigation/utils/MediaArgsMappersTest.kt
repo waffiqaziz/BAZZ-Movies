@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.navigation.utils
 
-import com.waffiq.bazz_movies.core.common.MediaType.Companion.fromValue
+import com.waffiq.bazz_movies.core.model.media.MediaType.Companion.fromValue
 import com.waffiq.bazz_movies.navigation.testutils.DummyData.mediaArgs
 import org.junit.Assert.assertEquals
 import org.junit.Test

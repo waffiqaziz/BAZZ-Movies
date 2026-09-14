@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.search.utils
 
-import com.waffiq.bazz_movies.core.common.MediaType.Companion.fromValue
+import com.waffiq.bazz_movies.core.model.media.MediaType.Companion.fromValue
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.navigation.MediaArgs
 import com.waffiq.bazz_movies.navigation.PersonArgs

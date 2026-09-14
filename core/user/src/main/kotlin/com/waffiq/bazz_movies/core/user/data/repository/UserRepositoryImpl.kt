@@ -1,10 +1,10 @@
 package com.waffiq.bazz_movies.core.user.data.repository
 
+import com.waffiq.bazz_movies.core.common.Outcome
 import com.waffiq.bazz_movies.core.mapper.NetworkResultMapper.toOutcome
 import com.waffiq.bazz_movies.core.mapper.PostMapper.toPostResult
-import com.waffiq.bazz_movies.core.model.Outcome
-import com.waffiq.bazz_movies.core.model.PostResult
-import com.waffiq.bazz_movies.core.model.UserModel
+import com.waffiq.bazz_movies.core.model.user.PostResult
+import com.waffiq.bazz_movies.core.model.user.UserModel
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.auth.AuthRemoteDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.country.CountryRemoteDataSource
 import com.waffiq.bazz_movies.core.user.data.model.UserPreference

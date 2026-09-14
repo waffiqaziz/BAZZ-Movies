@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.favorite.domain.usecase.composite
 
-import com.waffiq.bazz_movies.core.model.Outcome
+import com.waffiq.bazz_movies.core.common.Outcome
 import com.waffiq.bazz_movies.feature.favorite.domain.model.WatchlistActionResult
 import kotlinx.coroutines.flow.Flow
 

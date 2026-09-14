@@ -1,11 +1,11 @@
 package com.waffiq.bazz_movies.core.data.data.repository
 
 import app.cash.turbine.test
+import com.waffiq.bazz_movies.core.common.Outcome
 import com.waffiq.bazz_movies.core.data.testutils.BaseRepositoryTest
 import com.waffiq.bazz_movies.core.data.testutils.DummyData.mediaStateResponse
 import com.waffiq.bazz_movies.core.data.testutils.DummyData.postMovieResponseSuccess
 import com.waffiq.bazz_movies.core.mapper.MediaStateMapper.toMediaState
-import com.waffiq.bazz_movies.core.model.Outcome
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.movie.MovieRemoteDataSource
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.testSuccessfulPagingData

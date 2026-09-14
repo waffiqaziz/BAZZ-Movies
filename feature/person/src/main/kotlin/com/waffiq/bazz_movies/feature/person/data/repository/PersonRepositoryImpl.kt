@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.person.data.repository
 
+import com.waffiq.bazz_movies.core.common.Outcome
 import com.waffiq.bazz_movies.core.mapper.NetworkResultMapper.toOutcome
-import com.waffiq.bazz_movies.core.model.Outcome
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.person.PersonRemoteDataSource
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.repository.IPersonRepository

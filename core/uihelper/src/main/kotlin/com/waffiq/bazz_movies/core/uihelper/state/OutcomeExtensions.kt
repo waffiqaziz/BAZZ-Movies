@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.uihelper.state
 
-import com.waffiq.bazz_movies.core.model.Outcome
+import com.waffiq.bazz_movies.core.common.Outcome
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

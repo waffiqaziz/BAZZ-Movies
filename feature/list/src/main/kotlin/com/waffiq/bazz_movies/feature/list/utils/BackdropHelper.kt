@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.list.utils
 
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
 
 @Suppress("MagicNumber", "CyclomaticComplexMethod")
 object BackdropHelper {

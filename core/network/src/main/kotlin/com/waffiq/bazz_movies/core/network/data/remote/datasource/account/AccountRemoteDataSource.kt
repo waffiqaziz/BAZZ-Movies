@@ -1,9 +1,9 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.account
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.common.MediaType
-import com.waffiq.bazz_movies.core.common.value
 import com.waffiq.bazz_movies.core.coroutines.IoDispatcher
+import com.waffiq.bazz_movies.core.model.media.MediaType
+import com.waffiq.bazz_movies.core.model.media.value
 import com.waffiq.bazz_movies.core.network.data.remote.constants.AccountMediaCategory
 import com.waffiq.bazz_movies.core.network.data.remote.constants.value
 import com.waffiq.bazz_movies.core.network.data.remote.model.FavoriteRequest

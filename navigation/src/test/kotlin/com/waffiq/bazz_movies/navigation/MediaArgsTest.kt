@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.navigation
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.waffiq.bazz_movies.core.common.MediaType
+import com.waffiq.bazz_movies.core.model.media.MediaType
 import com.waffiq.bazz_movies.navigation.testutils.DummyData.mediaArgs
 import com.waffiq.bazz_movies.navigation.testutils.DummyData.mediaArgsNull
 import junit.framework.TestCase.assertEquals

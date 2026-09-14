@@ -2,8 +2,8 @@ package com.waffiq.bazz_movies.feature.search.data.repository
 
 import androidx.paging.PagingData
 import androidx.paging.testing.asSnapshot
-import com.waffiq.bazz_movies.core.common.MediaType
-import com.waffiq.bazz_movies.core.common.value
+import com.waffiq.bazz_movies.core.model.media.MediaType
+import com.waffiq.bazz_movies.core.model.media.value
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.search.SearchRemoteDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule

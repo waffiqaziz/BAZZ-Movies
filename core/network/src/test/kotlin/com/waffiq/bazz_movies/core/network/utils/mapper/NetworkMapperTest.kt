@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.network.utils.mapper
 
-import com.waffiq.bazz_movies.core.model.FavoriteParams
-import com.waffiq.bazz_movies.core.model.WatchlistParams
+import com.waffiq.bazz_movies.core.model.user.FavoriteParams
+import com.waffiq.bazz_movies.core.model.user.WatchlistParams
 import com.waffiq.bazz_movies.core.network.data.remote.model.FavoriteRequest
 import com.waffiq.bazz_movies.core.network.data.remote.model.WatchlistRequest
 import com.waffiq.bazz_movies.core.network.utils.mapper.NetworkMapper.toFavoriteRequest

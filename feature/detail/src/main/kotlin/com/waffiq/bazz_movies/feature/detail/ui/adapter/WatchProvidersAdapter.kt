@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_ORIGINAL
+import com.waffiq.bazz_movies.core.common.Constants.TMDB_IMG_LINK_ORIGINAL
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.feature.detail.databinding.ItemWatchProviderBinding
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.Provider
