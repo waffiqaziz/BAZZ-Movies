@@ -5,8 +5,8 @@ import android.os.Bundle
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.waffiq.bazz_movies.core.common.utils.Constants.BAZZ_MOVIES_LINK
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_LINK_MAIN
+import com.waffiq.bazz_movies.core.common.Constants.BAZZ_MOVIES_LINK
+import com.waffiq.bazz_movies.core.common.Constants.TMDB_LINK_MAIN
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.core.uihelper.utils.InsetHelper.setupWindowInsets
 import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher

@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.data.repository
 
+import com.waffiq.bazz_movies.core.common.Outcome
 import com.waffiq.bazz_movies.core.mapper.NetworkResultMapper.toOutcome
-import com.waffiq.bazz_movies.core.model.Outcome
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.movie.MovieRemoteDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.omdb.OmdbRemoteDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.tv.TvRemoteDataSource

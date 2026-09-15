@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_movies_currently_playing
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_upcoming_movies

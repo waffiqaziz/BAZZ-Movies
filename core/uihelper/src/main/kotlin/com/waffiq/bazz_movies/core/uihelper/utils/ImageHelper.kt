@@ -1,16 +1,16 @@
 package com.waffiq.bazz_movies.core.uihelper.utils
 
-import com.waffiq.bazz_movies.core.common.utils.Constants.NOT_AVAILABLE
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_ORIGINAL
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W300
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W500
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W780
+import com.waffiq.bazz_movies.core.common.Constants.NOT_AVAILABLE
+import com.waffiq.bazz_movies.core.common.Constants.TMDB_IMG_LINK_BACKDROP_ORIGINAL
+import com.waffiq.bazz_movies.core.common.Constants.TMDB_IMG_LINK_POSTER_W300
+import com.waffiq.bazz_movies.core.common.Constants.TMDB_IMG_LINK_POSTER_W500
+import com.waffiq.bazz_movies.core.common.Constants.TMDB_IMG_LINK_POSTER_W780
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_no_profile
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_no_profile_rounded
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
-import com.waffiq.bazz_movies.core.model.Imageble
-import com.waffiq.bazz_movies.core.model.Profilable
+import com.waffiq.bazz_movies.core.model.common.Imageble
+import com.waffiq.bazz_movies.core.model.common.Profilable
 
 object ImageHelper {
 

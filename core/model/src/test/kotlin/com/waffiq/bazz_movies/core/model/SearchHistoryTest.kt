@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.core.model
 
+import com.waffiq.bazz_movies.core.model.local.SearchHistory
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 

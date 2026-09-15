@@ -7,13 +7,13 @@ import android.widget.FrameLayout
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemListBinding
 import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaNoSwipeBinding
 import com.waffiq.bazz_movies.core.mapper.MediaItemMapper.toMediaItem
-import com.waffiq.bazz_movies.core.model.MediaItem
+import com.waffiq.bazz_movies.core.model.media.MediaItem
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.feature.list.testutils.DummyData.fakeMovieMediaItemPagingData
 import com.waffiq.bazz_movies.feature.list.testutils.DummyData.mediaMovieItem

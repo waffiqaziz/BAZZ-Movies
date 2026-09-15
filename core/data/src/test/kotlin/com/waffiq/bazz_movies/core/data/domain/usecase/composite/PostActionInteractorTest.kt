@@ -1,12 +1,12 @@
 package com.waffiq.bazz_movies.core.data.domain.usecase.composite
 
 import app.cash.turbine.test
+import com.waffiq.bazz_movies.core.common.Outcome
 import com.waffiq.bazz_movies.core.data.testutils.BaseInteractorTest
 import com.waffiq.bazz_movies.core.data.testutils.DummyData.favoriteParams
 import com.waffiq.bazz_movies.core.data.testutils.DummyData.postFavoriteWatchlistSuccess
 import com.waffiq.bazz_movies.core.data.testutils.DummyData.watchlistParams
-import com.waffiq.bazz_movies.core.model.Outcome
-import com.waffiq.bazz_movies.core.model.UserModel
+import com.waffiq.bazz_movies.core.model.user.UserModel
 import io.mockk.coEvery
 import io.mockk.coVerify
 import junit.framework.TestCase.assertEquals

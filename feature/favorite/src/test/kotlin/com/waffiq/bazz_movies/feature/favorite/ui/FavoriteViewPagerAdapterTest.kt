@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.feature.favorite.ui
 
 import androidx.fragment.app.FragmentActivity
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.feature.favorite.ui.fragment.FavoriteChildFragment
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

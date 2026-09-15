@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.feature.search.ui
 
 import androidx.test.platform.app.InstrumentationRegistry
-import com.waffiq.bazz_movies.core.common.MediaType
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
+import com.waffiq.bazz_movies.core.model.media.MediaType
 import com.waffiq.bazz_movies.feature.search.R.id.action_filter
 import com.waffiq.bazz_movies.feature.search.testutils.BaseSearchFragmentTest
 import dagger.hilt.android.testing.HiltAndroidTest

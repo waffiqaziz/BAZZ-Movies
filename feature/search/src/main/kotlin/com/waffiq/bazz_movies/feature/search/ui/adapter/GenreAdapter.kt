@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.waffiq.bazz_movies.core.common.Genre
-import com.waffiq.bazz_movies.core.common.MediaType
-import com.waffiq.bazz_movies.core.common.value
 import com.waffiq.bazz_movies.core.designsystem.R.array.genre_tile_colors
+import com.waffiq.bazz_movies.core.model.media.Genre
+import com.waffiq.bazz_movies.core.model.media.MediaType
+import com.waffiq.bazz_movies.core.model.media.value
 import com.waffiq.bazz_movies.feature.search.databinding.ItemGenreListBinding
 import com.waffiq.bazz_movies.feature.search.utils.SearchHelper.iconRes
 import com.waffiq.bazz_movies.navigation.INavigator

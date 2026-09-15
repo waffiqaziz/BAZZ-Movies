@@ -1,10 +1,10 @@
 package com.waffiq.bazz_movies.core.data.domain.usecase.listmovie
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
+import com.waffiq.bazz_movies.core.common.Constants.NAN
 import com.waffiq.bazz_movies.core.data.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.core.data.domain.repository.ITrendingRepository
-import com.waffiq.bazz_movies.core.model.MediaItem
+import com.waffiq.bazz_movies.core.model.media.MediaItem
 import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged

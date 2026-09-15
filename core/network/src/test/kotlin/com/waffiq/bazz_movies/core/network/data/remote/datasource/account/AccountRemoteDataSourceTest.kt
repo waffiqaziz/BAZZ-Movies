@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.account
 
-import com.waffiq.bazz_movies.core.common.MediaType
-import com.waffiq.bazz_movies.core.common.value
+import com.waffiq.bazz_movies.core.model.media.MediaType
+import com.waffiq.bazz_movies.core.model.media.value
 import com.waffiq.bazz_movies.core.network.data.remote.constants.AccountMediaCategory
 import com.waffiq.bazz_movies.core.network.data.remote.constants.SortBy.CREATED_AT_ASC
 import com.waffiq.bazz_movies.core.network.data.remote.constants.value

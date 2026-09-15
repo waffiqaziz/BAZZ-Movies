@@ -8,9 +8,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingDataAdapter
-import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
+import com.waffiq.bazz_movies.core.common.Constants.DEBOUNCE_SHORT
+import com.waffiq.bazz_movies.core.common.Outcome
 import com.waffiq.bazz_movies.core.favoritewatchlist.databinding.FragmentChildBinding
-import com.waffiq.bazz_movies.core.model.Outcome
 import com.waffiq.bazz_movies.core.utils.PagingLoadStateHelper.pagingErrorHandling
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest

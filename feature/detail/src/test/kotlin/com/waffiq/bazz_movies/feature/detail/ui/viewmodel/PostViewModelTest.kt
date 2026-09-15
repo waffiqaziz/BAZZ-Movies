@@ -1,9 +1,9 @@
 package com.waffiq.bazz_movies.feature.detail.ui.viewmodel
 
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.model.FavoriteParams
-import com.waffiq.bazz_movies.core.model.WatchlistParams
+import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.model.user.FavoriteParams
+import com.waffiq.bazz_movies.core.model.user.WatchlistParams
 import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailViewModelTest
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.SESSION_ID

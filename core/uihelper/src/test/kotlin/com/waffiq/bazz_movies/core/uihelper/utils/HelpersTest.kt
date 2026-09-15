@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
-import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_VERY_LONG
+import com.waffiq.bazz_movies.core.common.Constants.DEBOUNCE_VERY_LONG
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.animFadeOutLong
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView

@@ -15,7 +15,7 @@ import androidx.paging.LoadStates
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
-import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
+import com.waffiq.bazz_movies.core.common.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.illustration_error
 import com.waffiq.bazz_movies.core.favoritewatchlist.R.id.illustration_no_data_view

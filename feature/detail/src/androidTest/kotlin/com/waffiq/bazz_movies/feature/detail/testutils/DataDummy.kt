@@ -1,10 +1,10 @@
 package com.waffiq.bazz_movies.feature.detail.testutils
 
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.model.MediaItem
-import com.waffiq.bazz_movies.core.model.MediaState
-import com.waffiq.bazz_movies.core.model.Rated
-import com.waffiq.bazz_movies.core.model.UserModel
+import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.model.media.MediaItem
+import com.waffiq.bazz_movies.core.model.user.MediaState
+import com.waffiq.bazz_movies.core.model.user.Rated
+import com.waffiq.bazz_movies.core.model.user.UserModel
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCastItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem

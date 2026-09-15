@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.database.utils
 
 import com.waffiq.bazz_movies.core.database.data.model.SearchHistoryEntity
-import com.waffiq.bazz_movies.core.model.SearchHistory
+import com.waffiq.bazz_movies.core.model.local.SearchHistory
 
 object SearchHistoryMapper {
 

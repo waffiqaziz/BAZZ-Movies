@@ -11,7 +11,7 @@ import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.listitem.ListItemViewHolder
-import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_LONG
+import com.waffiq.bazz_movies.core.common.Constants.DEBOUNCE_LONG
 import com.waffiq.bazz_movies.core.designsystem.R.color.gray_400
 import com.waffiq.bazz_movies.core.designsystem.R.color.gray_800
 import com.waffiq.bazz_movies.core.designsystem.R.color.white

@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.navigation.testutils
 
-import com.waffiq.bazz_movies.core.common.MediaType
+import com.waffiq.bazz_movies.core.model.media.MediaType
 import com.waffiq.bazz_movies.navigation.MediaArgs
 import com.waffiq.bazz_movies.navigation.PersonArgs
 

@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.search.utils
 
-import com.waffiq.bazz_movies.core.common.MediaType
-import com.waffiq.bazz_movies.core.common.value
+import com.waffiq.bazz_movies.core.model.media.MediaType
+import com.waffiq.bazz_movies.core.model.media.value
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.KnownForResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
 import com.waffiq.bazz_movies.feature.search.domain.model.KnownForItem

@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import com.waffiq.bazz_movies.core.common.utils.Constants.ANIM_DURATION
+import com.waffiq.bazz_movies.core.common.Constants.ANIM_DURATION
 import com.waffiq.bazz_movies.core.designsystem.R.font.nunito_sans_regular
 import com.waffiq.bazz_movies.core.designsystem.R.string.guest_user
 import com.waffiq.bazz_movies.core.designsystem.R.string.login_as_guest_successful

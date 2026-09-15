@@ -7,8 +7,7 @@ import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.Intents.intending
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.platform.app.InstrumentationRegistry
-import com.waffiq.bazz_movies.core.common.MediaType
-import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
+import com.waffiq.bazz_movies.core.common.Constants.NAN
 import com.waffiq.bazz_movies.core.designsystem.R.string.cancel
 import com.waffiq.bazz_movies.core.designsystem.R.string.submit
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions.clickItemAt
@@ -23,6 +22,7 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNo
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isVisible
+import com.waffiq.bazz_movies.core.model.media.MediaType
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_back
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_favorite
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_more_recommendation

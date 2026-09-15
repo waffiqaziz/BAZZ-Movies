@@ -4,8 +4,7 @@ import android.content.Context
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
-import com.waffiq.bazz_movies.core.common.Genre
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W185
+import com.waffiq.bazz_movies.core.common.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_genre_action
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_genre_adventure
@@ -31,7 +30,8 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_genre_tv_movie
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_genre_tv_show
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_genre_war
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_genre_western
-import com.waffiq.bazz_movies.core.model.ProfileImageable
+import com.waffiq.bazz_movies.core.model.common.ProfileImageable
+import com.waffiq.bazz_movies.core.model.media.Genre
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.utils.LayoutHelper.initLinearLayoutManagerVertical
 import com.waffiq.bazz_movies.feature.search.domain.model.KnownForItem

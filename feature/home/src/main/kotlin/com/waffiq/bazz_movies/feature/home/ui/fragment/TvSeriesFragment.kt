@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_popular_series
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_series_airing_this_week

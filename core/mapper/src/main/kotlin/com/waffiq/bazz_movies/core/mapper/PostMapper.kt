@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.mapper
 
-import com.waffiq.bazz_movies.core.model.PostResult
+import com.waffiq.bazz_movies.core.model.user.PostResult
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 
 object PostMapper {

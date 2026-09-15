@@ -6,10 +6,10 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
-import com.waffiq.bazz_movies.core.model.MediaItem
+import com.waffiq.bazz_movies.core.model.media.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel

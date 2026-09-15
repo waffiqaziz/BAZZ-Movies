@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.database.data.repository
 
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.database.data.datasource.FavoriteLocalDataSource
 import com.waffiq.bazz_movies.core.database.testutils.DummyData.favoriteMovie
 import com.waffiq.bazz_movies.core.database.testutils.DummyData.favoriteMovieEntity
@@ -10,7 +10,7 @@ import com.waffiq.bazz_movies.core.database.testutils.DummyData.watchlistMovieEn
 import com.waffiq.bazz_movies.core.database.testutils.DummyData.watchlistTvEntity
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.database.utils.FavoriteMapper.toFavoriteEntity
-import com.waffiq.bazz_movies.core.model.Favorite
+import com.waffiq.bazz_movies.core.model.local.Favorite
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify

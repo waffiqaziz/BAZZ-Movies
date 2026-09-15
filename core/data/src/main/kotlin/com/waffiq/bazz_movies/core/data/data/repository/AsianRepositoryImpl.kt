@@ -2,10 +2,10 @@ package com.waffiq.bazz_movies.core.data.data.repository
 
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.data.domain.repository.IAsianRepository
 import com.waffiq.bazz_movies.core.mapper.MediaItemMapper.toMediaItem
-import com.waffiq.bazz_movies.core.model.MediaItem
+import com.waffiq.bazz_movies.core.model.media.MediaItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.asian.AsianRemoteDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

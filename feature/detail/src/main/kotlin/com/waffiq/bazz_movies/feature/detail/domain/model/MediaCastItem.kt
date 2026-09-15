@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.domain.model
 
-import com.waffiq.bazz_movies.core.model.Nameable
-import com.waffiq.bazz_movies.core.model.Profilable
+import com.waffiq.bazz_movies.core.model.common.Nameable
+import com.waffiq.bazz_movies.core.model.common.Profilable
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.RolesItem
 
 data class MediaCastItem(

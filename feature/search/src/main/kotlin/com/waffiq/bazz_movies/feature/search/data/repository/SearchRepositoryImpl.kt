@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.search.data.repository
 
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.waffiq.bazz_movies.core.common.MediaType
+import com.waffiq.bazz_movies.core.model.media.MediaType
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.search.SearchRemoteDataSource
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.feature.search.domain.repository.ISearchRepository

@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging
 
 import android.widget.FrameLayout
 import com.google.android.material.listitem.SwipeableListItem
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.id.container_result
 import com.waffiq.bazz_movies.core.designsystem.R.id.reveal_layout_end
 import com.waffiq.bazz_movies.core.designsystem.R.id.reveal_layout_start

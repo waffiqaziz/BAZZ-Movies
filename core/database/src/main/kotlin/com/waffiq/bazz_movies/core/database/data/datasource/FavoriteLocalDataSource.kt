@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.database.data.datasource
 
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.coroutines.IoDispatcher
 import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
 import com.waffiq.bazz_movies.core.database.data.room.FavoriteDao

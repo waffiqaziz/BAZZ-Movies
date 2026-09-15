@@ -1,13 +1,13 @@
 package com.waffiq.bazz_movies.feature.watchlist.domain.usecase.composite
 
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Outcome
 import com.waffiq.bazz_movies.core.data.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.data.domain.usecase.composite.MediaStateUseCase
 import com.waffiq.bazz_movies.core.data.domain.usecase.composite.PostActionUseCase
-import com.waffiq.bazz_movies.core.model.FavoriteParams
-import com.waffiq.bazz_movies.core.model.MediaState
-import com.waffiq.bazz_movies.core.model.Outcome
+import com.waffiq.bazz_movies.core.model.user.FavoriteParams
+import com.waffiq.bazz_movies.core.model.user.MediaState
 import com.waffiq.bazz_movies.feature.watchlist.domain.model.FavoriteActionResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapConcat

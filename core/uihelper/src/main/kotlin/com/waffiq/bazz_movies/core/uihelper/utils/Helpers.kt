@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_VERY_LONG
+import com.waffiq.bazz_movies.core.common.Constants.DEBOUNCE_VERY_LONG
 import kotlin.collections.forEach
 
 /**

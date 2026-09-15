@@ -54,7 +54,7 @@ class ListArgsTest {
     parcel.setDataPosition(0)
     val fromParcel = creator.createFromParcel(parcel)
 
-    TestCase.assertEquals(args, fromParcel)
+    assertEquals(args, fromParcel)
     parcel.recycle()
   }
 

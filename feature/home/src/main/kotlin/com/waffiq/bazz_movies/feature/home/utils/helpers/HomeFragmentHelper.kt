@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
-import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_VERY_LONG
+import com.waffiq.bazz_movies.core.common.Constants.DEBOUNCE_SHORT
+import com.waffiq.bazz_movies.core.common.Constants.DEBOUNCE_VERY_LONG
 import com.waffiq.bazz_movies.core.designsystem.databinding.IllustrationErrorBinding
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.uihelper.utils.CustomSnapHelper

@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.feature.detail.ui
 
-import com.waffiq.bazz_movies.core.common.MediaType
-import com.waffiq.bazz_movies.core.common.utils.Constants.NOT_AVAILABLE
+import com.waffiq.bazz_movies.core.common.Constants.NOT_AVAILABLE
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
+import com.waffiq.bazz_movies.core.model.media.MediaType
 import com.waffiq.bazz_movies.feature.detail.R.id.iv_picture_backdrop
 import com.waffiq.bazz_movies.feature.detail.testutils.basetest.BaseMediaDetailActivityTest
 import com.waffiq.bazz_movies.navigation.MediaArgs

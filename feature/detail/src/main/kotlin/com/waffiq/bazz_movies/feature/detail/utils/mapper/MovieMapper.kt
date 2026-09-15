@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mapper
 
-import com.waffiq.bazz_movies.core.common.MediaType.Companion.fromValue
+import com.waffiq.bazz_movies.core.model.media.MediaType.Companion.fromValue
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.BelongsToCollectionResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailCollectionsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse

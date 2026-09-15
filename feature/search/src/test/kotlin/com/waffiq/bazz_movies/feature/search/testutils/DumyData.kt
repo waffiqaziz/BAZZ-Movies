@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.feature.search.testutils
 
-import com.waffiq.bazz_movies.core.common.MediaType
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.model.media.MediaType
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ

@@ -4,12 +4,12 @@ import android.content.Context
 import android.content.Intent
 import androidx.paging.PagingData
 import androidx.test.core.app.ActivityScenario
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.trending
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isTextVisible
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isVisible
-import com.waffiq.bazz_movies.core.model.MediaItem
+import com.waffiq.bazz_movies.core.model.media.MediaItem
 import com.waffiq.bazz_movies.feature.list.testutils.DummyData.fakePagingMediaItem
 import com.waffiq.bazz_movies.feature.list.ui.ListActivity
 import com.waffiq.bazz_movies.feature.list.ui.ListActivity.Companion.EXTRA_LIST

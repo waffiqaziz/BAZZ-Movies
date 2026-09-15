@@ -3,8 +3,8 @@ package com.waffiq.bazz_movies.core.network.data.remote.datasource.search
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.common.MediaType
 import com.waffiq.bazz_movies.core.coroutines.IoDispatcher
+import com.waffiq.bazz_movies.core.model.media.MediaType
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.movie.MovieRemoteDataSource.Companion.PAGE_SIZE
 import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.SearchPagingSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem

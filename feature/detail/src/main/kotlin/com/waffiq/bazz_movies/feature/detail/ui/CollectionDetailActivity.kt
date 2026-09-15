@@ -18,7 +18,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.color.gray_900
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.core.designsystem.R.string.movies

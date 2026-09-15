@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.mapper
 
-import com.waffiq.bazz_movies.core.model.Outcome
+import com.waffiq.bazz_movies.core.common.Outcome
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -15,7 +15,8 @@ object NetworkResultMapper {
    * - Converts [NetworkResult.Loading] to [Outcome.Loading].
    *
    * @param mapper A function to transform the success data.
-   * @return A [Flow] emitting [Outcome] states corresponding to [NetworkResult] states.
+   * @return A [Flow] emitting [com.waffiq.bazz_movies.core.common.Outcome] states corresponding to
+   * [NetworkResult] states.
    */
   fun <T, R> Flow<NetworkResult<T>>.toOutcome(mapper: (T) -> R): Flow<Outcome<R>> =
     map { networkResult ->

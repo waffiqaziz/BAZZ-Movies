@@ -5,8 +5,8 @@ import android.database.sqlite.SQLiteException
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.database.testutils.DummyData.favoriteMovieEntity
 import com.waffiq.bazz_movies.core.database.testutils.DummyData.favoriteTvEntity
 import com.waffiq.bazz_movies.core.database.testutils.DummyData.watchlistMovieEntity

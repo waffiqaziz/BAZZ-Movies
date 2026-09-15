@@ -12,7 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
-import com.waffiq.bazz_movies.core.common.utils.Constants.INSTAGRAM_LINK
+import com.waffiq.bazz_movies.core.common.Constants.INSTAGRAM_LINK
 import com.waffiq.bazz_movies.core.designsystem.R.id.btn_try_again
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick

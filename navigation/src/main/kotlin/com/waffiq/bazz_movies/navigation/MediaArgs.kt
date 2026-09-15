@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.navigation
 
 import android.os.Parcelable
-import com.waffiq.bazz_movies.core.common.MediaType
+import com.waffiq.bazz_movies.core.model.media.MediaType
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

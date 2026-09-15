@@ -14,9 +14,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_ORIGINAL
+import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.NAN
+import com.waffiq.bazz_movies.core.common.Constants.TMDB_IMG_LINK_BACKDROP_ORIGINAL
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error

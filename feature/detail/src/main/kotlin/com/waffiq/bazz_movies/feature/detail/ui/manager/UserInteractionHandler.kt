@@ -7,8 +7,8 @@ import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.isVisible
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_hearth
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_hearth_selected
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_watchlist_filled
@@ -18,9 +18,9 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.item_added_to_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.item_removed_from_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.item_removed_from_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
-import com.waffiq.bazz_movies.core.model.MediaItem
-import com.waffiq.bazz_movies.core.model.MediaState
-import com.waffiq.bazz_movies.core.model.Rated
+import com.waffiq.bazz_movies.core.model.media.MediaItem
+import com.waffiq.bazz_movies.core.model.user.MediaState
+import com.waffiq.bazz_movies.core.model.user.Rated
 import com.waffiq.bazz_movies.core.uihelper.utils.ImageHelper.backdropPathSource
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding

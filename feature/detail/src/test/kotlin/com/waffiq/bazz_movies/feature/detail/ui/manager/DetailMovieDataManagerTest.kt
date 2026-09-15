@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.ui.manager
 
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.dataMediaItem
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import io.mockk.mockk

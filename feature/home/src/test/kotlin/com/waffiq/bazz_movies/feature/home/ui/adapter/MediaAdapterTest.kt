@@ -1,10 +1,10 @@
 package com.waffiq.bazz_movies.feature.home.ui.adapter
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPosterBinding
-import com.waffiq.bazz_movies.core.model.MediaItem
+import com.waffiq.bazz_movies.core.model.media.MediaItem
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.feature.home.testutils.BaseAdapterTest
 import com.waffiq.bazz_movies.navigation.MediaSource

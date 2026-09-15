@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.search.ui.adapter
 
-import com.waffiq.bazz_movies.core.common.Genre
+import com.waffiq.bazz_movies.core.model.media.Genre
 import com.waffiq.bazz_movies.feature.search.databinding.ItemGenreListBinding
 import com.waffiq.bazz_movies.feature.search.testutils.BaseAdapterTest
 import org.junit.Before
