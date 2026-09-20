@@ -4,7 +4,16 @@
 
 ## Dependency Graph
 
-![Dependency graph](../../docs/images/module-graphs/core-coroutines.svg)
+```mermaid
+%%{
+  init: {
+    'theme': 'neo-dark'
+  }
+}%%
+
+graph LR
+  :core:coroutines
+```
 
 ## Overview
 

@@ -4,7 +4,30 @@
 
 ## Dependency Graph
 
-![Dependency graph](../../docs/images/module-graphs/feature-list.svg)
+```mermaid
+%%{
+  init: {
+    'theme': 'neo-dark'
+  }
+}%%
+
+graph LR
+  subgraph :core
+    :core:designsystem["designsystem"]
+    :core:test["test"]
+    :core:testmodule["testmodule"]
+    :core:data["data"]
+    :core:adapter["adapter"]
+    :core:instrumentationtest["instrumentationtest"]
+  end
+  :feature:list --> :core:instrumentationtest
+  :feature:list --> :core:testmodule
+  :feature:list --> :core:designsystem
+  :feature:list --> :navigation
+  :feature:list --> :core:adapter
+  :feature:list --> :core:data
+  :feature:list --> :core:test
+```
 
 ## Overview
 

@@ -4,7 +4,38 @@
 
 ## Dependency Graph
 
-![Dependency graph](../../docs/images/module-graphs/feature-search.svg)
+```mermaid
+%%{
+  init: {
+    'theme': 'neo-dark'
+  }
+}%%
+
+graph LR
+  subgraph :core
+    :core:utils["utils"]
+    :core:common["common"]
+    :core:designsystem["designsystem"]
+    :core:model["model"]
+    :core:test["test"]
+    :core:testmodule["testmodule"]
+    :core:uihelper["uihelper"]
+    :core:network["network"]
+    :core:database["database"]
+    :core:instrumentationtest["instrumentationtest"]
+  end
+  :feature:search --> :core:instrumentationtest
+  :feature:search --> :core:testmodule
+  :feature:search --> :core:designsystem
+  :feature:search --> :navigation
+  :feature:search --> :core:common
+  :feature:search --> :core:database
+  :feature:search --> :core:model
+  :feature:search --> :core:network
+  :feature:search --> :core:uihelper
+  :feature:search --> :core:utils
+  :feature:search --> :core:test
+```
 
 ## Overview
 

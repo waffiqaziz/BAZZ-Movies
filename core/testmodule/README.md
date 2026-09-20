@@ -4,14 +4,30 @@
 
 ## Dependency Graph
 
-![Dependency graph](../../docs/images/module-graphs/core-testmodule.svg)
+```mermaid
+%%{
+  init: {
+    'theme': 'neo-dark'
+  }
+}%%
+
+graph LR
+  subgraph :core
+    :core:utils["utils"]
+    :core:uihelper["uihelper"]
+    :core:user["user"]
+  end
+  :core:testmodule --> :core:uihelper
+  :core:testmodule --> :core:user
+  :core:testmodule --> :core:utils
+  :core:testmodule --> :navigation
+```
 
 ## Overview
 
-`:core:testmodule` is a shared testing module that provides reusable Hilt mocks for 
-[feature modules](../../feature) while keeping them isolated from the real instrumentation setup in 
+`:core:testmodule` is a shared testing module that provides reusable Hilt mocks for
+[feature modules](../../feature) while keeping them isolated from the real instrumentation setup in
 `:app`.
-
 
 <!-- LINK -->
 
