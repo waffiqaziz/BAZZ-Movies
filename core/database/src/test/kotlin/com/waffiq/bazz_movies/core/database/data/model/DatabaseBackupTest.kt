@@ -5,10 +5,10 @@ import org.junit.Test
 
 class DatabaseBackupTest {
 
-  val favorite = FavoriteBackupEntry(
+  private val favorite = FavoriteBackupEntry(
     mediaId = 123,
     mediaType = "movie",
-    genre = "Animation",
+    genreIds = listOf(28),
     backDrop = "backdrop",
     poster = "poster",
     overview = "overview",

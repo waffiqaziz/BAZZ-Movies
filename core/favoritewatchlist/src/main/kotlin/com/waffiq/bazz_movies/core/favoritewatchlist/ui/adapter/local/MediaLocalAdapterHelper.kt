@@ -13,7 +13,7 @@ import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaSwipeBi
 import com.waffiq.bazz_movies.core.model.local.Favorite
 import com.waffiq.bazz_movies.core.model.media.MediaType.Companion.fromValue
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
-import com.waffiq.bazz_movies.core.utils.GenreHelper.toListGenreIds
+import com.waffiq.bazz_movies.core.utils.GenreHelper.getGenre
 import com.waffiq.bazz_movies.core.utils.RatingHelper.ratingHandler
 import com.waffiq.bazz_movies.core.utils.RatingHelper.setRatingBar
 import com.waffiq.bazz_movies.navigation.INavigator
@@ -26,7 +26,7 @@ object MediaLocalAdapterHelper {
       tvTitle.text = fav.title
       tvYearReleased.text = dateFormatterStandard(fav.releaseDate)
         .ifEmpty { tvYearReleased.context.getString(not_available) }
-      tvGenre.text = fav.genre
+      tvGenre.text = tvGenre.context.getGenre(fav.genreIds)
       ratingBar.rating = setRatingBar(fav.rating)
       tvRating.text = ratingHandler(fav.rating)
     }
@@ -57,7 +57,7 @@ object MediaLocalAdapterHelper {
           title = fav.title,
           originalTitle = fav.title,
           mediaType = fromValue(fav.mediaType),
-          listGenreIds = fav.genre.toListGenreIds(),
+          listGenreIds = fav.genreIds,
           id = fav.mediaId,
         ),
       )
