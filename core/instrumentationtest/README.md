@@ -4,7 +4,21 @@
 
 ## Dependency Graph
 
-![Dependency graph](../../docs/images/module-graphs/core-instrumentationtest.svg)
+```mermaid
+%%{
+  init: {
+    'theme': 'neo-dark'
+  }
+}%%
+
+graph LR
+  subgraph :core
+    :core:utils["utils"]
+    :core:designsystem["designsystem"]
+  end
+  :core:instrumentationtest --> :core:designsystem
+  :core:instrumentationtest --> :core:utils
+```
 
 ## Overview
 

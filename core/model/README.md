@@ -2,6 +2,19 @@
 
 [![Code Coverage][core-domain-coverage-badge]][core-domain-coverage-link]
 
+## Dependency Graph
+
+```mermaid
+%%{
+  init: {
+    'theme': 'neo-dark'
+  }
+}%%
+
+graph LR
+  :core:model --> :core:common
+```
+
 ## Overview
 
 `:core:model` is responsible as shared core business models and result states used throughout the

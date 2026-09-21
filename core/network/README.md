@@ -4,7 +4,25 @@
 
 ## Dependency Graph
 
-![Dependency graph](../../docs/images/module-graphs/core-network.svg)
+```mermaid
+%%{
+  init: {
+    'theme': 'neo-dark'
+  }
+}%%
+
+graph LR
+  subgraph :core
+    :core:common["common"]
+    :core:coroutines["coroutines"]
+    :core:model["model"]
+    :core:test["test"]
+  end
+  :core:network --> :core:common
+  :core:network --> :core:coroutines
+  :core:network --> :core:model
+  :core:network --> :core:test
+```
 
 ## Overview
 

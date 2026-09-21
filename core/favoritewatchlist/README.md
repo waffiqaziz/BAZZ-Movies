@@ -4,7 +4,41 @@
 
 ## Dependency Graph
 
-![Dependency graph](../../docs/images/module-graphs/core-favoritewatchlist.svg)
+```mermaid
+%%{
+  init: {
+    'theme': 'neo-dark'
+  }
+}%%
+
+graph LR
+  subgraph :core
+    :core:utils["utils"]
+    :core:common["common"]
+    :core:designsystem["designsystem"]
+    :core:model["model"]
+    :core:test["test"]
+    :core:uihelper["uihelper"]
+    :core:user["user"]
+    :core:mapper["mapper"]
+    :core:database["database"]
+    :core:coroutines["coroutines"]
+    :core:data["data"]
+    :core:adapter["adapter"]
+  end
+  :core:favoritewatchlist --> :core:data
+  :core:favoritewatchlist --> :core:database
+  :core:favoritewatchlist --> :core:mapper
+  :core:favoritewatchlist --> :core:model
+  :core:favoritewatchlist --> :core:uihelper
+  :core:favoritewatchlist --> :core:user
+  :core:favoritewatchlist --> :core:utils
+  :core:favoritewatchlist --> :core:adapter
+  :core:favoritewatchlist --> :core:designsystem
+  :core:favoritewatchlist --> :navigation
+  :core:favoritewatchlist --> :core:test
+  :core:favoritewatchlist --> :core:common
+```
 
 ## Overview
 

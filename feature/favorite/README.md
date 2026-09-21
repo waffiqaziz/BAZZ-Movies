@@ -4,7 +4,28 @@
 
 ## Dependency Graph
 
-![Dependency graph](../../docs/images/module-graphs/feature-favorite.svg)
+```mermaid
+%%{
+  init: {
+    'theme': 'neo-dark'
+  }
+}%%
+
+graph LR
+  subgraph :core
+    :core:designsystem["designsystem"]
+    :core:test["test"]
+    :core:testmodule["testmodule"]
+    :core:favoritewatchlist["favoritewatchlist"]
+    :core:instrumentationtest["instrumentationtest"]
+  end
+  :feature:favorite --> :core:instrumentationtest
+  :feature:favorite --> :core:testmodule
+  :feature:favorite --> :core:designsystem
+  :feature:favorite --> :navigation
+  :feature:favorite --> :core:favoritewatchlist
+  :feature:favorite --> :core:test
+```
 
 ## Overview
 

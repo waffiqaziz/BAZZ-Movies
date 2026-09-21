@@ -4,7 +4,25 @@
 
 ## Dependency Graph
 
-![Dependency graph](../../docs/images/module-graphs/core-adapter.svg)
+```mermaid
+%%{
+  init: {
+    'theme': 'neo-dark'
+  }
+}%%
+
+graph LR
+  subgraph :core
+    :core:utils["utils"]
+    :core:designsystem["designsystem"]
+    :core:model["model"]
+    :core:uihelper["uihelper"]
+  end
+  :core:adapter --> :core:designsystem
+  :core:adapter --> :core:uihelper
+  :core:adapter --> :core:utils
+  :core:adapter --> :core:model
+```
 
 ## Overview
 

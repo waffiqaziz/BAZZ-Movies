@@ -95,7 +95,6 @@ glide = "5.0.9"
 expandableTextView = "1.0.7"
 cpa = "0.1.4"
 shimmer = "0.5.0"
-moduleGraph = "2.9.1"
 
 [libraries]
 # AndroidX Libraries
@@ -211,7 +210,6 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 # Image Loading
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 glide-compiler = { group = "com.github.bumptech.glide", name = "ksp", version.ref = "glide" }
-glide-okhttp3 = { group = "com.github.bumptech.glide", name = "okhttp3-integration", version.ref = "glide" }
 
 # Google Services
 play-integrity = { group = "com.google.android.play", name = "integrity", version.ref = "playIntegrity" }
@@ -265,7 +263,6 @@ room = { id = "androidx.room", version.ref = "room" }
 # Others
 detekt = { id = "dev.detekt", version.ref = "detekt" }
 dependencyGuard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuard" }
-module-graph = { id = "com.jraska.module.graph.assertion", version.ref = "moduleGraph" }
 kotlinx-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kotlinxKover" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 

@@ -4,7 +4,36 @@
 
 ## Dependency Graph
 
-![Dependency graph](../../docs/images/module-graphs/feature-login.svg)
+```mermaid
+%%{
+  init: {
+    'theme': 'neo-dark'
+  }
+}%%
+
+graph LR
+  subgraph :core
+    :core:utils["utils"]
+    :core:common["common"]
+    :core:designsystem["designsystem"]
+    :core:model["model"]
+    :core:test["test"]
+    :core:instrumentationtest["instrumentationtest"]
+    :core:testmodule["testmodule"]
+    :core:uihelper["uihelper"]
+    :core:user["user"]
+  end
+  :feature:login --> :core:instrumentationtest
+  :feature:login --> :core:testmodule
+  :feature:login --> :core:designsystem
+  :feature:login --> :navigation
+  :feature:login --> :core:common
+  :feature:login --> :core:model
+  :feature:login --> :core:uihelper
+  :feature:login --> :core:utils
+  :feature:login --> :core:user
+  :feature:login --> :core:test
+```
 
 ## Overview
 

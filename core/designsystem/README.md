@@ -2,7 +2,17 @@
 
 >_No Coverage — UI Resources Only_
 
-![Dependency graph](../../docs/images/module-graphs/core-designsystem.svg)
+```mermaid
+%%{
+  init: {
+    'theme': 'neo-dark'
+  }
+}%%
+
+graph LR
+  :core:designsystem
+```
+
 
 ## Overview
 

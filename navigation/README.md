@@ -4,12 +4,27 @@
 
 ## Dependency Graph  
 
-![Dependency graph](../docs/images/module-graphs/navigation.svg)
+```mermaid
+%%{
+  init: {
+    'theme': 'neo-dark'
+  }
+}%%
+
+graph LR
+  subgraph :core
+    :core:common["common"]
+    :core:model["model"]
+  end
+  :navigation --> :core:common
+  :navigation --> :core:model
+  :navigation --> :feature:list
+```
 
 ## Overview  
 
 `:navigation` is a core module responsible for handling app navigation in a structured and
-centralized manner. It abstracts navigation logic, ensuring modularity, maintainability, and 
+centralized manner. It abstracts navigation logic, ensuring modularity, maintainability, and
 consistency across different app components.  
 
 ## Responsibilities  
