@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 data class FavoriteBackupEntry(
   val mediaId: Int,
   val mediaType: String,
-  val genre: String,
+  val genreIds: List<Int>,
   val backDrop: String,
   val poster: String,
   val overview: String,

@@ -6,6 +6,8 @@ import android.util.Log
 import com.waffiq.bazz_movies.core.coroutines.IoDispatcher
 import com.waffiq.bazz_movies.core.database.data.model.BackupPayload
 import com.waffiq.bazz_movies.core.database.data.model.DatabaseBackup
+import com.waffiq.bazz_movies.core.database.data.model.v1.BackupPayloadV1
+import com.waffiq.bazz_movies.core.database.data.model.v1.DatabaseBackupV1
 import com.waffiq.bazz_movies.core.database.data.room.FavoriteDao
 import com.waffiq.bazz_movies.core.database.di.AppVersion
 import com.waffiq.bazz_movies.core.database.utils.DbResult
@@ -15,6 +17,7 @@ import com.waffiq.bazz_movies.core.database.utils.sha256
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import java.io.BufferedReader
@@ -59,6 +62,9 @@ class DatabaseBackupManager @Inject constructor(
     private const val TAG = "DatabaseBackupManager"
   }
 
+  @Serializable
+  private data class BackupHeader(val version: Int)
+
   suspend fun backupToUri(destinationUri: Uri): DbResult<Unit> =
     withContext(ioDispatcher) {
       runCatching {
@@ -96,27 +102,58 @@ class DatabaseBackupManager @Inject constructor(
   suspend fun restoreFromUri(sourceUri: Uri): DbResult<Unit> =
     withContext(ioDispatcher) {
       runCatching {
-        // read data from json backup file
+        // parseBackup validates version + checksum and returns the current (v2) model
         val backup = parseBackup(readJson(sourceUri))
-
-        // validate
-        validateVersion(backup.version)
-        validateChecksum(backup)
 
         val validEntries = backup.favorites.filter { it.isValid() }
         if (validEntries.isEmpty()) {
           return@runCatching DbResult.Error("Backup contains no valid entries")
         }
 
-        // wipe the current database and replace it with the backup contents
         favoriteDao.clearAndInsert(validEntries.map { it.toEntity() })
-
         DbResult.Success(Unit)
       }.getOrElse {
         Log.e(TAG, "Restore failed", it)
         DbResult.Error(it.message ?: "Restore failed")
       }
     }
+
+  private fun parseBackup(rawJson: String): DatabaseBackup =
+    try {
+      Log.d(TAG, "Raw backup JSON:\n$rawJson")
+      val version = json.decodeFromString<BackupHeader>(rawJson).version
+      validateVersion(version)
+      when (version) {
+        1 -> parseV1(rawJson)
+        else -> parseV2(rawJson)
+      }
+    } catch (e: SerializationException) {
+      throw IllegalArgumentException("Invalid backup file: not valid JSON", e)
+    }
+
+  private fun parseV2(rawJson: String): DatabaseBackup =
+    json.decodeFromString<DatabaseBackup>(rawJson).also {
+      validateChecksum(it)
+    } // your existing function
+
+  private fun parseV1(rawJson: String): DatabaseBackup {
+    val old = json.decodeFromString<DatabaseBackupV1>(rawJson)
+
+    old.checksum?.let { expected ->
+      val payload = BackupPayloadV1(old.version, old.createdAt, old.appVersion, old.favorites)
+      require(jsonCompact.encodeToString(payload).sha256() == expected) {
+        "Backup file is corrupted or has been modified"
+      }
+    }
+
+    return DatabaseBackup(
+      version = DatabaseBackup.BACKUP_VERSION,
+      createdAt = old.createdAt,
+      appVersion = old.appVersion,
+      favorites = old.favorites.map { it.toCurrent() },
+      checksum = null,
+    )
+  }
 
   private fun readJson(sourceUri: Uri): String {
     val inputStream = context.contentResolver.openInputStream(sourceUri)
@@ -128,13 +165,6 @@ class DatabaseBackupManager @Inject constructor(
       inputStream.close()
     }
   }
-
-  private fun parseBackup(rawJson: String): DatabaseBackup =
-    try {
-      json.decodeFromString<DatabaseBackup>(rawJson)
-    } catch (e: SerializationException) {
-      throw IllegalArgumentException("Invalid backup file: not valid JSON", e)
-    }
 
   private fun validateVersion(version: Int) {
     when {

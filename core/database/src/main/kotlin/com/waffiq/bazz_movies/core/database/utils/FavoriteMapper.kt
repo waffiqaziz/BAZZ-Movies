@@ -5,7 +5,6 @@ import com.waffiq.bazz_movies.core.database.data.model.FavoriteBackupEntry
 import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
 import com.waffiq.bazz_movies.core.model.local.Favorite
 import com.waffiq.bazz_movies.core.model.media.MediaItem
-import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoinName
 
 object FavoriteMapper {
 
@@ -19,7 +18,7 @@ object FavoriteMapper {
       rating = voteAverage ?: 0.0f,
       backDrop = backdropPath ?: NOT_AVAILABLE,
       poster = posterPath ?: NOT_AVAILABLE,
-      genre = transformListGenreIdsToJoinName(listGenreIds.orEmpty()).orEmpty(),
+      genreIds = listGenreIds.orEmpty(),
       popularity = popularity ?: 0.0,
       overview = overview ?: NOT_AVAILABLE,
       isFavorite = isFavorite,
@@ -32,7 +31,7 @@ object FavoriteMapper {
       id,
       mediaId,
       mediaType,
-      genre,
+      genreIds,
       backDrop,
       poster,
       overview,
@@ -50,7 +49,7 @@ object FavoriteMapper {
       id,
       mediaId,
       mediaType,
-      genre,
+      genreIds,
       backDrop,
       poster,
       overview,
@@ -67,7 +66,7 @@ object FavoriteMapper {
     FavoriteBackupEntry(
       mediaId,
       mediaType,
-      genre,
+      genreIds,
       backDrop,
       poster,
       overview,
@@ -85,7 +84,7 @@ object FavoriteMapper {
       id = 0,
       mediaId,
       mediaType,
-      genre,
+      genreIds,
       backDrop,
       poster,
       overview,

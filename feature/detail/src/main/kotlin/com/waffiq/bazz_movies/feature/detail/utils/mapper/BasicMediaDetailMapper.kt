@@ -4,7 +4,6 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.no_watch_providers
 import com.waffiq.bazz_movies.core.model.local.Favorite
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.toUsd
-import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoinName
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinString
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
 import com.waffiq.bazz_movies.core.utils.LanguageHelper.getLanguageName
@@ -86,7 +85,7 @@ object BasicMediaDetailMapper {
 
   fun Favorite.refreshWith(data: MediaDetail): Favorite =
     copy(
-      genre = transformListGenreIdsToJoinName(data.genreId.orEmpty()).orEmpty(),
+      genreIds = data.genreId.orEmpty(),
       backDrop = data.backdrop,
       poster = data.poster,
       overview = data.overview,

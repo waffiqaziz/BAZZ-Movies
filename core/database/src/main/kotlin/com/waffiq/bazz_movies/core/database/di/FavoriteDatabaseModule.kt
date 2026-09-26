@@ -8,6 +8,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.waffiq.bazz_movies.core.database.data.room.FavoriteDao
 import com.waffiq.bazz_movies.core.database.data.room.FavoriteDatabase
 import com.waffiq.bazz_movies.core.database.utils.Constants.FAVORITE_TABLE_NAME
+import com.waffiq.bazz_movies.core.database.utils.LegacyGenreMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,6 +31,7 @@ class FavoriteDatabaseModule {
     ).addMigrations(
       getMigrationOneToTwo(),
       getMigrationTwoToThree(),
+      getMigrationThreeToFour(),
     )
       .build()
 
@@ -118,6 +120,28 @@ class FavoriteDatabaseModule {
           "ALTER TABLE $FAVORITE_TABLE_NAME ADD COLUMN `last_updated` " +
             "INTEGER NOT NULL DEFAULT ${System.currentTimeMillis()}",
         )
+      }
+    }
+
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun getMigrationThreeToFour(): Migration =
+    object : Migration(3, 4) {
+      override fun migrate(db: SupportSQLiteDatabase) {
+        // read all first, then update (don't write while a cursor is open)
+        val rows = buildList {
+          db.query("SELECT id, genre FROM $FAVORITE_TABLE_NAME").use { c ->
+            val idIdx = c.getColumnIndexOrThrow("id")
+            val genreIdx = c.getColumnIndexOrThrow("genre")
+            while (c.moveToNext()) add(c.getInt(idIdx) to c.getString(genreIdx).orEmpty())
+          }
+        }
+
+        rows.forEach { (id, oldGenre) ->
+          db.execSQL(
+            "UPDATE $FAVORITE_TABLE_NAME SET genre = ? WHERE id = ?",
+            arrayOf<Any>(LegacyGenreMapper.namesToIdString(oldGenre), id),
+          )
+        }
       }
     }
 

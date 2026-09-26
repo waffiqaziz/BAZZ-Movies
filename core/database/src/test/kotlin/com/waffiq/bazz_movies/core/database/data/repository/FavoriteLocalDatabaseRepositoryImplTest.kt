@@ -47,7 +47,7 @@ class FavoriteLocalDatabaseRepositoryImplTest {
     assertEquals(103, result[0].mediaId)
     assertEquals("tv", result[0].mediaType)
     assertEquals("Show1", result[0].title)
-    assertEquals("Drama", result[0].genre)
+    assertEquals(28, result[0].genreIds.first())
   }
 
   private fun assertMovieEquals(result: List<Favorite>) {

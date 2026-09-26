@@ -44,7 +44,7 @@ class FavoriteMapperTest {
     assertEquals(favorite1.rating, 65f)
     assertEquals(favorite1.backDrop, "backdropPath")
     assertEquals(favorite1.poster, "posterPath")
-    assertEquals(favorite1.genre, genreName)
+    assertEquals(favorite1.genreIds.first(), 28)
     assertEquals("Different value", favorite1.popularity, 90.0, 0.0)
     assertEquals(favorite1.overview, "overview")
     assertEquals(favorite1.isFavorite, true)
@@ -64,7 +64,6 @@ class FavoriteMapperTest {
     assertEquals(favorite2.rating, 0.0f)
     assertEquals("Different value", favorite2.popularity, 0.0, 0.0)
     assertEquals(favorite2.overview, "N/A")
-    assertEquals(favorite2.genre, "")
 
     // test case 3: title using title, release date null
     val mediaItem3 = MediaItem(title = "title")
@@ -89,7 +88,7 @@ class FavoriteMapperTest {
       id = 1,
       mediaId = 1,
       mediaType = "movie",
-      genre = genreName,
+      genreIds = listOf(28),
       backDrop = "backDrop",
       poster = "poster",
       overview = "overview",
@@ -105,7 +104,7 @@ class FavoriteMapperTest {
     assertEquals(favoriteEntity.id, 1)
     assertEquals(favoriteEntity.mediaId, 1)
     assertEquals(favoriteEntity.mediaType, "movie")
-    assertEquals(favoriteEntity.genre, genreName)
+    assertEquals(favoriteEntity.genreIds.first(), 28)
     assertEquals(favoriteEntity.backDrop, "backDrop")
     assertEquals(favoriteEntity.poster, "poster")
     assertEquals(favoriteEntity.overview, "overview")
@@ -123,7 +122,7 @@ class FavoriteMapperTest {
       id = 2,
       mediaId = 2,
       mediaType = "tv",
-      genre = genreName,
+      genreIds = listOf(28),
       backDrop = "backDrop",
       poster = "poster",
       overview = "overview",
@@ -139,7 +138,7 @@ class FavoriteMapperTest {
     assertEquals(favorite.id, 2)
     assertEquals(favorite.mediaId, 2)
     assertEquals(favorite.mediaType, "tv")
-    assertEquals(favorite.genre, genreName)
+    assertEquals(favorite.genreIds.first(), 28)
     assertEquals(favorite.backDrop, "backDrop")
     assertEquals(favorite.poster, "poster")
     assertEquals(favorite.overview, "overview")
