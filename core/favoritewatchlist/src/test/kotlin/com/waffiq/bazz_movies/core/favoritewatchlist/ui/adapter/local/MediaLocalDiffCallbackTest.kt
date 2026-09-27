@@ -34,7 +34,7 @@ class MediaLocalDiffCallbackTest {
       id = 4535,
       mediaId = 34215,
       mediaType = "tv",
-      genre = "Romance",
+      genreIds = listOf(28),
       backDrop = "backdrop.jpg",
       poster = "poster.jpg",
       overview = "Lorem ipsum",

@@ -9,7 +9,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class FavoriteMapperTest {
-  private val genreName = "Action, Adventure"
   private val mediaItem1 = MediaItem(
     firstAirDate = "firstAirData",
     overview = "overview",

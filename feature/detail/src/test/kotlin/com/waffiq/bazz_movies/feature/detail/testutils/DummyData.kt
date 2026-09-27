@@ -823,7 +823,7 @@ object DummyData {
     id = 4545,
     mediaId = 654324,
     mediaType = MOVIE_MEDIA_TYPE,
-    genre = "Adventure",
+    genreIds = listOf(28),
     backDrop = "",
     poster = "",
     overview = "",

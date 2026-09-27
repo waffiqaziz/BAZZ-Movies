@@ -11,7 +11,7 @@ class FavoriteTest {
     id = 1,
     mediaId = 100,
     mediaType = "movie",
-    genre = "Action",
+    genreIds = listOf(28),
     backDrop = "backdrop.jpg",
     poster = "poster.jpg",
     overview = "Some overview",
@@ -29,7 +29,7 @@ class FavoriteTest {
     assertEquals(1, favoriteValid.id)
     assertEquals(100, favoriteValid.mediaId)
     assertEquals("movie", favoriteValid.mediaType)
-    assertEquals("Action", favoriteValid.genre)
+    assertEquals(28, favoriteValid.genreIds.first())
     assertEquals("backdrop.jpg", favoriteValid.backDrop)
     assertEquals("poster.jpg", favoriteValid.poster)
     assertEquals("Some overview", favoriteValid.overview)

@@ -15,7 +15,7 @@ object DummyData {
     id = 1,
     mediaId = 1,
     mediaType = "movie",
-    genre = "Action",
+    genreIds = listOf(28),
     backDrop = "backdrop",
     poster = "poster",
     overview = "overview",
