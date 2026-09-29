@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import com.waffiq.bazz_movies.core.coroutines.IoDispatcher
+import com.waffiq.bazz_movies.core.database.data.model.BackupHeader
 import com.waffiq.bazz_movies.core.database.data.model.BackupPayload
 import com.waffiq.bazz_movies.core.database.data.model.DatabaseBackup
 import com.waffiq.bazz_movies.core.database.data.model.v1.BackupPayloadV1
@@ -17,7 +18,6 @@ import com.waffiq.bazz_movies.core.database.utils.sha256
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import java.io.BufferedReader
@@ -61,9 +61,6 @@ class DatabaseBackupManager @Inject constructor(
   companion object {
     private const val TAG = "DatabaseBackupManager"
   }
-
-  @Serializable
-  private data class BackupHeader(val version: Int)
 
   suspend fun backupToUri(destinationUri: Uri): DbResult<Unit> =
     withContext(ioDispatcher) {

@@ -132,7 +132,7 @@ class FavoriteDatabaseModule {
           db.query("SELECT id, genre FROM $FAVORITE_TABLE_NAME").use { c ->
             val idIdx = c.getColumnIndexOrThrow("id")
             val genreIdx = c.getColumnIndexOrThrow("genre")
-            while (c.moveToNext()) add(c.getInt(idIdx) to c.getString(genreIdx).orEmpty())
+            while (c.moveToNext()) add(c.getInt(idIdx) to c.getString(genreIdx))
           }
         }
 
