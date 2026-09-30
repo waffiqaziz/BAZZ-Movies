@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.navigation
 
 import android.os.Parcel
 import android.os.Parcelable
-import junit.framework.TestCase
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

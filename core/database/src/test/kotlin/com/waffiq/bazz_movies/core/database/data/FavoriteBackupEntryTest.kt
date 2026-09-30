@@ -15,7 +15,7 @@ class FavoriteBackupEntryTest {
     FavoriteBackupEntry(
       mediaId = mediaId,
       mediaType = mediaType,
-      genre = "Action",
+      genreIds = listOf(28),
       backDrop = "backdrop",
       poster = "poster",
       overview = "overview",

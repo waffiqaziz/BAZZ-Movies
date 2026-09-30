@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.core.database.testutils
 
 import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.database.data.model.FavoriteBackupEntry
 import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
 import com.waffiq.bazz_movies.core.database.data.model.SearchHistoryEntity
 import com.waffiq.bazz_movies.core.database.utils.FavoriteMapper.toFavorite
@@ -12,7 +13,7 @@ object DummyData {
   val favoriteTvEntity = FavoriteEntity(
     mediaId = 103,
     mediaType = TV_MEDIA_TYPE,
-    genre = "Drama",
+    genreIds = listOf(28),
     backDrop = "backdrop3",
     poster = "poster3",
     overview = "overview3",
@@ -29,7 +30,7 @@ object DummyData {
   val favoriteMovieEntity = FavoriteEntity(
     mediaId = 101,
     mediaType = MOVIE_MEDIA_TYPE,
-    genre = "Action",
+    genreIds = listOf(28),
     backDrop = "backdrop1",
     poster = "poster1",
     overview = "overview1",
@@ -59,4 +60,20 @@ object DummyData {
   val listSearchHistoryFlow = flowOf(listSearchHistory)
 
   val listSearchHistoryEntityFlow = flowOf(listOf(searchHistoryEntity))
+
+  val favorite = FavoriteBackupEntry(
+    mediaId = 123,
+    mediaType = "movie",
+    genreIds = listOf(28),
+    backDrop = "backdrop",
+    poster = "poster",
+    overview = "overview",
+    title = "title",
+    releaseDate = "releaseDate",
+    popularity = 900.0,
+    rating = 9.0f,
+    isFavorite = false,
+    isWatchlist = false,
+    lastUpdated = 0,
+  )
 }

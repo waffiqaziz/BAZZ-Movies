@@ -51,7 +51,7 @@ abstract class BaseDatabaseBackupManagerTest {
   protected val validBackupEntry = FavoriteBackupEntry(
     mediaId = 101,
     mediaType = "tv",
-    genre = "Drama",
+    genreIds = listOf(28),
     backDrop = "/backdrop1.jpg",
     poster = "/poster1.jpg",
     overview = "Overview 1",
@@ -67,7 +67,7 @@ abstract class BaseDatabaseBackupManagerTest {
   protected val secondBackupEntry = validBackupEntry.copy(
     mediaId = 202,
     mediaType = "movie",
-    genre = "Action",
+    genreIds = listOf(28),
     backDrop = "/backdrop2.jpg",
     poster = "/poster2.jpg",
     overview = "Overview 2",

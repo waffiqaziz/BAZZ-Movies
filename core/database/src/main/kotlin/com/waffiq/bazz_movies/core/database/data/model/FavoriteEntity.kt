@@ -31,7 +31,7 @@ data class FavoriteEntity(
   val mediaType: String,
 
   @ColumnInfo(name = "genre")
-  val genre: String,
+  val genreIds: List<Int>,
 
   @ColumnInfo(name = "backDrop")
   val backDrop: String,

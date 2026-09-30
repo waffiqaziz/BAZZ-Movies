@@ -12,16 +12,16 @@ class RefreshDetailMapperTest {
   fun refreshWith_withValidGenreId_returnsCorrectGenreName() {
     val result = favoriteMovie.refreshWith(movieMediaDetail)
     println(movieMediaDetail.genreId)
-    assertEquals("Action", result.genre)
+    assertEquals(28, result.genreIds.first())
   }
 
   @Test
   fun refreshWith_genreIdNotValid_returnsEmpty() {
     val result = favoriteMovie.refreshWith(movieMediaDetail.copy(genreId = emptyList()))
-    assertEquals("", result.genre)
+    assertEquals(emptyList<Int>(), result.genreIds)
 
     val result2 = favoriteMovie.refreshWith(movieMediaDetail.copy(genreId = null))
-    assertEquals("", result2.genre)
+    assertEquals(emptyList<Int>(), result2.genreIds)
   }
 
   @Test

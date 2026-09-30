@@ -17,6 +17,6 @@ data class DatabaseBackup(
   val checksum: String? = null,
 ) {
   companion object {
-    const val BACKUP_VERSION = 1
+    const val BACKUP_VERSION = 2
   }
 }
