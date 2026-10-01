@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.times
@@ -28,9 +30,10 @@ class UserPreferenceMockTwoTest {
       mockDataStore = mock<DataStore<Preferences>>()
       mockPreferences = mock<Preferences>()
 
-      // mock dataStore.data to emit an initial preference (region is "US")
-      val initialPreferencesFlow = flowOf(mutablePreferencesOf(UserPreference.REGION_KEY to "US"))
-      `when`(mockDataStore.data).thenReturn(initialPreferencesFlow)
+      // mock dataStore.data to emit an initial preference (region "US")
+      `when`(mockDataStore.data).thenReturn(
+        flowOf(mutablePreferencesOf(UserPreference.REGION_KEY to "US"))
+      )
 
       userPreference = UserPreference(mockDataStore)
     }
@@ -45,6 +48,24 @@ class UserPreferenceMockTwoTest {
 
       val savedRegion = userPreference.getRegion().first() // This should return "ID"
       assertEquals("ID", savedRegion)
+
+      verify(mockDataStore).edit(any())
+    }
+
+  @Test
+  fun savePermissionAsked_whenSuccessful_callsDatastoreEdit() =
+    runTest {
+      val isAsked = userPreference.getPermissionAsked().first()
+      assertFalse(isAsked)
+
+      userPreference.savePermissionAsked()
+
+      `when`(mockDataStore.data).thenReturn(
+        flowOf(mutablePreferencesOf(UserPreference.NOTIFICATION_PERMISSION_ASKED to true))
+      )
+
+      val isAsked2 = userPreference.getPermissionAsked().first()
+      assertTrue(isAsked2)
 
       verify(mockDataStore).edit(any())
     }

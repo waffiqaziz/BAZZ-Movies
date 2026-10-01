@@ -6,6 +6,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import java.io.File
 
 class AndroidApplicationFirebaseConventionPlugin : Plugin<Project> {
   override fun apply(target: Project) {
