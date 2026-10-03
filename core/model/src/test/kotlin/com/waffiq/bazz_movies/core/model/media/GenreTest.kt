@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.core.model.media
 
 import com.waffiq.bazz_movies.core.model.media.Genre.Companion.forMediaType
 import com.waffiq.bazz_movies.core.model.media.Genre.Companion.fromId
-import com.waffiq.bazz_movies.core.model.media.Genre.Companion.fromName
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
@@ -12,20 +11,9 @@ class GenreTest {
 
   @Test
   fun getValue_fromValidGenre_returnsCorrectly() {
-    assertEquals("Comedy", Genre.COMEDY.genreName)
     assertEquals(35, Genre.COMEDY.id)
-  }
-
-  @Test
-  fun fromId_withValidValue_returnsCorrectly() {
     assertEquals(Genre.WAR_AND_POLITICS, fromId(10768))
     assertNull(fromId(111111))
-  }
-
-  @Test
-  fun fromName_withValidValue_returnsCorrectly() {
-    assertEquals(Genre.WESTERN, fromName("Western"))
-    assertNull(fromName("unknown"))
   }
 
   @Test

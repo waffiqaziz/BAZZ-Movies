@@ -191,7 +191,6 @@ object DataDummy {
   val testMediaDetail = MediaDetail(
     id = 12345678,
     credits = testMediaCredits,
-    genre = "Action",
     genreId = listOf(28),
     duration = "1h 1m",
     imdbId = "tt12345678",

@@ -82,7 +82,7 @@ class MediaDetailActivityTest : BaseMediaDetailActivityTest() {
   @Test
   fun detailScreen_whenGenreNull_notShowingGenre() {
     context.launchMediaDetailActivity(data = mediaArgs.copy(listGenreIds = null)) {
-      updateState { copy(detail = testMediaDetail.copy(genre = "", genreId = null)) }
+      updateState { copy(detail = testMediaDetail.copy(genreId = null)) }
       "Action".doesNotExist()
     }
   }

@@ -19,7 +19,6 @@ class MediaDetailTest {
     val detail = MediaDetail(id = 123, releaseDateRegion = releaseDateRegion)
 
     assertEquals(123, detail.id)
-    assertNull(detail.genre)
     assertNull(detail.genreId)
     assertNull(detail.credits)
     assertNull(detail.duration)
@@ -40,7 +39,6 @@ class MediaDetailTest {
     val genreIds = listOf(1, 2, 3)
     val detail = MediaDetail(
       id = 456,
-      genre = "Action",
       genreId = genreIds,
       duration = "120 min",
       imdbId = "tt1234567",
@@ -53,7 +51,6 @@ class MediaDetailTest {
     )
 
     assertEquals(456, detail.id)
-    assertEquals("Action", detail.genre)
     assertEquals(genreIds, detail.genreId)
     assertEquals("120 min", detail.duration)
     assertEquals("tt1234567", detail.imdbId)
@@ -82,7 +79,6 @@ class MediaDetailTest {
   fun createMediaDetail_withExplicitNulls_createsInstanceSuccessfully() {
     val detail = MediaDetail(
       id = 999,
-      genre = null,
       genreId = null,
       duration = null,
       imdbId = null,
@@ -94,7 +90,6 @@ class MediaDetailTest {
     )
 
     assertEquals(999, detail.id)
-    assertNull(detail.genre)
     assertNull(detail.genreId)
     assertNull(detail.duration)
     assertNull(detail.imdbId)

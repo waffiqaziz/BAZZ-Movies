@@ -4,7 +4,7 @@ import android.os.Looper
 import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.databinding.ChipLayoutBinding
-import com.waffiq.bazz_movies.core.utils.GenreHelper.getGenreName
+import com.waffiq.bazz_movies.core.utils.GenreHelper.toStringRes
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseAdapterTest
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType
@@ -51,7 +51,7 @@ class GenreAdapterTest : BaseAdapterTest() {
 
     adapter.setGenre(movieGenreIds)
     adapter.onBindViewHolder(viewHolder, 0)
-    assertEquals(getGenreName(movieGenreIds.first()), binding.chip.text)
+    assertEquals(context.getString(movieGenreIds.first().toStringRes()), binding.chip.text)
   }
 
   @Test
