@@ -24,7 +24,6 @@ class BasicTvDetailMapperTest {
     assertEquals(1, validTvDetail.id)
     assertEquals("tt1234567", validTvDetail.imdbId)
     assertEquals("7.5", validTvDetail.tmdbScore)
-    assertEquals("Action, Comedy", validTvDetail.genre)
     assertEquals(mediaKeywordsItems, validTvDetail.keywords)
     assertEquals("English", validTvDetail.language)
     assertEquals("Link Trailer", validTvDetail.trailer)
@@ -67,8 +66,7 @@ class BasicTvDetailMapperTest {
 
     assertEquals(0, result.id)
     assertNull(result.tmdbScore)
-    assertNull(result.genre)
-    assertNull(result.genreId)
+    assertEquals(emptyList<Int>(), result.genreId)
     assertNull(result.keywords)
     assertEquals("", result.imdbId)
     assertEquals("", result.language)
@@ -97,7 +95,6 @@ class BasicTvDetailMapperTest {
   @Test
   fun tvDetail_genresEmpty_returnsNullGenre() {
     val result = fullTvDetail.copy(listGenres = emptyList()).stubToMediaDetail()
-    assertNull(result.genre)
     assertEquals(emptyList<Int>(), result.genreId)
   }
 
@@ -106,8 +103,7 @@ class BasicTvDetailMapperTest {
     val genresWithNull = listOf(GenresItem(id = 1, name = "Action"), null)
     val result = fullTvDetail.copy(listGenres = genresWithNull).stubToMediaDetail()
 
-    assertEquals("Action", result.genre)
-    assertEquals(listOf(1, 0), result.genreId)
+    assertEquals(listOf(1), result.genreId)
   }
 
   @Test

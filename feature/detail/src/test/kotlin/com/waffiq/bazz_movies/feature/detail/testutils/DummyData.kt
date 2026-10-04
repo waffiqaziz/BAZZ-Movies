@@ -37,8 +37,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.vide
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.ProviderResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponseItem
-import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinString
-import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
+import com.waffiq.bazz_movies.core.utils.GenreHelper.toGenreIds
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCastItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
@@ -673,8 +672,7 @@ object DummyData {
 
   val movieMediaDetail = MediaDetail(
     id = MOVIE_ID,
-    genre = transformListGenreToJoinString(detailMovie.listGenres),
-    genreId = transformToGenreIDs(detailMovie.listGenres),
+    genreId = detailMovie.listGenres.toGenreIds(),
     duration = getTransformDuration(detailMovie.runtime),
     imdbId = IMDB_ID,
     ageRating = getAgeRating(

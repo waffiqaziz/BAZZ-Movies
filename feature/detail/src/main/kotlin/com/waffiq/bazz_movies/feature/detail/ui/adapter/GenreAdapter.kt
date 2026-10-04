@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.waffiq.bazz_movies.core.common.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.databinding.ChipLayoutBinding
-import com.waffiq.bazz_movies.core.utils.GenreHelper.getGenreName
+import com.waffiq.bazz_movies.core.utils.GenreHelper.toStringRes
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType.BY_GENRE
@@ -42,7 +42,7 @@ class GenreAdapter(private val navigator: INavigator) :
   inner class ViewHolder(private val binding: ChipLayoutBinding) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(id: Int) {
-      binding.chip.text = getGenreName(id)
+      binding.chip.text = binding.chip.context.getString(id.toStringRes())
 
       // open list
       binding.chip.setOnClickListener {

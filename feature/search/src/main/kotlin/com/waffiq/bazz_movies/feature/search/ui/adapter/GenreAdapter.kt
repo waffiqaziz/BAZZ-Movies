@@ -10,6 +10,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.array.genre_tile_colors
 import com.waffiq.bazz_movies.core.model.media.Genre
 import com.waffiq.bazz_movies.core.model.media.MediaType
 import com.waffiq.bazz_movies.core.model.media.value
+import com.waffiq.bazz_movies.core.utils.GenreHelper.toStringRes
 import com.waffiq.bazz_movies.feature.search.databinding.ItemGenreListBinding
 import com.waffiq.bazz_movies.feature.search.utils.SearchHelper.iconRes
 import com.waffiq.bazz_movies.navigation.INavigator
@@ -33,12 +34,12 @@ class GenreAdapter(private val navigator: INavigator) :
     fun bind(genre: Genre) {
       val context = binding.root.context
       val colors = context.resources.obtainTypedArray(genre_tile_colors)
-      val index = genre.genreName.hashCode().absoluteValue % colors.length()
+      val index = genre.hashCode().absoluteValue % colors.length()
       val color = colors.getColor(index, Color.DKGRAY)
       colors.recycle()
 
       binding.cardGenre.setCardBackgroundColor(color)
-      binding.tvGenreName.text = genre.genreName
+      binding.tvGenreName.text = context.getString(genre.toStringRes())
       binding.ivGenreIcon.setImageResource(genre.iconRes())
       binding.root.setOnClickListener {
         navigator.openList(

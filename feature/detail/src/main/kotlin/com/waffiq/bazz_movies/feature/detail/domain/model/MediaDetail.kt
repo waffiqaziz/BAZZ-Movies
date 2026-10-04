@@ -11,7 +11,6 @@ data class MediaDetail(
   val ageRating: String? = null,
   val credits: MediaCredits? = null,
   val duration: String? = null,
-  val genre: String? = null,
   val genreId: List<Int>? = null,
   val keywords: List<MediaKeywordsItem?>? = null,
   val language: String? = null,

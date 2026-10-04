@@ -4,8 +4,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.no_watch_providers
 import com.waffiq.bazz_movies.core.model.local.Favorite
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.toUsd
-import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinString
-import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
+import com.waffiq.bazz_movies.core.utils.GenreHelper.toGenreIds
 import com.waffiq.bazz_movies.core.utils.LanguageHelper.getLanguageName
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
@@ -27,8 +26,7 @@ object BasicMediaDetailMapper {
       imdbId = externalIds?.imdbId.orEmpty(),
       ageRating = getAgeRating(this, userRegion),
       credits = credits,
-      genre = transformListGenreToJoinString(listGenres),
-      genreId = transformToGenreIDs(listGenres),
+      genreId = listGenres.toGenreIds(),
       keywords = keywords?.keywords,
       language = getLanguageName(originalLanguage),
       releaseDateRegion = getReleaseDateRegion(this),
@@ -57,8 +55,7 @@ object BasicMediaDetailMapper {
       imdbId = imdbId,
       ageRating = getAgeRating(this, releaseDateRegion.regionRelease),
       credits = credits,
-      genre = transformListGenreToJoinString(listGenres), // for view
-      genreId = transformToGenreIDs(listGenres),
+      genreId = listGenres.toGenreIds(),
       keywords = keywords?.keywords,
       language = getLanguageName(originalLanguage),
       releaseDateRegion = releaseDateRegion,

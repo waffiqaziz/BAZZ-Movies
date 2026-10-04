@@ -28,7 +28,6 @@ class BasicMovieDetailMapperTest {
     assertEquals("$1,000,000.00", validMovieDetail.budget)
     assertEquals("$5,000,000.00", validMovieDetail.revenue)
     assertEquals("8.0", validMovieDetail.tmdbScore)
-    assertEquals("Action, Comedy", validMovieDetail.genre)
     assertEquals("superhero", validMovieDetail.keywords?.get(0)?.name)
     assertEquals("English", validMovieDetail.language)
     assertEquals("Link Trailer", validMovieDetail.trailer)
@@ -72,9 +71,8 @@ class BasicMovieDetailMapperTest {
     assertEquals("-", result.budget)
     assertEquals("-", result.revenue)
     assertNull(result.tmdbScore)
-    assertNull(result.genre)
     assertNull(result.keywords)
-    assertNull(result.genreId)
+    assertEquals(emptyList<Int>(), result.genreId)
     assertEquals("", result.language)
     assertNull(result.imdbId)
     assertNull(result.status)
@@ -104,7 +102,6 @@ class BasicMovieDetailMapperTest {
     assertEquals("-", result.budget)
     assertEquals("-", result.revenue)
     assertNull(result.tmdbScore)
-    assertNull(result.genre)
     assertEquals(emptyList<Int>(), result.genreId)
   }
 
@@ -112,8 +109,7 @@ class BasicMovieDetailMapperTest {
   fun movieDetail_genresWithNullItem_nullItemIsSkippedInGenreString() {
     val genresWithNull = listOf(GenresItem(id = 2, name = "Comedy"), null)
     val result = fullMovieDetail.copy(listGenres = genresWithNull).stubToMediaDetail()
-    assertEquals("Comedy", result.genre)
-    assertEquals(listOf(2, 0), result.genreId) // null item id elvis to 0
+    assertEquals(listOf(2), result.genreId) // null item id elvis to 0
   }
 
   @Test
