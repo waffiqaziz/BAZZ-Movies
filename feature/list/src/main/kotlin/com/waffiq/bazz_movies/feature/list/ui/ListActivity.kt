@@ -49,7 +49,7 @@ import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.uihelper.state.isLoading
 import com.waffiq.bazz_movies.core.uihelper.utils.InsetHelper.setupWindowInsets
 import com.waffiq.bazz_movies.core.utils.FlowUtils.load
-import com.waffiq.bazz_movies.core.utils.GenreHelper.getGenreName
+import com.waffiq.bazz_movies.core.utils.GenreHelper.toStringRes
 import com.waffiq.bazz_movies.feature.list.databinding.ActivityListBinding
 import com.waffiq.bazz_movies.feature.list.ui.adapter.ListAdapter
 import com.waffiq.bazz_movies.feature.list.ui.viewmodel.ListViewModel
@@ -164,7 +164,7 @@ class ListActivity : AppCompatActivity() {
   // region SHOW BASED LIST TYPE
   private fun showListBasedGenre(args: ListArgs) {
     showBackdrop(getBackdrop(args.mediaType.typeName, args.id))
-    binding.toolbar.title = getGenreName(args.id)
+    binding.toolbar.title = getString(args.id.toStringRes())
     load(viewModel.getByGenre(args.mediaType.typeName, args.id.toString()), adapter)
   }
 
