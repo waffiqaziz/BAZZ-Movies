@@ -273,4 +273,13 @@
   <string name="genre_war_and_politics">War &amp; Politics</string>
   <string name="genre_western">Western</string>
 
+  <!-- LIST LAYOUT -->
+  <string name="view_title">View</string>
+  <string name="view_options">View options</string>
+  <string name="view_two_columns">2 Columns</string>
+  <string name="view_two_columns_desc">Larger posters</string>
+  <string name="view_three_columns">3 Columns</string>
+  <string name="view_three_columns_desc">More items on screen</string>
+  <string name="view_detailed">Detailed</string>
+  <string name="view_detailed_desc">Poster with information</string>
 </resources>

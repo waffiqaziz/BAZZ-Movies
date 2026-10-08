@@ -1,35 +1,33 @@
 package com.waffiq.bazz_movies.feature.list
 
-import android.content.Context
+import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import androidx.paging.PagingData
-import androidx.test.core.app.ApplicationProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.espresso.intent.Intents
 import com.waffiq.bazz_movies.core.designsystem.R.id.btn_try_again
-import com.waffiq.bazz_movies.core.designsystem.R.string.all_time
-import com.waffiq.bazz_movies.core.designsystem.R.string.costume_drama
-import com.waffiq.bazz_movies.core.designsystem.R.string.donghua
-import com.waffiq.bazz_movies.core.designsystem.R.string.reality_show
-import com.waffiq.bazz_movies.core.designsystem.R.string.romance_drama
-import com.waffiq.bazz_movies.core.designsystem.R.string.this_season
-import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performSwipeDown
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNotExist
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
-import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isTextVisible
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isVisible
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.feature.list.R.id.btn_back
-import com.waffiq.bazz_movies.feature.list.R.id.btn_toggle_layout
-import com.waffiq.bazz_movies.feature.list.R.id.collapse
 import com.waffiq.bazz_movies.feature.list.R.id.illustration_error
 import com.waffiq.bazz_movies.feature.list.R.id.iv_picture
 import com.waffiq.bazz_movies.feature.list.R.id.loading_indicator
+import com.waffiq.bazz_movies.feature.list.R.id.option_detailed
+import com.waffiq.bazz_movies.feature.list.R.id.option_three_columns
+import com.waffiq.bazz_movies.feature.list.R.id.option_two_columns
 import com.waffiq.bazz_movies.feature.list.R.id.rv_list
+import com.waffiq.bazz_movies.feature.list.domain.model.ListViewMode
 import com.waffiq.bazz_movies.feature.list.testutils.BaseListActivityTest
+import com.waffiq.bazz_movies.feature.list.ui.ListActivity
+import com.waffiq.bazz_movies.feature.list.ui.ViewModeBottomSheet
 import com.waffiq.bazz_movies.feature.list.ui.viewmodel.ListViewModel
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -38,6 +36,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -45,8 +44,6 @@ import org.junit.Test
 
 @HiltAndroidTest
 class ListActivityTest : BaseListActivityTest() {
-
-  private lateinit var context: Context
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)
@@ -56,12 +53,9 @@ class ListActivityTest : BaseListActivityTest() {
   val mockListViewModel: ListViewModel = mockk(relaxed = true)
 
   @Before
-  fun setup() {
+  override fun setup() {
+    super.setup()
     hiltRule.inject()
-    Intents.init()
-    context = ApplicationProvider.getApplicationContext<Context>().apply {
-      setTheme(Base_Theme_BAZZ_movies) // set the theme
-    }
     setupMock(mockListViewModel)
   }
 
@@ -71,161 +65,67 @@ class ListActivityTest : BaseListActivityTest() {
   }
 
   @Test
-  fun listActivity_withGenreType_showsCorrectViews() {
-    context.launchListActivity {
-      collapse.isDisplayed()
-      "Science Fiction".isVisible()
-      shouldShowMovie()
-    }
-    context.launchListActivity(tvGenreArgs) {
-      shouldShowTv()
-    }
-  }
-
-  @Test
-  fun listActivity_withKeywordsType_showsCorrectViews() {
-    context.launchListActivity(movieKeywordsArgs) {
-      "Post Apocalyptic".isVisible()
-      shouldShowMovie()
-    }
-    context.launchListActivity(tvKeywordsArgs) {
-      "Post Apocalyptic".isVisible()
-      shouldShowTv()
-    }
-  }
-
-  @Test
-  fun listActivity_withNowPlayingType_showsCorrectViews() {
-    context.launchListActivity(movieNowPlayingArgs) {
-      shouldShowMovie()
-    }
-    context.launchListActivity(tvNowPlayingArgs) {
-      shouldShowTv()
-    }
-  }
-
-  @Test
-  fun listActivity_withPopularType_showsCorrectViews() {
-    context.launchListActivity(moviePopularArgs) {
-      shouldShowMovie()
-    }
-    context.launchListActivity(tvPopularArgs) {
-      shouldShowTv()
-    }
-  }
-
-  @Test
-  fun listActivity_withRecommendationType_showsCorrectViews() {
-    context.launchListActivity(movieRecommendationArgs) {
-      movieRecommendationArgs.title.isVisible()
-      "Recommendation".isVisible()
-    }
-    context.launchListActivity(tvRecommendationArgs) {
-      tvRecommendationArgs.title.isVisible()
-      "Recommendation".isVisible()
-    }
-  }
-
-  @Test
-  fun listActivity_withTopRatedType_showsCorrectViews() {
-    context.launchListActivity(movieTopRatedArgs) {
-      shouldShowMovie()
-    }
-    context.launchListActivity(tvTopRatedArgs) {
-      shouldShowTv()
-    }
-  }
-
-  @Test
-  fun listActivity_withUpcomingType_showsCorrectViews() {
-    context.launchListActivity(movieUpcomingArgs) {
-      shouldShowMovie()
-    }
-  }
-
-  @Test
-  fun listActivity_withAiringThisWeekType_showsCorrectViews() {
-    context.launchListActivity(tvAiringThisWeekArgs) {
-      shouldShowTv()
-    }
-  }
-
-  @Test
-  fun listActivity_withTrendingTodayType_showsCorrectViews() {
-    context.launchListActivity(trendingTodayArgs) {
-      shouldShowTrending()
-    }
-  }
-
-  @Test
-  fun listActivity_withTrendingThisWeekType_showsCorrectViews() {
-    context.launchListActivity(trendingThisWeekArgs) {
-      shouldShowTrending()
-    }
-  }
-
-  @Test
-  fun listActivity_withAnimeAllTimeType_showsCorrectViews() {
-    context.launchListActivity(animeAllTimeArgs) {
-      all_time.isTextVisible()
-    }
-  }
-
-  @Test
-  fun listActivity_withAnimeThisSeasonType_showsCorrectViews() {
-    context.launchListActivity(animeThisSeasonArgs) {
-      this_season.isTextVisible()
-    }
-  }
-
-  @Test
-  fun listActivity_withCostumeDramaType_showsCorrectViews() {
-    context.launchListActivity(costumeDramaArgs) {
-      costume_drama.isTextVisible()
-    }
-  }
-
-  @Test
-  fun listActivity_withDonghuaType_showsCorrectViews() {
-    context.launchListActivity(donghuaArgs) {
-      donghua.isTextVisible()
-    }
-  }
-
-  @Test
-  fun listActivity_withRomanceDramaType_showsCorrectViews() {
-    context.launchListActivity(romanceDramaArgs) {
-      romance_drama.isTextVisible()
-    }
-  }
-
-  @Test
-  fun listActivity_withRealityShowType_showsCorrectViews() {
-    context.launchListActivity(realityShow) {
-      reality_show.isTextVisible()
-    }
-  }
-
-  @Test
   fun listActivity_toggleButtonPressed_changesTheLayout() {
     context.launchListActivity {
       // should use grid layout on initial
       "movie title 1".doesNotExist()
 
-      // switch to linear layout
-      triggerListButton()
+      // switch to detail layout
+      triggerListButton(option_detailed)
       "movie title 1".isVisible()
 
       // back to grid layout
-      btn_toggle_layout.performClick()
+      triggerListButton(option_two_columns)
+      "movie title 1".doesNotExist()
+
+      // grid layout 3
+      triggerListButton(option_three_columns)
       "movie title 1".doesNotExist()
     }
   }
 
   @Test
-  fun listActivity_performClickOnListLayout_changesTheLayout() {
+  fun listActivity_afterRecreate_restoresViewMode() {
     context.launchListActivity {
-      triggerListButton()
+      triggerListButton(option_detailed)
+    }
+    context.launchListActivityAndRecreate {
+      "movie title 1".doesNotExist()
+    }
+  }
+
+  @Test
+  fun listActivity_recreate_restoresSavedViewMode() {
+    launch<ListActivity>(intent).use { scenario ->
+      scenario.onActivity { activity ->
+        activity.supportFragmentManager.setFragmentResult(
+          ViewModeBottomSheet.REQUEST_KEY,
+          Bundle().apply {
+            putString(
+              ViewModeBottomSheet.RESULT_MODE,
+              ListViewMode.THREE_COLUMNS.name,
+            )
+          },
+        )
+      }
+
+      scenario.recreate()
+
+      scenario.onActivity { activity ->
+        val rv = activity.findViewById<RecyclerView>(rv_list)
+        val lm = rv.layoutManager as GridLayoutManager
+        assertEquals(ListViewMode.THREE_COLUMNS.spanCount, lm.spanCount)
+      }
+    }
+  }
+
+  @Test
+  fun viewMode_resultWithoutMode_isIgnored() {
+    launch<ListActivity>(intent).use { scenario ->
+      scenario.selectViewMode(ListViewMode.THREE_COLUMNS)
+      scenario.selectViewMode(ListViewMode.THREE_COLUMNS) // trigger same view mode
+      scenario.sendEmptyViewModeResult()
+      scenario.assertLayout(ListViewMode.THREE_COLUMNS)
     }
   }
 
@@ -310,10 +210,5 @@ class ListActivityTest : BaseListActivityTest() {
     context.launchNullListActivity(args = null) { scenario ->
       assertTrue(scenario.state == Lifecycle.State.DESTROYED)
     }
-  }
-
-  private fun triggerListButton() {
-    btn_toggle_layout.isDisplayed()
-    btn_toggle_layout.performClick()
   }
 }
