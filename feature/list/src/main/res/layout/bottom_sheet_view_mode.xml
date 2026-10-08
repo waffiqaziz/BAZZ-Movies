@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical"
+  android:paddingHorizontal="16dp"
+  android:paddingBottom="24dp">
+
+  <TextView
+    android:layout_marginTop="@dimen/default_margin_parent_20"
+    style="@style/TextAppearance.App.Header2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:text="@string/view_title" />
+
+  <include android:id="@+id/option_two_columns" layout="@layout/item_view_mode_option" />
+  <include android:id="@+id/option_three_columns" layout="@layout/item_view_mode_option" />
+  <include android:id="@+id/option_detailed" layout="@layout/item_view_mode_option" />
+</LinearLayout>

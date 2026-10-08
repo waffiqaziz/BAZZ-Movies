@@ -15,6 +15,7 @@ import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaNoSwipe
 import com.waffiq.bazz_movies.core.mapper.MediaItemMapper.toMediaItem
 import com.waffiq.bazz_movies.core.model.media.MediaItem
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
+import com.waffiq.bazz_movies.feature.list.domain.model.ListViewMode
 import com.waffiq.bazz_movies.feature.list.testutils.DummyData.fakeMovieMediaItemPagingData
 import com.waffiq.bazz_movies.feature.list.testutils.DummyData.mediaMovieItem
 import com.waffiq.bazz_movies.feature.list.testutils.DummyData.mediaMovieItem2
@@ -113,15 +114,15 @@ class ListAdapterTest {
   @Test
   fun getItemViewType_returnsGrid_whenGridModeTrue() {
     setupAdapter()
-    setupGridLayout()
+    setupTwoColumnsLayout()
     assertEquals(ListAdapter.VIEW_TYPE_GRID, adapter.getItemViewType(0))
   }
 
   @Test
   fun getItemViewType_returnsList_whenGridModeFalse() {
     setupAdapter()
-    setupListLayout()
-    assertEquals(ListAdapter.VIEW_TYPE_LIST, adapter.getItemViewType(0))
+    setupDetailedLayout()
+    assertEquals(ListAdapter.VIEW_TYPE_DETAILED, adapter.getItemViewType(0))
   }
 
   @Test
@@ -134,14 +135,14 @@ class ListAdapterTest {
       assertEquals(1, adapter.itemCount)
 
       // 2. Switch to grid and verify view type
-      setupGridLayout()
-      assertTrue(adapter.isGridMode())
+      setupTwoColumnsLayout()
+      assertFalse(adapter.viewMode.isDetailed)
       assertEquals(ListAdapter.VIEW_TYPE_GRID, adapter.getItemViewType(0))
 
-      // 3. Switch to list and verify view type
-      setupListLayout()
-      assertFalse(adapter.isGridMode())
-      assertEquals(ListAdapter.VIEW_TYPE_LIST, adapter.getItemViewType(0))
+      // 3. Switch to detailed and verify view type
+      setupDetailedLayout()
+      assertTrue(adapter.viewMode.isDetailed)
+      assertEquals(ListAdapter.VIEW_TYPE_DETAILED, adapter.getItemViewType(0))
     }
 
   @Test
@@ -152,7 +153,7 @@ class ListAdapterTest {
       submitPagingAndWait(mediaMovieItem)
       adapter.registerAdapterDataObserver(observer) // mock or spy observer
 
-      setupGridLayout() // already true by default, then should no notification
+      setupTwoColumnsLayout() // already true by default, then should no notification
       verify(observer, never()).onItemRangeChanged(anyInt(), anyInt(), isNull())
     }
 
@@ -164,7 +165,7 @@ class ListAdapterTest {
       submitPagingAndWait(mediaMovieItem)
       adapter.registerAdapterDataObserver(observer)
 
-      setupListLayout()
+      setupDetailedLayout()
       verify(observer).onItemRangeChanged(0, adapter.itemCount, null)
     }
 
@@ -194,7 +195,7 @@ class ListAdapterTest {
   fun onCreateViewHolder_returnsListViewHolder_whenViewTypeList() {
     setupAdapter()
 
-    val holder = getHolder(ListAdapter.VIEW_TYPE_LIST)
+    val holder = getHolder(ListAdapter.VIEW_TYPE_DETAILED)
     assertTrue(holder is ListAdapter.ListViewHolder)
   }
 
@@ -256,7 +257,7 @@ class ListAdapterTest {
     runTest {
       setupAdapter()
 
-      setupGridLayout()
+      setupThreeColumnsLayout()
       submitPagingAndWait(mediaMovieItem)
 
       val holder = getHolder(ListAdapter.VIEW_TYPE_GRID)
@@ -274,10 +275,10 @@ class ListAdapterTest {
     runTest {
       setupAdapter()
 
-      setupListLayout()
+      setupTwoColumnsLayout()
       submitPagingAndWait(mediaMovieItem)
 
-      val holder = getHolder(ListAdapter.VIEW_TYPE_LIST)
+      val holder = getHolder(ListAdapter.VIEW_TYPE_DETAILED)
       adapter.onBindViewHolder(holder, 0)
 
       // perform click to check if its list layout
@@ -289,11 +290,15 @@ class ListAdapterTest {
 
   private fun getHolder(viewType: Int) = adapter.onCreateViewHolder(parent, viewType)
 
-  private fun setupListLayout() {
-    adapter.setGridMode(false)
+  private fun setupTwoColumnsLayout() {
+    adapter.setViewMode(ListViewMode.TWO_COLUMNS)
   }
 
-  private fun setupGridLayout() {
-    adapter.setGridMode(true)
+  private fun setupThreeColumnsLayout() {
+    adapter.setViewMode(ListViewMode.THREE_COLUMNS)
+  }
+
+  private fun setupDetailedLayout() {
+    adapter.setViewMode(ListViewMode.DETAILED)
   }
 }
