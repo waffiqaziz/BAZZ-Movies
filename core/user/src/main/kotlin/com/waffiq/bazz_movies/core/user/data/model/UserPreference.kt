@@ -25,6 +25,7 @@ class UserPreference @Inject constructor(private val dataStore: DataStore<Prefer
       it[TOKEN_KEY] = user.token
       it[STATE_KEY] = user.isLogin
       it[GRAVATAR_KEY] = user.gravatarHash.orEmpty()
+      it[NOTIFICATION_PERMISSION_ASKED] = false
       it[TMDB_AVATAR_KEY] = user.tmdbAvatar.orEmpty()
     }
   }
@@ -52,6 +53,13 @@ class UserPreference @Inject constructor(private val dataStore: DataStore<Prefer
 
   fun getRegion(): Flow<String> = dataStore.data.map { it[REGION_KEY].orEmpty() }
 
+  fun getPermissionAsked(): Flow<Boolean> =
+    dataStore.data.map { it[NOTIFICATION_PERMISSION_ASKED] ?: false }
+
+  suspend fun savePermissionAsked() {
+    dataStore.edit { it[NOTIFICATION_PERMISSION_ASKED] = true }
+  }
+
   suspend fun removeUserData() { // remove all data from datastore
     dataStore.edit {
       it[USERID_KEY] = 0
@@ -63,6 +71,7 @@ class UserPreference @Inject constructor(private val dataStore: DataStore<Prefer
       it[GRAVATAR_KEY] = ""
       it[TMDB_AVATAR_KEY] = ""
       it[STATE_KEY] = false
+      it[NOTIFICATION_PERMISSION_ASKED] = false
     }
   }
 
@@ -75,6 +84,7 @@ class UserPreference @Inject constructor(private val dataStore: DataStore<Prefer
     val TOKEN_KEY = stringPreferencesKey("token")
     val REGION_KEY = stringPreferencesKey("region")
     val STATE_KEY = booleanPreferencesKey("state")
+    val NOTIFICATION_PERMISSION_ASKED = booleanPreferencesKey("notification_permission_asked")
     val GRAVATAR_KEY = stringPreferencesKey("gravatar")
     val TMDB_AVATAR_KEY = stringPreferencesKey("tmdb_avatar")
   }

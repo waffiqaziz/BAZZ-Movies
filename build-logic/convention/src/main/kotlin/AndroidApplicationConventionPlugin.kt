@@ -1,4 +1,6 @@
 import com.android.build.api.dsl.ApplicationExtension
+import com.waffiq.bazz_movies.AppFlavors
+import com.waffiq.bazz_movies.FlavorDimensions
 import com.waffiq.bazz_movies.configureCommonAndroidSettings
 import com.waffiq.bazz_movies.configureKotlinAndroid
 import com.waffiq.bazz_movies.configureMockitoAgent
@@ -27,6 +29,17 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
           resValues = true
         }
         ndkVersion = libs.findVersion("ndkVersion").get().toString()
+
+        flavorDimensions += FlavorDimensions.SERVICES
+        productFlavors {
+          create(AppFlavors.WITH_FIREBASE) {
+            dimension = FlavorDimensions.SERVICES
+          }
+          create(AppFlavors.WITHOUT_FIREBASE) {
+            dimension = FlavorDimensions.SERVICES
+          }
+        }
+
         defaultConfig {
           applicationId = "com.bazz.bazz_movies"
           namespace = "com.waffiq.bazz_movies"
