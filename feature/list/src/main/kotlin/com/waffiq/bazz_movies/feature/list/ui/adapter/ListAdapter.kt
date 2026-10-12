@@ -13,6 +13,7 @@ import com.bazz_movies.core.adapter.BindAdapterHelper.bindPicture
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemListBinding
 import com.waffiq.bazz_movies.core.designsystem.databinding.ListItemMediaNoSwipeBinding
 import com.waffiq.bazz_movies.core.model.media.MediaItem
+import com.waffiq.bazz_movies.feature.list.domain.model.ListViewMode
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.MediaSource
 import com.waffiq.bazz_movies.navigation.utils.toMediaArgs
@@ -20,18 +21,17 @@ import com.waffiq.bazz_movies.navigation.utils.toMediaArgs
 class ListAdapter(private val navigator: INavigator, private val source: MediaSource) :
   PagingDataAdapter<MediaItem, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
-  private var isGridMode = true
+  var viewMode = ListViewMode.TWO_COLUMNS
+    private set
 
-  fun setGridMode(isGrid: Boolean) {
-    if (isGridMode != isGrid) {
-      isGridMode = isGrid
-      notifyItemRangeChanged(0, itemCount)
-    }
+  fun setViewMode(mode: ListViewMode) {
+    val typeChanged = viewMode.isDetailed != mode.isDetailed
+    viewMode = mode
+    if (typeChanged) notifyItemRangeChanged(0, itemCount)
   }
 
-  fun isGridMode() = isGridMode
-
-  override fun getItemViewType(position: Int) = if (isGridMode) VIEW_TYPE_GRID else VIEW_TYPE_LIST
+  override fun getItemViewType(position: Int) =
+    if (viewMode.isDetailed) VIEW_TYPE_DETAILED else VIEW_TYPE_GRID
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
     if (viewType == VIEW_TYPE_GRID) {
@@ -77,7 +77,7 @@ class ListAdapter(private val navigator: INavigator, private val source: MediaSo
 
   companion object {
     const val VIEW_TYPE_GRID = 0
-    const val VIEW_TYPE_LIST = 1
+    const val VIEW_TYPE_DETAILED = 1
 
     val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MediaItem>() {
       override fun areItemsTheSame(oldItem: MediaItem, newItem: MediaItem) =
