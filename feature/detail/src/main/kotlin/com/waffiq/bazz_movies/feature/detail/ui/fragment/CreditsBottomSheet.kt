@@ -2,9 +2,7 @@ package com.waffiq.bazz_movies.feature.detail.ui.fragment
 
 import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -13,6 +11,7 @@ import com.google.android.material.tabs.TabLayout
 import com.waffiq.bazz_movies.core.designsystem.R.string.cast
 import com.waffiq.bazz_movies.core.designsystem.R.string.crew
 import com.waffiq.bazz_movies.core.designsystem.R.style.ThemeOverlay_App_BottomSheetDialog_Credits
+import com.waffiq.bazz_movies.feature.detail.R.layout.bottom_sheet_credits
 import com.waffiq.bazz_movies.feature.detail.databinding.BottomSheetCreditsBinding
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.CastAdapter
@@ -23,25 +22,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CreditsBottomSheet : BottomSheetDialogFragment() {
+class CreditsBottomSheet : BottomSheetDialogFragment(bottom_sheet_credits) {
 
   @Inject
   lateinit var navigator: INavigator
 
-  private lateinit var binding: BottomSheetCreditsBinding
-  private lateinit var castAdapter: CastAdapter
-  private lateinit var crewAdapter: CrewAdapter
-
   private val viewModel: MediaDetailViewModel by activityViewModels()
-
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?,
-  ): View {
-    binding = BottomSheetCreditsBinding.inflate(inflater, null, false)
-    return binding.root
-  }
 
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
     BottomSheetDialog(requireContext(), ThemeOverlay_App_BottomSheetDialog_Credits)
@@ -52,8 +38,13 @@ class CreditsBottomSheet : BottomSheetDialogFragment() {
     setupBottomSheetBehavior()
 
     val credits = viewModel.uiState.value.detail?.credits ?: return
-    setupRecyclerView(credits)
-    setupTabs(credits)
+    val binding = BottomSheetCreditsBinding.bind(view)
+
+    val castAdapter = CastAdapter(navigator).apply { setVerticalMode(true) }
+    val crewAdapter = CrewAdapter()
+
+    setupRecyclerView(binding, castAdapter, credits)
+    setupTabs(binding, castAdapter, crewAdapter, credits)
   }
 
   private fun setupBottomSheetBehavior() {
@@ -63,22 +54,24 @@ class CreditsBottomSheet : BottomSheetDialogFragment() {
     }
   }
 
-  private fun setupRecyclerView(credits: MediaCredits) {
-    castAdapter = CastAdapter(navigator)
-    crewAdapter = CrewAdapter()
-
-    castAdapter.setVerticalMode(true)
-
+  private fun setupRecyclerView(
+    binding: BottomSheetCreditsBinding,
+    castAdapter: CastAdapter,
+    credits: MediaCredits,
+  ) {
     binding.rvCredits.apply {
       layoutManager = LinearLayoutManager(requireContext())
       adapter = castAdapter
     }
-
-    // load initial cast list
     castAdapter.submitList(credits.cast)
   }
 
-  private fun setupTabs(credits: MediaCredits) {
+  private fun setupTabs(
+    binding: BottomSheetCreditsBinding,
+    castAdapter: CastAdapter,
+    crewAdapter: CrewAdapter,
+    credits: MediaCredits,
+  ) {
     binding.tabLayout.apply {
       addTab(newTab().setText(getString(cast) + " (${credits.cast.size})"))
       addTab(newTab().setText(getString(crew) + " (${credits.crew.size})"))
