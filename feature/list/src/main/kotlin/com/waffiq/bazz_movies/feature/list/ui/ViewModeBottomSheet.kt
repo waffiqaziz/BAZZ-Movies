@@ -5,9 +5,7 @@ package com.waffiq.bazz_movies.feature.list.ui
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.WindowCompat.enableEdgeToEdge
 import androidx.core.view.isVisible
 import androidx.core.widget.ImageViewCompat
@@ -17,25 +15,22 @@ import com.waffiq.bazz_movies.core.designsystem.R.color.gray_300
 import com.waffiq.bazz_movies.core.designsystem.R.color.gray_800
 import com.waffiq.bazz_movies.core.designsystem.R.color.gray_900
 import com.waffiq.bazz_movies.core.designsystem.R.color.white
+import com.waffiq.bazz_movies.feature.list.R.layout.bottom_sheet_view_mode
 import com.waffiq.bazz_movies.feature.list.databinding.BottomSheetViewModeBinding
 import com.waffiq.bazz_movies.feature.list.databinding.ItemViewModeOptionBinding
 import com.waffiq.bazz_movies.feature.list.domain.model.ListViewMode
 
-class ViewModeBottomSheet : BottomSheetDialogFragment() {
+class ViewModeBottomSheet : BottomSheetDialogFragment(bottom_sheet_view_mode) {
 
-  private var _binding: BottomSheetViewModeBinding? = null
-  private val binding get() = _binding!!
-
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?,
-  ): View {
-    _binding = BottomSheetViewModeBinding.inflate(inflater, null, false)
-    return binding.root
+  override fun onStart() {
+    super.onStart()
+    dialog?.window?.let { enableEdgeToEdge(it) }
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+    val binding = BottomSheetViewModeBinding.bind(view)
     val current = ListViewMode.valueOf(requireArguments().getString(ARG_MODE)!!)
 
     val options = mapOf(
@@ -45,11 +40,6 @@ class ViewModeBottomSheet : BottomSheetDialogFragment() {
     )
 
     options.forEach { (mode, row) -> bindOption(row, mode, selected = mode == current) }
-  }
-
-  override fun onStart() {
-    super.onStart()
-    dialog?.window?.let { enableEdgeToEdge(it) }
   }
 
   private fun bindOption(
@@ -93,11 +83,6 @@ class ViewModeBottomSheet : BottomSheetDialogFragment() {
       )
       dismiss()
     }
-  }
-
-  override fun onDestroyView() {
-    _binding = null
-    super.onDestroyView()
   }
 
   companion object {

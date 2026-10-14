@@ -3,9 +3,7 @@
 package com.waffiq.bazz_movies.feature.search.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -17,28 +15,16 @@ import com.waffiq.bazz_movies.core.designsystem.R.color.yellow_alpha_20
 import com.waffiq.bazz_movies.core.designsystem.R.dimen.stroke
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_tick
 import com.waffiq.bazz_movies.core.designsystem.R.font.nunito_sans_bold
-import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.model.media.MediaType
 import com.waffiq.bazz_movies.feature.search.R.color.selector_chip_background
 import com.waffiq.bazz_movies.feature.search.R.color.selector_chip_stroke
 import com.waffiq.bazz_movies.feature.search.R.color.selector_chip_text
+import com.waffiq.bazz_movies.feature.search.R.layout.fragment_search_filter
 import com.waffiq.bazz_movies.feature.search.databinding.FragmentSearchFilterBinding
 import com.waffiq.bazz_movies.feature.search.utils.labelRes
 import com.waffiq.bazz_movies.feature.search.utils.toMediaTypeSet
 
-class SearchFilterBottomSheet : BottomSheetDialogFragment() {
-
-  private var _binding: FragmentSearchFilterBinding? = null
-  private val binding get() = _binding ?: error(getString(binding_error))
-
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?,
-  ): View {
-    _binding = FragmentSearchFilterBinding.inflate(inflater, null, false)
-    return binding.root
-  }
+class SearchFilterBottomSheet : BottomSheetDialogFragment(fragment_search_filter) {
 
   override fun onStart() {
     super.onStart()
@@ -48,6 +34,7 @@ class SearchFilterBottomSheet : BottomSheetDialogFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
+    val binding = FragmentSearchFilterBinding.bind(view)
     val preselected = arguments?.getStringArrayList(ARG_SELECTED).toMediaTypeSet()
     val chipIdToType = mutableMapOf<Int, MediaType>()
 
@@ -92,13 +79,7 @@ class SearchFilterBottomSheet : BottomSheetDialogFragment() {
       textSize = TEXT_SIZE
     }
 
-  private fun SearchFilterBottomSheet.getColor(@ColorRes id: Int) =
-    ContextCompat.getColorStateList(this.requireContext(), id)
-
-  override fun onDestroyView() {
-    super.onDestroyView()
-    _binding = null
-  }
+  private fun getColor(@ColorRes id: Int) = ContextCompat.getColorStateList(requireContext(), id)
 
   companion object {
     const val REQUEST_FILTER_RESULT = "search_filter_result"
