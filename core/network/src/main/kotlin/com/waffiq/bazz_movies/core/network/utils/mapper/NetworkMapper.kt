@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.core.network.utils.mapper
 
+import com.waffiq.bazz_movies.core.model.media.MediaType
 import com.waffiq.bazz_movies.core.model.user.FavoriteParams
 import com.waffiq.bazz_movies.core.model.user.WatchlistParams
 import com.waffiq.bazz_movies.core.network.data.remote.model.FavoriteRequest
@@ -21,17 +22,6 @@ object NetworkMapper {
       watchlist = watchlist,
     )
 
-  fun FavoriteRequest.toUpdateFavoriteParams() =
-    FavoriteParams(
-      mediaType = mediaType,
-      mediaId = mediaId,
-      favorite = favorite,
-    )
-
-  fun WatchlistRequest.toUpdateWatchlistParams() =
-    WatchlistParams(
-      mediaType = mediaType,
-      mediaId = mediaId,
-      watchlist = watchlist,
-    )
+  val MediaType.toMediaAccount: String
+    get() = if (this == MediaType.MOVIE) "movies" else "tv"
 }

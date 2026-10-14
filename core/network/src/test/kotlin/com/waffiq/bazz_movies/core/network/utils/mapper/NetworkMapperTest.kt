@@ -1,12 +1,10 @@
 package com.waffiq.bazz_movies.core.network.utils.mapper
 
+import com.waffiq.bazz_movies.core.model.media.MediaType
 import com.waffiq.bazz_movies.core.model.user.FavoriteParams
 import com.waffiq.bazz_movies.core.model.user.WatchlistParams
-import com.waffiq.bazz_movies.core.network.data.remote.model.FavoriteRequest
-import com.waffiq.bazz_movies.core.network.data.remote.model.WatchlistRequest
 import com.waffiq.bazz_movies.core.network.utils.mapper.NetworkMapper.toFavoriteRequest
-import com.waffiq.bazz_movies.core.network.utils.mapper.NetworkMapper.toUpdateFavoriteParams
-import com.waffiq.bazz_movies.core.network.utils.mapper.NetworkMapper.toUpdateWatchlistParams
+import com.waffiq.bazz_movies.core.network.utils.mapper.NetworkMapper.toMediaAccount
 import com.waffiq.bazz_movies.core.network.utils.mapper.NetworkMapper.toWatchlistRequest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -36,22 +34,8 @@ class NetworkMapperTest {
   }
 
   @Test
-  fun toFavoriteModel_withValidValues_returnsUpdateFavoriteParams() {
-    val favoriteRequest = FavoriteRequest("movie", 1254543255, true)
-    val favoriteParams = favoriteRequest.toUpdateFavoriteParams()
-
-    assertEquals(1254543255, favoriteParams.mediaId)
-    assertEquals("movie", favoriteParams.mediaType)
-    assertTrue(favoriteParams.favorite)
-  }
-
-  @Test
-  fun toWatchlistModel_withValidValues_returnsUpdateWatchlistParams() {
-    val watchlistRequest = WatchlistRequest("tv", 566536534, true)
-    val watchlistParams = watchlistRequest.toUpdateWatchlistParams()
-
-    assertEquals(566536534, watchlistParams.mediaId)
-    assertEquals("tv", watchlistParams.mediaType)
-    assertTrue(watchlistParams.watchlist)
+  fun toMediaAccount_withValidMediaTypes_returnsCorrectParams() {
+    assertEquals(MediaType.MOVIE.toMediaAccount, "movies")
+    assertEquals(MediaType.TV.toMediaAccount, "tv")
   }
 }
