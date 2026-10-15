@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.account
 
 import com.waffiq.bazz_movies.core.model.media.MediaType
-import com.waffiq.bazz_movies.core.model.media.value
 import com.waffiq.bazz_movies.core.network.data.remote.constants.AccountMediaCategory
 import com.waffiq.bazz_movies.core.network.data.remote.constants.SortBy.CREATED_AT_ASC
 import com.waffiq.bazz_movies.core.network.data.remote.constants.value
@@ -12,6 +11,7 @@ import com.waffiq.bazz_movies.core.network.testutils.DummyData.tvShowResponseIte
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.defaultMediaResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingFlow
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingSource
+import com.waffiq.bazz_movies.core.network.utils.mapper.NetworkMapper.toMediaAccount
 import io.mockk.coEvery
 import io.mockk.coVerify
 import kotlinx.coroutines.test.runTest
@@ -25,7 +25,7 @@ class AccountRemoteDataSourceTest : BaseMediaDataSourceTest() {
       accountId = userId,
       sessionId = sessionId,
       category = category.value,
-      mediaType = mediaType.value,
+      mediaType = mediaType.toMediaAccount,
       sortBy = CREATED_AT_ASC,
       page = 1,
     )

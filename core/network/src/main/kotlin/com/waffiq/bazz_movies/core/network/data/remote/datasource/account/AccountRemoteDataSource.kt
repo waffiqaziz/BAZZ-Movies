@@ -13,6 +13,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostF
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.AccountApiService
 import com.waffiq.bazz_movies.core.network.utils.helpers.PageHelper.createPager
 import com.waffiq.bazz_movies.core.network.utils.helpers.SafeApiCallHelper.executeApiCall
+import com.waffiq.bazz_movies.core.network.utils.mapper.NetworkMapper.toMediaAccount
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -104,7 +105,7 @@ class AccountRemoteDataSource @Inject constructor(
         accountId = userId,
         sessionId = sessionId,
         category = category.value,
-        mediaType = mediaType.value,
+        mediaType = mediaType.toMediaAccount,
         sortBy = sortBy,
         page = page,
       ).results
