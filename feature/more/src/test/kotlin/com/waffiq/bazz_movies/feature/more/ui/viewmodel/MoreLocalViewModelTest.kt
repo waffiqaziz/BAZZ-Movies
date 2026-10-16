@@ -56,9 +56,10 @@ class MoreLocalViewModelTest : BaseViewModelTest() {
       }
 
       viewModel.state.test {
-        assertStateFlow(
+        assertStateFlowWithReset(
           action = { viewModel.deleteAll() },
           expectedState = UIState.Success(Unit),
+          resetAction = { viewModel.resetState() },
         )
       }
     }

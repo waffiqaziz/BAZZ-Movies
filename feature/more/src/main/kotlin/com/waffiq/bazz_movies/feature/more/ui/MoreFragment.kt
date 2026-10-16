@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.StringRes
 import androidx.annotation.VisibleForTesting
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -43,6 +44,7 @@ import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeOut
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
+import com.waffiq.bazz_movies.core.utils.FlowUtils.collectFlow
 import com.waffiq.bazz_movies.core.utils.openurl.UriLauncher
 import com.waffiq.bazz_movies.feature.more.databinding.FragmentMoreBinding
 import com.waffiq.bazz_movies.feature.more.ui.viewmodel.MoreLocalViewModel
@@ -50,7 +52,6 @@ import com.waffiq.bazz_movies.feature.more.ui.viewmodel.MoreUserViewModel
 import com.waffiq.bazz_movies.feature.more.utils.Helper.validName
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @SuppressLint("ClickableViewAccessibility")
@@ -102,14 +103,17 @@ class MoreFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    // initialize user
-    userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      signOutStateObserver(user.token != NAN)
-      setData(user)
-      btnAction(user)
-      setupBackupViews(user.token != NAN)
-    }
     updateListItemAppearance()
+
+    // static listeners
+    setupRegion()
+    setupButtons()
+    setupBackupActions()
+
+    // observers
+    observeUser()
+    observeRegion()
+    observeSignOutStates()
 
     MoreStateObserver(
       lifecycleScope = viewLifecycleOwner.lifecycleScope,
@@ -132,58 +136,85 @@ class MoreFragment : Fragment() {
     return binding.root
   }
 
-  private fun signOutStateObserver(isLogin: Boolean) {
-    if (isLogin) {
-      viewLifecycleOwner.lifecycleScope.launch {
-        moreUserViewModel.state.collect {
-          progressIsVisible(it.isLoading)
+  private fun observeUser() {
+    userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
+      bindProfile(user)
+      setupBackupViews(user.token != NAN)
+      setupSignOut(user)
+    }
+  }
 
-          when (it) {
-            is UIState.Success -> {
-              moreLocalViewModel.deleteAllSearchHistory()
-              requireContext().toastShort(getString(sign_out_success))
-              openLoginActivity()
-            }
-
-            is UIState.Error -> errorSignOut(it.message)
-
-            is UIState.Loading -> Unit
-
-            else -> Unit // idle do nothing
-          }
-        }
+  private fun observeRegion() {
+    userPreferenceViewModel.getUserRegionPref().observe(viewLifecycleOwner) { userCountry ->
+      if (userCountry == NAN) {
+        regionViewModel.getCountryCode()
+      } else {
+        binding.btnCountryPicker.setCountry(userCountry.uppercase())
       }
-    } else {
-      viewLifecycleOwner.lifecycleScope.launch {
-        moreLocalViewModel.state.collect { state ->
-          progressIsVisible(state.isLoading)
+    }
 
-          when (state) {
-            is UIState.Success -> {
-              requireContext().toastShort(getString(all_data_deleted))
-              openLoginActivity()
-            }
-
-            is UIState.Error -> errorSignOut(state.message)
-
-            is UIState.Idle -> Unit
-
-            else -> Unit // idle do nothing
-          }
-        }
+    regionViewModel.countryCode.observe(viewLifecycleOwner) { countryCode ->
+      if (countryCode.isNotEmpty()) {
+        userPreferenceViewModel.saveRegionPref(countryCode)
+        binding.btnCountryPicker.setCountry(countryCode.uppercase())
       }
+    }
+  }
+
+  private fun observeSignOutStates() {
+    // logged-in sign out
+    viewLifecycleOwner.collectFlow(moreUserViewModel.state) { state ->
+      handleSignOutState(state, sign_out_success) {
+        moreLocalViewModel.deleteAllSearchHistory()
+      }
+    }
+
+    // guest sign out (delete all data)
+    viewLifecycleOwner.collectFlow(moreLocalViewModel.state) { state ->
+      handleSignOutState(state, all_data_deleted)
+    }
+  }
+
+  private fun handleSignOutState(
+    state: UIState<Unit>,
+    @StringRes successMessage: Int,
+    onSuccess: () -> Unit = {},
+  ) {
+    progressIsVisible(state.isLoading)
+    when (state) {
+      is UIState.Success -> {
+        onSuccess()
+        requireContext().toastShort(getString(successMessage))
+        openLoginActivity()
+      }
+      is UIState.Error -> errorSignOut(state.message)
+      else -> Unit // Idle / Loading
+    }
+  }
+
+  private fun bindProfile(user: UserModel) {
+    binding.apply {
+      tvFullName.text = user.name.validName(getString(user_no_name))
+      tvUsername.text = user.username
+
+      val link = when {
+        !user.gravatarHash.isNullOrEmpty() -> "$GRAVATAR_LINK${user.gravatarHash}.jpg?s=200"
+        !user.tmdbAvatar.isNullOrEmpty() -> "$TMDB_IMG_LINK_AVATAR${user.tmdbAvatar}.png"
+        else -> GRAVATAR_LINK
+      }
+
+      Glide.with(imgAvatar)
+        .load(link)
+        .transform(CenterCrop())
+        .transition(withCrossFade())
+        .placeholder(ic_bazz_logo)
+        .error(ic_broken_image)
+        .into(imgAvatar)
     }
   }
 
   private fun setupBackupViews(isLogin: Boolean) {
     binding.backupLayout.isVisible = !isLogin
-  }
-
-  private fun btnAction(user: UserModel) {
-    setupRegion()
-    setupButtons()
-    setupBackupActions()
-    setupSignOut(user)
   }
 
   private fun setupRegion() {
@@ -267,48 +298,6 @@ class MoreFragment : Fragment() {
     activity?.finishAfterTransition()
   }
 
-  private fun setData(user: UserModel) {
-    binding.apply {
-      tvFullName.text = user.name.validName(getString(user_no_name))
-      tvUsername.text = user.username
-      val link = if (!user.gravatarHash.isNullOrEmpty()) {
-        "$GRAVATAR_LINK${user.gravatarHash}" + ".jpg?s=200"
-      } else if (!user.tmdbAvatar.isNullOrEmpty()) {
-        "$TMDB_IMG_LINK_AVATAR${user.tmdbAvatar}" + ".png"
-      } else {
-        GRAVATAR_LINK
-      }
-
-      Glide.with(binding.imgAvatar)
-        .load(link)
-        .transform(CenterCrop())
-        .transition(withCrossFade())
-        .placeholder(ic_bazz_logo)
-        .error(ic_broken_image)
-        .into(binding.imgAvatar)
-    }
-
-    // check if user already have countryCode
-    userPreferenceViewModel.getUserRegionPref().observe(
-      viewLifecycleOwner,
-    ) { userCountry ->
-
-      if (userCountry == NAN) { // if country not yet initialize, set country
-        regionViewModel.getCountryCode()
-      } else {
-        binding.btnCountryPicker.setCountry(userCountry.uppercase())
-      }
-    }
-
-    // observe country code
-    regionViewModel.countryCode.observe(viewLifecycleOwner) { countryCode ->
-      if (countryCode.isNotEmpty()) {
-        userPreferenceViewModel.saveRegionPref(countryCode)
-        binding.btnCountryPicker.setCountry(countryCode.uppercase())
-      }
-    }
-  }
-
   private fun btnSignOutIsEnable(isEnable: Boolean) {
     binding.btnSignout.isEnabled = isEnable
   }
@@ -353,6 +342,7 @@ class MoreFragment : Fragment() {
     mSnackbar = null
     mDialog = null
     moreUserViewModel.removeState()
+    moreLocalViewModel.resetState()
     Glide.get(requireContext()).clearMemory()
     _binding = null
   }
