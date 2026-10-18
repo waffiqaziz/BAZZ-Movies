@@ -70,6 +70,10 @@ class MoreLocalViewModel @Inject constructor(
     }
   }
 
+  fun resetState() {
+    _state.value = UIState.Idle
+  }
+
   fun resetBackupState() {
     _backupState.value = UIState.Idle
   }
