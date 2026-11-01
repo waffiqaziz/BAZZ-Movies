@@ -7,7 +7,7 @@ inputs:
     required: true
   java_version:
     description: 'Java version'
-    default: '21'
+    default: '25'
   java_distribution:
     description: 'Java distribution'
     default: 'temurin'
@@ -34,7 +34,7 @@ runs:
       shell: bash
       run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
 
-    - name: Set up JDK 21 (with cache)
+    - name: Set up JDK 25 (with cache)
       if: github.actor != 'renovate[bot]'
       uses: actions/setup-java@v6
       with:
@@ -42,7 +42,7 @@ runs:
         distribution: ${{ inputs.java_distribution }}
         cache: ${{ inputs.gradle_cache }}
 
-    - name: Set up JDK 21 (without cache)
+    - name: Set up JDK 25 (without cache)
       if: github.actor == 'renovate[bot]'
       uses: actions/setup-java@v6
       with:

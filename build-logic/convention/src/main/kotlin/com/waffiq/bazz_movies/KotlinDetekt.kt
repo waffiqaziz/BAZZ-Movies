@@ -31,7 +31,7 @@ internal fun Project.configureDetekt(extension: DetektExtension) {
 
   tasks.withType(Detekt::class.java).configureEach {
     exclude("**/build/**")
-    jvmTarget.set(JavaVersion.VERSION_21.toString())
+    jvmTarget.set(JavaVersion.VERSION_25.toString())
     reports {
       checkstyle.required.set(false)
       html.required.set(true)
@@ -42,6 +42,6 @@ internal fun Project.configureDetekt(extension: DetektExtension) {
   }
 
   tasks.withType(DetektCreateBaselineTask::class.java).configureEach {
-    jvmTarget.set(JavaVersion.VERSION_21.toString())
+    jvmTarget.set(JavaVersion.VERSION_25.toString())
   }
 }

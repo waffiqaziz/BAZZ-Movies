@@ -15,7 +15,7 @@ on:
       - '**.md'
 
 env:
-  JAVA_VERSION: '21'
+  JAVA_VERSION: '25'
   JAVA_DISTRIBUTION: 'temurin'
   GRADLE_CACHE: 'gradle'
 
@@ -62,7 +62,7 @@ jobs:
         run: |
           printf '%s' "$GOOGLE_SERVICES_JSON" | base64 --decode > app/google-services.json
 
-      - name: Set up JDK 21 (with cache)
+      - name: Set up JDK (with cache)
         if: github.actor != 'renovate[bot]'
         uses: actions/setup-java@v6
         with:
@@ -70,7 +70,7 @@ jobs:
           distribution: ${{ env.JAVA_DISTRIBUTION }}
           cache: ${{ env.GRADLE_CACHE }}
 
-      - name: Set up JDK 21 (without cache)
+      - name: Set up JDK (without cache)
         if: github.actor == 'renovate[bot]'
         uses: actions/setup-java@v6
         with:
