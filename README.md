@@ -84,9 +84,9 @@ BAZZ Movies available downloaded via Google Play Store
    - Use an Android Studio version compatible with the AGP version used by this project. See the [compatibility matrix](https://developer.android.com/studio/releases#android_gradle_plugin_and_android_studio_compatibility) for details.
 
 
-2. **Install JDK 21**
+2. **Install JDK 25**
 
-   Ensure that **JDK 21** is installed and [properly configured in your environment](https://developer.android.com/build/jdks#jdk-config-in-studio).
+   Ensure that **JDK 25** is installed and [properly configured in your environment](https://developer.android.com/build/jdks#jdk-config-in-studio).
 
 3. **Clone the Project**
 
