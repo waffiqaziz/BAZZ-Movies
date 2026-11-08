@@ -51,12 +51,12 @@ include(":feature:watchlist")
 include(":navigation")
 
 /**
- * Check if the current Java version is compatible with JDK 21.
+ * Check if the current Java version is compatible with JDK 25.
  * If not, throw an error with a message indicating the mismatch.
  */
-check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_21)) {
+check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_25)) {
   """
-    BAZZ Movies is using JDK 21 but it is currently using JDK ${JavaVersion.current()}.
+    BAZZ Movies is using JDK 25 but it is currently using JDK ${JavaVersion.current()}.
     Java Home: [${System.getProperty("java.home")}]
     https://developer.android.com/build/jdks#jdk-config-in-studio
   """.trimIndent()
