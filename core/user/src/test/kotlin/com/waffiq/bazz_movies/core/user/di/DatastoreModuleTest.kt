@@ -58,7 +58,13 @@ class DatastoreModuleTest {
   fun tearDown() = runBlocking { closeStores() }
 
   private fun newAead(): Aead =
-    KeysetHandle.generateNew(PredefinedAeadParameters.AES256_GCM)
+    KeysetHandle.newBuilder()
+      .addEntry(
+        KeysetHandle.generateEntryFromParameters(PredefinedAeadParameters.AES256_GCM)
+          .withRandomId()
+          .makePrimary(),
+      )
+      .build()
       .getPrimitive(RegistryConfiguration.get(), Aead::class.java)
 
   private fun newStore(withAead: Aead = aead): DataStore<Preferences> {
@@ -82,14 +88,20 @@ class DatastoreModuleTest {
   }
 
   private fun freshKeyset(): KeysetHandle =
-    KeysetHandle.generateNew(PredefinedAeadParameters.AES256_GCM)
+    KeysetHandle.newBuilder()
+      .addEntry(
+        KeysetHandle.generateEntryFromParameters(PredefinedAeadParameters.AES256_GCM)
+          .withRandomId()
+          .makePrimary(),
+      )
+      .build()
 
   private fun seedStaleState() {
     context.getSharedPreferences(DatastoreModule.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE)
       .edit().putString("stale", "x").commit()
     encryptedFile().apply {
-        parentFile?.mkdirs();
-        writeText("stale")
+      parentFile?.mkdirs()
+      writeText("stale")
     }
   }
 

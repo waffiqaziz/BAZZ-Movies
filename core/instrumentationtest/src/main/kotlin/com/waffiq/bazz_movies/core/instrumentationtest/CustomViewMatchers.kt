@@ -4,7 +4,6 @@ import android.view.View
 import android.widget.ImageView
 import androidx.annotation.IdRes
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.graphics.drawable.toBitmap
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
@@ -39,16 +38,11 @@ object CustomViewMatchers {
       }
 
       override fun matchesSafely(imageView: ImageView): Boolean {
-        val context = imageView.context
-        val expectedDrawable = AppCompatResources.getDrawable(context, resourceId)
-        val actualDrawable = imageView.drawable
+        val expectedState =
+          AppCompatResources.getDrawable(imageView.context, resourceId)?.constantState
+        val actualState = imageView.drawable?.constantState
 
-        if (expectedDrawable == null || actualDrawable == null) return false
-
-        val expectedBitmap = expectedDrawable.toBitmap()
-        val actualBitmap = actualDrawable.toBitmap()
-
-        return expectedBitmap.sameAs(actualBitmap)
+        return expectedState != null && expectedState == actualState
       }
     }
   }
