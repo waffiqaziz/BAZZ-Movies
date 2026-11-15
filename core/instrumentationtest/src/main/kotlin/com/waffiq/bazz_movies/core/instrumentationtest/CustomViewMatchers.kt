@@ -1,9 +1,11 @@
 package com.waffiq.bazz_movies.core.instrumentationtest
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.widget.ImageView
 import androidx.annotation.IdRes
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.graphics.drawable.toBitmap
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
@@ -12,7 +14,6 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.isEnabled
-import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withTagValue
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -37,12 +38,18 @@ object CustomViewMatchers {
         description.appendText("with drawable resource id: $resourceId")
       }
 
+      @SuppressLint("ThreadConstraint")
       override fun matchesSafely(imageView: ImageView): Boolean {
-        val expectedState =
-          AppCompatResources.getDrawable(imageView.context, resourceId)?.constantState
-        val actualState = imageView.drawable?.constantState
+        val context = imageView.context
+        val expectedDrawable = AppCompatResources.getDrawable(context, resourceId)
+        val actualDrawable = imageView.drawable
 
-        return expectedState != null && expectedState == actualState
+        if (expectedDrawable == null || actualDrawable == null) return false
+
+        val expectedBitmap = expectedDrawable.toBitmap()
+        val actualBitmap = actualDrawable.toBitmap()
+
+        return expectedBitmap.sameAs(actualBitmap)
       }
     }
   }
@@ -114,10 +121,6 @@ object CustomViewMatchers {
   fun Int.hasNoError() {
     onView(withId(this))
       .check(matches(withoutError()))
-  }
-
-  fun Int.hasContentDescription(expected: String) {
-    onView(withId(this)).check(matches(withContentDescription(expected)))
   }
 
   fun Int.hasTag(expected: Any) {
