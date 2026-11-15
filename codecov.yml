@@ -20,7 +20,7 @@ codecov:
 
 flag_management:
   default_rules:
-    carryforward: true
+    carryforward: false
     statuses:
       - name_prefix: proj-
         type: project
@@ -35,139 +35,139 @@ flag_management:
     - name: app
       paths:
         - app/
-      carryforward: true
+      carryforward: false
       
     # Core modules
     - name: core-adapter
       paths:
         - core/adapter/
-      carryforward: true
+      carryforward: false
 
     - name: core-common
       paths:
         - core/common/
-      carryforward: true
+      carryforward: false
         
     - name: core-coroutines
       paths:
         - core/coroutines/
-      carryforward: true
+      carryforward: false
         
     - name: core-data
       paths:
         - core/data/
-      carryforward: true
+      carryforward: false
         
     - name: core-database
       paths:
         - core/database/
-      carryforward: true
+      carryforward: false
         
     - name: core-model
       paths:
         - core/model/
-      carryforward: true
+      carryforward: false
         
     - name: core-favoritewatchlist
       paths:
         - core/favoritewatchlist/
-      carryforward: true
+      carryforward: false
 
     - name: core-instrumentationtest
       paths:
         - core/instrumentationtest/
-      carryforward: true
+      carryforward: false
         
     - name: core-mapper
       paths:
         - core/mapper/
-      carryforward: true
+      carryforward: false
         
     - name: core-network
       paths:
         - core/network/
-      carryforward: true
+      carryforward: false
         
     - name: core-test
       paths:
         - core/test/
-      carryforward: true
+      carryforward: false
 
     - name: core-testmodule
       paths:
         - core/testmodule/
-      carryforward: true
+      carryforward: false
         
     - name: core-uihelper
       paths:
         - core/uihelper/
-      carryforward: true
+      carryforward: false
         
     - name: core-utils
       paths:
         - core/utils/
-      carryforward: true
+      carryforward: false
         
     - name: core-user
       paths:
         - core/user/
-      carryforward: true
+      carryforward: false
         
     # Feature modules
     - name: feature-about
       paths:
         - feature/about/
-      carryforward: true
+      carryforward: false
         
     - name: feature-detail
       paths:
         - feature/detail/
-      carryforward: true
+      carryforward: false
         
     - name: feature-favorite
       paths:
         - feature/favorite/
-      carryforward: true
+      carryforward: false
         
     - name: feature-home
       paths:
         - feature/home/
-      carryforward: true
+      carryforward: false
         
     - name: feature-list
       paths:
         - feature/list/
-      carryforward: true
+      carryforward: false
 
     - name: feature-login
       paths:
         - feature/login/
-      carryforward: true
+      carryforward: false
         
     - name: feature-more
       paths:
         - feature/more/
-      carryforward: true
+      carryforward: false
         
     - name: feature-person
       paths:
         - feature/person/
-      carryforward: true
+      carryforward: false
         
     - name: feature-search
       paths:
         - feature/search/
-      carryforward: true
+      carryforward: false
         
     - name: feature-watchlist
       paths:
         - feature/watchlist/
-      carryforward: true
+      carryforward: false
 
     - name: navigation
       paths:
         - navigation
-      carryforward: true
+      carryforward: false
 
 comment:
   layout: "reach,diff,flags,tree"
