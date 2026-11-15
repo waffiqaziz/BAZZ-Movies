@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.core.instrumentationtest
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.widget.ImageView
 import androidx.annotation.IdRes
@@ -13,7 +14,6 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.isEnabled
-import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withTagValue
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -38,6 +38,7 @@ object CustomViewMatchers {
         description.appendText("with drawable resource id: $resourceId")
       }
 
+      @SuppressLint("ThreadConstraint")
       override fun matchesSafely(imageView: ImageView): Boolean {
         val context = imageView.context
         val expectedDrawable = AppCompatResources.getDrawable(context, resourceId)
@@ -120,10 +121,6 @@ object CustomViewMatchers {
   fun Int.hasNoError() {
     onView(withId(this))
       .check(matches(withoutError()))
-  }
-
-  fun Int.hasContentDescription(expected: String) {
-    onView(withId(this)).check(matches(withContentDescription(expected)))
   }
 
   fun Int.hasTag(expected: Any) {
