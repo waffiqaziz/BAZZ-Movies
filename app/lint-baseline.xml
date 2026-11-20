@@ -1,26 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="6" by="lint 9.5.1" type="baseline" client="gradle" dependencies="false" name="AGP (9.5.1)" variant="all" version="9.5.1">
+<issues format="6" by="lint 9.5.2" type="baseline" client="gradle" dependencies="false" name="AGP (9.5.2)" variant="all" version="9.5.2">
+
+    <issue
+        id="AndroidGradlePluginVersion"
+        message="A newer version of Gradle than 9.8.2 is available: 9.9.2"
+        errorLine1="distributionUrl=https\://services.gradle.org/distributions/gradle-9.8.2-bin.zip"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/wrapper/gradle-wrapper.properties"
+            line="4"
+            column="17"/>
+    </issue>
 
     <issue
         id="GradleDependency"
-        message="A newer version of com.google.devtools.ksp than 2.3.12 is available: 2.3.13"
-        errorLine1="ksp = &quot;2.3.12&quot;"
-        errorLine2="      ~~~~~~~~">
+        message="A newer version of androidx.lifecycle:lifecycle-common than 2.11.0 is available: 2.11.1"
+        errorLine1="lifecycle = &quot;2.11.0&quot;"
+        errorLine2="            ~~~~~~~~">
         <location
-            file="../gradle/libs.versions.toml"
-            line="16"
-            column="7"/>
+            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
+            line="49"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.lifecycle:lifecycle-livedata-core than 2.11.0 is available: 2.11.1"
+        errorLine1="lifecycle = &quot;2.11.0&quot;"
+        errorLine2="            ~~~~~~~~">
+        <location
+            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
+            line="49"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.lifecycle:lifecycle-runtime-ktx than 2.11.0 is available: 2.11.1"
+        errorLine1="lifecycle = &quot;2.11.0&quot;"
+        errorLine2="            ~~~~~~~~">
+        <location
+            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
+            line="49"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.lifecycle:lifecycle-runtime-testing than 2.11.0 is available: 2.11.1"
+        errorLine1="lifecycle = &quot;2.11.0&quot;"
+        errorLine2="            ~~~~~~~~">
+        <location
+            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
+            line="49"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.lifecycle:lifecycle-viewmodel than 2.11.0 is available: 2.11.1"
+        errorLine1="lifecycle = &quot;2.11.0&quot;"
+        errorLine2="            ~~~~~~~~">
+        <location
+            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
+            line="49"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.lifecycle:lifecycle-viewmodel-ktx than 2.11.0 is available: 2.11.1"
+        errorLine1="lifecycle = &quot;2.11.0&quot;"
+        errorLine2="            ~~~~~~~~">
+        <location
+            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
+            line="49"
+            column="13"/>
     </issue>
 
     <issue
         id="NewerVersionAvailable"
-        message="A newer version of org.jetbrains.kotlinx:kotlinx-serialization-json than 1.11.0 is available: 1.12.0"
+        message="A newer version of org.jetbrains.kotlinx:kotlinx-serialization-json than 1.11.0 is available: 1.13.0"
         errorLine1="kotlinxCoroutines = &quot;1.11.0&quot;"
         errorLine2="                    ~~~~~~~~">
         <location
-            file="../gradle/libs.versions.toml"
+            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
             line="46"
             column="21"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of io.kotest:kotest-assertions-core than 6.2.6 is available: 6.2.7"
+        errorLine1="kotest = &quot;6.2.6&quot;"
+        errorLine2="         ~~~~~~~">
+        <location
+            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
+            line="82"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of io.kotest:kotest-property than 6.2.6 is available: 6.2.7"
+        errorLine1="kotest = &quot;6.2.6&quot;"
+        errorLine2="         ~~~~~~~">
+        <location
+            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
+            line="82"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of io.kotest:kotest-runner-junit5 than 6.2.6 is available: 6.2.7"
+        errorLine1="kotest = &quot;6.2.6&quot;"
+        errorLine2="         ~~~~~~~">
+        <location
+            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
+            line="82"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of com.github.bumptech.glide:glide than 5.0.9 is available: 5.0.10"
+        errorLine1="glide = &quot;5.0.9&quot;"
+        errorLine2="        ~~~~~~~">
+        <location
+            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
+            line="93"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of com.github.bumptech.glide:ksp than 5.0.9 is available: 5.0.10"
+        errorLine1="glide = &quot;5.0.9&quot;"
+        errorLine2="        ~~~~~~~">
+        <location
+            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
+            line="93"
+            column="9"/>
     </issue>
 
 </issues>
